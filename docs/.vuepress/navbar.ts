@@ -13,7 +13,7 @@ export default navbar([
       {
         text: "前端",
         icon: "code",
-        link: "/",
+        link: "frontEnd/css/bfc",
       },
       {
         text: "服务端",

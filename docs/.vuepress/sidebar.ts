@@ -102,4 +102,66 @@ export default sidebar({
       children: "structure",
     },
   ], */
+  "/knowledge/frontEnd/": [
+    {
+			text: 'HTML',
+			icon: 'https://s21.ax1x.com/2024/09/19/pAKWX7V.png',
+			prefix: 'html/',
+			collapsible: true,
+			children: [
+				'html5Tag.md',
+				'htmlSemanticization.md',
+        'html5Mobile.md',
+				{
+					text: 'Web components',
+					icon: '',
+          prefix: 'webComponents/',
+					collapsible: true,
+					children: ['webComponents'],
+				},
+			],
+		},
+    {
+			text: 'CSS',
+			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
+			prefix: 'css/',
+			collapsible: true,
+			children: 'structure',
+		},
+    {
+			text: 'JavaScript',
+			icon: 'https://s21.ax1x.com/2024/09/19/pAKfpp4.png',
+			prefix: 'javascript/',
+			collapsible: true,
+			children: 'structure',
+		},
+    {
+			text: '前端框架',
+			icon: 'https://s21.ax1x.com/2024/09/19/pAKWxtU.png',
+			prefix: 'frame/',
+			collapsible: true,
+			children: 'structure',
+		},
+    {
+			text: '前端工程化',
+			icon: 'screwdriver-wrench',
+			prefix: 'engineering/',
+			collapsible: true,
+			children: 'structure',
+		},
+		{
+			text: '前端性能优化',
+			icon: 'bug-slash',
+			prefix: 'performanceOptimization/',
+			collapsible: true,
+			children: 'structure',
+		},
+		{
+			text: '前端编程思维和算法',
+			icon: 'brain',
+			prefix: 'programmingThinkingAndAlgorithms/',
+			collapsible: true,
+			children: 'structure',
+		},
+  ]
 });
