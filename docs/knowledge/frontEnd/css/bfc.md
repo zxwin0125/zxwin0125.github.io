@@ -88,7 +88,7 @@ order: 1
 
 - 得到布局如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/CSS/01.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/01.png =500x)
 
 - 请在不修改已有内容情况下，加入样式，实现自适应（.left 宽度固定，.right 占满剩下宽度）两栏布局
 - 来思考：
@@ -108,7 +108,7 @@ order: 1
 
 - 就可以得到：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/CSS/02.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/02.png =500x)
 
 - 当然，这种布局可以用更先进的 flex 或者 grid 手段解决，但是对于 BFC 这些 CSS 基础知识，同样要做到了然于胸
 
@@ -139,7 +139,7 @@ order: 1
 - 首先来回答第一个问：.root 的高度是多少？
   - 事实上，因为 .child 为浮动元素，因此造成了「**高度塌陷**」现象，.root 的高度为 0
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/CSS/03.png =400x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/03.png =400x)
 
 - 那么如何解决「高度塌陷」问题呢？
   - 想想 BFC 规则：
@@ -152,7 +152,7 @@ order: 1
 }
 ```
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/CSS/04.png =400x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/04.png =400x)
 
 - 看此时高度已经被你撑开了
 
@@ -209,7 +209,7 @@ order: 1
 </body>
 ```
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/CSS/05.png =400x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/05.png =400x)
 
 - 总结：通过分析 BFC 是什么、如何形成、布局规则，融会贯通了 CSS 当中很多关键问题
 - 也许不少开发者能够解决「边距折叠」、「多栏自适应」、「高度塌陷」等问题，但是并不能说出解决问题的原理

@@ -25,15 +25,15 @@ order: 2
 
 ### 典型的 HTML 标签
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/04.webp)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/04.webp)
 
 - 将 HTML 标签分为 9 大类别，每一种类别都包含有语义化的标签内容，小图如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/05.webp =700x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/05.webp =700x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/06.webp =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/06.webp =500x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/07.webp)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/07.webp)
 
 - 了解了这些语义化的标签，就可以按照「适合内容与否」，进行使用
 - 关于选取标准，简单总结了一下，抽象成代码表达为：
@@ -72,11 +72,11 @@ else {
 - 很简单，Microformats 的原理就是**扩展 HTML 元素或者属性，来增强 HTML 的语义表达能力**
 - 来看一个案例：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/08.webp =700x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/08.webp =700x)
 
 - Wikipedia 的页面中，给某一部分加上了 vCard 的 class，这是用来做什么的呢？
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/09.webp =700x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/09.webp =700x)
 
 - Google 搜索引擎可以通过 Wikipedia 页面 vCard 这个 class，读取相关内容，在呈现搜索结果时，匹配展现出人物信息，从而语义化的 class，帮助了机器（搜索爬出）学习到更多信息，展现出了更好的结果页面
 - Microdata 属于 WHATWG（网页超文本应用技术工作小组：Web Hypertext Application Technology Working） HTML 规范，它并不是标准，但这是一个很典型的语义化发展和应用尝试

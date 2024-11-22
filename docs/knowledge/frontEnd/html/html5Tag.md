@@ -24,7 +24,7 @@ order: 1
 </ruby>
 ```
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/01.webp =600x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/01.webp =600x)
 
 - 展开收起组件
 
@@ -37,11 +37,11 @@ order: 1
 </details>
 ```
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/02.webp =600x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/02.webp =600x)
 
 - 原生进度条和度量，progress 标签显示进度：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/HTML/03.webp =600x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/03.webp =600x)
 
 > [!warning]
 > 值得一提的是：progress 不适合用来表示度量衡，如果想表示度量衡，应该使用 meter 标签代替

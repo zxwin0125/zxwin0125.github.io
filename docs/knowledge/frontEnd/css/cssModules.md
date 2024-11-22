@@ -282,4 +282,4 @@ module.exports = {
 - 运行 npm start，得到产出，打开页面会发现：
 - 如图，已经在编译过程中完成了 css module 处理
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/CSS/10.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/10.png =500x)
