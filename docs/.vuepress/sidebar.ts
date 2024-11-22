@@ -165,5 +165,8 @@ export default sidebar({
 			collapsible: true,
 			children: 'structure',
 		},
-  ]
+  ],
+	'/project/': 'structure',
+	'/work/': 'structure',
+	'/manage/': 'structure',
 });

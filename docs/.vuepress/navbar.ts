@@ -18,32 +18,32 @@ export default navbar([
 			{
 				text: '服务端',
 				icon: 'server',
-				link: '/',
+				link: 'serverSide/index',
 			},
 			{
 				text: '客户端',
 				icon: 'mobile',
-				link: '/',
+				link: 'clientSide/index',
 			},
 			{
 				text: '数据库',
 				icon: 'database',
-				link: '/',
+				link: 'dataBase/index',
 			},
 			{
 				text: '系统',
 				icon: 'computer',
-				link: '/',
+				link: 'os/index',
 			},
 			{
 				text: 'Mac相关',
 				icon: 'laptop',
-				link: '/',
+				link: 'mac/index',
 			},
 			{
 				text: '工具相关',
 				icon: 'toolbox',
-				link: '/',
+				link: 'tool/index',
 			},
 			{
 				text: '面试',
@@ -52,12 +52,12 @@ export default navbar([
 			},
 		],
 	},
-	{ text: '项目相关', icon: 'diagram-project', link: '/' },
-	{ text: '工作技能', icon: 'laptop-code', link: '/' },
+	{ text: '项目相关', icon: 'diagram-project', link: '/project/index' },
+	{ text: '工作技能', icon: 'laptop-code', link: '/work/bitOne' },
 	{
 		text: '学会管理',
 		icon: 'users-gear',
-		link: '/',
+		link: '/manage/index',
 	},
 	// {
 	//   text: "应用",
