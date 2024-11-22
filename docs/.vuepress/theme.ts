@@ -65,7 +65,10 @@ export default hopeTheme({
 	// print: false,
 
 	plugins: {
-		blog: true,
+		blog: {
+			excerpt: true,
+			excerptLength: 100
+		},
     // 禁用不需要的配置
 		// https://plugin-md-enhance.vuejs.press/zh/guide/
 		mdEnhance: {
