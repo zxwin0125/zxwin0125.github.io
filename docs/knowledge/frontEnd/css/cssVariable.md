@@ -8,10 +8,12 @@ tag:
 order: 3
 ---
 
-- CSS 变量或者 CSS 自定义属性一直以来是一个值得关注的方向
-- 我们前端没必要去「叫嚣」 CSS - HTML 是否图灵完备，但是 CSS 变量时代确实已经到来
+> [!info]
+> - CSS 变量或者 CSS 自定义属性一直以来是一个值得关注的方向
+> - 没必要去「叫嚣」 CSS - HTML 是否图灵完备，但是 CSS 变量时代确实已经到来
+
 > [!warning]
-> 注意这里所说的不是 CSS 预处理器（类似 Less，Sass）中的变量，而是实实在在的原生支持特性
+> 这里所说的不是 CSS 预处理器（类似 Less，Sass）中的变量，而是实实在在的原生支持的特性
 
 ### 什么是 CSS 变量
 
@@ -58,18 +60,18 @@ a:hover {
 }
 ```
 
-- 这个很好理解，**在任何语言中，变量是个好东西：它可以降低维护成本，甚至实现更好的性能**
+- **<font color=red>在任何语言中，变量是个好东西：它可以降低维护成本，甚至实现更好的性能</font>**
 - CSS 变量语法也很简单：使用`--变量名`的方式定义变量，使用`var(--变量名)`的方式消费变量
 - 更多 CSS 变量的基础内容可以访问：[使用 CSS 变量](https://developer.mozilla.org/zh-%20CN/docs/Web/CSS/Using_CSS_custom_properties)
-- 值得一提的是，CSS 变量的兼容性「出乎意料」的好：
+- CSS 变量的兼容性也「出乎意料」的好：
 
 ![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/08.png =500x)
 
-- 我就在自己的项目中大范围使用了 CSS 变量，在 html 根节点下，定义 :root ：
+- 项目中大范围使用了 CSS 变量，在 html 根节点下，定义 :root ：
 
 ![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/09.png =500x)
 
-- 除了简单应用变量，我们能玩出哪些更高级的用法呢？
+- 除了简单应用变量，还有哪些更高级的用法呢？
 
 ### 使用 CSS 变量实现主题切换
 
@@ -143,4 +145,4 @@ toggleBtn.addEventListener('click', e => {
 })
 ```
 
-- 非常的简单直观，我认为这将会成为 CSS 发展的一个不可避免的趋势
+- 非常的简单直观，这将会成为 CSS 发展的一个不可避免的趋势
