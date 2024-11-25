@@ -10,7 +10,7 @@ order: 3
 
 ## 主题的相关知识点如下
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/18.png =700x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/18.png =700x)
 
 ## jQuery offset 实现
 
@@ -19,7 +19,7 @@ order: 3
 
 - 熟悉 jQuery 的读者应该对 offset 方法并不陌生，它返回或设置匹配元素相对于文档的偏移（位置）
 - 这个方法返回的对象包含两个整型属性：top 和 left，以像素计
-- 如果可以使用 jQuery， 我们可以直接调取该 API 获得结果
+- 如果可以使用 jQuery， 可以直接调取该 API 获得结果
 - 但是，**<font color=red>如果用原生 JavaScript 实现，也就是说手动实现 jQuery offset 方法，该如何着手呢？</font>**
 
 ### 主要有两种思路
@@ -29,8 +29,8 @@ order: 3
 
 #### 递归实现方案
 
-- 我们通过遍历目标元素、目标元素的父节点、父节点的父节点......依次溯源，并累加这些遍历过的节点相对于其最近祖先节点（且 position 属性非 static）的偏移量，向上直到 document，累加即可得到结果
-- 其中，我们需要使用 JavaScript 的 offsetTop 来访问一个 DOM 节点上边框相对离其本身最近、且 position 值为非 static 的祖先元素的垂直偏移量
+- 通过遍历目标元素、目标元素的父节点、父节点的父节点......依次溯源，并累加这些遍历过的节点相对于其最近祖先节点（且 position 属性非 static）的偏移量，向上直到 document，累加即可得到结果
+- 其中，需要使用 JavaScript 的 offsetTop 来访问一个 DOM 节点上边框相对离其本身最近、且 position 值为非 static 的祖先元素的垂直偏移量
 - 具体实现为：
 
 ```javascript
@@ -80,7 +80,7 @@ const offset = ele => {
   - 如果相关节点的 position 属性为 static，则不计入计算，进入下一个节点（其父节点）的递归
   - 如果相关属性的 display 属性为 none，则应该直接返回 0 作为结果
 - 这个实现很好地考察了开发者对于递归的初级应用、以及对 JavaScript 方法的掌握程度
-- 接下来，我们换一种思路，用一个相对较新的 API：getBoundingClientRect 来实现 jQuery offset 方法
+- 接下来，换一种思路，用一个相对较新的 API：getBoundingClientRect 来实现 jQuery offset 方法
 
 #### getBoundingClientRect 方法
 
@@ -88,7 +88,7 @@ const offset = ele => {
 - 对某一节点执行该方法，它的返回值是一个 DOMRect
 - 这个对象表示一个矩形盒子，它含有：left、top、right 和 bottom 等只读属性
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/19.png =300x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/19.png =300x)
 
 - 请参考实现代码：
 
@@ -118,37 +118,38 @@ const offset = ele => {
 }
 ```
 
-- 需要注意的细节有：
-  - node.ownerDocument.documentElement 的用法可能大家比较陌生，ownerDocument 是 DOM 节点的一个属性，它返回当前节点的顶层的 document 对象
-  - ownerDocument 是文档，documentElement 是根节点
-  - 事实上，ownerDocument 下含 2 个节点：
-    - \<!DocType>
-    - documentElement
-- docElement.clientTop，clientTop 是一个元素顶部边框的宽度，不包括顶部外边距或内边距
-  - 除此之外，该方法实现就是简单的几何运算，边界 case 和兼容性处理，也并不难理解
+> [!warning]
+> - 需要注意的细节有：
+>   - node.ownerDocument.documentElement 的用法可能大家比较陌生，ownerDocument 是 DOM 节点的一个属性，它返回当前节点的顶层的 document 对象
+>   - ownerDocument 是文档，documentElement 是根节点<br>
+> - 事实上，ownerDocument 下含 2 个节点：
+>   - `<!DocType>`
+>   - documentElement
+>     - docElement.clientTop，clientTop 是一个元素顶部边框的宽度，不包括顶部外边距或内边距
+> - 除此之外，该方法实现就是简单的几何运算，边界 case 和兼容性处理，也并不难理解
 
 ## 数组 reduce 方法的相关实现
 
 - 数组方法非常重要：**<font color=red>因为数组就是数据，数据就是状态，状态反应着视图</font>**
-- 对数组的操作我们不能陌生，其中 reduce 方法更要做到驾轻就熟，我认为这个方法很好地体现了「函数式」理念，也是当前非常热门的考察点之一
-- 我们知道 reduce 方法是 ES5 引入的，reduce 英文解释翻译过来为「减少，缩小，使还原，使变弱」
+- 对数组的操作不能陌生，其中 reduce 方法更要做到驾轻就熟，这个方法很好地体现了「函数式」理念，也是当前非常热门的考察点之一
+- reduce 方法是 ES5 引入的，reduce 英文解释翻译过来为「减少，缩小，使还原，使变弱」
 - 它的使用语法：
 
 ```javascript
 arr.reduce(callback[, initialValue])
 ```
 
-- 这里我们简要介绍一下。
-  - reduce 第一个参数 callback 是核心，它对数组的每一项进行「叠加加工」，其最后一次返回值将作为 reduce方法的最终返回值，它包含 4 个参数：
-    - previousValue 表示「上一次」 callback 函数的返回值
-    - currentValue 数组遍历中正在处理的元素
-    - currentIndex 可选，表示 currentValue 在数组中对应的索引，如果提供了 initialValue，则起始索引号为 0，否则为 1
-    - array 可选，调用 reduce() 的数组
-  - initialValue 可选，作为第一次调用 callback 时的第一个参数，如果没有提供 initialValue，那么数组中的第一个元素将作为 callback 的第一个参数
+> [!info]
+> - reduce 第一个参数 callback 是核心，它对数组的每一项进行「叠加加工」，其最后一次返回值将作为 reduce方法的最终返回值，它包含 4 个参数：
+> - previousValue 表示「上一次」 callback 函数的返回值
+> - currentValue 数组遍历中正在处理的元素
+> - currentIndex 可选，表示 currentValue 在数组中对应的索引，如果提供了 initialValue，则起始索引号为 0，否则为 1
+> - array 可选，调用 reduce() 的数组
+> - initialValue 可选，作为第一次调用 callback 时的第一个参数，如果没有提供 initialValue，那么数组中的第一个元素将作为 callback 的第一个参数
 
 ### reduce 实现 runPromiseInSequence
 
-- 我们看它的一个典型应用，按顺序运行 Promise：
+- 看它的一个典型应用，按顺序运行 Promise：
 
 ```javascript
 const runPromiseInSequence = (array, value) => array.reduce(
@@ -187,11 +188,11 @@ runPromiseInSequence(array, 'init')
 
 - 执行结果如下图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/20.png =400x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/20.png =400x)
 
 ### reduce 实现 pipe
 
-- reduce 的另外一个**典型应用**可以参考函数式方法 pipe 的实现：pipe(f, g, h) 是一个 curry 化函数，它返回一个新的函数，这个新的函数将会完成 (...args) => h(g(f(...args))) 的调用
+- reduce 的另外一个 **<font color=red>典型应用</font>**可以参考函数式方法 pipe 的实现：pipe(f, g, h) 是一个 curry 化函数，它返回一个新的函数，这个新的函数将会完成 (...args) => h(g(f(...args))) 的调用
 - 即 pipe 方法返回的函数会接收一个参数，这个参数传递给 pipe 方法第一个参数，以供其调用
 
 ```javascript
@@ -205,7 +206,7 @@ const pipe = (...functions) => input => functions.reduce(
 
 ### 实现一个 reduce
 
-- 那么我们该如何实现一个 reduce 呢？参考来自 MDN 的 polyfill：
+- 那么该如何实现一个 reduce 呢？参考来自 MDN 的 polyfill：
 
 ```javascript
 if (!Array.prototype.reduce) {
@@ -252,7 +253,7 @@ if (!Array.prototype.reduce) {
 }
 ```
 
-- 上述代码中使用了 value 作为初始值，并通过 while 循环，依次累加计算出 value 结果并输出，但是相比 MDN 上述实现，我个人更喜欢的实现方案是：
+- 上述代码中使用了 value 作为初始值，并通过 while 循环，依次累加计算出 value 结果并输出，但是相比 MDN 上述实现，个人更喜欢的实现方案是：
 
 ```javascript
 Array.prototype.reduce = Array.prototype.reduce || function(func, initialValue) {
@@ -268,16 +269,16 @@ Array.prototype.reduce = Array.prototype.reduce || function(func, initialValue) 
 ```
 
 - 核心原理就是使用 forEach 来代替 while 实现结果的累加，它们本质上是相同的
-- 我也同样看了下 ES5-shim 里的 pollyfill，跟上述思路完全一致
+- ES5-shim 里的 pollyfill，跟上述思路完全一致
 - 唯一的区别在于
-  - 我用了 forEach 迭代而 ES5-shim 使用的是简单的 for 循环
-  - 实际上，如果「杠精」一些，我们会指出数组的 forEach 方法也是 ES5 新增的
+  - forEach 迭代而 ES5-shim 使用的是简单的 for 循环
+  - 实际上，如果「杠精」一些，数组的 forEach 方法也是 ES5 新增的
   - 因此，用 ES5 的一个 API（forEach），去实现另外一个 ES5 的 API（reduce），这并没什么实际意义——这里的 pollyfill 就是在不兼容 ES5 的情况下，模拟的降级方案
   - 此处不多做追究，因为根本目的还是希望读者对 reduce 有一个全面透彻的了解
 
 ### 通过 Koa only 模块源码认识 reduce
 
-- 通过了解并实现 reduce 方法，我们对它已经有了比较深入的认识
+- 通过了解并实现 reduce 方法，对它已经有了比较深入的认识
 - 最后，再来看一个 reduce 使用示例——通过 Koa 源码的 [only](https://links.jianshu.com/go?to=https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fonly) 模块，加深印象：
 
 ```javascript
@@ -305,13 +306,13 @@ var only = function(obj, keys){
 }
 ```
 
-- 小小的 reduce 及其衍生场景有很多值得我们玩味、探究的地方，举一反三，活学活用是技术进阶的关键
+- 小小的 reduce 及其衍生场景有很多值得玩味、探究的地方，举一反三，活学活用是技术进阶的关键
 
 ## compose 实现的几种方案
 
 - 函数式理念——这一古老的概念如今在前端领域「遍地开花」
 - 函数式很多思想都值得借鉴，其中一个细节：compose 因为其巧妙的设计而被广泛运用
-- 对于它的实现，从面向过程式到函数式实现，风格迥异，值得我们探究。在面试当中，也经常有面试官要求实现 compose 方法，我们先看什么是 compose
+- 对于它的实现，从面向过程式到函数式实现，风格迥异，值得探究。在面试当中，也经常有面试官要求实现 compose 方法，先看什么是 compose
 - compose 其实和前面提到的 pipe 一样，就是执行一连串不定长度的任务（方法），比如：
 
 ```javascript
@@ -330,10 +331,11 @@ fn1(fn2(fn3(fn4(args))))
 
 ### 总结一下 compose 方法的关键点
 
-- compose 的参数是函数数组，返回的也是一个函数
-- compose 的参数是任意长度的，所有的参数都是函数，执行方向是自右向左的，因此初始函数一定放到参数的最右面
-- compose 执行后返回的函数可以接收参数，这个参数将作为初始函数的参数，所以初始函数的参数是多元的，初始函数的返回结果将作为下一个函数的参数，以此类推。因此除了初始函数之外，其他函数的接收值是一元的
-- 我们发现，实际上，compose 和 pipe 的差别只在于调用顺序的不同：
+> [!important]
+> - compose 的参数是函数数组，返回的也是一个函数
+> - compose 的参数是任意长度的，所有的参数都是函数，执行方向是自右向左的，因此初始函数一定放到参数的最右面
+> - compose 执行后返回的函数可以接收参数，这个参数将作为初始函数的参数，所以初始函数的参数是多元的，初始函数的返回结果将作为下一个函数的参数，以此类推，因此除了初始函数之外，其他函数的接收值是一元的
+> - 发现，实际上，compose 和 pipe 的差别只在于调用顺序的不同：
 
 ```javascript
 // compose
@@ -343,7 +345,7 @@ fn1(fn2(fn3(fn4(args))))
 fn4(fn3(fn2(fn1(args))))
 ```
 
-- 即然跟我们先前实现的 pipe 方法如出一辙，那么还有什么好深入分析的呢？
+- 即然跟先前实现的 pipe 方法如出一辙，那么还有什么好深入分析的呢？
 - 请继续阅读，看看还能玩出什么花儿来
 
 ### compose 最简单的实现是面向过程的
@@ -366,7 +368,7 @@ const compose = function(...args) {
 ```
 
 - 这里的关键是用到了闭包，使用闭包变量储存结果 result 和函数数组长度以及遍历索引，并利用递归思想，进行结果的累加计算。整体实现符合正常的面向过程思维，不难理解
-- 聪明的读者可能也会意识到，利用上文所讲的 reduce 方法，应该更能用**函数式**地解决问题：
+- 聪明的读者可能也会意识到，利用上文所讲的 reduce 方法，应该更能用 **<font color=red>函数式</font>**地解决问题：
 
 ```javascript
 const reduceFunc = (f, g) => (...arg) => g.call(this, f.apply(this, arg))
@@ -374,7 +376,7 @@ const compose = (...args) => args.reverse().reduce(reduceFunc, args.shift())
 ```
 
 - 通过前面的学习，结合 call、apply 方法，这样的实现并不难理解
-- 我们继续开拓思路，「既然涉及串联和流程控制」，**那么还可以使用 Promise 实现**
+- 继续开拓思路，「既然涉及串联和流程控制」，**<font color=red>那么还可以使用 Promise 实现</font>**
 
 ```javascript
 const compose = (...args) => {
@@ -391,7 +393,7 @@ const compose = (...args) => {
   - 因为 promise.then() 仍然返回一个 Promise 类型值，所以 reduce 完全可以按照 Promise 实例执行下去
 - 既然能够使用 Promise 实现，那么 generator 当然应该也可以实现
 - 这里给大家留一个思考题，感兴趣的读者可以尝试，欢迎在评论区或读者群讨论
-- **最后，我们再看下社区上著名的 lodash 和 Redux 的实现**
+- **<font color=red>最后，再看下社区上著名的 lodash 和 Redux 的实现</font>**
 
 ### lodash 版本
 
@@ -415,7 +417,7 @@ var compose = function(funcs) {
 }
 ```
 
-- lodash 版本更像我们的第一种实现方式，理解起来也更容易
+- lodash 版本更像第一种实现方式，理解起来也更容易
 
 ### Redux 版本
 
@@ -457,8 +459,8 @@ Function.prototype.bind = Function.prototype.bind || function (context) {
   - 函数体内的 this 就是需要绑定 this 的函数，或者说是原函数
   - 最后使用 apply 来进行参数（context）绑定，并返回
   - 与此同时，将第一个参数（context）以外的其他参数，作为提供给原函数的预设参数，这也是基本的「 curry 化」基础
-- 上述实现方式，我们返回的参数列表里包含：argsArray.slice(1)，它的问题在于存在预置参数功能丢失的现象
-- 想象我们返回的绑定函数中，如果想实现预设传参（就像 bind 所实现的那样），就面临尴尬的局面
+- 上述实现方式，返回的参数列表里包含：argsArray.slice(1)，它的问题在于存在预置参数功能丢失的现象
+- 想象返回的绑定函数中，如果想实现预设传参（就像 bind 所实现的那样），就面临尴尬的局面
 - 真正实现「 curry 化」的「完美方式」是：
 
 ```javascript
@@ -473,9 +475,10 @@ Function.prototype.bind = Function.prototype.bind || function (context) {
 }
 ```
 
-- 但继续探究，我们注意 bind 方法中：
-  - bind 返回的函数如果作为构造函数，搭配 new 关键字出现的话，我们的绑定 this 就需要「被忽略」，this 要绑定在实例上
-  - 也就是说，new 的操作符要高于 bind 绑定，兼容这种情况的实现：
+> [!warning]
+> - 但继续探究，注意 bind 方法中：
+>   - bind 返回的函数如果作为构造函数，搭配 new 关键字出现的话，绑定 this 就需要「被忽略」，this 要绑定在实例上
+>   - 也就是说，new 的操作符要高于 bind 绑定，兼容这种情况的实现：
 
 ```javascript
 Function.prototype.bind = Function.prototype.bind || function (context) {
@@ -493,7 +496,7 @@ Function.prototype.bind = Function.prototype.bind || function (context) {
 }
 ```
 
-- 曾经的我也认为上述方法已经比较完美了，直到我看了 es5-shim 源码（已适当删减）：
+- 曾经也认为上述方法已经比较完美了，直到看了 es5-shim 源码（已适当删减）：
 
 ```javascript
 function bind(that) {
@@ -540,7 +543,7 @@ function bind(that) {
   - 你可能不知道，其实每个函数都有 length 属性，对，就像数组和字符串那样
   - 函数的 length 属性，用于表示函数的形参个数
   - 更重要的是函数的 length 属性值是不可重写的
-  - 我写了个测试代码来证明：
+  - 写了个测试代码来证明：
 
 ```javascript
 function test (){}
@@ -556,9 +559,9 @@ Object.getOwnPropertyDescriptor('test', 'length')
 
 - 说到这里，那就好解释了：
   - es5-shim 是为了最大限度地进行兼容，包括对返回函数 length 属性的还原
-  - 而如果按照我们之前实现的那种方式，length 值始终为零
+  - 而如果按照之前实现的那种方式，length 值始终为零
   - 因此，既然不能修改 length 的属性值，那么在初始化时赋值总可以吧！
-  - 于是我们可通过 eval 和 new Function 的方式动态定义函数
+  - 于是可通过 eval 和 new Function 的方式动态定义函数
   - 但是出于安全考虑，在某些浏览器中使用 eval 或者 Function() 构造函数都会抛出异常
   - 然而巧合的是，这些无法兼容的浏览器基本上都实现了 bind 函数，这些异常又不会被触发
   - 在上述代码里，重设绑定函数的 length 属性：
@@ -590,7 +593,7 @@ if (target.prototype) {
 
 ## 一道更好的面试题
 
-- 我们往往用 call/apply 模拟实现 bind，而直接实现 call/apply 也算简单：
+- 往往用 call/apply 模拟实现 bind，而直接实现 call/apply 也算简单：
 
 ```javascript
 Function.prototype.applyFn = function (targetObject, argsArray) {
@@ -614,7 +617,7 @@ Function.prototype.applyFn = function (targetObject, argsArray) {
 ```
 
 - 这样的代码不难理解，函数体内的 this 指向了调用 applyFn 的函数
-- 为了将该函数体内的 this 绑定在 targetObject 上，我们采用了隐式绑定的方法：
+- 为了将该函数体内的 this 绑定在 targetObject 上，采用了隐式绑定的方法：
 
 ```javascript
 targetObject[targetFnKey](...argsArray)
@@ -623,7 +626,7 @@ targetObject[targetFnKey](...argsArray)
 - 这里存在一个问题：
   - 如果 targetObject 对象本身就存在 targetFnKey 这样的属性，那么在使用 applyFn 函数时，原有的 targetFnKey 属性值就会被覆盖，之后被删除
   - 解决方案可以使用 ES6 Sybmol() 来保证键的唯一性
-  - 另一种解决方案是用 Math.random() 实现独一无二的 key，这里我们不再赘述
+  - 另一种解决方案是用 Math.random() 实现独一无二的 key，这里不再赘述
 
 ## 实现这些 API 带来的启示
 
