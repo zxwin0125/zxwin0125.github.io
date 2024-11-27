@@ -523,7 +523,7 @@ element.innerHTML = ''
 
 ```js
 function foo() {
-  var name  = 'lucas'
+  var name  = 'zxwin'
   window.setInterval(function() {
     console.log(name)
   }, 1000)
@@ -796,7 +796,7 @@ bar() // 报错
 
 ```js
 function Person() {
-   this.name = 'lucas'
+   this.name = 'zxwin'
 }
 
 const getSingleInstance = (function(){

@@ -315,7 +315,7 @@ const throttle = (func, wait) => {
 
 - 性能优化，实在是一个极大的话题，需要我们在平时工作学习中不断积累。对于准备面试的朋友，在面试前，除了时刻注意代码习惯、掌握常见考点以外，还要整理、回顾、复盘平时的性能相关项目。
 - 这一节课难以覆盖性能优化的方方面面，本课程的其他章节，还会有这个话题的相关渗透，如网络协议、缓存策略、数据结构和算法等，这些内容和性能息息相关。请大家持续关注学习，同时欢迎在评论区和其他小伙伴讨论以及向我提问。
-- 课程代码仓库： [https://github.com/HOUCe/lucas-gitchat-courses](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FHOUCe%2Flucas-gitchat-courses%253C%2Fa%253E)
+- 课程代码仓库： [https://github.com/HOUCe/zxwin-gitchat-courses](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2FHOUCe%2Fzxwin-gitchat-courses%253C%2Fa%253E)
 
 ## 彩蛋分享
 

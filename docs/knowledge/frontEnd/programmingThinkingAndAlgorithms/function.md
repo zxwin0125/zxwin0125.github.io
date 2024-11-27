@@ -481,11 +481,11 @@ call 中的 this 指的是调用它的函数，call 的内部实现中：第一�
 ```bash
 const push = Array.prototype.push.unCurry()
 
-const test = { foo: 'lucas' }
+const test = { foo: 'zxwin' }
 push(test, 'messi', 'ronaldo', 'neymar')
 console.log(test)
 
-// {0: "messi", 1: "ronaldo", 2: "neymar", foo: "lucas", length: 3}
+// {0: "messi", 1: "ronaldo", 2: "neymar", foo: "zxwin", length: 3}
 ```
 
 我们借助了数组的 push 方法，应用在对象上，test 对象多了类似数组的属性，键为数组索引。
@@ -523,20 +523,20 @@ const addByeSuffix = str => `${str}, bye!`
 addHelloPrefix 和 addByeSuffix 分别给所接收到的字符串添加固定的字符串前缀和后缀，我们可以这样使用：
 
 ```bash
-addByeSuffix(addHelloPrefix('lucas'))
+addByeSuffix(addHelloPrefix('zxwin'))
 ```
 
-得到返回结果："Hello : lucas, bye!"
+得到返回结果："Hello : zxwin, bye!"
 
 如果我们想链式调用：
 
 ```bash
-'lucas'.addHelloPrefix().addByeSuffix()
+'zxwin'.addHelloPrefix().addByeSuffix()
 
-// VM176:1 Uncaught TypeError: "lucas".addHelloPrefix is not a function
+// VM176:1 Uncaught TypeError: "zxwin".addHelloPrefix is not a function
 ```
 
-得到报错信息，是因为字符串并不存在 addHelloPrefix 方法，因此调用失败。如果 'lucas' 这样的字符串是一个复杂类型，或者是一个类，也许问题就能解决：
+得到报错信息，是因为字符串并不存在 addHelloPrefix 方法，因此调用失败。如果 'zxwin' 这样的字符串是一个复杂类型，或者是一个类，也许问题就能解决：
 
 ```jsx
 class Person {
@@ -571,13 +571,13 @@ class Person {
 执行代码：
 
 ```csharp
-new Person('lucas').addHelloPrefix().addByeSuffix()
+new Person('zxwin').addHelloPrefix().addByeSuffix()
 ```
 
 输出：
 
 ```css
-{value: "Hello : lucas, bye"}
+{value: "Hello : zxwin, bye"}
 ```
 
 这样一来，似乎举例目标更近了些。我们试图将上述操作变得完全通用，定义一个 Functor 类：
@@ -601,13 +601,13 @@ Functor 可以理解为函子雏形，我们看它做了什么：Functor 的 con
 这样一来，可以：
 
 ```bash
-Functor.of('lucas').apply(addHelloPrefix).apply(addByeSuffix)
+Functor.of('zxwin').apply(addHelloPrefix).apply(addByeSuffix)
 ```
 
 仍然得到结果：
 
 ```css
-{value: "Hello : lucas, bye!"}
+{value: "Hello : zxwin, bye!"}
 ```
 
 我们总结一下：

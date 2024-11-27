@@ -48,7 +48,7 @@ const Component1 = React.createClass({
 
   getInitialState() {
     return {
-      state1: 'lucas',
+      state1: 'zxwin',
     };
   },
 
@@ -68,7 +68,7 @@ const Component1 = React.createClass({
 
 ```jsx
 class Component1 extends React.Component {
-  state = { name: 'Lucas' };
+  state = { name: 'zxwin' };
 
   handleClick = (e) => {
     console.log(e);
@@ -122,13 +122,13 @@ const Component = (props) => <div>{props.name}</div>;
 - 这里我来插播一个细节，为什么 useState 返回一个数组呢（其实返回的是 tuple，但是 JavaScript 还没有这个概念）？
 
 ```tsx
-let [name, setName]= useState('lucas')
+let [name, setName]= useState('zxwin')
 ```
 
 - 如果返回的是一个对象是否更合适呢？
 
 ```tsx
-let { state: name, setState: setName } = useState('lucas')
+let { state: name, setState: setName } = useState('zxwin')
 ```
 
 - 这样表意更加清晰，而简单。也支持我们自动设置别名。事实上 React RFC 确实有相关讨论：[">RFC: React Hooks](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Freactjs%2Frfcs%2Fpull%2F68%23issuecomment-433135283)。

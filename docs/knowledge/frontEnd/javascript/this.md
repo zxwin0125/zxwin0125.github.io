@@ -111,7 +111,7 @@ console.log(student.fn() === student); // true
 
 ```js
 const person = {
-	name: 'Lucas',
+	name: 'zxwin',
 	brother: {
 		name: 'Mike',
 		fn: function () {

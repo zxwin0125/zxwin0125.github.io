@@ -164,7 +164,7 @@ Person.prototype = () => {
 
 ```javascript
 const person = {
-  name: 'lucas',
+  name: 'zxwin',
   getName: () => {
     console.log(this.name)
   }
@@ -215,13 +215,13 @@ let proxyPersonClass = new Proxy(Person, {
 - 我们对 Person 构造函数进行了代理，这样就可以防止非构造函数实例化的调用：
 
 ```javascript
-proxyPersonClass('lucas')
+proxyPersonClass('zxwin')
 
 // VM173058:9 Uncaught Error: hello: Function Person cannot be invoked without 'new'
 at <anonymous>:1:1
 
-new proxyPersonClass('lucas')
-// {name: "lucas"}
+new proxyPersonClass('zxwin')
+// {name: "zxwin"}
 ```
 
 - 同样道理，也可以静默处理非构造函数实例化的调用，将其强制转换为 new 调用：
@@ -243,19 +243,19 @@ let proxyPersonClass = new Proxy(Person, {
 - 这样即便在不使用 new 关键字时，仍然可以得到 new 调用的实例：
 
 ```javascript
-proxyPersonClass('lucas')
-// Person {name: "lucas"}
+proxyPersonClass('zxwin')
+// Person {name: "zxwin"}
 ```
 
 - 另外一个场景：熟悉前端测试的，可能对断言 assert 并不陌生，一种常用的使用方式是：
 
 ```javascript
-const lucas = {
+const zxwin = {
   age: 23
 }
-assert['lucas is older than 22!!!'] = 22 > lucas.age
+assert['zxwin is older than 22!!!'] = 22 > zxwin.age
 
-// Error: lucas is older than 22!!!
+// Error: zxwin is older than 22!!!
 ```
 
 - 我们看 assert 赋值语句右侧表达式结果为一个布尔值，当表达式成立时，断言不会抛出
@@ -305,7 +305,7 @@ class Person {
   }
 }
 
-const person = new Person('lucas')
+const person = new Person('zxwin')
 
 const fn = person.getPersonName
 

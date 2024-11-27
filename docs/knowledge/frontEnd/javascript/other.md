@@ -35,7 +35,7 @@ order: 8
 
 ```javascript
 typeof 5; // number
-typeof 'lucas'; // string
+typeof 'zxwin'; // string
 typeof undefined; // undefined
 typeof true;  // boolean
 ```
@@ -79,7 +79,7 @@ typeof foo // "symbol"
 function Person(name) {
    this.name = name
 }
-const p = new Person('lucas')
+const p = new Person('zxwin')
 
 p instanceof Person // true
 ```
@@ -139,7 +139,7 @@ instanceofMock('', String) // false
 function Person(name) {
    this.name = name
 }
-const p = new Person('lucas')
+const p = new Person('zxwin')
 instanceofMock(p, Person) // true
 ```
 
@@ -151,7 +151,7 @@ instanceofMock(p, Person) // true
 console.log(Object.prototype.toString.call(1))
 // [object Number]
 
-console.log(Object.prototype.toString.call('lucas'))
+console.log(Object.prototype.toString.call('zxwin'))
 // [object String]
 
 console.log(Object.prototype.toString.call(undefined))
@@ -172,7 +172,7 @@ console.log(Object.prototype.toString.call(function(){}))
 console.log(Object.prototype.toString.call(null))
 // [object Null]
 
-console.log(Object.prototype.toString.call(Symbol('lucas')))
+console.log(Object.prototype.toString.call(Symbol('zxwin')))
 // [object Symbol]
 ```
 
@@ -184,7 +184,7 @@ var foo = 5
 foo.constructor
 // ƒ Number() { [native code] }
 
-var foo = 'Lucas'
+var foo = 'zxwin'
 foo.constructor
 // ƒ String() { [native code] }
 
@@ -257,8 +257,8 @@ console.log(1 - false)
 console.log(1 - undefined)
 // NaN
 
-console.log('lucas' - true)
-// lucastrue
+console.log('zxwin' - true)
+// zxwintrue
 ```
 
 - 我们发现：
@@ -301,7 +301,7 @@ console.log({} - true)
 ```javascript
 const foo = {
  toString () {
-   return 'lucas'
+   return 'zxwin'
  },
  valueOf () {
    return 1
@@ -315,7 +315,7 @@ const foo = {
 alert(foo)
 ```
 
-- 输出：lucas
+- 输出：zxwin
 - 这里就涉及到「隐式转换」，在调用 alert 打印输出时，「倾向于使用 foo 对象的 toString 方法，将 foo 转为基本类型」，得以打印出结果
 - 然而：
 

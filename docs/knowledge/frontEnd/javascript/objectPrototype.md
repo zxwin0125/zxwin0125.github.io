@@ -35,11 +35,11 @@ function Person(name) {
   this.name = name
 }
 
-const person = new newFunc(Person, 'lucas')
+const person = new newFunc(Person, 'zxwin')
 
 console.log(person)
 
-// {name: "lucas"}
+// {name: "zxwin"}
 ```
 
 - 实现为：
@@ -75,7 +75,7 @@ function Person(name) {
   return {1: 1}
 }
 
-const person = new Person(Person, 'lucas')
+const person = new Person(Person, 'zxwin')
 
 console.log(person)
 
