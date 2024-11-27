@@ -179,6 +179,13 @@ export default sidebar({
 			collapsible: true,
 			children: 'structure',
 		},
+		{
+			text: 'JavaScript',
+			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
+			prefix: 'javascript/',
+			collapsible: true,
+			children: 'structure',
+		},
   ],
 	'/project/': 'structure',
 	'/work/': 'structure',
