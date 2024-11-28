@@ -11,24 +11,19 @@ order: 6
   - 反之，如果面向对象环节有失误，那么将是项目的灾难
 - 说到 JavaScript 面向对象，它实质是基于原型的对象系统，而不是基于类的，这是由设计之初所决定的，是基因层面的
   - 随着 ES Next 标准的进化和新特性的添加，使得 JavaScript 面向对象更加贴近其他传统面向对象型语言
-  - 有幸目睹语言的发展和变迁，伴随着某个语言的成长，我认为是开发者之幸
-- 这回让我们深入对象和原型，理解 JavaScript 在这个方向上的能力
+- 深入对象和原型，理解 JavaScript 在这个方向上的能力
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/24.png =700x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/24.png =700x)
 
 ## 实现 new 没有那么容易
 
-- 说起 JavaScript 当中的 new 关键字，有一段很有趣的历史
-  - 其实 JavaScript 创造者 Brendan Eich 实现 new 是为了获得更高的流行度，它是强行学习 Java 的一个残留产出，他想让 JavaScript 成为 Java 的小弟
-  - 很多人认为这个设计掩盖了 JavaScript 中真正的原型继承，只是表面上看，更像是基于类的继承
-- 这样的误会使得很多传统 Java 开发者并不能很好理解 JavaScript
-- 实际上，我们前端工程师应该明白，new 关键字到底做了什么事情
-  - step1：首先创建一个空对象，这个对象将会作为执行 new 构造函数() 之后，返回的对象实例
-  - step2：将上面创建的空对象的原型（`__proto__`），指向构造函数的 prototype 属性
-  - step3：将这个空对象赋值给构造函数内部的 this，并执行构造函数逻辑
-  - step4：根据构造函数执行逻辑，返回第一步创建的对象或者构造函数的显式返回值
-- 因为 new 是 JavaScript 的关键字，我们不能直接覆盖，实现一个 newFunc 来进行模拟，预计使用方式：
+- 前端工程师应该明白，new 关键字到底做了什么事情
+  - 首先创建一个空对象，这个对象将会作为执行 new 构造函数() 之后，返回的对象实例
+  - 将上面创建的空对象的原型（`__proto__`），指向构造函数的 prototype 属性
+  - 将这个空对象赋值给构造函数内部的 this，并执行构造函数逻辑
+  - 根据构造函数执行逻辑，返回第一步创建的对象或者构造函数的显式返回值
+- 因为 new 是 JavaScript 的关键字，不能直接覆盖，实现一个 newFunc 来进行模拟，预计使用方式：
 
 ```javascript
 function Person(name) {
@@ -54,7 +49,7 @@ function newFunc(...args) {
   const obj = Object.create(constructor.prototype)
 
   // 执行构造函数，得到构造函数返回结果
-  // 注意这里我们使用 apply，将构造函数内的 this 指向为 obj
+  // 注意这里使用 apply，将构造函数内的 this 指向为 obj
   const result = constructor.apply(obj, args)
 
   // 如果造函数执行后，返回结果是对象类型，就直接返回，否则返回 obj 对象
@@ -66,7 +61,7 @@ function newFunc(...args) {
   - 使用 Object.create 将 obj 的 `__proto__` 指向为构造函数的原型
   - 使用 apply 方法，将构造函数内的 this 指向为 obj
   - 在 newFunc 返回时，使用三目运算符决定返回结果
-- 我们知道，构造函数如果有显式返回值，且返回值为对象类型，那么构造函数返回结果不再是目标实例
+- 构造函数如果有显式返回值，且返回值为对象类型，那么构造函数返回结果不再是目标实例
 - 如下代码：
 
 ```javascript
@@ -87,12 +82,11 @@ console.log(person)
 ## 如何优雅地实现继承
 
 - 实现继承式是面向对象的一个重点概念
-- 我们前面提到过 JavaScript 的面向对象系统是基于原型的，它的继承不同于其他大多数语言
-- 社区上对于 JavaScript 继承讲解的资料不在少数，这里我不再赘述每一种继承方式的实现过程，还需要开发者事先进行了解
+- JavaScript 的面向对象系统是基于原型的，它的继承不同于其他大多数语言
 
 ### ES5 相对可用的继承方案
 
-- 我们仅总结以下 JavaScript 中实现继承的关键点
+- 总结以下 JavaScript 中实现继承的关键点
 - 如果想使 Child 继承 Parent，那么
   - 原型链实现继承最关键的要点是：
 
@@ -124,10 +118,9 @@ Child.prototype.constrcutor = Child
 ```
 
 - 它的问题在于 Child 实例会存在 Parent 的实例属性
-- 因为我们在 Child 构造函数中执行了 Parent 构造函数
+- 因为在 Child 构造函数中执行了 Parent 构造函数
 - 同时，`Child.__proto__` 也会存在同样的 Parent 的实例属性，且所有 Child 实例的 `__proto__` 指向同一内存地址
 - 同时上述实现也都没有对静态属性的继承
-- 还有一些其他不完美的继承方式，我们这里不再过多介绍
 - 一个比较完整的实现为：
 
 ```javascript
@@ -161,14 +154,14 @@ function inherit(Child, Parent) {
 ```
 
 - 上面静态属性继承存在一个问题：
-  - 在陈旧浏览器中，属性和方法的继承我们是静态拷贝的，继承完后续父类的改动不会自动同步到子类
+  - 在陈旧浏览器中，属性和方法的继承是静态拷贝的，继承完后续父类的改动不会自动同步到子类
   - 这是不同于正常面向对象思想的
   - 但是这种组合式继承，已经相对完美、优雅
 
 ### 继承 Date
 
 - 值得一提的一个小细节是：这种继承方式无法实现对 Date 对象的继承
-- 我们来进行测试：
+- 来进行测试：
 
 ```javascript
 function DateConstructor() {
@@ -188,8 +181,8 @@ let date = new DateConstructor()
 console.log(date.getMyTime())
 ```
 
-- 将会得到报错：Uncaught TypeError: this is not a Date object.
-- **JavaScript 的日期对象只能通过 JavaScript Date 作为构造函数来实例化得到**
+- 将会得到报错：Uncaught TypeError: this is not a Date object
+- **<font color=red>JavaScript 的日期对象只能通过 JavaScript Date 作为构造函数来实例化得到</font>**
 - 究其原因，是因为 JavaScript 的日期对象只能通过 JavaScript Date 作为构造函数来实例化得到
 - 因此 v8 引擎实现代码中就一定有所限制，如果发现调用 getTime() 方法的对象不是 Date 构造函数构造出来的实例，则抛出错误
 - 那么如何实现对 Date 的继承呢？
@@ -216,13 +209,13 @@ let date = new DateConstructor()
 console.log(date.getMyTime())
 ```
 
-- 我们来分析一下代码：调用构造函数 DateConstructor 返回的对象 dateObj 有：
+- 来分析一下代码：调用构造函数 DateConstructor 返回的对象 dateObj 有：
 
 ```javascript
 dateObj.__proto__ === DateConstructor.prototype
 ```
 
-- 而我们通过：
+- 而通过：
 
 ```javascript
 Object.setPrototypeOf(DateConstructor.prototype, Date.prototype)
@@ -250,7 +243,7 @@ var dateObj = new(Function.prototype.bind.apply(Date, [Date].concat(Array.protot
 - 整个实现过程通过更改原型关系，在构造函数里调用原生构造函数 Date，并返回其实例的方法，“欺骗了”浏览器
 - 当然这样的做法比较取巧，其副作用是更改了原型关系，这样也会干扰浏览器某些优化操作
 - 那么有没有更加“体面”的方式呢？
-- 其实随着 ES6 class 的推出，我们完全可以直接使用 extends 关键字了：
+- 其实随着 ES6 class 的推出，可以直接使用 extends 关键字了：
 
 ```javascript
 class DateConstructor extends Date {
@@ -274,15 +267,15 @@ date.getMyTime()
 ```
 
 - 直接在支持 ES6 class 的浏览器中完全没有问题
-- 可是我们项目大部分都是使用 Babel 进行编译
-- 按照上一讲 Babel 编译 class 的方法，运行其产出后，仍然会得到报错：Uncaught TypeError: this is not a Date object.，因此我们得知：Babel 并没有对继承 Date 进行特殊处理，无法做到兼容
+- 可是项目大部分都是使用 Babel 进行编译
+- 按照上一讲 Babel 编译 class 的方法，运行其产出后，仍然会得到报错：Uncaught TypeError: this is not a Date object.，因此得知：Babel 并没有对继承 Date 进行特殊处理，无法做到兼容
 
 ### ES6 实现继承剖析
 
-- 在 ES6 时代，我们可以使用 class extends 进行继承
-- 但是我们都知道 ES6 的 class 其实也就是 ES5 原型的语法糖
-- 我们通过研究 Babel 编译结果，来深入了解一下
-- 首先，我们定义一个父类：
+- 在 ES6 时代，可以使用 class extends 进行继承
+- 但是 ES6 的 class 其实也就是 ES5 原型的语法糖
+- 通过研究 Babel 编译结果，来深入了解一下
+- 首先，定义一个父类：
 
 ```javascript
 class Person {
@@ -303,8 +296,8 @@ class Student extends Person {
 }
 ```
 
-- 从简出发，我们定义的 Person 类只包含了 type 为 person 的这一个属性，不含有方法
-- 我们 Student 类也继承了同样的属性
+- 从简出发，定义的 Person 类只包含了 type 为 person 的这一个属性，不含有方法
+- Student 类也继承了同样的属性
 - 如下：
 
 ```javascript
@@ -312,7 +305,7 @@ var student1 = new Student()
 student1.type // "person"
 ```
 
-- 我们进一步可以验证原型链上的关系：
+- 进一步可以验证原型链上的关系：
 
 ```javascript
 student1 instanceof Student // true
@@ -320,7 +313,7 @@ student1 instanceof Person // true
 student1.hasOwnProperty('type') // true
 ```
 
-- 那么，经过 Babel 编译，我们的代码是什么样呢？
+- 那么，经过 Babel 编译，代码是什么样呢？
 - 一步一步来看：
 
 ```javascript
@@ -340,7 +333,7 @@ var Person = function Person() {
 };
 ```
 
-- 我们看到其实还是构造函数那一套
+- 看到其实还是构造函数那一套
 
 ```javascript
 class Student extends Person {
@@ -426,7 +419,7 @@ function _inherits(subClass, superClass) {
 }
 ```
 
-- 我们进行拆解：
+- 进行拆解：
 
 ```javascript
 var Student = (function(_Person) {
@@ -458,26 +451,24 @@ Object.setPrototypeOf(Student, Person)
 Person.call(this);
 ```
 
-- 我们看到 Babel 将 class extends 编译成了 ES5 组合模式的继承，这才是 JavaScript 面向对象的实质
+- 看到 Babel 将 class extends 编译成了 ES5 组合模式的继承，这才是 JavaScript 面向对象的实质
 
 ## jQuery 中的对象思想
 
-- 可能会有这样的问题：“所有的面试官都那么注重面向对象，可是我在工作中很少涉及到啊？面向对象到底有什么用？”
-- 回答这个问题我想说，“如果你没有开发大型复杂项目的经验，不具备封装抽象的思想，也许确实用不到面向对象，也很难解释为什么要有面向对象的设计和考察”
-- 这一讲，我从 jQuery 源码架构设计入手，来分析一下基本的原型和原型链知识如何在 jQuery 源码中发挥作用的
-- “什么，这都哪一年了你还在说 jQuery？”
-- 其实优秀的思想是永远不过时的，研究清楚 `$` 到底是个什么，你会受益匪浅
-- 顺带我自己的一个知乎回答：[jQuery为什么还在发布新版本？](https://www.zhihu.com/question/324179465/answer/694045746)
+- 所有的面试官都那么注重面向对象，可是在工作中很少涉及到啊？面向对象到底有什么用？
+- 如果没有开发大型复杂项目的经验，不具备封装抽象的思想，也许确实用不到面向对象，也很难解释为什么要有面向对象的设计和考察
+- 从 jQuery 源码架构设计入手，来分析一下基本的原型和原型链知识如何在 jQuery 源码中发挥作用的
+- 研究清楚 `$` 到底是个什么，会受益匪浅
 - 从一个问题开始：
 
 ```javascript
 const pNodes = $('p')
-// 我们得到一个数组
+// 得到一个数组
 const divNodes= $('div')
-// 我们得到一个数组
+// 得到一个数组
 ```
 
-- 但是我们又可以：
+- 但是又可以：
 
 ```javascript
 const pNodes = $('p')
@@ -485,8 +476,7 @@ pNodes.addClass('className')
 ```
 
 - 数组上可是没有 addClass 方法的吧？
-- 这个问题先放一边
-- 我们想一想 `$` 是什么？你的第一反应可能是一个函数，因此我们可以这么调用执行：
+- 想一想 `$` 是什么？第一反应可能是一个函数，因此可以这么调用执行：
 
 ```javascript
 $('p')
@@ -512,7 +502,7 @@ $.ajax = function () {
 }
 ```
 
-- 实际上，我们翻看 jQuery 源码架构会发现（具体内容有删减和改动）：
+- 实际上，翻看 jQuery 源码架构会发现（具体内容有删减和改动）：
 
 ```javascript
 var jQuery = (function(){
@@ -549,7 +539,7 @@ window.jQuery = jQuery
 window.$ === undefined && (window.$ = jQuery)
 ```
 
-- 我们顺着源码分析，当调用 `$('p')` 时，最终返回的是 dom，而 `dom.__proto__` 指向了 `$.fn`，`$.fn` 是包含了多种方法的对象集合
+- 顺着源码分析，当调用 `$('p')` 时，最终返回的是 dom，而 `dom.__proto__` 指向了 `$.fn`，`$.fn` 是包含了多种方法的对象集合
 - 因此返回的结果（dom）可以在其原型链上找到 addClass 这样的方法
 - 同理，`$('span')` 也不例外，任何实例都不例外
 
@@ -583,7 +573,7 @@ class $ {
 
 ## 类继承和原型继承的区别
 
-- 我们了解了 JavaScript 中的原型继承，那么它和传统面向对象语言的类继承有什么不同呢？
+- 了解了 JavaScript 中的原型继承，那么它和传统面向对象语言的类继承有什么不同呢？
 - 这就涉及到编程语言范畴了，传统的面向对象语言的类继承，会引发一些问题：
   - 紧耦合问题
   - 脆弱基类问题
@@ -591,34 +581,34 @@ class $ {
   - 必然重复性问题
   - 大猩猩—香蕉问题
 - 这些内容属于纯理论，多说无益
-- 但我借用 Eric Elliott 的著名文章：[Difference between class prototypal inheritance](https://www.zcfy.cc/article/master-the-javascript-interview-what-%20s-the-difference-between-class-amp-prototypal-inheritance-2185.html)，展开一点：
+- 但借用 Eric Elliott 的著名文章：[Difference between class prototypal inheritance](https://www.zcfy.cc/article/master-the-javascript-interview-what-%20s-the-difference-between-class-amp-prototypal-inheritance-2185.html)，展开一点：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/25.jpg =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/25.jpg =500x)
 
-- 从上图，我们看出一些问题（单一继承、紧耦合以及层级分类问题），对于类 8，只想继承五边形的属性，却得到了继承链上其他并不需要的属性，比如五角星，正方形属性
-  - 这就是大猩猩/香蕉问题，“我只想要一个香蕉，但是你给我了整个森林”
-- 对于类 9，对比其父类，我只需要把五角星属性修改成四角形，但是五角星继承自基类 1，如果要去修改，那就影响整个继承树（脆弱基类/层级僵化问题）
-  - 好吧，我不去修改，那就需要给类 9 新建一个基类（必然重复性问题）
+- 从上图，看出一些问题（单一继承、紧耦合以及层级分类问题），对于类 8，只想继承五边形的属性，却得到了继承链上其他并不需要的属性，比如五角星，正方形属性
+  - 这就是大猩猩/香蕉问题，“只想要一个香蕉，但是给了整个森林”
+- 对于类 9，对比其父类，只需要把五角星属性修改成四角形，但是五角星继承自基类 1，如果要去修改，那就影响整个继承树（脆弱基类/层级僵化问题）
+  - 好吧，不去修改，那就需要给类 9 新建一个基类（必然重复性问题）
 - 那么基于原型的继承可以怎么解决上述问题呢？
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/26.gif =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/26.gif =500x)
 
 - 采用原型继承，其实本质是对象组合，可以避免复杂纵深的层级关系
   - 当类 1 需要四角星特性的时候，只需要组合新特性即可，不会影响到其他实例
 
 ## 面向对象在实战场景中的应用
 
-- 最后，让我们分析一个真实场景案例
+- 最后，分析一个真实场景案例
 - 在产品当中，一个页面可能存在多处“收藏”组件：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/27.png =300x)
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/28.png =300x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/27.png =300x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/28.png =300x)
 
 - 点击按钮，对页面进行收藏，成功收藏之后，按钮的状态会变为“已收藏”，再点击不会有响应
 - 这样就出现页面中多处“收藏”组件之间通信问题，点击页面顶部收藏按钮成功收藏之后，页面底部的收藏按钮状态也需要变化，进行同步
 - 其实实现这个功能很简单，但是历史代码实现方式如果落后，耦合严重就很麻烦了
 - 良好的设计和肆意而为的实现差别是巨大的
-- 以 ES6 class 实现为例，不借助任何框架，我们实现这样的对象关系：所有 UI 组件（包括收藏组件）都会继承 UIBase class：
+- 以 ES6 class 实现为例，不借助任何框架，实现这样的对象关系：所有 UI 组件（包括收藏组件）都会继承 UIBase class：
 
 ```javascript
 class Widget extends UIBase {
@@ -643,7 +633,7 @@ class UIBase extends EventEmitter{
 
 - 因此，所有的组件也同样拥有了 pub/sub 模式，即事件发布订阅功能
 - 这就相对完美的解决了组件之间的通信问题，达到了“高内聚、低耦合”的效果
-- 具体来说，我们的任何组件，当然包括收藏按钮在发起收藏行为时：
+- 具体来说，任何组件，当然包括收藏按钮在发起收藏行为时：
 
 ```javascript
 widget.emit('favorAction')
@@ -659,16 +649,15 @@ widget.on('favorAction', function() {
 
 - 具体的实现结构如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/29.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/29.png =500x)
 
 - 这样的组件行为在一些先进的 MVVM、MVC 等框架中可以良好的实现，比如 React 框架中，可以借助 Redux 实现组件间的通信
 - Redux 实质就是一个事件发布订阅系统，而 connect 就是将组件的行为具备“发布和订阅”的能力
-- 在上述简单的架构中，我们通过面向对象继承，自动具备了这样的能力
+- 在上述简单的架构中，通过面向对象继承，自动具备了这样的能力
 - 同样的设计思想也可以在 NodeJS 源码中找到线索，想想 NodeJS 中的 EventEmitter 类即可
 
 ## 总结
 
 - 面向对象是一个永远说不完的话题，更是一个永远不会过时的话题，具备良好的面向对象架构能力，对于开发者来说至关重要
 - 同时由于 JavaScript 面向对象的特殊性，使它区别于其他语言，而“与众不同”
-- 我们在了解 JavaScript 原型、原型链知识的前提下，对比其他语言的思想，就变得非常重要和有意义了
-
+- 在了解 JavaScript 原型、原型链知识的前提下，对比其他语言的思想，就变得非常重要和有意义了
