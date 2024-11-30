@@ -141,7 +141,7 @@ zx-cli --help // 运行
 
 > [!warning]
 >
-> - Yeoman 的 generator 模块名称必须是 **<font color=red>generator-<name></font>** 的模式
+> - Yeoman 的 generator 模块名称必须是 **<font color=red>`generator-<name>`</font>** 的模式
 > - 如果在具体开发的时候没有去使用这样格式的名称，Yeoman 在后续工作的时候就没有办法找到你所提供的这个生成器模块
 
 #### 开始创建模块
@@ -314,53 +314,71 @@ writing() {
 }
 ```
 
-### 案例演示
+### Vue 案例演示
 
-- 首先打开命令行窗口然后通过 mkdir 创建一个全新的 gengerator 目录
+> 按照之前的做法自定义一个有基础代码的 Vue 项目脚手架
+
+- 首先要想清楚原始的项目结构，把需要重复使用的基础代码全部定义好，作为模版
+- 然后封装 generator 用于生成理想的这个项目结构
+
+#### Step1 定义目标结构模版
+
+- 这里看下用脚手架创建的最新 Vue3 项目结构
+
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/12.png)
+
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/13.png)
+
+#### Step2 封装 gengerator
+
+- 创建一个全新的 gengerator 目录
 
 ```bash
-mkdir generator-vue
-cd generator-vue
+mkdir generator-zx-cli
+cd generator-zx-cli
 ```
 
-- 通过 yarn init 初始化 package.json ，然后安装 Yeoman 的依赖
+- 通过 npm init 初始化 package.json ，然后安装 Yeoman 的依赖
 
 ```bash
-yarn init
-yarn add yeoman-generator
+npm init
+npm install yeoman-generator
 ```
 
 - 新建 generator 主入口文件 generators/app/index.js
 
 ```javascript
-const Generator = require('yeoman-generator');
+import Generator from "yeoman-generator";
 
-module.exports = class extends Generator {
-	prompting() {
-		return this.promit([
-			{
-				type: 'input',
-				name: 'name',
-				message: 'Your project name',
-				default: this.appname,
-			},
-		]).then(answer => {
-			// 获取到用户输入的数据
-			this.answer = answer;
-		});
-	}
-	writing() {}
-};
+export default class extends Generator {
+  prompting() {
+    return this.prompt([
+      {
+        type: "input",
+        name: "name",
+        message: "Your project name",
+        default: this.appname
+      }
+    ]).then(answers => {
+      this.answers = answers;
+    });
+  }
+
+  writing() {}
+}
 ```
 
-- 创建 templates 目录，把项目的结构 copy 到 templates 当中作为模板，有了模板过后需要把项目结构里面一些可能发生变化的地方通过模板引擎的方式修改
-- 通过数组循环的方式批量生成每一个文件，把每一个文件通过模板转换，生成到对应的路径
+- 创建 templates 目录，把目标项目的目录结构 copy 到 templates 当中作为模板
+1. 有了模板过后，需要把项目结构里面一些可能发生变化的地方通过模板引擎的方式修改
+2. 通过数组循环的方式批量生成每一个文件，把每一个文件通过模板转换，生成到对应的路径
 
 ```javascript
 writing() {
     const templates = [
-        '.browserslistrc',
-        'src/views/Home.vue'
+        // ...
+        'public/favicon.ico',
+        'src/App.vue',
+        'src/main.js',
     ]
     templayes.forEach(item => {
         this.copyTpl(this.templatePath(item),
@@ -370,57 +388,67 @@ writing() {
 }
 ```
 
-- 将 generator-vue 通过 link 的方式定义到全局
+- 将 generator-zx-cli 通过 link 的方式定义到全局
 
 ```javascript
-yarn link
+npm link
 ```
 
 - 在全新的目录使用该 generator
 
 ```javascript
-yo vue;
+yo zx-cli;
 ```
 
-- 会提示输入项目名称，输入之后就可以看到模板被拉去到了新的目录
+- 会提示输入项目名称，输入之后就可以看到模板被拉去到了新的目录下
 
-<h4 id="aYa4t">发布 Generator</h4>
-- Generator 实际上就是一个 npm 的模块，发布 generator 就是发布 npm 的模块。只需要将已经写好的 generator 模块通过 npm publish 命令发布成一个公开模块就可以了
+### 发布 Generator
 
-<h2 id="ZflLi"><font style="color:rgb(25, 27, 31);">Plop 脚手架工具</font></h2>
-<h4 id="Wz8g1"><font style="color:rgb(25, 27, 31);">概述</font></h4>
-- Plop 是一款主要用于去创建项目中特定类型文件的小工具，类似于 Yeoman 中的 Sub generator, 不过它一般不会独立去使用，一般会把 Plop 集成到项目中
+> Generator 实际上就是一个 npm 的模块，发布 generator 就是发布 npm 的模块
+
+- 只需要将已经写好的 generator 模块通过 npm publish 命令发布成一个公开模块就可以了
+
+## Plop 脚手架工具
+
+> Plop 是一款主要用于去创建项目中特定类型文件的小工具，类似于 Yeoman 中的 Sub generator<br>
+> 不过它一般不会独立去使用，一般会把 Plop 集成到项目中，用来自动化创建项目中同类型的文件
+
 - 日常开发中经常会需要重复创建相同类型的文件，例如每一个组件都会有三个文件去组成 js ，css，test.js
-    - 如果需要创建一个组件，就要去创建三个文件，并且每一个文件中都要有一些基础代码，这就比较繁琐，而且很难统一每一个组件文件中基础的代码
-    - Plop可以解决这个问题，只需要在命令行中取运行 Plop
+  - 如果需要创建一个组件，就要去创建三个文件，并且每一个文件中都要有一些基础代码，这就比较繁琐，而且很难统一每一个组件文件中基础的代码
+  - Plop可以解决这个问题，只需要在命令行中取运行 Plop
 
-```plain
+```bash
 yarn plop component
 ```
 
 - 会询问一些信息，并且自动的创建一些文件，这也就保证了每次创建的文件都是统一的，并且是自动的
 
-<h4 id="DdVvy">基本使用</h4>
+### Plop 基本使用
+
 - Plop 作为 npm 的模块安装到我们的开发依赖
 
-```plain
-yarn add plop --dev
+```bash
+npm install plop --dev
 ```
 
-- 安装后在项目跟目录新建 plopfile.js 文件，这个文件是 plop 工作的一个入口文件，需要导出一个函数，而且这个函数可以接收一个叫 plop 的对象，对象提供了一系列工具函数，用于创建生成器的任务
+- 安装后在项目根目录新建 plopfile.js 文件，这个文件是 plop 工作的一个入口文件
+- 需要导出一个函数，而且这个函数可以接收一个叫 plop 的对象，对象提供了一系列工具函数，用于创建生成器的任务
 
-```plain
+```javascript
 module.exports = plop => {
-    plop.setGenerator('component', {});
+  plop.setGenerator('component', {});
 }
 ```
 
-- plop 有个成员叫 setGenerator , 接收两个参数，第一个参数是生成器的名字，第二个参数是生成器的一些选项，配置选项中需要指定生成器的参数
+- plop 有个成员叫 setGenerator , 接收两个参数
+  - 第一个参数是生成器的名字
+  - 第二个参数是生成器的一些选项
+- 配置选项中需要指定生成器的参数
 
 ```javascript
 {
   description: '生成器的描述',
-    prompts: [ // 发出的命令行问题
+  prompts: [ // 发出的命令行问题
     {
       type: 'input',
       name: 'name',
@@ -428,18 +456,17 @@ module.exports = plop => {
       default: 'MyComponent'
     }
   ],
-    actions: [ // 问题完成后的动作
+  actions: [ // 问题完成后的动作
     {
       type: 'add', // 添加一个全新的文件
       path: 'src/components/{{name}}/{{name}}.js', // 指定添加的文件会被添加到哪个具体的路径, 可以通过双花括号的方式使用命令行传入的变量
       templateFile: 'plop-templates/component.hbs', // 本次添加文件的母版文件是什么, 一般我们会把母版文件放在 plop-template 目录中，可以通过 handlebars 去创建模板文件 .hbs
     }
-
   ]
 }
 ```
 
-- 数据填写完毕 Plop 就算是完成了，安装 Plop 模块的时候 Plop 提供了一个 CLI 程序，可以通过 yarn 启动这个程序 yarn plop <name>，会执行上面定义的 Plop
+- 数据填写完毕 Plop 就算是完成了，安装 Plop 模块的时候 Plop 提供了一个 CLI 程序，可以通过 yarn 启动这个程序 `yarn plop <name>`，会执行上面定义的 Plop
 
 ```plain
 yarn plop component
@@ -448,62 +475,88 @@ yarn plop component
 - 可以添加多个模板就是添加多个 actions ，官网中提供了多个 type ，可以参考官网
 - Plop 用来去创建项目当中同类型的文件还是非常方便的
 
-<h2 id="U0KxS"><font style="color:rgb(25, 27, 31);">脚手架工具的工作原理</font></h2>
-<h4 id="XQxFR">概述</h4>
-- 脚手架工具实际上就是一个 node-cli 应用，创建脚手架就是创建 node-cli 应用，首先通过 mkdir 创建一个工具目录
+> [!important]
+> 使用 Plop 步骤总结
+> 1. 将 plop 模块作为项目开发依赖安装
+> 2. 在项目根目录下创建一个 plopfile.js 文件
+> 3. 在 plopfile.js 文件中定义脚手架任务
+> 4. 编写用于生成特定类型文件的模版
+> 5. 通过 Plop 提供的 CLI 运行脚手架任务
 
-```plain
-mkdir samlpe-cli
-cd sample-cli
-```
+## 脚手架工具的工作原理
 
-- 在这个目录下面通过 yarn init 初始化一个 package.json 文件
+> 脚手架工具实际上就是一个 node-cli 应用，创建脚手架就是创建 node-cli 应用
+
+### cli 应用的基础
+
+- package.json 中添加一个 bin 字段，用于指定 cli 应用的入口文件
+- cli 应用的入口文件必须要有一个特定的文件头 `#!/usr/bin/env node`
+  - 如果是 Linux 或者 MacOS 系统还需要修改此文件的读写权限 755
+- yarn link 链接成为全局模块，在命令行中使用这个命令，cli 应用的基础就 ok 了
+
+### 具体步骤
+
+- yarn init 初始化一个 package.json 文件
 
 ```plain
 yarn init
 ```
 
-- 紧接着需要在 package.json 中添加 bin 字段，用于指定 cli 应用的入口文件
+- 在 package.json 中添加 bin 字段，用于指定 cli 应用的入口文件
 
 ```json
 {
-	"name": "sample-cli",
+	"name": "sample-scaffolding",
 	"bin": "cli.js"
 }
 ```
 
-- 添加 cli.js 文件，入口文件必须要有一个特定的文件头，也就是在这个文件顶部写上这样一句话 #! /usr/bin/env node
+- 添加 cli.js 文件，入口文件必须要有一个特定的文件头
 
-```plain
+```javascript
 #! /usr/bin/env node
 
 console.log('cli working')
 ```
 
 - 如果操作系统是 linux 或者 mac 需要修改这个文件的读写权限，把他修改成 755 ，这样才可以作为 cli 的入口文件执行
+
+```javascript
+chmod 755 /path/to/your/file.js
+```
+
 - 通过 yarn link 将这个模块映射到全局
 
-```plain
+```bash
 yarn link
 ```
 
-- 这个时候就可以在命令行执行 sample-cli 命令了，通过执行这个命令 console.log 成功打印出来，表示代码执行了，也就意味着 cli 已经可以运行了
+- 这个时候就可以在命令行执行 sample-scaffolding 命令了，通过执行这个命令 console.log 成功打印出来，表示代码执行了，也就意味着 cli 已经可以运行了
 
-```plain
-sample-cli
+```bash
+sample-scaffolding
 ```
 
-<h4 id="Uxuv7">实现一个简单脚手架</h4>
-- 首先需要通过命令行交互的的方式去询问用户的一些信息，然后根据用户反馈回来的结果生成文件
+### 实现一个简单脚手架
+
+> [!important]
+> 1. 通过命令行交互的询问用户信息，然后
+> 2. 根据用户反馈结果生成文件
+
 - 在 node 中发起命令行交互询问可以使用 inquirer 模块
 
-```plain
+```bash
 yarn add inquirer --dev
 ```
 
-- inquirer 模块提供一个 prompt 方法用于发起一个命令行的询问，可以接收一个数组参数，数组中每一个成员就是一个问题，可以通过 type 指定问题输入方式，然后 name 指定返回值的键，message指定屏幕上给用户的一个提示，在 promise 的 then 里面拿到这个问题接收到用户的答案
+- inquirer 模块提供一个 prompt 方法用于发起一个命令行的询问，可以接收一个数组参数
+  - 数组中每一个成员就是一个问题
+  - 可以通过 type 指定问题输入方式
+  - 然后 name 指定返回值的键
+  - message指定屏幕上给用户的一个提示
+  - 在 promise 的 then 里面拿到这个问题接收到用户的答案
 
-```plain
+```javascript
 const inquirer = require('inquirer');
 
 inquirer.prompt([
@@ -517,33 +570,11 @@ inquirer.prompt([
 })
 ```
 
-- 那有了 inquirer 之后要考虑的就是动态的去生成项目文件，一般会根据模板去生成，所以在项目的跟目录下新建一个 templates 目录，在这个目录下新建一些模板
-
-```html
-<head>
-	<title><%= name %></title>
-</head>
-```
-
-```css
-body {
-	margin: 0;
-	background-color: red;
-}
-```
-
+- 动态生成项目文件，一般会根据模板去生成，所以在项目的跟目录下新建一个 templates 目录，在这个目录下新建一些模板
 - 模板的目录应该是项目当前目录的 templates 通过 path 获取
-
-```plain
-const path = require('path');
-
-// 工具当前目录
-const tmplDir = path.join(__dirname, 'templates');
-```
-
 - 输出的目标目录一般是命令行所在的路径也就是 cwd 目录
 
-```plain
+```javascript
 const path = require('path');
 
 // 工具当前目录
@@ -555,7 +586,7 @@ const destDir = process.cwd();
 - 明确这两个目录就可以通过 fs 模块读取模板目录下一共有哪些文件
 - 把这些文件全部输入到目标目录，通过 fs 的 readDir 方法自动扫描目录下的所有文件
 
-```plain
+```javascript
 fs.readdir(tmplDir, (err, files) => {
     if (err) {
         throw err;
@@ -566,130 +597,75 @@ fs.readdir(tmplDir, (err, files) => {
 })
 ```
 
-- 可以通过模板引擎渲染路径对应的文件比如 ejs
+- 可以通过模板引擎渲染路径对应的文件，比如 ejs
 
-```plain
+```bash
 yarn add ejs --dev
 ```
 
 - 回到代码中引入模板引擎，通过模板引擎提供的 renderFile 渲染路径对应的文件
-- 第一个参数是文件的绝对路径，第二个参数是模板引擎在工作的时候的数据上下文，第三个参数是回调函数，也就是在渲染成功过后的回调函数，当然如果在渲染过程中出现了意外可以通过 throw err 的方式错误抛出去
-
-```plain
-const fs = require('fs');
-const path = require('path');
-const inquirer = require('inquirer');
-const ejs = require('ejs');
-
-// 工具当前目录
-const tmplDir = path.join(__dirname, 'templates');
-// 命令行所在目录
-const destDir = process.cwd();
-
-inquirer.prompt([
-    {
-        type: 'input',
-        name: 'name',
-        message: 'Project name'
-    }
-]).then(answer => {
-    fs.readdir(tmplDir, (err, files) => {
-        if (err) {
-            throw err;
-        }
-        files.forEach(file => {
-            ejs.renderFile(path.join(tmplDir, file), answer, (err, result) => {
-                if (err) {
-                    throw err;
-                }
-                console.log(result);
-            })
-        })
-    })
-})
-```
-
-- 运行脚手架工具
-
-```plain
-sample-cli
-```
-
-- 此时打印出来的这个结果其实是已经经过模板引擎工作过后的结果，只需要将这个结果通过文件写入的方式写入到目标目录就可以了，目标目录应该是通过 path.join 把 destDir 以及 file 做一个拼接，内容就是 result
+  - 第一个参数是文件的绝对路径
+  - 第二个参数是模板引擎在工作的时候的数据上下文
+  - 第三个参数是回调函数
+- 也就是在渲染成功过后的回调函数，当然如果在渲染过程中出现了意外可以通过 throw err 的方式错误抛出去
+- 打印结果是经过模板引擎工作过后的结果，只需要将这个结果通过文件写入的方式写入到目标目录就可以了
+- 目标目录应该是通过 path.join 把 destDir 以及 file 做一个拼接，内容就是 result
 
 ```javascript
-files.forEach(file => {
-	ejs.renderFile(path.join(tmplDir, file), answer, (err, result) => {
-		if (err) {
-			throw err;
-		}
-		fs.writeFileSync(path.join(destDir, file), result);
-	});
-});
+#!/usr/bin/env node
+
+// Node CLI 应用入口文件必须要有这样的文件头
+// 如果是 Linux 或者 macOS 系统下还需要修改此文件的读写权限为 755
+// 具体就是通过 chmod 755 cli.js 实现修改
+
+// 脚手架的工作过程：
+// 1. 通过命令行交互询问用户问题
+// 2. 根据用户回答的结果生成文件
+
+const fs = require('fs')
+const path = require('path')
+const inquirer = require('inquirer')
+const ejs = require('ejs')
+
+const questions = [
+  {
+    type: 'input',
+    name: 'name',
+    message: 'Project name?'
+  }
+];
+
+inquirer.default.prompt(questions)
+  .then(anwsers => {
+    // console.log(anwsers)
+    // 根据用户回答的结果生成文件
+
+    // 模板目录
+    const tmplDir = path.join(__dirname, 'templates')
+    // 目标目录
+    const destDir = process.cwd()
+
+    // 将模板下的文件全部转换到目标目录
+    fs.readdir(tmplDir, (err, files) => {
+      if (err) throw err
+      files.forEach(file => {
+        // 通过模板引擎渲染文件
+        ejs.renderFile(path.join(tmplDir, file), anwsers, (err, result) => {
+          if (err) throw err
+
+          // 将结果写入目标文件路径
+          fs.writeFileSync(path.join(destDir, file), result)
+        })
+      })
+    })
+  })
 ```
 
 - 完成过后找到一个新的目录使用脚手架
 
-```plain
-sample-cli
+```bash
+sample-scaffolding
 ```
 
 - 输入项目名称过后，就会发现他会把模板里面的文件自动生成到对应的目录里面，至此就已经完成了一个非常简单，非常小型的一个脚手架应用
 - 其实脚手架的工作原理并不复杂，但是他的意义却是很大的，因为他确实在创建项目环节大大提高了效率
-
-<h4 id="htuaA">发布</h4>
-- 可以将自己的工具发布至 npm 上，提供给更多的人使用
-- 发布 npm 非常的简单，首先需要注册 npm 账号，有两种方式可以注册，一种是登录 npm 官网https://www.npmjs.com/，另一种是使用命令npm adduser
-
-```plain
-npm adduser
-```
-
-- 会提示你输入用户名，密码，以及邮箱，注册好后登录 npm 账号
-
-```plain
-npm login
-```
-
-- 依次输入用户名、密码和邮箱
-- 登录成功后执行 npm publish 发布命令
-
-```plain
-npm publish
-```
-
-- 如果报错：'You do not have permission to publish "samlpe-cli". Are you logged in as the correct user?'，表示包 samlpe-cli 名字已经在包管理器已经存在被别人用了，需要更该包名称可以前往 package.json 中的 name 中换一个名字
-
-```json
-{
-  "name": "sample-cli1",
-  "version": "1.0.0",
-  "bin": "cli.js",
-  ...
-}
-```
-
-- 再次执行 publish 命令出现 +sample-cli1@1.0.0 即表示发布成功
-- 如果发布时报错：no_perms Private mode enable, only admin can publish this module: 表示当前不是原始镜像，要切换回原始的 npm 镜像
-
-```plain
-npm config set registry https://registry.npmjs.org/
-```
-
-- 如果需要更新工具，只要继续执行 npm publish 就可以更新发布了，不过需要注意，每次发布都需要修改版本号 version 的值，同一个版本不允许发布两次
-- 而且版本号的值最好是递增的
-
-```json
-{
-  "name": "sample-cli1",
-  "version": "1.0.1",
-  "bin": "cli.js",
-  ...
-}
-```
-
-- 如果想要撤销本次发布可以执行，只有在发包的 24 小时内才允许撤销发布的包，超过 24 小时就无法撤回了
-
-```plain
-npm unpublish
-```
