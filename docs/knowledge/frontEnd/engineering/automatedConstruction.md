@@ -25,7 +25,7 @@ order: 3
 ```bash
 yarn add sass --dev
 
-.\node_modules\.bin\sass.cmd sass/style.sass css/style.css
+npx sass scss/main.scss css/main.css
 ```
 
 - 这样使用的话，每次转换都要执行一边代码，过于繁琐
@@ -38,7 +38,7 @@ yarn add sass --dev
 
 ```json
 "scripts": {
-  "build-sass": "sass sass/style.sass css/style.css"
+  "sass-build": "sass scss/main.scss:css/main.css",
 }
 ```
 - 键是 script 命令，值是需要去执行的命令
@@ -48,3 +48,51 @@ yarn add sass --dev
 
 - NPM Scripts 也是实现自动化构建最简单的方式
 
+### browser-sync（启动测试服务器运行项目）
+
+```bash
+yarn add browser-sync --dev
+```
+
+```json
+"scripts": {
+  "sass-build": "sass scss/main.scss:css/main.css",
+  "serve":"browser-sync ."
+}
+```
+
+- 执行 yarn serve 启动测试服务器
+
+### NPM Scripts 钩子机制
+
+- 想要实现项目启动前让 sass-build 工作，定义一个 preserve 命令，它会在 serve 命令执行前去执行
+
+```json
+"scripts": {
+  "sass-build": "sass scss/main.scss:css/main.css",
+  "preserve": "yarn sass-build",
+  "serve": "browser-sync ."
+}
+```
+
+### 监听 sass 文件并同时执行多个任务
+
+- 为 sass 命令添加一个 `–watch` 的参数，sass 就会监听文件的变化
+- 为 browser-sync 添加 `–files` 参数，可以让 browser-sync 启动后监听一些文件的变化，然后自动同步到浏览器，自动更新页面，可以不用手动刷新浏览器了
+- 借助 npm-run-all 模块同时执行多个任务
+- 安装 npm-run-all:
+
+```bash
+yarn add npm-run-all --dev 
+```
+
+```json
+"scripts": {
+  "sass-build": "sass sass/style.sass css/style.css --watch",
+  "serve": "browser-sync . --files \"css/*.css\"",
+  "start": "run-p sass-build serve"
+}
+```
+
+- 这样就借助 NPM Scripts 完成了一个简单的自动化构建的工作流，（启动后同时运行 serve 和 sass-build 这两个命令）
+                                                                  
