@@ -140,7 +140,20 @@ export default sidebar({
 			icon: 'screwdriver-wrench',
 			prefix: 'engineering/',
 			collapsible: true,
-			children: 'structure',
+			children: [
+				'index.md',
+				'scaffoldingTool.md',
+				{
+					text: '关于自动化构建',
+					prefix: 'automatedConstruction/',
+					collapsible: true,
+					children: 'structure',
+				},
+				'module.md',
+				'codeSpecification.md',
+				'projectOrganizationDesign.md',
+				'webpack.md',
+			],
 		},
 		{
 			text: '前端性能优化',
