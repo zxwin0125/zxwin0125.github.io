@@ -89,3 +89,38 @@ module.exports = grunt => {
 }
 ```
 
+## Grunt 标记任务失败
+
+- 如果在构建任务的逻辑代码中发生错误，例如需要的文件找不到了，那就可以把这个任务标记为一个失败任务
+- 可以在函数体中通过 return false 来实现
+
+```javascript
+module.exports = grunt => {
+  grunt.registerTask('bad', () => {
+    console.log('bad working~')
+    return false
+  })
+}
+```
+
+- 如果一个任务列表中的某个任务执行失败，则后续任务默认不会运行，除非 grunt 运行时指定 `--force` 参数强制执行
+
+```javascript
+module.exports = grunt => {
+  grunt.registerTask('default', ['foo', 'bad', 'bar'])
+}
+```
+
+- 异步函数中标记当前任务执行失败的方式是为回调函数指定一个 false 的实参
+
+```javascript
+module.exports = grunt => {
+  grunt.registerTask('bad-async', function () {
+    const done = this.async()
+    setTimeout(() => {
+      console.log('async task working~')
+      done(false)
+    }, 1000)
+  })
+}
+```
