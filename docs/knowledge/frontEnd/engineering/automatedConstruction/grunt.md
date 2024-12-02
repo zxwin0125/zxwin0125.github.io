@@ -124,3 +124,208 @@ module.exports = grunt => {
   })
 }
 ```
+
+## Grunt 的配置方法
+
+- grunt 提供的 initConfig 方法去添加一些配置选项
+- 例如使用 grunt 帮我们压缩文件时可以通过这种方式去配置需要压缩的文件路径
+
+```javascript
+module.exports = grunt => {
+  grunt.initConfig({
+    // 键一般对应任务的名称
+    // 值可以是任意类型的数据
+    foo: {
+      bar: 'baz'
+    }
+  })
+
+  grunt.registerTask('foo', () => {
+    // 任务中可以使用 grunt.config() 获取配置
+    console.log(grunt.config('foo'))
+    // 如果属性值是对象的话，config 中可以使用点的方式定位对象中属性的值
+    console.log(grunt.config('foo.bar'))
+  })
+}
+```
+
+## Grunt 多目标任务
+
+- 除了普通的任务形式以外，Grunt 中还支持叫多目标模式的任务
+- 可以理解为子任务概念，后续通过 Grunt 实现各种构建任务时非常有用
+
+
+```javascript
+module.exports = grunt => {
+  // 多目标模式，可以让任务根据配置形成多个子任务
+
+  // grunt.initConfig({
+  //   build: {
+  //     foo: 100,
+  //     bar: '456'
+  //   }
+  // })
+
+  // grunt.registerMultiTask('build', function () {
+  //   console.log(`task: build, target: ${this.target}, data: ${this.data}`)
+  // })
+
+  grunt.initConfig({
+    build: {
+      // 会作为任务的配置(不会作为task ) 
+      options: {
+        msg: 'task options'
+      },
+      foo: {
+        // 会合并任务配置中的 options，如果存在相同属性，会覆盖
+        options: {
+          msg: 'foo target options'
+        }
+      },
+      bar: '456'
+    }
+  })
+
+  grunt.registerMultiTask('build', function () {
+    console.log(this.options())
+  })
+}
+```
+
+1. 多目标模式的任务需要通过 Grunt 的 registerMultiTask 方法去定义
+  - 参数1：任务名称
+  - 参数2：函数，仍然是任务执行中所需要做的事情
+2. 需要为多目标任务配置不同的目标，通过 grunt.initConfig 方法 去配置
+  - 这个方法的参数对象中需要指定一个与任务名称同名的属性「build」 ，属性值也是对象，对象中每一个属性名就是 目标 build 的目标名称
+3. `yarn grunt build` 后发现它执行了两个目标
+  - 运行其中一个的方式：`yarn grunt build:css`
+4. 任务函数中可以通过 this 拿到当前任务目标的名称和配置数据 （this.target 和 this.data）
+5. options 中的信息会作为任务的配置选项，它不会成为目标（ 任务函数中可以通过 this.option() 拿到 ）
+6. 在目标中也可以配置 options，会覆盖父对象的 options
+
+## Grunt 插件的使用
+
+- 插件是 Grunt 的核心，因为很多构建任务都是通用的，社区中出现了很多插件，当中封装了一些通用的构建任务，一般构建过程都是由这些通用的构建任务组成的
+- 基本步骤
+  - npm 安装这个插件，再到 gruntfile.js 中去载入这个插件提供的任务，最后根据插件文档完成相关的配置选项
+
+### grunt-contrib-clean
+
+- 比如使用一下 grunt-contrib-clean 插件来尝试一下（清除我们在项目开发过程中产生的临时文件）：
+  - 安装：`yarn add grunt-contrib-clean`
+  - 使用 grunt.loadNpmTask 方法去加载一下这个插件中提供的一些任务
+  - 绝大多下情况下，grunt 插件的命名规范都是 `grunt-contrib-< name>`,所以 grunt-contrib-clean 插件提供的任务名称就是 clean
+  - 直接运行 yarn grunt clean 会报出错误，因为 clean 是一个多目标任务，需要通过 initConfig 添加配置选项去配置不同的目标
+
+```javascript
+module.exports = grunt => {
+  grunt.initConfig({
+    clean: {
+      // temp: 'temp/app.js'
+      // temp: 'temp/*.txt'
+      temp: 'temp/**'
+    }
+  })
+  
+  grunt.loadNpmTasks('grunt-contrib-clean')
+}
+```
+
+### grunt-sass 插件
+
+- grunt-sass 是一个 npm 模块，它在内部通过 npm 形式依赖 sass，所以需要 sass 模块支持
+
+```bash
+yarn add grunt-sass sass --dev
+```
+
+```javascript
+const sass = require('sass')
+module.exports = (grunt) => {
+  grunt.initConfig({
+    sass:{
+      main: {
+        options: {
+          sourceMap: true,
+          implementation: sass
+        },
+        // 通过 files 属性指定输入输出的方式
+        files: {
+          'dist/css/main.css':'src/sass/main.scss'
+        }
+      }
+    }
+  })
+
+  grunt.loadNpmTasks('grunt-sass')
+}
+```
+
+### grunt-babel 插件
+
+- grunt 也需要依赖 babel 的核心模块和预设，有了这三个模块后就可以在 gruntfile.js 中使用 babel 的一些任务了
+
+```bash
+yarn add grunt-babel @babel-core @babel-preset-env --dev
+```
+
+```javascript
+module.exports = (grunt) => {
+  grunt.initConfig({
+    babel:{
+      main:{
+        // 设置 babel 转换时候的 preset
+        // babel 作为 ECMAScript 最新特性的转换，支持转换部分特性，preset 意思是我们需要转换哪些特性，它把一系列的特性打包形成 preset
+        // env 默认根据最新的 es 特性做转换
+        options:{
+          sourceMap: true,
+          presets:['@babel/preset-env']
+        },
+        files:{
+          'dist/js/app.js':'src/js/app.js'
+        }
+      }
+    }
+  })
+  grunt.loadNpmTasks('grunt-babel')
+}
+```
+
+### grunt-contrib-watch 插件
+
+- 当文件修改成后自动编译
+
+```javascript
+module.exports = (grunt) => {
+  grunt.initConfig({
+    watch: {            
+      js: {                
+        files:['src/js/*.js'], // 监控哪些文件的变化
+        tasks:['babel'] // 文件的变化后需要执行什么任务
+      },
+      css: {                
+        files:['src/sass/*.scss'],
+        tasks:['sass']
+      }
+    }
+  })
+  grunt.loadNpmTasks('grunt-watch')
+
+  // watch 启动后并不会直接执行 sass、babel 任务，只是会监视文件，当文件发生变化后才会去执行对应的任务
+  // 需要做一层映射
+  grunt.registerTask('default', ['sass' , 'babel' , 'watch'] )
+}
+```
+
+### load-grunt-tasks 插件
+
+- 自动加载所有的 grunt 插件中的任务
+
+```javascript
+const loadGruntTasks = require('load-grunt-tasks')
+
+module.exports = (grunt) => {
+  ...
+  // grunt.loadNpmTasks('grunt-sass')
+  loadGruntTasks(grunt) // 自动加载所有的 grunt 插件中的任务
+}
