@@ -293,3 +293,336 @@ exports.default =  ()=>{
 - 这种通过 src 去 pipe 到 一个或多个插件转换流，再 pipe 到写入流这样的过程，就是使用 gulp 的常规过程
 
 ## gulp 自动化构建案例
+
+> 学习下如何使用 gulp 来完成一个网页应用的自动化构建工作流
+
+### style 样式编译（sass）
+
+- 使用 gulp-sass 插件
+
+> [!warning]
+> gulp-sass 会自动帮我们安装 node-sass 的核心转换模块
+
+```javascript
+const { src, dest } = require('gulp')
+const sass = require('gulp-sass')
+
+const style = () =>{
+  // src 读取流                              
+  // base 转换时基准路径,保留 src 后面原始目录结构
+  return src('src/assets/styles/*.scss', { base:'src' })
+    .pipe(sass({ outputStyle:'expanded' })) // 插件提供的一般都是方法，调用返回一个文件转换流，outputStyle:'expanded' 样式选择展开
+    .pipe(dest('dist'))
+}
+
+module.exports = {
+  style
+}
+```
+
+### JavaScript 脚本编译（babel）
+
+- 使用 gulp-babel 插件
+
+> [!warning]
+> gulp-babel 这个插件只是唤醒 babel-core 模块中的转换过程，需要手动安装
+
+```javascript
+const babel = require('gulp-babel')
+
+const script = ()=>{
+  return src('src/assets/scripts/*.js', { base:'src' })
+  // babel 默认只是 ECMAScript 的一个转换平台，具体做转换的其实是 babel 它内部的一些插件
+  // 而 preset 就是一些插件的集合，比如 preset-env 就是最新的 ES 最新的一些整体特性的打包，使用它就会把所有特性全部做转换
+  // 也可以安装对应的 babel 转换插件，然后指定对应的转换插件，它就会只转换对应的特性
+  .pipe(babel({presets:[ '@babel/preset-env' ] }))   
+  .pipe(dest('dist'))
+}
+
+module.exports = {
+  script
+}
+```
+
+### 页面模版编译
+
+- 模板文件就是 html 文件，为了把 html 中一些数据抽象出来使用了模板引擎，这里使用的模板引擎是 swig
+- 使用 gulp-swig 的转换插件
+
+```javascript
+const swig = require('gulp-swig')
+
+const page = () => {
+  return src('src/*.html', { base: 'src' })
+  .pipe(swig({ data }))	// data 是页面中需要用到的数据
+  .pipe(dest('dist'))
+}
+
+module.exports = {
+  page
+}
+```
+
+- 利用 parallel 将三个任务进行组合，同时编译
+
+```javascript
+const { src, dest, parallel } = require('gulp')
+
+const compile = parallel(style, script, page)
+
+module.exports = {
+  compile
+}
+```
+
+### 图片和字体文件转换
+
+- 利用 gulp-imagemin 插件（无损的图片压缩，只是删除了一些元数据的信息）处理一下图片和字体文件
+- imagemin 插件内部依赖的模块同样是一些通过 c++ 完成的模块，就需要去下载二进制的程序集
+
+```javascript
+const imagemin = require('gulp-imagemin')
+
+const image = () => {
+  return src('src/assets/images/**', { base: 'src' })
+    .pipe(imagemin())
+    .pipe(dest('dist'))
+}
+
+const font = () => {
+  return src('src/assets/fonts/**', { base: 'src' })
+  // 有的时候字体文件夹下可能会有 svg 文件也可以通过 imagemin 压缩一下，对于 imagemin 不能处理的文件它不会去处理
+    .pipe(imagemin())
+    .pipe(dest('dist'))
+}
+
+const compile = parallel( style, script, html, image, font )
+
+module.exports = {
+  compile
+}
+```
+
+### 其他文件及文件清除
+
+- 其他文件
+
+```javascript
+// 额外的文件直接通过拷贝的方式拷贝过去就可以了
+const extra = ()=>{
+  return src('public/**', { base: 'public' })
+    .pipe(dest('dist'))
+}
+
+// compile 完成 src 文件夹下的所有文件且完成转换
+const compile = parallel( style, script, html, image, font )
+// build 通过 parallel 在组合的基础上再次组合将 compile 任务和 extra 进行组合，后续可以使用 build 完成所有文件的构建
+const build = parallel( compile, extra )
+
+module.exports = {
+  build
+}
+```
+
+- 利用 del 插件进行文件清除
+
+> [!warning]
+> del 不是 gulp 的插件，但是在 gulp 中可以使用，因为 gulp 并不只是通过 src 找文件流然后最终 pipe 到 dist 中
+
+- del 可以删除指定文件，并且它是一个 promise 方法
+
+```javascript
+// 有了 del 后可以通过 del 指定一个数组，放入任意的文件路径
+const clean = () => {
+  // 就不再是 return 一个 src 之类的东西
+  // 它返回的是一个 promise，意味着在 delete 完成后 gulp 可以标记 clean 任务完成
+  return del(['dist'])
+}
+```
+
+### 自动加载插件
+
+> 随着构建任务越来越复杂，使用到的插件也越来越多，如果都是手动的加载插件的话，那么 require 的操作会非常多，在这里可以通过 gulp-load-plugins 插件来解决这个小问题
+
+```javascript
+// 通过 load-plugins 提供的 api 自动去加载全部的 plugin
+const loadPlugins = require('gulp-load-plugins')
+// plugins 是一个对象，所有的插件都会自动成为这个对象下面的属性
+const plugins = loadPlugins()
+```
+
+### 开发服务器
+
+- 除了对文件的构建操作外，还需要一个开发服务器，用于在开发时调试应用
+- 使用 gulp 去启动管理这个开发服务器，这样就可以配合其他构建任务去实现修改文件后自动编译并且自动更新浏览器页面
+- browser-sync 这个模块可以提供给我们一个开发服务器，相比较普通使用 express 创建的服务器，有更强大的功能，它支持代码更改之后的自动热更新到浏览器中
+
+```javascript
+const browserSync = require('browser-sync')
+// 它会自动创建一个开发服务器
+const bs = browserSync.create()
+
+// 将开发服务器单独定义到 serve 的任务中去启动
+// 启动这个任务会自动唤醒浏览器并打开页面
+const serve = ()=>{
+  bs.init({
+    notify: false,
+    port: '2080',
+    // open: false, // 启动服务时 取消自动打开页面
+    files: 'dist/**', // 文件修改之后 自动更新 浏览器  //热更新
+    server: {  
+      baseDir: 'dist',  // server 中要指定一下网站的根目录
+      routes: {
+        // 页面中有些文件路径指向，优先于 baseDir 的配置
+        '/node_modules':'node_modules'
+      }
+    }
+  })
+}
+```
+
+### 监视文件变化
+
+- 有了开发服务器后，就要考虑 src 目录下的源代码修改后自动编译，这个需要借助 gulp 提供的另一个API：watch
+- watch 会监视一个文件路径的通配符，根据这些文件的变化决定是否要执行一些任务
+- 这样就可以实现之前的设想「文件修改后自动编译到 dist 目录，然后自动同步到浏览器」
+
+```javascript
+const serve = ()=>{
+  // watch 接收两个参数，第一个参数是 globs--通配符（所有产生构建任务的路径），第二个参数就是要执行的任务
+  watch( 'src/assets/styles/*.scss' , style )
+  watch( 'src/assets/scripts/*.js' , script )
+  watch( 'src/*.html' , html )
+  
+  // watch( 'src/assets/images/*.*' , image )
+  // watch( 'src/assets/fonts/**' , font )
+  // watch( 'public/**' , extra )
+	// 对于监听图片，字体和其他一些静态文件，在开发阶段没有什么意义，会减慢构建速度
+  // 这样就可以实现文件修改后自动编译到 dist 目录，然后自动同步到浏览器
+
+  bs.init({
+    notify: false,
+    port: '2080',
+    // open: false, //启动服务时 取消自动打开页面
+    files: 'dist/**', // 文件修改之后 自动更新 浏览器
+    server: {  
+      baseDir: ['dist','src','public'],  //server中要指定一下网站的根目录
+      routes: {
+        // 页面中有些文件路径指向，优先于 baseDir 的配置
+        '/node_modules':'node_modules'
+      }
+    }
+  })
+}
+```
+
+### 构建优化
+
+1. 考虑到如果 serve 之前不存在编译后的 dist 目录，所以需要增加一个组合任务：develop，去执行一下 compile 任务：
+
+```javascript
+const develop = series(compile, serve)
+```
+
+2. 之前我们 compile 里面的 image，font 任务可以拿掉
+  - 因为 html，scss，js 文件必须要经过编译后才能在浏览器环境运行
+  - 而图片、字体还有那些静态资源在开发阶段则不需要进行编译，可以直接请求源文件，这样在开发阶段就可以减少一次构建过程
+  - bs.init 的 baseDir 配置项可以加入这些源文件路径
+
+3. image，font 任务就可以加入 build 任务中，最后在 build 项目时统一进行编译
+
+```javascript
+// compile 在上线之前也会用到，不过它是一个子任务，主要在开发阶段使用
+const compile = parallel( style , script , html  )
+// build 任务就是上线之前要执行的任务
+const build = series( clean, parallel( compile , extra ) )
+const develop = series(compile , serve)
+```
+
+4. 图片、字体还有那些静态资源在开发阶段也要进行热更新：在 serve 任务中再添加一个 watch 监听它们的源文件
+
+```javascript
+watch( [
+    'src/assets/images/**',
+    'src/assets/fonts/**',
+    'public/**'
+  ], bs.reload) // 监听这三种文件变化后，调用 bs.reload 方法，reload 也可以理解为一个任务，因为在 gulp 中一个任务就是一个函数
+```
+
+- 这样 develop 任务就以一个最小的代价把应用跑起来了，上线之前执行 build 任务以最大模型方式把所有的任务都执行一次
+
+### useref 文件引用处理（引用关系）
+
+- html 文件中会有一些引用 node_modules 文件中的一些依赖，这些文件没有被我们打包到 dist 目录中
+  - 此时如果将 dist 目录部署上线后会出现问题，因为找不到这些文件
+  - 在开发阶段没有出现问题是因为在开发服务器中做了路径映射
+- 可以借助 gulp-useref 插件解决这个问题
+  - 自动的把 useref 遇到的构建注释当中引入的资源全部合并到同一个文件当中
+  - 比如：它会自动将注释的开始标签和结束标签中的文件打包到一个文件中
+
+```html
+<!-- build:css assets/styles/vendor.css -->
+<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+<!-- endbuild -->
+<!-- build:css assets/styles/main.css -->
+<link rel="stylesheet" href="assets/styles/main.css">
+<!-- endbuild -->
+```
+```javascript
+const useref = () => {
+  // 这个时候找的 html 是 dist 目录下的 html
+  return src('dist/*.html', { base: 'dist' })
+    // 把创建的读取流 pipe 到 useref 插件，这个插件会被自动加载进来，useref 插件会创建一个转换流
+    // 这个转换流会把 html 中的构建注释做一个转换：searchPath 找到这些文件 dist 和根目录
+    .pipe(plugins.useref({ searchPath: ['dist', '.'] }))
+    .pipe(dest('dist'))
+}
+```
+
+### 文件压缩
+
+- 利用 gulp-if 插件进行文件压缩
+
+```javascript
+const useref = () => {
+  return src('temp/*.html', { base: 'temp' })
+    .pipe(plugins.useref({ searchPath: ['temp', '.'] }))
+    // if 会自动创建转换流，只是在内部会根据判断条件决定是否执行这个任务
+    .pipe(plugins.if(/.js$/, plugins.uglify()))
+    .pipe(plugins.if(/.css$/, plugins.cleanCss()))
+    .pipe(plugins.if(/.html$/, plugins.htmlmin({
+    collapseWhitespace: true, // 折叠空白字符
+    minifyCSS: true, // 内部标签压缩
+    minifyJS: true,
+  })))
+  .pipe(dest('dist'))
+}
+```
+
+### 重新规划构建过程
+
+- 因为执行 useref 任务的时候同时涉及到对 dist 目录下文件的读写操作，所以需要一个中间目录暂时存放一下临时文件
+- html，css，js 文件在开发阶段需要频繁的编译转换，而 image、font 和其他静态文件则只是在 build 的时候才会去进行转换
+- 总而言之，只有会被 usere f影响到的才会去修改
+
+### 补充
+
+> 把需要单独使用的任务导出，一些组合起来使用的任务则不必都导出来，其他使用者用起来会方便一些
+
+- 一般将 clean、develop、serve 任务导出使用，其他任务则被加入其中自动化使用
+- 还可以把这三个任务定义到 package.json 中的 scripts 中，这样更容易理解一点，使用更方便
+
+```json
+// 注意：npmScripyts 会自动找到我们所执行的命令在 node_modules 中的命令文件，就不需要 yarn 去找这个命令了 
+"scripts": {
+  "clean": "gulp clean",
+  "build": "gulp build",
+  "develop": "gulp develop"
+}
+```
+- 在 gitignore 文件中需要忽略掉生成的这些目录：temp、dist
+
+### 总结
+
+- 在开发过程中创建的这个构建的自动化工作流，在开发时会被重复使用到，但是不推荐每次创建项目都把它拷贝过去直接使用
+- 因为这个工作流难免有一些不足、或者随着时间推移有些插件或模块更新时使用方式出现改变，到时候所以项目的这个构建文件都需要被修改
