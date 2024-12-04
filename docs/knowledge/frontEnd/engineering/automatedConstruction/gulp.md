@@ -354,7 +354,7 @@ const swig = require('gulp-swig')
 
 const page = () => {
   return src('src/*.html', { base: 'src' })
-  .pipe(swig({ data }))	// data 是页面中需要用到的数据
+  .pipe(swig({ data, defaults: { cache: false } }))	// data 是页面中需要用到的数据，cache 防止模板缓存导致页面不能及时更新
   .pipe(dest('dist'))
 }
 
@@ -438,6 +438,11 @@ const clean = () => {
   // 它返回的是一个 promise，意味着在 delete 完成后 gulp 可以标记 clean 任务完成
   return del(['dist'])
 }
+
+const build =  series(
+  clean,
+  parallel( compile, extra )
+)
 ```
 
 ### 自动加载插件
@@ -449,9 +454,15 @@ const clean = () => {
 const loadPlugins = require('gulp-load-plugins')
 // plugins 是一个对象，所有的插件都会自动成为这个对象下面的属性
 const plugins = loadPlugins()
+
+const style = () =>{
+  return src('src/assets/styles/*.scss', { base:'src' })
+    .pipe(plugins.sass({ outputStyle:'expanded' }))
+    .pipe(dest('dist'))
+}
 ```
 
-### 开发服务器
+### 热更新开发服务器
 
 - 除了对文件的构建操作外，还需要一个开发服务器，用于在开发时调试应用
 - 使用 gulp 去启动管理这个开发服务器，这样就可以配合其他构建任务去实现修改文件后自动编译并且自动更新浏览器页面
@@ -467,14 +478,14 @@ const bs = browserSync.create()
 const serve = ()=>{
   bs.init({
     notify: false,
-    port: '2080',
+    port: '2080', // 端口
     // open: false, // 启动服务时 取消自动打开页面
-    files: 'dist/**', // 文件修改之后 自动更新 浏览器  //热更新
+    files: 'dist/**', // 文件修改之后 自动更新 浏览器  // 热更新
     server: {  
       baseDir: 'dist',  // server 中要指定一下网站的根目录
       routes: {
         // 页面中有些文件路径指向，优先于 baseDir 的配置
-        '/node_modules':'node_modules'
+        '/node_modules': 'node_modules'
       }
     }
   })
@@ -483,7 +494,7 @@ const serve = ()=>{
 
 ### 监视文件变化
 
-- 有了开发服务器后，就要考虑 src 目录下的源代码修改后自动编译，这个需要借助 gulp 提供的另一个API：watch
+- 有了开发服务器后，就要考虑 src 目录下的源代码修改后自动编译，这个需要借助 gulp 提供的另一个 API：watch
 - watch 会监视一个文件路径的通配符，根据这些文件的变化决定是否要执行一些任务
 - 这样就可以实现之前的设想「文件修改后自动编译到 dist 目录，然后自动同步到浏览器」
 
@@ -524,25 +535,23 @@ const serve = ()=>{
 const develop = series(compile, serve)
 ```
 
-2. 之前我们 compile 里面的 image，font 任务可以拿掉
+2. 之前 compile 里面的 image，font 任务可以拿掉
   - 因为 html，scss，js 文件必须要经过编译后才能在浏览器环境运行
   - 而图片、字体还有那些静态资源在开发阶段则不需要进行编译，可以直接请求源文件，这样在开发阶段就可以减少一次构建过程
-  - bs.init 的 baseDir 配置项可以加入这些源文件路径
-
-3. image，font 任务就可以加入 build 任务中，最后在 build 项目时统一进行编译
+  - image，font 任务就可以加入 build 任务中，最后在 build 项目时统一进行编译
 
 ```javascript
 // compile 在上线之前也会用到，不过它是一个子任务，主要在开发阶段使用
-const compile = parallel( style , script , html  )
+const compile = parallel( style, script, html )
 // build 任务就是上线之前要执行的任务
-const build = series( clean, parallel( compile , extra ) )
-const develop = series(compile , serve)
+const build = series( clean, parallel( compile, extra ) )
+const develop = series(compile, serve)
 ```
 
-4. 图片、字体还有那些静态资源在开发阶段也要进行热更新：在 serve 任务中再添加一个 watch 监听它们的源文件
+3. 图片、字体还有那些静态资源在开发阶段也要进行热更新：在 serve 任务中再添加一个 watch 监听它们的源文件
 
 ```javascript
-watch( [
+watch([
     'src/assets/images/**',
     'src/assets/fonts/**',
     'public/**'
@@ -553,9 +562,9 @@ watch( [
 
 ### useref 文件引用处理（引用关系）
 
-- html 文件中会有一些引用 node_modules 文件中的一些依赖，这些文件没有被我们打包到 dist 目录中
+- html 文件中会有一些引用 node_modules 文件中的一些依赖，这些文件没有被打包到 dist 目录中
   - 此时如果将 dist 目录部署上线后会出现问题，因为找不到这些文件
-  - 在开发阶段没有出现问题是因为在开发服务器中做了路径映射
+  - 在开发阶段没有出现问题是因为在开发服务器中做了路由映射
 - 可以借助 gulp-useref 插件解决这个问题
   - 自动的把 useref 遇到的构建注释当中引入的资源全部合并到同一个文件当中
   - 比如：它会自动将注释的开始标签和结束标签中的文件打包到一个文件中
@@ -581,21 +590,24 @@ const useref = () => {
 
 ### 文件压缩
 
-- 利用 gulp-if 插件进行文件压缩
+- 压缩 HTML 使用 gulp-htmlmin
+- 压缩 JavaScript 使用 gulp-uglify
+- 压缩 CSS 使用 gulp-clean-css
+- 利用 gulp-if 插件进行文件类型判断
 
 ```javascript
 const useref = () => {
-  return src('temp/*.html', { base: 'temp' })
-    .pipe(plugins.useref({ searchPath: ['temp', '.'] }))
+  return src('dist/*.html', { base: 'dist' })
+    .pipe(plugins.useref({ searchPath: ['dist', '.'] }))
     // if 会自动创建转换流，只是在内部会根据判断条件决定是否执行这个任务
-    .pipe(plugins.if(/.js$/, plugins.uglify()))
-    .pipe(plugins.if(/.css$/, plugins.cleanCss()))
-    .pipe(plugins.if(/.html$/, plugins.htmlmin({
-    collapseWhitespace: true, // 折叠空白字符
-    minifyCSS: true, // 内部标签压缩
-    minifyJS: true,
-  })))
-  .pipe(dest('dist'))
+    .pipe(plugins.if(/\.js$/, plugins.uglify()))
+    .pipe(plugins.if(/\.css$/, plugins.cleanCss()))
+    .pipe(plugins.if(/\.html$/, plugins.htmlmin({
+      collapseWhitespace: true, // 折叠空白字符
+      minifyCSS: true, // 内部标签压缩
+      minifyJS: true,
+    })))
+    .pipe(dest('temp'))
 }
 ```
 
@@ -603,7 +615,7 @@ const useref = () => {
 
 - 因为执行 useref 任务的时候同时涉及到对 dist 目录下文件的读写操作，所以需要一个中间目录暂时存放一下临时文件
 - html，css，js 文件在开发阶段需要频繁的编译转换，而 image、font 和其他静态文件则只是在 build 的时候才会去进行转换
-- 总而言之，只有会被 usere f影响到的才会去修改
+- 总而言之，只有会被 useref 影响到的才会去修改
 
 ### 补充
 
@@ -612,7 +624,7 @@ const useref = () => {
 - 一般将 clean、develop、serve 任务导出使用，其他任务则被加入其中自动化使用
 - 还可以把这三个任务定义到 package.json 中的 scripts 中，这样更容易理解一点，使用更方便
 
-```json
+```json 
 // 注意：npmScripyts 会自动找到我们所执行的命令在 node_modules 中的命令文件，就不需要 yarn 去找这个命令了 
 "scripts": {
   "clean": "gulp clean",
