@@ -149,7 +149,12 @@ export default sidebar({
 					collapsible: true,
 					children: 'structure',
 				},
-				'module.md',
+				{
+					text: '深入浅出模块化',
+					prefix: 'module/',
+					collapsible: true,
+					children: 'structure',
+				},
 				'codeSpecification.md',
 				'projectOrganizationDesign.md',
 				'webpack.md',
