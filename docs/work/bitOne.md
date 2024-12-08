@@ -15,7 +15,7 @@ order: 1
 
 - 定需求评审的 ddl，让 pd 发会邀
 - 评审时，先关注业务价值，业务目的，再看需求细节，关注投入产出比，不要 pd 说什么都做，能砍需求，也能加戏
-- 知道主干逻辑，<font color=red>**并找到需求未提及的遗漏的20%**</font>，如异常分支等，并逐条列出来确认，让 pd 补上
+- 知道主干逻辑，**<font color=red>并找到需求未提及的遗漏的20%</font>**，如异常分支等，并逐条列出来确认，让 pd 补上
 
 ### 设计稿
 
@@ -26,7 +26,7 @@ order: 1
 > 例如，开发耗时6天，则第3天前，提供静态图/占坑动画，第5天提供最终动画
 - 好的设计稿案例: (状态齐全)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/01.png =400x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/01.png =400x)
 
 ### 写系分
 
@@ -52,7 +52,7 @@ order: 1
   - 🚩灰度发布
   - 🚩全量
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/02.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/02.png =500x)
 
 ## 开发阶段
 
@@ -79,9 +79,9 @@ order: 1
 - 代码 review
 - 配置 reivew，(可以在 riddle 整一个配置检查小脚本，检查关键配置，图文是否合理)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/03.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/03.png =500x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/04.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/04.png =500x)
 
 - 监控 review
 - 发布计划 review
@@ -95,11 +95,11 @@ order: 1
   - 信息互通，要让群成员知道，这件事情的「摘要进度」，知道有人在操作跟进中，不要等人问起才说
 - 举例 1，2，3
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/05.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/05.png =500x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/06.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/06.png =500x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Work/07.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/07.png =500x)
 
 ## 上线阶段
 

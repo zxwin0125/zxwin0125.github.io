@@ -1374,7 +1374,7 @@ function createSetter(index) {
     }
 
     // 在状态更改完成后，重新渲染视图
-    render()
+    render() 
   }
 }
 
@@ -1391,7 +1391,6 @@ function useState(initialState) {
     // 正确：声明一个函数，采用闭包的方式，保存各自状态的 index
     setters.push(createSetter(stateIndex))
   }
-
 
   const value = state[stateIndex]
   const setter = setters[stateIndex]
@@ -1446,22 +1445,6 @@ ReactDOM.render(
 ```jsx
 import ReactDOM from 'react-dom'
 
-/* ---------- useState ---------- */
-let state = []
-let setters = [] // 存储设置状态值的方法
-let stateIndex = 0
-
-function createSetter(index) {...}
-
-function useState(initialState) {...}
-
-function render() {
-  // 重置 index
-  stateIndex = 0
-  ReactDOM.render(<App />, document.getElementById('root'))
-}
-
-/* ---------- useEffect ---------- */
 // 上一次的依赖值
 let prevDepsAry = []
 
@@ -1517,15 +1500,6 @@ export default App
 ```jsx
 import ReactDOM from 'react-dom'
 
-/* ---------- useState ---------- */
-let state = []
-let setters = [] // 存储设置状态值的方法
-let stateIndex = 0
-
-function createSetter(index) {...}
-
-function useState(initialState) {...}
-
 function render() {
   // 重置 index
   stateIndex = 0
@@ -1534,7 +1508,6 @@ function render() {
   ReactDOM.render(<App />, document.getElementById('root'))
 }
 
-/* ---------- useEffect ---------- */
 // 上一次的依赖值
 let prevDepsAry = []
 let effectIndex = 0
@@ -1600,9 +1573,7 @@ export default App
 ```jsx
 import { useState } from 'react'
 
-/* ---------- useReducer ---------- */
-
-function useReducer(reducer, initialState) {
+ function useReducer(reducer, initialState) {
   const [state, setState] = useState(initialState)
 
   function dispatch(action) {

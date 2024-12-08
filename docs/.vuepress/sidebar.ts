@@ -136,8 +136,14 @@ export default sidebar({
 			children: [
 				'frameAnalogy.md',
 				{
-					text: '聊聊 React',
+					text: '学一学 React',
 					prefix: 'react/',
+					collapsible: true,
+					children: 'structure',
+				},
+				{
+					text: '学一学 Vue',
+					prefix: 'vue/',
 					collapsible: true,
 					children: 'structure',
 				},
