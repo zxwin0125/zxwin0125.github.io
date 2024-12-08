@@ -133,7 +133,17 @@ export default sidebar({
 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWxtU.png',
 			prefix: 'frame/',
 			collapsible: true,
-			children: 'structure',
+			children: [
+				'frameAnalogy.md',
+				{
+					text: '聊聊 React',
+					prefix: 'react/',
+					collapsible: true,
+					children: 'structure',
+				},
+				'frameIsomorphic.md',
+				'frameStudy.md'
+			],
 		},
 		{
 			text: '前端工程化',

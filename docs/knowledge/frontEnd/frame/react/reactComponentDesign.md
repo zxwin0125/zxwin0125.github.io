@@ -1,7 +1,7 @@
 ---
 title: 揭秘 React 真谛：组件设计
 date: 2023-03-12
-order: 3
+order: 2
 ---
 
 - 组件不是 React 特有的概念，但是 React 将组件化的思想发扬光大，可谓用到了极致
