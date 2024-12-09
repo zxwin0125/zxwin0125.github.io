@@ -15,7 +15,7 @@ order: 6
   - **<font color=red>分析 webpack 工作原理，探究 webpack 能力边界，结合实践并加以应用将是重点</font>**
 - webpack 主题的知识点如下所示：
 
-![示意图](https://s21.ax1x.com/2024/09/18/pAKZ7fP.webp)
+![](https://s21.ax1x.com/2024/09/18/pAKZ7fP.webp)
 
 ## webpack 到底将代码编译成了什么
 
@@ -594,7 +594,7 @@ npm run build
 - 在知晓打包结果的基础上，接下来我们尝试分析产出过程，了解 webpack 工作的基本原理
 - webpack 工作流程可以简单总结为下图：
 
-![示意图](https://s21.ax1x.com/2024/09/19/pAKf91J.webp)
+![](https://s21.ax1x.com/2024/09/19/pAKf91J.webp)
 
 - 首先，webpack 会读取项目中由开发者定义的 webpack.config.js 配置文件，或者从 shell 语句中获得必要的参数，这是 webpack 内部接收业务配置信息的方式，这就完成了配置读取的初步工作
 - 接着，实例化所需 webpack 插件，在 webpack 事件流上挂载插件钩子，这样在合适的构建过程中，插件具备了改动产出结果的能力
@@ -891,7 +891,7 @@ function printTips() {
   - 该对象也提供了很多事件回调供插件做扩展
 - 两者的关系可以通过以下图示说明：
 
-![示意图](https://s21.ax1x.com/2024/09/19/pAKhGrR.webp =300x324)
+![](https://s21.ax1x.com/2024/09/19/pAKhGrR.webp =300x324)
 
 - webpack 的构建过程是通过 compiler 控制流程，compilation 进行解析
 - **<font color=red>在开发插件时，我们可以从 compiler 对象中拿到所有和 webpack 主环境相关的内容，包括事件钩子</font>**
@@ -906,7 +906,7 @@ function printTips() {
   - Babel 将 ES Next 编译成 ES5，sass-loader 将 SCSS/Sass 编译成 CSS 等，都是由相关 loader 或者 plugin 完成的
 - 因此，直观上理解，loader 就是接受源文件，对源文件进行处理，返回编译后文件
 
-![示意图](https://s21.ax1x.com/2024/09/19/pAKhbd0.webp =500x200)
+![](https://s21.ax1x.com/2024/09/19/pAKhbd0.webp =500x200)
 
 - 我们看到一个 loader 秉承单一职责，完成最小单元的文件转换
 - 一个源文件可能需要经历多步转换才能正常使用
@@ -938,7 +938,7 @@ module.exports = {
   - 最后执行的 loader 会返回最终结果
 - 如图，对应上面代码：
 
-![示意图](https://s21.ax1x.com/2024/09/19/pAK4io6.webp)
+![](https://s21.ax1x.com/2024/09/19/pAK4io6.webp)
 
 - 因此，在开发一个 loader 时，请保持其职责的单一性，只需关心输入和输出
 - 不难理解：loader 本质就是函数，其最简单的结构为：

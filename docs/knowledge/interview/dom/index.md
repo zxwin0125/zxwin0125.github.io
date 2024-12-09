@@ -114,7 +114,7 @@ btn.addEventListener('click', () => {
 
 > 题目：什么是事件委托，e.currentTarget 与 e.target 有何区别
 
-![示意图](https://static.shanyue.tech/images/23-02-11/clipboard-0095.c66057.webp)
+![](https://static.shanyue.tech/images/23-02-11/clipboard-0095.c66057.webp)
 
 - 事件委托指当有大量子元素触发事件时，将事件监听器绑定在父元素进行监听，此时数百个事件监听器变为了一个监听器，提升了网页性能
 - 另外，React 把所有事件委托在 Root Element，用以提升性能
@@ -170,7 +170,7 @@ export default function App() {
 
 > 题目：浏览器中如何读取二进制信息
 
-![示意图](https://shanyue.tech/assets/img/transform.77175c26.jpg)
+![](https://shanyue.tech/assets/img/transform.77175c26.jpg)
 
 - 可在 MDN 中熟读以下 API
   - File/Blob API

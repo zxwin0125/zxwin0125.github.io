@@ -12,7 +12,7 @@ order: 1
   - 新的模块化 feature 又有哪些？dynamic import 现在停留在哪个阶段？
 - 知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/14.webp =600x320)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/14.webp =600x320)
 
 ## 模块化简单概念
 

@@ -225,7 +225,7 @@ const rIC = window['requestIdleCallback'] || (f => setTimeout(f, 1))
 
 - 以下图片取自 whatwg 的规范，可以说是最权威的图文解释了
 
-[!示意图](https://html.spec.whatwg.org/images/asyncdefer.svg)
+[!](https://html.spec.whatwg.org/images/asyncdefer.svg)
 
 - 在正常情况下，即 `<script>` 没有任何额外属性标记的情况下，有几点共识
   1. JS 的脚本分为加载、解析、执行几个步骤，简单对应到图中就是 fetch (加载) 和 execution (解析并执行)

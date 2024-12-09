@@ -15,41 +15,41 @@ export default navbar([
 				icon: 'code',
 				link: 'frontEnd/html/html5Tag',
 			},
-			{
-				text: '服务端',
-				icon: 'server',
-				link: 'serverSide/index',
-			},
-			{
-				text: '客户端',
-				icon: 'mobile',
-				link: 'clientSide/index',
-			},
-			{
-				text: '数据库',
-				icon: 'database',
-				link: 'dataBase/index',
-			},
-			{
-				text: '系统',
-				icon: 'computer',
-				link: 'os/index',
-			},
-			{
-				text: 'Mac相关',
-				icon: 'laptop',
-				link: 'mac/index',
-			},
-			{
-				text: '工具相关',
-				icon: 'toolbox',
-				link: 'tool/index',
-			},
-			{
-				text: '面试',
-				icon: 'splotch',
-				link: 'interview/css/index',
-			},
+			// {
+			// 	text: '服务端',
+			// 	icon: 'server',
+			// 	link: 'serverSide/index',
+			// },
+			// {
+			// 	text: '客户端',
+			// 	icon: 'mobile',
+			// 	link: 'clientSide/index',
+			// },
+			// {
+			// 	text: '数据库',
+			// 	icon: 'database',
+			// 	link: 'dataBase/index',
+			// },
+			// {
+			// 	text: '系统',
+			// 	icon: 'computer',
+			// 	link: 'os/index',
+			// },
+			// {
+			// 	text: 'Mac相关',
+			// 	icon: 'laptop',
+			// 	link: 'mac/index',
+			// },
+			// {
+			// 	text: '工具相关',
+			// 	icon: 'toolbox',
+			// 	link: 'tool/index',
+			// },
+			// {
+			// 	text: '面试',
+			// 	icon: 'splotch',
+			// 	link: 'interview/css/index',
+			// },
 		],
 	},
 	{ text: '项目相关', icon: 'diagram-project', link: '/project/index' },

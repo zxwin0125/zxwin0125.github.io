@@ -10,7 +10,7 @@ order: 7
 - 列举新特性没有价值，这些东西随处可见，更重要的是分析新特性的由来，剖析如何学习新特性，分析如何利用新特性
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/30.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/30.png =500x)
 
 ## 新特性添加的必要性
 
@@ -596,7 +596,7 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 - 前两天遇到了一个关于 ES6 尾递归调用的问题
 - 什么样的行为算是尾递归调用优化，什么行为不能算尾递归调用优化
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/31.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/31.png =700x)
 
 - 简而言之：递归非常耗费内存，也很容易发生「栈溢出」错误
 - 但是对于尾递归来说，之所以可能形成优化，是因为全部执行过程中不会在调用栈上增加新的堆栈帧，而是直接更新调用栈，进而永远不会发生「栈溢出」错误

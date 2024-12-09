@@ -12,18 +12,18 @@ order: 3
 <!-- 
 
 
-![示意图](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550808757-69938548-95d1-4ab0-bcc8-d545529058ae.webp)
+![](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550808757-69938548-95d1-4ab0-bcc8-d545529058ae.webp)
 
 ## 数据状态管理之痛
 
 - 我们先思考一个问题，为什么需要数据状态管理，数据状态管理到底在解决什么样的问题
 - 这其实是框架、组件化带来的概念，让我们回到最初的起点，还是那个简单的案例：
 
-![示意图](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550832851-7e5fbf7c-d141-4f32-880b-e428bbc20781.webp)
+![](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550832851-7e5fbf7c-d141-4f32-880b-e428bbc20781.webp)
 
 - 点击页面中一处“收藏”之后，页面里其他“收藏”按钮也需要切换为“已收藏”状态：
 
-![示意图](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550847928-f8b3d391-cbf2-4a37-b897-0b0cc4551de5.webp)
+![](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550847928-f8b3d391-cbf2-4a37-b897-0b0cc4551de5.webp)
 
 - 如果没有数据状态，也许我们需要：
 
@@ -110,7 +110,7 @@ hasMarked: false / true
 
 - 某电商网站，应用页面骨架如下：
 
-![示意图](xxx)
+![](xxx)
 
 - 对应代码：
 - // 遍历渲染每一个商品
@@ -175,12 +175,12 @@ export default class Product extends Component {
 - 在使用 Redux 时，我们搭配 React-redux 来对组件和数据进行联通（connect），一个常陷入的误区就是滥用 connect，而没有进行更合理的设计分析。也可能只在顶层进行了 connect 设计，然后再一层层进行数据传递。
 - 比如在一个页面中存在 Profile、Feeds（信息流）、Images（图片）区域，如图所示。
 
-![示意图](xxx)
+![](xxx)
 
 - 这些区域构成了页面的主体，它们分别对应于 Profile、Feeds、Images 组件，共同作为 Page 组件的子组件而存在。
 - 如果只对 Page 这个顶层组件进行 connect 设计，其他组件的数据依靠 Page 组件进行分发，则设计如图所示：
 
-![示意图](xxx)
+![](xxx)
 
 - 这样做存在的问题如下：
     - 当改动 Profile 组件中的用户头像时，由于数据变动整个 Page 组件都会重新渲染；
@@ -188,7 +188,7 @@ export default class Product extends Component {
     - 当在 Images 组件中添加一张图片时，整个 Page 组件同样都会重新渲染。
 - 因此，更好的做法是对 Profile、Feeds、Images 这三个组件分别进行 connect 设计，在 connect 方法中使用 mapStateToProps 筛选出不同组件关心的 state 部分，如图所示：
 
-![示意图](xxx)
+![](xxx)
 
 - 这样做的好处很明显：
     - 当改动 Profile 组件中的用户头像时，只有 Profile 组件重新渲染；
@@ -213,7 +213,7 @@ export default class Product extends Component {
 
 - 不难想象这是一个文章列表加文章评论互动的场景，其对应于三个组件：Article、Comment 和 Author。这样的页面设计比比皆是，如图所示：
 
-![示意图](xxx)
+![](xxx)
 
 - 相关 reducer 的处理很棘手，如果 articles[2].comments[4].authors1 发生了变化，想要返回更新后的状态，并保证不可变性，操作起来不是那么简单的，我们需要对深层对象结构进行拷贝或递归。
 - 因此，更好的数据结构设计一定是扁平化的，我们对 articles、comments、authors 进行扁平化处理。例如 comments 数组不再存储 authors 数据，而是记录 userId，需要时在 users 数组中进行提取即可：

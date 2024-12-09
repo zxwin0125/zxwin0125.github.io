@@ -35,7 +35,7 @@ order: 2
 
 - 如图：如何让绿色的块水平垂直居中呢？
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/06.png =300x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/06.png =300x)
 
 ### 仅适用于居中元素定宽高
 
@@ -202,4 +202,4 @@ order: 2
   - 移动端推荐使用 flex
 - 最后整理一个列表：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/07.png =600x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/07.png =600x)

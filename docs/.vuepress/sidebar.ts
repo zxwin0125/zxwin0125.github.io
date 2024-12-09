@@ -147,7 +147,7 @@ export default sidebar({
 					collapsible: true,
 					children: 'structure',
 				},
-				'frameIsomorphic.md',
+				// 'frameIsomorphic.md',
 				'frameStudy.md'
 			],
 		},
@@ -172,7 +172,7 @@ export default sidebar({
 					children: 'structure',
 				},
 				'codeSpecification.md',
-				'projectOrganizationDesign.md',
+				// 'projectOrganizationDesign.md',
 				'webpack.md',
 			],
 		},
@@ -181,14 +181,24 @@ export default sidebar({
 			icon: 'bug-slash',
 			prefix: 'performanceOptimization/',
 			collapsible: true,
-			children: 'structure',
+			children: [
+				// 'monitorAndError.md',
+				// 'problems.md',
+				'reactFrame.md'
+			],
 		},
 		{
 			text: '前端编程思维和算法',
 			icon: 'brain',
 			prefix: 'programmingThinkingAndAlgorithms/',
 			collapsible: true,
-			children: 'structure',
+			children: [
+				'designPattern.md',
+				// 'dataStructure.md',
+				// 'function.md',
+				// 'algorithms.md',
+				// 'wx.md'
+			],
 		},
 	],
   '/knowledge/interview/': [

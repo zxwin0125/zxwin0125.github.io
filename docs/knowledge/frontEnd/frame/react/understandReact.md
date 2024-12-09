@@ -13,7 +13,7 @@ order: 1
 - 对此，下面挑选出 React 中一些「不为人知」却又非常重要的点，进行解析，可以更好、更深入地理解 React
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/01.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/01.png)
 
 ## 神奇的 JSX
 
@@ -293,7 +293,7 @@ const setStatePromise = (me, state) => {
 
 - 这只是 patch 做法，如果修改 React 源码的话，也不困难：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/02.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/02.png)
 
 ## 原生事件 VS React 合成事件
 
@@ -400,13 +400,13 @@ render() {
 - React 三个假设在对比 element 时，存在短板，于是需要开发者给每一个 element 通过提供 key
 - 这样 react 可以准确地发现新旧集合中的节点中相同节点，对于相同节点无需进行节点删除和创建，只需要将旧集合中节点的位置进行移动，更新为新集合中节点的位置
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/03.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/03.png)
 
 - 组件 1234，变为 2143，此时 React 给出的 diff 结果为 2，4 不做任何操作，1，3 进行移动操作即可
 - 也就是元素在旧集合中的位置，相比新集合中的位置更靠后的话，那么它就不需要移动，当然这种 diff 听上去就并非完美无缺的
 - 来看这么一种情况：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/04.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/04.png)
 
 - 实际只需对 4 执行移动操作，然而由于 4 在旧集合中的位置是最大的，导致其他节点全部移动，移动到 4 节点后面
 - 这无疑是很愚蠢的，性能较差，针对这种情况，官方建议：

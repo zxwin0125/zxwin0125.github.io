@@ -14,7 +14,7 @@ order: 1
 - 现在就聚焦在性能监控和错误收集与上报系统上，通过学习，做到不仅能够分析性能数据、处理错误，还能建设一个成熟的配套系统
 - 主要知识点：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAMW88e.webp =450x540)
+![](https://s21.ax1x.com/2024/09/22/pAMW88e.webp =450x540)
 
 ## 性能监控指标
 
@@ -33,16 +33,16 @@ order: 1
 
 - 以上时间，我们可以通过下图对比认识：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAMfHfS.webp)
+![](https://s21.ax1x.com/2024/09/22/pAMfHfS.webp)
 
 - 这是访问 Medium 移动网站分析得到的时序图，可根据网页加载的不同时段，体会各个时间节点的变化
 - 更完整的信息由 Chrome DevTool 给出：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAMfqSg.webp)
+![](https://s21.ax1x.com/2024/09/22/pAMfqSg.webp)
 
 - 通过 Google Lighthouse 分析得到：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAMfOyj.webp)
+![](https://s21.ax1x.com/2024/09/22/pAMfOyj.webp)
 
 - 请注意 First Meaningful Paint 和 First Contentful Paint 以及 Time to Interactive（可交互时间）被收录其中
 - 先对这些时间节点以及数据有一个感性的认知，后面将会逐步学习如何统计这些时间，做出如上图一样的分析系统
@@ -58,7 +58,7 @@ order: 1
   - 因此，在时间线上，load 事件往往会落后于 DOMContentLoaded 事件
 - 如图：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAMhpkV.webp)
+![](https://s21.ax1x.com/2024/09/22/pAMhpkV.webp)
 
 - 表示页面加载一共请求了 13 个资源，大小为 309 KB，DOMContentLoaded 时间为 2.82 s，load 时间为 2.95 s，页面完全稳定时间 5.38 s
 
@@ -110,7 +110,7 @@ const weightMap = {
 - 调用 window.performance.timing 会返回一个对象，这个对象包含各种页面加载和渲染的时间节点
 - 如图：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAMojII.webp)
+![](https://s21.ax1x.com/2024/09/22/pAMojII.webp)
 
 - 具体解析：
 
@@ -525,11 +525,11 @@ try {
 
 - 也无法捕获
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAM7ip6.webp)
+![](https://s21.ax1x.com/2024/09/22/pAM7ip6.webp)
 
 - 除非在 setTimeout 中再加一层 try catch：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAM7Cfx.webp)
+![](https://s21.ax1x.com/2024/09/22/pAM7Cfx.webp)
 
 - **<font color=red>总结一下，try catch 能力有限，且对于代码的侵入性较强</font>**
 
@@ -785,11 +785,11 @@ window.addEventListener(
   - window.onerror 需要进行函数赋值：`window.onerror = function() {//...}`
     - 因此重复声明后会被替换，后续赋值会覆盖之前的值，这是一个弊端
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAM7k6O.webp)
+![](https://s21.ax1x.com/2024/09/22/pAM7k6O.webp)
 
 - 而 `window.addEventListener('error')` 可以绑定多个回调函数，按照绑定顺序依次执行，请看下图示例：
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAM7e7d.webp)
+![](https://s21.ax1x.com/2024/09/22/pAM7e7d.webp)
 
 ### 页面崩溃收集和处理
 
@@ -838,7 +838,7 @@ window.console.error = (...args) =>
 
 - 如下图
 
-![示意图](https://s21.ax1x.com/2024/09/22/pAM7Gng.webp)
+![](https://s21.ax1x.com/2024/09/22/pAM7Gng.webp)
 
 - 总结一下，大概处理了以下错误或者异常：
   - JavaScript 语法错误、代码异常

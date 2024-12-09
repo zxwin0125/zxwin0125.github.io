@@ -14,7 +14,7 @@ order: 6
 - 深入对象和原型，理解 JavaScript 在这个方向上的能力
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/24.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/24.png =700x)
 
 ## 实现 new 没有那么容易
 
@@ -583,7 +583,7 @@ class $ {
 - 这些内容属于纯理论，多说无益
 - 但借用 Eric Elliott 的著名文章：[Difference between class prototypal inheritance](https://www.zcfy.cc/article/master-the-javascript-interview-what-%20s-the-difference-between-class-amp-prototypal-inheritance-2185.html)，展开一点：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/25.jpg =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/25.jpg =500x)
 
 - 从上图，看出一些问题（单一继承、紧耦合以及层级分类问题），对于类 8，只想继承五边形的属性，却得到了继承链上其他并不需要的属性，比如五角星，正方形属性
   - 这就是大猩猩/香蕉问题，“只想要一个香蕉，但是给了整个森林”
@@ -591,7 +591,7 @@ class $ {
   - 好吧，不去修改，那就需要给类 9 新建一个基类（必然重复性问题）
 - 那么基于原型的继承可以怎么解决上述问题呢？
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/26.gif =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/26.gif =500x)
 
 - 采用原型继承，其实本质是对象组合，可以避免复杂纵深的层级关系
   - 当类 1 需要四角星特性的时候，只需要组合新特性即可，不会影响到其他实例
@@ -601,8 +601,8 @@ class $ {
 - 最后，分析一个真实场景案例
 - 在产品当中，一个页面可能存在多处“收藏”组件：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/27.png =300x)
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/28.png =300x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/27.png =300x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/28.png =300x)
 
 - 点击按钮，对页面进行收藏，成功收藏之后，按钮的状态会变为“已收藏”，再点击不会有响应
 - 这样就出现页面中多处“收藏”组件之间通信问题，点击页面顶部收藏按钮成功收藏之后，页面底部的收藏按钮状态也需要变化，进行同步
@@ -649,7 +649,7 @@ widget.on('favorAction', function() {
 
 - 具体的实现结构如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/29.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/29.png =500x)
 
 - 这样的组件行为在一些先进的 MVVM、MVC 等框架中可以良好的实现，比如 React 框架中，可以借助 Redux 实现组件间的通信
 - Redux 实质就是一个事件发布订阅系统，而 connect 就是将组件的行为具备“发布和订阅”的能力

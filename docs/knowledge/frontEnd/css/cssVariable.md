@@ -65,11 +65,11 @@ a:hover {
 - 更多 CSS 变量的基础内容可以访问：[使用 CSS 变量](https://developer.mozilla.org/zh-%20CN/docs/Web/CSS/Using_CSS_custom_properties)
 - CSS 变量的兼容性也「出乎意料」的好：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/08.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/08.png =500x)
 
 - 项目中大范围使用了 CSS 变量，在 html 根节点下，定义 :root ：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/09.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/09.png =500x)
 
 - 除了简单应用变量，还有哪些更高级的用法呢？
 

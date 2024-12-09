@@ -16,7 +16,7 @@ order: 4
 
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/21.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/21.png =700x)
 
 - 异步流程初体验
 

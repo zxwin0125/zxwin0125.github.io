@@ -38,11 +38,11 @@ order: 2
 - Yeoman 不同于 vue-cli 更像是一个脚手架的运行平台，我们可以通过 Yeoman 搭配不同的 generator 创建任何类型的项目，我们可以创建我们自己的 Generator，从而去创建我们自己的前端脚手架
 - 缺点是，在框架开发的项目中，Yeoman 过于通用，不够专注
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/06.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/06.png)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/07.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/07.png)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/08.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/08.png)
 
 ### Yeoman 基础使用
 
@@ -62,7 +62,7 @@ npm install generator-node --global # or yarn global add generator-node
 yo node
 ```
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/09.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/09.png)
 
 ### Sub generator
 
@@ -79,11 +79,11 @@ yo node:cli
 - 运行 Sub generator 的方式就是在原有 generator 命令后面跟上 Sub generator 的名字，这里会提示我们是否要重写 package.json 这样一个文件
 - 原因是在去添加 cli 支持的时候，会添加一些新的模块和配置，我们选择 yes，完成过后会提示重写了 package.json 创建了 `lib\cli.js`
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/10.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/10.png)
 
 - lib 目录下的 cli.js 提供了一些 cli 应用基础的代码结构，有了这些就可以将这个模块作为一个全局的命令行模块去使用
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/11.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/11.png)
 
 - 本地的模块我们通过 npm link 到全局范围
 
@@ -325,9 +325,9 @@ writing() {
 
 - 这里看下用脚手架创建的最新 Vue3 项目结构
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/12.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/12.png)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/13.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/13.png)
 
 #### Step2 封装 gengerator
 

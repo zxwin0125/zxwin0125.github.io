@@ -8,7 +8,7 @@ order: 2
 - 良好的组件设计会是良好的应用开发基础，这一讲就让我们谈一谈组件设计的奥秘
 - 相关知识点如下：
 
- ![示意图](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723549296606-aebab544-b39a-4c9a-942e-f47f4c75a6bf.webp)  
+ ![](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723549296606-aebab544-b39a-4c9a-942e-f47f4c75a6bf.webp)  
 
 
 - 我们将以 React 组件为例，但是其中的设计思想具有共性，不管是其他框架还是原生 Web component 都将适用
@@ -355,7 +355,7 @@ const Controls = ({ onIncrease, onDecrease }) => {
 - 如果说组件单一职责确定了如何拆分组件，封装性明确了组件如何组织，那么组合性就完成了整个应用的拼接
 - React 具有天生的组合基因：
 
- ![示意图](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550194182-e0767cc8-732c-461f-8f06-0d152b5b5094.webp)
+ ![](https://cdn.nlark.com/yuque/0/2024/webp/22361634/1723550194182-e0767cc8-732c-461f-8f06-0d152b5b5094.webp)
 
 - 对应声明式代码：
 

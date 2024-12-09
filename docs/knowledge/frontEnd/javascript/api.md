@@ -10,7 +10,7 @@ order: 3
 
 ## 主题的相关知识点如下
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/18.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/18.png =700x)
 
 ## jQuery offset 实现
 
@@ -88,7 +88,7 @@ const offset = ele => {
 - 对某一节点执行该方法，它的返回值是一个 DOMRect
 - 这个对象表示一个矩形盒子，它含有：left、top、right 和 bottom 等只读属性
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/19.png =300x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/19.png =300x)
 
 - 请参考实现代码：
 
@@ -188,7 +188,7 @@ runPromiseInSequence(array, 'init')
 
 - 执行结果如下图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/20.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/20.png =400x)
 
 ### reduce 实现 pipe
 

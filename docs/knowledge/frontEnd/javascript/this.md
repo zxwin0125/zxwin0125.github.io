@@ -6,7 +6,7 @@ category:
 order: 1
 ---
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/01.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/01.png =700x)
 
 ## this 到底指向谁
 

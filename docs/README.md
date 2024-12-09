@@ -34,4 +34,4 @@ icon: fa6-solid:book-open-reader
 - **邮箱** zxwin_0125@163.com
 - **微信** 
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg =500x)

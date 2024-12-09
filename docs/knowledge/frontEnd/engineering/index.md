@@ -14,7 +14,7 @@ order: 1
 - 以往这种写Demo套模板调页面的刀耕火种的方式已经完全不符合当下对开发效率的要求了
 - 前端工程化也是在这样一个背景下被提上台面，成为前端工程师必备的手段之一
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/01.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/01.png)
 
 **<font color=red>技术往往是为了解决问题而存在的</font>**
 
@@ -26,7 +26,7 @@ order: 1
   - 多人协作开发，无法硬性统一大家的代码风格，从仓库中pull回来的代码质量无法保证
   - 部分功能开发时需要等待后端服务接口提前完成才可以做具体编码
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/02.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/02.png)
 
 ## 一个项目过程中工程化的表现
 
@@ -39,7 +39,7 @@ order: 1
   - 规范化
   - 自动化
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/03.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/03.png)
 
 - 创建项目
   - 使用脚手架工具自动地完成基础项目结构搭建并创建特定类型文件
@@ -58,11 +58,11 @@ order: 1
 - 不然，工具并非工程化的核心，工程化的核心应该是对项目的一种整体规划或者架构，工具只是来落地实现这种规划架构的一种手段
 - 落实工程化地第一件事应该是去规划一个项目整体的工作流架构，有了这些整体规划过后在具体去考虑应该搭配那些工具做哪些具体的配置选项来去实现工程化整体的规划
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/04.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/04.png)
 
 - 一些成熟的工程化集成
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/05.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/05.png)
 
 - 许多人认为这些工具就是官方给出的脚手架，其实，不同于之前所提到的工具，这里所列出的更应该属于特定类型的项目，官方给出的集成式工程化方案（不仅仅创建了项目，更多的是做出一些约定，并且提供许多工具）
 

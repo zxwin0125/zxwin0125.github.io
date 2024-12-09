@@ -9,7 +9,7 @@ order: 2
 - 闭包是 JavaScript 中最基本也是最重要的概念之一，可是闭包又绝对不是一个单一的概念
 - 它涉及作用域、作用域链、执行上下文、内存管理等多重知识点
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/02.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/02.png =700x)
 
 ## 基本知识
 
@@ -147,12 +147,12 @@ foo() // 3
 - 因此在相应花括号形成的作用域中，存在一个「死区」，起始于函数开头，终止于相关变量声明的一行，在这个范围内无法访问 let 或 const 声明的变量
 - 参考下面图示，加深理解：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/03.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/03.png =400x)
 
 - 除了自身作用域内的 foo3 以外，bar2 函数可以访问 foo2、 foo1
 - 但是 bar1 函数却无法访问 bar2 函数内定义的 foo3
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/04.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/04.png =400x)
 
 - bar1 函数 let foo3 = 'foo3' 代码执行前，为「死区」，访问变量 foo3 会报错，该行后即可正常访问
 
@@ -215,9 +215,9 @@ function foo(arg1) {
 }
 ```
 
-- 请看示意图：
+- 请看：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/05.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/05.png =400x)
 
 - 上面提到了「执行上下文」，再看看它究竟是什么
 
@@ -342,7 +342,7 @@ undefined
 
 - 如图所示：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/06.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/06.png =400x)
 
 - 代码执行的整个过程说起来就像 **<font color=red>一条生产流水线</font>**
   - 第一道工序是在预编译阶段创建 **<font color=red>变量对象</font>** （Variable Object），此时只是创建，而未赋值
@@ -395,11 +395,11 @@ foo1()
 
 - 得到错误提示如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/07.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/07.png =400x)
 
 - 或者在 Chrome 中执行代码，打断点得到：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/08.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/08.png =400x)
 
 - 不管哪种方式，从中都可以借助 JavaScript 引擎，清晰地看到错误堆栈信息，也就是函数调用栈关系
 
@@ -431,7 +431,7 @@ getNum()
 - 这个简单的闭包例子中，numGenerator 创建了一个变量 num，返回打印 num 值的匿名函数，这个函数引用了变量 num，使得外部可以通过调用 getNum 方法访问到变量 num，因此在 numGenerator 执行完毕后，即相关调用栈出栈后，变量 num 不会消失，仍然有机会被外界访问
 - 执行代码，能清晰地看到 JavaScript 引擎的分析：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/09.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/09.png =400x)
 
 - num 值被标记为 Closure，即闭包变量
 - 对比前述内容，正常情况下外界是无法访问函数内部变量的，函数执行完之后，上下文即被销毁
@@ -475,7 +475,7 @@ var d = { e: 20 }
 
 - 对应内存分配图示：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/10.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/10.png =400x)
 
 - **<font color=red>对于分配内存和读写内存的行为所有语言都较为一致，但释放内存空间在不同语言之间有差异</font>**
   - 例如，JavaScript 依赖宿主浏览器的垃圾回收机制，一般情况下不用程序员操心，但这并不表示万事大吉，某些情况下依然会出现内存泄漏现象
@@ -500,7 +500,7 @@ function remove() {
 - 上面的代码，只是把 id 为 element 的节点移除，但是变量 element 依然存在，该节点占有的内存无法被释放
 - 请仔细参考下图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/11.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/11.png =400x)
 
 - 在 remove 方法中添加：element = null，这样更为稳妥
 - 再来看个示例：
@@ -593,7 +593,7 @@ bar()
 - 在 Chrome 浏览器 V8 最新引擎中，执行上述代码
 - 在函数 bar 中打断点，会发现 value 没有被引用，如下图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/12.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/12.png =400x)
 
 - 而在 bar 函数中加入对 value 的引用：
 
@@ -616,7 +616,7 @@ bar()
 - 会发现此时引擎中存在闭包变量 value 值
 - 如下图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/13.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/13.png =400x)
 
 - 下面来看一个实战，借助 Chrome devtool，排查发现内存泄漏的场景
 - 代码：
@@ -647,14 +647,14 @@ badCode()
 - 同时，badCode 函数调用 createNodes 函数，每 1s 创建 100 个 div 节点
 - 这时候，打开 Chrome devtool，选中 performance 标签，拍下快照得到：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/14.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/14.png =400x)
 
 - 由此可以发现，JS heap（蓝线）和 Nodes（绿线）线，随着时间线一直在上升，并没有被垃圾回收，因此，可以判定存在较大的内存泄漏风险
 - 如果不知道有问题的代码位置，具体如何找出风险点，那需要在 Chrome memory 标签中，对 JS heap 中每一项，尤其是 size 较大的前几项展开调查，如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/15.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/15.png =400x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/16.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/16.png =400x)
 
 - 明显就是定义的 array 不对劲了
 
@@ -785,7 +785,7 @@ bar() // 报错
   - 因此报错 ReferenceError: c is not defined
   - 图示分析：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/17.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/17.png =400x)
 
 ### 思考例题 5：如何利用闭包实现单例模式
 

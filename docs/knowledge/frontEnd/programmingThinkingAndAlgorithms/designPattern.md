@@ -16,7 +16,7 @@ order: 1
   - **<font color=red>设计模式不能停留在理论上，而是应该结合到实际代码当中</font>**
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms01.webp =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms01.webp =500x)
 
 ## 设计模式到底是什么
 
@@ -34,7 +34,7 @@ order: 1
   - 合成复用原则
 - 如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms02.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms02.webp)
 
 - **开闭原则（Open Close Principle）**
   - 理解开闭原则，就要了解开和闭
@@ -68,7 +68,7 @@ order: 1
   - 行为型
 - 如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms03.webp =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms03.webp =500x)
 > 对于 Java 来说，它还包括了 J2EE 类型设计模式
 
 - **创建型（Creational Patterns）**
@@ -92,7 +92,7 @@ order: 1
 - 同时 GitHub 上也有一个不错的 repo：[JsPattern-ES6](https://github.com/DavidCai1111/JsPatterns-ES6)，使用 ES6 重写了《JavaScript 模式》一书中的样例
 - 还有一个「神器」是：[es6-design-patterns](http://loredanacirstea.github.io/es6-design-patterns/%23composite)，如截图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms04.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms04.webp)
 
 - 这个网站通过 UML 图解释设计模式，同时配以可以运行的代码示例，非常方便对每一种设计模式进行学习
 

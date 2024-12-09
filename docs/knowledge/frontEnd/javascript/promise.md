@@ -11,7 +11,7 @@ order: 5
 - 那么如何实现一个简单的 Promise
 - 注意：**<font color=red>实现不是最终目的，在实现的过程中，以关键结论和关于 Promise 的考察题目来融会贯通</font>**
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/22.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/22.png =700x)
 
 ## 从 Promise 化一个 API 谈起
 
@@ -1133,7 +1133,7 @@ const resolvePromise = (promise2, result, resolve, reject) => {
 - 看 resolvePromise 方法第一步进行了以「死循环」的处理，并在发生死循环是，reject 掉，错误信息为 new TypeError('error due to circular reference')
 - 怎么理解这个处理呢，规范中指出：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/23.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/23.png =500x)
 
 - 其实出现「死循环」的情况如下：
 

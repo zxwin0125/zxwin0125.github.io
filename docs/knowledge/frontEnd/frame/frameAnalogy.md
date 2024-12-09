@@ -10,7 +10,7 @@ order: 1
 
 - 相关知识点如下：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/01.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/01.png =500x)
 
 - 现代框架的关键词提炼
   - 双向绑定、依赖收集、发布订阅模式、MVVM / MVC、虚拟 DOM、虚拟 DOM diff、模版编译等
@@ -607,7 +607,7 @@ notify.emit();
   - 模版编译过程中会读取数据，进而触发数据源属性值的 getter，因此上面所说的数据代理的「加工」就是在数据监听的 getter 中记录这个依赖，同时在 setter 触发数据变化时，执行依赖对应的相关操作，最终触发模版中数据的变化
 - 抽象成流程图来理解：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/02.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/02.png =500x)
 
 - 这也是 Vue 框架（类库）的基本架构图
 
@@ -679,7 +679,7 @@ const chapterListVirtualDom = element('ul', { id: 'list' }, [
 
 - 如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/03.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/03.png =500x)
 
 - 继续完成虚拟 DOM 向真实 DOM 节点的生成
 - 首先实现一个 setAttribute 方法，后续的代码都将使用 setAttribute 方法来对 DOM 节点进行属性设置
@@ -828,7 +828,7 @@ renderDom(dom, document.body);
 
 - 得到如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/04.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/04.png =500x)
 
 ### 虚拟 DOM diff
 
@@ -1099,7 +1099,7 @@ diff(chapterListVirtualDom, chapterListVirtualDom1);
 
 - 得到如图 diff 数组：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/05.webp =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/05.webp =500x)
 
 ### 最小化差异应用
 

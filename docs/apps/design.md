@@ -7,11 +7,11 @@ order: 90
 
 ## 电子白板
 
-在电子白板功能普及之前，我使用 Figma 对海报、图片素材进行简单剪辑，制作流程图。但是，电子白板的美观和自由度远远超过 Figma，我现在的流程图和示意图都是通过 Excalidraw 和 Canvas 完成的。
+在电子白板功能普及之前，我使用 Figma 对海报、图片素材进行简单剪辑，制作流程图。但是，电子白板的美观和自由度远远超过 Figma，我现在的流程图和都是通过 Excalidraw 和 Canvas 完成的。
 
 ### Excalidraw
 
-[Excalidraw](https://github.com/excalidraw/excalidraw) 是一款开源免费的手绘风格画图应用，可以简单地制作美观漂亮的流程图、示意图和开发架构图等常用图片，也支持插入图片，是一款自由便捷的电子白板应用。Excalidraw 已被集成到各类白板应用中。
+[Excalidraw](https://github.com/excalidraw/excalidraw) 是一款开源免费的手绘风格画图应用，可以简单地制作美观漂亮的流程图、和开发架构图等常用图片，也支持插入图片，是一款自由便捷的电子白板应用。Excalidraw 已被集成到各类白板应用中。
 
 不过，Excalidraw 没有中文手写字体，需手动修改，比如 [Excalidraw 官方版添加中文手写字体](https://blog.csdn.net/qq_34802028/article/details/127927960)，[Obsidian 中文手写体设置](https://blog.csdn.net/qq_26176515/article/details/126005295)，[网页端中文手写字体配置](https://zhuanlan.zhihu.com/p/577420136)。
 

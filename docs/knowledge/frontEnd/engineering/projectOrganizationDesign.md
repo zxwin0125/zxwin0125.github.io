@@ -4,7 +4,7 @@ date: 2021-08-25
 order: 4
 ---
 
-![示意图](https://s21.ax1x.com/2024/09/21/pAM3v6A.webp =600x380)
+![](https://s21.ax1x.com/2024/09/21/pAM3v6A.webp =600x380)
 
 ## 大型前端项目的组织设计
 

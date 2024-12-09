@@ -17,7 +17,7 @@ order: 5
   - 前端也必然进入物联网，任何设备界面的响应布局将会成为关键挑战
   - 除此之外，响应式布局也体现了 CSS 的灵活和发展
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/11.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/11.png =500x)
 
 ## 上帝视角——响应式布局适配方案
 
@@ -101,12 +101,12 @@ document.documentElement.style.setProperty('--test-height', `${height}px);
 - 不同设备的物理像素尺寸等信息可以参考：[Device Metrics](https://material.io/tools/devices/)
 - 首先，淘宝通过设置：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/12.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/12.png =500x)
 
 - 禁用了用户缩放功能，使页面宽度和设备宽度对齐，一般这种操作也是移动端的响应式适配的标配
 - 观察在页面根节点 HTML 元素上，显式设置了 font-size：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/13.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/13.png =500x)
 
 - 并且进行试验，当改变浏览器大小时，html 的 font-size 会动态变化
 - 这样不难理解， 采用 rem 作为相对单位的长宽数值，都会随着 resize 事件进行变化（因为 html 的 font-size 动态变化）
@@ -164,18 +164,18 @@ document.documentElement.clientWidth / 3.75
 
 - 当然淘宝实现响应式布局除了依靠 rem 以外，还大量运用了 flex 布局，比如页面中最复杂的布局区块：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/14.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/14.png =700x)
 
 - 实现较为简单
 - 整套解决方案淘宝开源出来，叫做 flexible 布局
 - 再来看看网易的做法，大体类似：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/15.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/15.png =700x)
 
 - 同样采用了 rem 布局，但区别是网易并没有 JavaScript 介入计算 html 的 font-size，而是通过媒体查询和 calc 手段，「枚举」了不同设备下不同的 HTML font-size 值
 - 在其页面中，较为复杂的头部 slider 组件中：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/16.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/16.png =700x)
 
 - slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中为 414px），而高度采用了 rem 布局： 3.7 rem = 55.3px(calc(13.33333333vw) - 3.7)
 - 总结一下，响应式布局并没有那么困难，需要掌握最基本的处理手段，在实际场景中综合运用多种套路即可实现最大限度的灵活
@@ -185,11 +185,11 @@ document.documentElement.clientWidth / 3.75
 - Bootrap 栅格化是一个非常伟大的实现，在使用 Bootrap 布局时，可以通过添加类的方法，轻松实现栅格化，流式布局
 - 选取代表性的 BS4 官网范例，可以[在线参考](http://v4.bootcss.com/examples/dashboard/#)，或者参看以下截图，在宽屏幕下，看到：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/17.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/17.png =500x)
 
 - 当屏幕宽度小于 576px 时候，有：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/18.png =200x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/18.png =200x)
 
 - 对应代码：
 
@@ -363,7 +363,7 @@ border-radius: 50%;
 - flex 布局要比 table 布局似乎更快
 - 曾经一个名叫 Chris Coyier 的开发者，实现了这样一个 flex 布局生成器
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/19.png =600x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/19.png =600x)
 
 > [!warning]
 > 注意右上角的滑动条，越向右滑，页面不同颜色区块越多（截图上滚动条已经很短了，证明页面已经很长，布局区块很多），在如此大规模全面使用 flex 布局下，页面丝毫没有任何卡顿

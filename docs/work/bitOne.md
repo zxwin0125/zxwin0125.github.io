@@ -26,7 +26,7 @@ order: 1
 > 例如，开发耗时6天，则第3天前，提供静态图/占坑动画，第5天提供最终动画
 - 好的设计稿案例: (状态齐全)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/01.png =400x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/01.png =400x)
 
 ### 写系分
 
@@ -52,7 +52,7 @@ order: 1
   - 🚩灰度发布
   - 🚩全量
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/02.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/02.png =500x)
 
 ## 开发阶段
 
@@ -90,9 +90,9 @@ order: 1
   - 信息互通，要让群成员知道，这件事情的「摘要进度」，知道有人在操作跟进中，不要等人问起才说
 - 举例
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/03.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/03.png =500x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/04.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/04.png =500x)
 
 ## 上线阶段
 

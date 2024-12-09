@@ -9,7 +9,7 @@ order: 8
 - 我们将对这些「其他」内容进行梳理，主要关键字包括：类型（类型判断，类型转换，源码分析等），函数参数引用，相关面试题目分析等
 - 如图：
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/32.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/32.png =700x)
 
 ## JavaScript 类型及其判断
 
