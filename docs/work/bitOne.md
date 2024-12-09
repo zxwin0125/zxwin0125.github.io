@@ -78,11 +78,6 @@ order: 1
 
 - 代码 review
 - 配置 reivew，(可以在 riddle 整一个配置检查小脚本，检查关键配置，图文是否合理)
-
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/03.png =500x)
-
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/04.png =500x)
-
 - 监控 review
 - 发布计划 review
 - 降级演练: 主动降级，被动降级，动画降级
@@ -93,13 +88,11 @@ order: 1
 - 主动同步进度
   - 把要做的事情，有条理的整理列出来
   - 信息互通，要让群成员知道，这件事情的「摘要进度」，知道有人在操作跟进中，不要等人问起才说
-- 举例 1，2，3
+- 举例
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/05.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/03.png =500x)
 
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/06.png =500x)
-
-![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/07.png =500x)
+![示意图](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/04.png =500x)
 
 ## 上线阶段
 
