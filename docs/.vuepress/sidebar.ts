@@ -187,19 +187,19 @@ export default sidebar({
 				'reactFrame.md'
 			],
 		},
-		{
-			text: '前端编程思维和算法',
-			icon: 'brain',
-			prefix: 'programmingThinkingAndAlgorithms/',
-			collapsible: true,
-			children: [
-				'designPattern.md',
-				// 'dataStructure.md',
-				// 'function.md',
-				// 'algorithms.md',
-				// 'wx.md'
-			],
-		},
+		// {
+		// 	text: '前端编程思维和算法',
+		// 	icon: 'brain',
+		// 	prefix: 'programmingThinkingAndAlgorithms/',
+		// 	collapsible: true,
+		// 	children: [
+		// 		'designPattern.md',
+		// 		// 'dataStructure.md',
+		// 		// 'function.md',
+		// 		// 'algorithms.md',
+		// 		// 'wx.md'
+		// 	],
+		// },
 	],
   '/knowledge/interview/': [
     {

@@ -57,7 +57,7 @@ export default navbar([
 	{
 		text: '学会管理',
 		icon: 'users-gear',
-		link: '/manage/index',
+		link: '/manage/newComers',
 	},
 	// {
 	//   text: "应用",

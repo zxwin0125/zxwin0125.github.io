@@ -1,7 +1,7 @@
 ---
 article: false
 title: 关于我
-icon: fa6-solid:book-open-reader
+icon: paper-plane
 ---
 
 > 99年标准理工男，毕业于江苏科技大学苏州理工学院，热爱前端，目前找工作中（同时备战高级软考）～
@@ -15,8 +15,8 @@ icon: fa6-solid:book-open-reader
 
 #### 公司
 
-- 2022.06 - 2024.10：花呗业务：账单、还款、账单助手等（数字马力）
-- 2020.11 - 2022.05：营销业务：会员日、暑期大促等（同程旅行）
+- 2022.06 - 2024.10: 花呗业务：账单、还款、账单助手等，智能讲解低代码平台（数字马力）
+- 2020.11 - 2022.05: 营销业务：会员日、暑期大促等（同程旅行）
 <!-- 
 #### 开源
 
@@ -34,4 +34,4 @@ icon: fa6-solid:book-open-reader
 - **邮箱** zxwin_0125@163.com
 - **微信** 
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg =200x)
