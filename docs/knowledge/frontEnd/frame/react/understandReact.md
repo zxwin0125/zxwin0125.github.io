@@ -5,39 +5,25 @@ order: 1
 ---
 
 - React 是前端中最受瞩目的框架，其倡导的多种思想也对其他框架（比如 Vue）有着广泛影响
-- 但是很多 React 开发者停留在「会使用」的阶段，而并没有在细节之处把握 React 精髓
-  - 可能对各种生命周期「了如指掌」
-  - 可能对 React 虚拟 DOM diff 算法「对答如流」
-  - 可能对单向数据流「如数家珍」
-- 同时，现在 React 面试越来越「范式化」，除了实际动手写码的题目之外，其他相关面试题毫无新意，很容易被应试，很难考察开发者的 React 功底
-- 对此，下面挑选出 React 中一些「不为人知」却又非常重要的点，进行解析，可以更好、更深入地理解 React
+- 对此，挑选出 React 中一些「不为人知」却又非常重要的点，进行解析，可以更好、更深入地理解 React
 - 相关知识点如下：
 
 ![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/01.png)
 
 ## 神奇的 JSX
 
-- 其实 React 的「专利发明」并不多，比如虚拟 DOM、组件化思想并不是 Facebook 原创
-- 但 JSX 是 React 真正的创造，我认为这是 React 最「伟大」的发明
-- JSX 是 React 的骨骼，它搭起了 React 应用的组件，是整个项目的组件框架基础
-- 「不就是 HTML in JS」吗？有什么神奇之处呢？
+> JSX 是 React 的骨骼，它搭起了 React 应用的组件，是整个项目的组件框架基础
 
 ### JSX 就是丑陋的模版
 
-- 直观上看，JSX 是将 HTML 直接嵌入在了 JS 代码里面，这是刚开始接触 React 时，很多人最不能接受的设定
-- 因为前端开发者被「表现和逻辑层分离」这种思想「洗脑」太久了：
-  - 表现和逻辑耦合在一起，在某种程度上是一种混乱和困扰
-- 但是从现在发展来看，JSX 完全符合「真香定律」：
-  - JSX 让前端实现真正意义上的组件化成为了可能
-- 可能认为 JSX 很简单，但是你真的理解它了吗？试着回答这么几个问题：
-> - 如何在 JSX 中调试代码？
-> - 为什么 JSX 中不能直接使用 if...else
-- 在回答这些问题之前，先来看看 **JSX 是如何实现条件渲染的**
+- 直观上看，JSX 是将 HTML 直接嵌入在了 JS 代码里面，这是刚开始接触 React 时，很多人最不能接受的设定，因为表现和逻辑耦合在一起，在某种程度上是一种混乱和困扰
+- 但是从现在发展来看，JSX 让前端实现真正意义上的组件化成为了可能
+- 先来看看 **<font color=red>JSX 是如何实现条件渲染的</font>**
 
 ### JSX 多种姿势实现条件渲染
 
-- 很常见的一个场景：
-  - 渲染一个列表，但是需要满足：列表为空数组时，显示空文案「Sorry，the list is empty」，同时列表数据可能通过网络获取，存在列表没有初始值为 null 的情况
+> 场景：渲染一个列表，但是需要满足：列表为空数组时，显示空文案「Sorry，the list is empty」，同时列表数据可能通过网络获取，存在列表没有初始值为 null 的情况
+
 - JSX 实现这种条件渲染最简洁的手段就是三目运算符：
 
 ```javascript
@@ -147,11 +133,13 @@ const list = ({isLoading, list, error}) => {
 ```
 
 - 这样一来就可以使用 console.log 进行简单调试了，也可以使用 if...else 进行条件渲染
-- 再回到问题的本源：「**为什么不能直接在 JSX 中使用 if...else，只能借用函数逻辑实现呢**」？
-  - 实际上，JSX 会被编译为 React.createElement
-  - 直白来说，**<font color=red>React.createElement 的底层逻辑是无法运行 JavaScript 代码的，而它只能渲染一个结果</font>**
-  - 因此 JSX 中除了 JS 表达式，不能直接写 JavaScript 语法
-  - 准确来讲，JSX 只是函数调用和表达式的语法糖
+
+> [!important]
+> **<font color=red>为什么不能直接在 JSX 中使用 if...else，只能借用函数逻辑实现呢</font>**
+> - 实际上，JSX 会被编译为 React.createElement
+> - 直白来说，**<font color=red>React.createElement 的底层逻辑是无法运行 JavaScript 代码的，而它只能渲染一个结果</font>**
+> - 因此 JSX 中除了 JS 表达式，不能直接写 JavaScript 语法
+> - 准确来讲，JSX 只是函数调用和表达式的语法糖
 
 ### JSX 的强大和灵活
 
@@ -229,6 +217,7 @@ render() {
 ### this.setState 全是异步执行吗？
 
 - this.setSate 这个 API，官方描述为：
+
 > setState() does not always immediately update the component. It may batch or defer the update until later. This makes reading this.state right after calling setState() a potential pitfall.
 
 - 既然用词是 may，那么说明 this.setState 一定不全是异步执行，也不全是同步执行的，所谓的「延迟更新」并不是针对所有情况
@@ -263,18 +252,20 @@ render() {
 }
 ```
 
-- id 为 btn-raw 的 button 上绑定的事件，是在 componentDidMount 方法中通过 addEventListener 完成的，这是脱离于 React 事件之外的，因此它是同步更新的
-- 反之，代码中第二个 button 所绑定的事件处理函数对应的 setState 是异步更新的
+- id 为 btn-raw 的 button 上绑定的事件，是在 componentDidMount 方法中通过 addEventListener 完成的，这是脱离于 React 事件之外的
+- 因此它是同步更新的，反之，代码中第二个 button 所绑定的事件处理函数对应的 setState 是异步更新的
 - 这样的设计也不难理解，通过「延迟更新」，可以达到更好的性能
 
 ### this.setState promise 化
 
 - 官方提供了这种处理异步更新的方法，其中之一就是 setState 接受第二个参数，作为状态更新后的回调，但这无疑又带来了 callback hell 问题
-- 举一个场景
-	- 开发一个 tabel，这个 table 类似 excel，当用户敲下回车键时，需要将光标移动到下一行，这是一个 setState 操作，然后马上进行聚焦，这又是一个 setState 操作
-  - 如果当前行就是最后一行，那用户敲下回车时，需要先创建一个新行，这是第一个 setState 操作，同时将光标移动到新的「最后一行」，这是第二个 setState 操作
-  - 在这个新行中进行聚焦，这是第三个 setState 操作
-  - 这些 setState 操作依赖于前一个 setState 的完成
+
+> 举一个场景
+> - 开发一个 tabel，这个 table 类似 excel，当用户敲下回车键时，需要将光标移动到下一行，这是一个 setState 操作，然后马上进行聚焦，这又是一个 setState 操作
+> - 如果当前行就是最后一行，那用户敲下回车时，需要先创建一个新行，这是第一个 setState 操作，同时将光标移动到新的「最后一行」，这是第二个 setState 操作
+> - 在这个新行中进行聚焦，这是第三个 setState 操作
+> - 这些 setState 操作依赖于前一个 setState 的完成
+
 - 面对这种场景，如果不想出现回调地狱的场景，常见的处理方式是利用生命周期方法，在 componentDidUpdate 中进行相关操作
   - 第一次 setState 进行完后，在其触发的 componentDidUpdate 中进行第二次 setState，依此类推
 - 但是这样存在的问题也很明显：
@@ -297,7 +288,6 @@ const setStatePromise = (me, state) => {
 
 ## 原生事件 VS React 合成事件
 
-- 对 React 熟悉的可能知道：
 > [!info]
 > - React 中的事件机制并不是原生的那一套，事件没有绑定在原生 DOM 上 ，大多数事件绑定在 document 上（除了少数不会冒泡到 document 的事件，如 video 等)
 > - 同时，触发的事件也是对原生事件的包装，并不是原生 event
@@ -322,7 +312,7 @@ function handleClick(e) {
 ```
 
 - 上述代码第二个 console.log 总将会输出 undefined
-- 为此 React 也贴心的为我们准备了持久化合成事件的方法：
+- 为此 React 准备了持久化合成事件的方法：
 
 ```javascript
 function handleClick(e) {

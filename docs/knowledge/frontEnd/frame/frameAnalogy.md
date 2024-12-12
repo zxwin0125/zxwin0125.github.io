@@ -745,7 +745,7 @@ function element(tagName, attributes, children) {
 ```
 
 - 借助工具方法：setAttribute 进行属性的创建
-- 对 children 每一项类型进行判断，如果是 Element 实例，进行递归调用 child 的 `render` 方法，直到遇见文本节点类型，进行内容渲染
+- 对 children 每一项类型进行判断，如果是 Element 实例，进行递归调用 child 的 render 方法，直到遇见文本节点类型，进行内容渲染
 - 有了真实的 DOM 节点片段，将真实的 DOM 节点渲染到浏览器上，实现 renderDOM 方法：
 
 ```javascript
@@ -834,7 +834,7 @@ renderDom(dom, document.body);
 
 - 有了上述基础，可以产出一份虚拟 DOM，并渲染在浏览器中
 - 当用户在特定操作后，会产出新的一份虚拟 DOM，如何得出前后两份虚拟 DOM 的差异，并交给浏览器需要更新的结果呢？这就涉及到 DOM diff 的过程
-- 直观上，因为虚拟 DOM 是个树形结构，所以我们需要对两份虚拟 DOM 进行递归比较，将变化存储在一个变量 patches 中：
+- 直观上，因为虚拟 DOM 是个树形结构，所以需要对两份虚拟 DOM 进行递归比较，将变化存储在一个变量 patches 中：
 
 ```javascript
 const diff = (oldVirtualDom, newVirtualDom) => {
@@ -1104,7 +1104,7 @@ diff(chapterListVirtualDom, chapterListVirtualDom1);
 ### 最小化差异应用
 
 - 大功告成之前，来看看都做了哪些事情：
-  - **通过 Element class 生成了虚拟 DOM，通过 diff 方法对任意两个虚拟 DOM 进行比对，得到差异**
+  - **<font color=red>通过 Element class 生成了虚拟 DOM，通过 diff 方法对任意两个虚拟 DOM 进行比对，得到差异</font>**
   - 那么这个差异如何更新到现有的 DOM 节点中呢？看上去需要一个 patch 方法来完成：
 
 ```javascript
