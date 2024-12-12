@@ -1,4 +1,5 @@
 ---
+article: false
 title: 揭秘 React 真谛：组件设计
 date: 2023-03-12
 order: 2
