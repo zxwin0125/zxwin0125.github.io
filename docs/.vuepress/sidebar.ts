@@ -140,7 +140,9 @@ export default sidebar({
 					text: '学一学 React',
 					prefix: 'react/',
 					collapsible: true,
-					children: 'structure',
+					children: [
+						'reactHooks.md'
+					],
 				},
 				{
 					text: '学一学 Vue',
@@ -149,7 +151,7 @@ export default sidebar({
 					children: 'structure',
 				},
 				// 'frameIsomorphic.md',
-				'frameStudy.md'
+				// 'frameStudy.md'
 			],
 		},
 		{
