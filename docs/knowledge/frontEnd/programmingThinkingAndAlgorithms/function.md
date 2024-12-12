@@ -1,4 +1,5 @@
 ---
+article: false
 title: 古老又新潮的函数式
 date: 2021-04-27
 order: 3

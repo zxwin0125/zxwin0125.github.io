@@ -6,11 +6,11 @@ order: 1
 
 > [!info]
 > 框架在任何一种语言编程范畴中都扮演了举足轻重的地位，前端尤是如此<br>
-> 在精力有限的情况下，如何做到「触类旁通」、如何提取框架共性、提高学习和应用效率呢？
+> 在精力有限的情况下，做到「触类旁通」、提取框架共性、提高学习和应用效率
 
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/01.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/01.png =500x)
 
 - 现代框架的关键词提炼
   - 双向绑定、依赖收集、发布订阅模式、MVVM / MVC、虚拟 DOM、虚拟 DOM diff、模版编译等
@@ -29,8 +29,8 @@ order: 1
 
 ### 数据劫持与代理
 
-- 感知数据变化的方法就是进行数据劫持或数据代理
-  - 往往通过 Object.defineProperty 实现，这个方法可以定义数据的 getter 和 setter
+> 感知数据变化的方法就是进行数据劫持或数据代理，往往通过 Object.defineProperty 实现，这个方法可以定义数据的 getter 和 setter
+
 - 下面来看一个场景：
 
 ```javascript
@@ -83,7 +83,7 @@ data.course.title = '前端开发 2';
 - 只会有 `getting course value now, getting value is: {title: "前端开发", author: "张三", publishTime: "2020 年 5 月"}` 的输出
 - 这是因为尝试读取了 data.course 信息，但是修改 data.course.title 的信息并没有打印出来
 - 出现这个问题的原因是因为
-  - **实现代码只进行了一层 Object.defineProperty，或者说只对 data 的第一层属性进行了 Object.defineProperty**
+  - **<font color=red>实现代码只进行了一层 Object.defineProperty，或者说只对 data 的第一层属性进行了 Object.defineProperty</font>**
   - **对于嵌套的引用类型数据结构：data.course，同样应该进行拦截**
 - 为了达到深层拦截的目的，将 Object.defineProperty 的逻辑抽象为 observe 函数，并改用递归实现：
 
@@ -201,9 +201,9 @@ data.course.author.push('Messi');
 ```
 
 - 只监听到了 data.course 以及 data.course.author 的读取，而数组 push 行为并没有被拦截
-- **这是因为 Array.prototype 上挂载的方法并不能触发 data.course.author 属性值的 setter，由于这并不属于做赋值操作，而是 push API 调用操作**
+- **<font color=red>这是因为 Array.prototype 上挂载的方法并不能触发 data.course.author 属性值的 setter，由于这并不属于做赋值操作，而是 push API 调用操作</font>**
 - 对于框架实现来说，这显然是不满足要求的，当数组变化时应该也有所感知
-- Vue 同样存在这样的问题，它的解决方法是：**将数组的常用方法进行重写，进而覆盖掉原生的数组方法，重写之后的数组方法需要能够被拦截**
+- Vue 同样存在这样的问题，它的解决方法是：**<font color=red>将数组的常用方法进行重写，进而覆盖掉原生的数组方法，重写之后的数组方法需要能够被拦截</font>**
 - 实现逻辑如下：
 
 ```javascript
@@ -237,7 +237,7 @@ arrMethods.forEach(method => {
   - sort
   - reverse
 - 进行重写，核心操作还是调用原生方法：`oldMethod.apply(this, args)`，除此之外可以在调用 `oldMethod.apply(this, args)` 前后加入需要的任何逻辑
-- 示例代码中加入了一行 console.log，使用时：
+- 示例代码中加入了一行 `console.log`，使用时：
 
 ```javascript
 Array.prototype = Object.assign(Array.prototype, arrExtend);
@@ -247,7 +247,7 @@ array.push(4);
 // push 方法被执行了
 ```
 
-- 对应我们的代码：
+- 对应代码：
 
 ```javascript
 const arrExtend = Object.create(Array.prototype);
@@ -359,7 +359,7 @@ const observe = data => {
 				set(target, property, value, receiver) {
 					// 因为数组的 push 会引起 length 属性的变化，
 					// 所以 push 之后会触发两次 set 操作，
-					// 我们只需要保留一次即可，property 为 length 时，忽略
+					// 只需要保留一次即可，property 为 length 时，忽略
 					if (property !== 'length') {
 						console.log(
 							`setting ${key} value now, setting value is`,
@@ -410,22 +410,22 @@ data.course.author.push('messi');
 
 - 整体实现并不难理解，需要了解最基本的 Proxy 知识
 - 总结一下
-  - **对于数据键值为基本类型的情况，我们使用 Object.defineProperty**
-  - **对于键值为对象类型的情况，继续递归调用 observe 方法，并通过 Proxy 返回的新对象对 data[key] 重新赋值，这个新值的 getter 和 setter 已经被添加了代理**
+  - **<font color=red>对于数据键值为基本类型的情况，使用 Object.defineProperty</font>**
+  - **<font color=red>对于键值为对象类型的情况，继续递归调用 observe 方法，并通过 Proxy 返回的新对象对 data[key] 重新赋值，这个新值的 getter 和 setter 已经被添加了代理</font>**
 - 了解 Proxy 实现之后，对 Proxy 实现数据代理和 Object.defineProperty 实现数据拦截进行对比，会发现
 
 > [!important]
 >
 > - Object.defineProperty 不能监听数组的变化，需要进行数组方法的重写
 > - Object.defineProperty 必须遍历对象的每个属性，且对于嵌套结构需要深层遍历
-> - Proxy 的代理是针对整个对象的，而不是对象的某个属性，因此不同于Object.defineProperty 的必须遍历对象每个属性，Proxy 只需要做一层代理就可以监听同级结构下的所有属性变化，当然对于深层结构，递归还是需要进行的
+> - Proxy 的代理是针对整个对象的，而不是对象的某个属性，因此不同于 Object.defineProperty 的必须遍历对象每个属性，Proxy 只需要做一层代理就可以监听同级结构下的所有属性变化，当然对于深层结构，递归还是需要进行的
 > - Proxy 支持代理数组的变化
 > - Proxy 的第二个参数除了 set 和 get 以外，可以有 13 种拦截方法，比起 Object.defineProperty() 更加强大
 > - Proxy 性能将会被底层持续优化，而 Object.defineProperty 已经不再是优化重点
 
 ## 模版编译原理介绍
 
-- 以类 Vue 框架为例，我们看看一个典型的用法
+- 以类 Vue 框架为例，看看一个典型的用法
 
 ```javascript
 {{stage}} 平台课程：{{course.title}}
@@ -445,8 +445,9 @@ let vue = new Vue({
 });
 ```
 
-- 其中模版变量使用了 {{}} 的表达方式输出模版变量
-- 最终输出的 HTML 内容应该被合适的数据进行填充替换，因此还需要一步编译过程，该过程任何框架或类库中都是相通的，比如 React 中的 JSX，也是编译为 React.createElement，并在生成虚拟 DOM 时进行数据填充
+- 其中模版变量使用了 `{{}}` 的表达方式输出模版变量，最终输出的 HTML 内容应该被合适的数据进行填充替换
+- 因此还需要一步编译过程，该过程任何框架或类库中都是相通的
+	- 比如 React 中的 JSX，也是编译为 React.createElement，并在生成虚拟 DOM 时进行数据填充
 - 简化下过程，将模版内容：
 
 ```javascript
@@ -460,7 +461,7 @@ let vue = new Vue({
 ### 模版编译实现
 
 - 「模版编译」过程原理很简单，就是使用正则 + 遍历，有时也需要一些算法知识
-- 来看现在的场景，只需要对 #app 节点下内容进行替换，通过正则识别出模版变量，获取对应的数据即可
+- 来看现在的场景，只需要对 `#app` 节点下内容进行替换，通过正则识别出模版变量，获取对应的数据即可
 
 ```javascript
 compile(document.querySelector('#app'), data);
@@ -510,7 +511,7 @@ function compile(el, data) {
 
 - 代码分析：
   - 使用 fragment 变量储存生成的真实 HTML 节点内容
-  - 通过 replace 方法对 {{变量}} 进行数据替换，同时 {{变量}} 的表达只会出现在 nodeType === 3 的文本类型节点中
+  - 通过 replace 方法对 `{{变量}}` 进行数据替换，同时 `{{变量}}` 的表达只会出现在 nodeType === 3 的文本类型节点中
   - 因此对于符合 `node.nodeType === 3 && reg.test(textContent)` 条件的情况，进行数据获取和填充
   - 借助字符串 replace 方法第二个参数进行一次性替换，此时对于形如 `{{data.course.title}}` 的深层数据，通过 reduce 方法，获得正确的值
 - 因为 DOM 结构可能是多层的，所以对存在子节点的节点，依然使用递归进行 replace 替换
@@ -560,10 +561,10 @@ function replace(el, data) {
 ## 发布订阅模式简单应用
 
 - 所谓的「事件驱动」理念——即「事件发布订阅模式（Pub/Sub 模式）」
-- 这种模式在 JavaScript 里面有与生俱来的基因，**可以认为 JavaScript 本身就是事件驱动型语言**
+- 这种模式在 JavaScript 里面有与生俱来的基因，**<font color=red>可以认为 JavaScript 本身就是事件驱动型语言</font>**
   - 比如，应用中对一个 button 进行了事件绑定，用户点击之后就会触发按钮上面的 click 事件
   - 这是因为此时有特定程序正在监听这个事件，随之触发了相关的处理程序
-- 这个模式的一个好处是能够**解耦**，实现「**高内聚、低耦合**」的理念
+- 这个模式的一个好处是能够 **<font color=red>解耦</font>**，实现「**<font color=red>高内聚、低耦合</font>**」的理念
 - 如果最终想实现响应式 MVVM，或所谓的双向绑定，那么还需要根据这个数据变化作出相应的视图更新
 
 ```javascript
@@ -593,13 +594,13 @@ notify.emit();
 // emit here
 ```
 
-- 这就是一个简单实现的「**事件发布订阅模式**」
+- 这就是一个简单实现的「**<font color=red>事件发布订阅模式</font>**」
 
 ## MVVM融会贯通
 
 - 整个过程
   - 首先对数据进行深度拦截或代理，对每一个属性的 getter 和 setter 进行「加工」
-  - 在模版初次编译时，解析指令（如 v-model），并进行依赖收集（{{变量}}），订阅数据的变化
+  - 在模版初次编译时，解析指令（如 v-model），并进行依赖收集（`{{变量}}`），订阅数据的变化
 - 这里的依赖收集过程具体指：
   - 当调用 compiler 中的 replace 方法时，会读取数据进行模版变量的替换，这时候「读取数据时」需要做一个标记，用来表示「依赖这一项数据」，因此要订阅这个属性值的变化
   - Vue 中定义一个 Watcher 类来表示观察订阅依赖，这就实现了整套流程
@@ -607,20 +608,19 @@ notify.emit();
   - 模版编译过程中会读取数据，进而触发数据源属性值的 getter，因此上面所说的数据代理的「加工」就是在数据监听的 getter 中记录这个依赖，同时在 setter 触发数据变化时，执行依赖对应的相关操作，最终触发模版中数据的变化
 - 抽象成流程图来理解：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/02.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/02.png =500x)
 
 - 这也是 Vue 框架（类库）的基本架构图
 
 ## 揭秘虚拟 DOM
 
-- 现代框架中另一个重头戏——虚拟 DOM
-  - React 创造性的应用了虚拟 DOM，为前端发展带来了变革，Vue 2.0 也很快跟进，使得虚拟 DOM 彻底成为现代框架的重要基因
-- 简单来说，**虚拟 DOM 就是用数据结构表示 DOM 结构，它并没有真实 append 到 DOM 上**，因此称之为「虚拟」
+- React 创造性的应用了虚拟 DOM，为前端发展带来了变革，Vue 2.0 也很快跟进，使得虚拟 DOM 彻底成为现代框架的重要基因
+- 简单来说，**<font color=red>虚拟 DOM 就是用数据结构表示 DOM 结构，它并没有真实 append 到 DOM 上</font>**，因此称之为「虚拟」
 - 应用虚拟 DOM 的 **<font color=red>收益</font>** 也很直观：
   - **操作数据结构远比和浏览器交互去操作 DOM 快很多**
   - **操作数据结构是指改变对象（虚拟 DOM），这个过程比修改真实 DOM 快很多**
   - **但虚拟 DOM 也最终是要挂载到浏览器上成为真实 DOM 节点，因此使用虚拟 DOM 并不能使得操作 DOM 的数量减少，但能够精确地获取最小的、最必要的操作 DOM 的集合**
-- 我们抽象表示 DOM，每次通过 DOM diff 计算出视图前后更新的最小差异，再去把最小差异应用到真实 DOM 上的做法，无疑更为可靠，性能更有保障
+- 抽象表示 DOM，每次通过 DOM diff 计算出视图前后更新的最小差异，再去把最小差异应用到真实 DOM 上的做法，无疑更为可靠，性能更有保障
 - 那该如何表示虚拟 DOM 呢？又该如何产出虚拟 DOM 呢？
 - 直观上看这样一段 DOM 结构：
 
@@ -679,7 +679,7 @@ const chapterListVirtualDom = element('ul', { id: 'list' }, [
 
 - 如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/03.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/03.png =500x)
 
 - 继续完成虚拟 DOM 向真实 DOM 节点的生成
 - 首先实现一个 setAttribute 方法，后续的代码都将使用 setAttribute 方法来对 DOM 节点进行属性设置
@@ -828,7 +828,7 @@ renderDom(dom, document.body);
 
 - 得到如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/04.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/04.png =500x)
 
 ### 虚拟 DOM diff
 
@@ -1099,7 +1099,7 @@ diff(chapterListVirtualDom, chapterListVirtualDom1);
 
 - 得到如图 diff 数组：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/05.webp =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/05.webp =500x)
 
 ### 最小化差异应用
 

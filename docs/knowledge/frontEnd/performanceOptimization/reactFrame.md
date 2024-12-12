@@ -1,4 +1,5 @@
 ---
+article: false
 title: 以 React 为例，说说框架和性能
 date: 2024-09-15
 order: 3

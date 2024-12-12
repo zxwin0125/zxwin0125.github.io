@@ -1,4 +1,5 @@
 ---
+article: false
 title: 那些年常考的前端算法
 date: 2021-05-03
 order: 4

@@ -1,4 +1,5 @@
 ---
+article: false
 title: JavaScript 面试重点 —— API
 category:
 	- 面试

@@ -1,4 +1,5 @@
 ---
+article: false
 title: 如何实现 jsonp 及其原理
 category:
 	- 网络

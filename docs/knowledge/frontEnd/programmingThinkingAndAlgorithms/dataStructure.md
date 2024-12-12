@@ -1,4 +1,5 @@
 ---
+article: false
 title: 剖析无处不在的数据结构
 date: 2021-04-15
 order: 2

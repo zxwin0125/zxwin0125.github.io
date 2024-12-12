@@ -1,4 +1,5 @@
 ---
+article: false
 title: 同构应用中你所忽略的细节
 date: 2023-07-23
 order: 2

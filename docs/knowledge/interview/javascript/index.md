@@ -1,4 +1,5 @@
 ---
+article: false
 title: JavaScript 面试重点 —— 基础
 category:
 	- 面试

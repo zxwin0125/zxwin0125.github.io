@@ -1,7 +1,8 @@
 ---
+article: false
 title: webpack 工程师 > 前端工程师
 date: 2021-08-12
-order: 6
+order: 3
 ---
 
 - 说起前端工程化，webpack 必然在前端工具链中占有最重要的地位

@@ -1,4 +1,5 @@
 ---
+article: false
 title: 揭秘前端设计模式
 date: 2021-04-07
 order: 1

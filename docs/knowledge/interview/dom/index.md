@@ -1,4 +1,5 @@
 ---
+article: false
 title: DOM 面试重点
 category:
 	- 面试
