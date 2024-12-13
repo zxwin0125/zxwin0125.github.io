@@ -141,6 +141,7 @@ export default sidebar({
 					prefix: 'react/',
 					collapsible: true,
 					children: [
+						'reactBasics.md',
 						'reactHooks.md'
 					],
 				},

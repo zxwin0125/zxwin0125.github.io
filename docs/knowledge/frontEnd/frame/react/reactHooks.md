@@ -1189,7 +1189,7 @@ export default App
 
 - 当进入某个路由组件的时候，这个组件的 props 对象会附加几个对象：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/01.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/105.png)
 
 - React 路由模块（react-router-dom）提供了4个钩子函数，用来获取相关的路由信息：
   - useHistory：获取 history 对象
