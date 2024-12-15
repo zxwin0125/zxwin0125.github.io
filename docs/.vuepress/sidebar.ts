@@ -236,7 +236,7 @@ export default sidebar({
 		},
   ],
 	'/project/': [
-		'huabeiBill.md'
+		'bill.md'
 	],
 	'/work/': 'structure',
 	'/manage/': 'structure',
