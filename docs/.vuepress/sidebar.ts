@@ -235,7 +235,9 @@ export default sidebar({
 			children: 'structure',
 		},
   ],
-	'/project/': 'structure',
+	'/project/': [
+		'huabeiBill.md'
+	],
 	'/work/': 'structure',
 	'/manage/': 'structure',
 });
