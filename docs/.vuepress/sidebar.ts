@@ -142,6 +142,7 @@ export default sidebar({
 					collapsible: true,
 					children: [
 						'reactBasics.md',
+						'reactJSX.md',
 						'reactHooks.md'
 					],
 				},
