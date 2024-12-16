@@ -30,8 +30,8 @@ const element = <h1 className="greeting">Hello, world!</h1>
 const element = React.createElement("h1", { className: 'greeting' }, "Hello, world!");
 ```
 
-- JSX 语法就是 **<font color=red>React.createElement </font>**方法的一种<font color=red>语法糖</font>，让开发人员使用更加舒服的代码构建用户界面
-- **<font color=red>React.createElement </font>**实际上创建了一个描述 DOM 的 JS 对象，这个对象被称为 「React 元素」，所以 JSX 也被称为 「React 元素」
+- JSX 语法就是 **<font color=red>React.createElement </font>** 方法的一种<font color=red>语法糖</font>，让开发人员使用更加舒服的代码构建用户界面
+- **<font color=red>React.createElement </font>** 实际上创建了一个描述 DOM 的 JS 对象，这个对象被称为 「React 元素」，所以 JSX 也被称为 「React 元素」
 
 ```jsx
 // 注意：这是简化过的结构
@@ -66,7 +66,7 @@ const element = (
 );
 ```
 
-- JSX 本身其实也是一种表达式，**<font color=red>将它赋值给变量，当作参数传入，作为返回值都可以，</font>**以及 **<font color=red>从函数中返回 JSX</font>**
+- JSX 本身其实也是一种表达式，**<font color=red>将它赋值给变量，当作参数传入，作为返回值都可以，</font>** 以及 **<font color=red>从函数中返回 JSX</font>**
 
 ```jsx
 function getGreeting(user) {
@@ -421,7 +421,7 @@ const Person = props => {
 ```
 
 > [!warning]
-> - props 对象中存储的数据是 **<font color=red>只读</font>**的，不能在组件内部被修改，（例如禁止这种操作`props.name='约翰'`）
+> - props 对象中存储的数据是 **<font color=red>只读</font>** 的，不能在组件内部被修改，（例如禁止这种操作`props.name='约翰'`）
 > - 当 props 数据源中的数据被修改后，组件中的接收到的 props 数据会被 **<font color=red>同步更新</font>**( 数据驱动DOM )
 
 ### 2. 设置 props 默认值
@@ -579,7 +579,7 @@ class App extends React.Component {
 
 ### 2. 更改组件状态
 
-- state 状态对象中的数据不可直接更改，如果直接更改，DOM 不会被更新，要更改 state 状态数据需要使用 **<font color=red>setState </font>**方法
+- state 状态对象中的数据不可直接更改，如果直接更改，DOM 不会被更新，要更改 state 状态数据需要使用 **<font color=red>setState </font>** 方法
 
 ```jsx
 class App extends React.Component {
