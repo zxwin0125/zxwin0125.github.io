@@ -236,7 +236,8 @@ export default sidebar({
 		},
   ],
 	'/project/': [
-		'bill.md'
+		'bill.md',
+		'billReconfiguration.md'
 	],
 	'/work/': 'structure',
 	'/manage/': 'structure',
