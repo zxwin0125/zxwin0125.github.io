@@ -143,6 +143,7 @@ export default sidebar({
 					children: [
 						'reactBasics.md',
 						'reactJSX.md',
+						'reactVirtualDomDiff.md',
 						'reactHooks.md'
 					],
 				},

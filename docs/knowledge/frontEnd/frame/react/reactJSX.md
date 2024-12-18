@@ -1,6 +1,6 @@
 ---
 title: JSX 到底是什么
-order: 1
+order: 2
 ---
 
 ## 定义
