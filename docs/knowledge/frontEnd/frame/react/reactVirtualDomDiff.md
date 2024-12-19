@@ -1526,3 +1526,934 @@ export default function mountNativeElement(virtualDOM, container) {
   }
 }
 ```
+
+## 组件更新
+
+### 1. 示例
+
+```js
+function Heart(props) {
+  return <div>{props.title}&hearts;</div>
+}
+
+class Alert extends TinyReact.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      title: 'Default Title'
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    this.setState({
+      title: 'Changed Title'
+    })
+  }
+  render() {
+    return (
+      <div>
+        {this.props.name}
+        {this.props.age}
+        <div>
+          {this.state.title}
+          <button onClick={this.handleClick}>改变Title</button>
+        </div>
+      </div>
+    )
+  }
+}
+
+TinyReact.render(<Alert name="张三" age={20} />, root)
+
+setTimeout(() => {
+  // 相同组件
+  // TinyReact.render(<Alert name="李四" age={50} />, root)
+  
+  // 不同组件
+  TinyReact.render(<Heart title="Hello React" />, root)
+}, 2000)
+```
+
+### 2. 判断是否是同一个组件
+
+- 在 diff 方法中判断要更新的 Virtual DOM 是否是组件
+  - 如果不是（已经实现），则直接创建新的节点替换旧的节点
+  - 如果是组件，判断新旧 Virtual DOM 是否是同一个组件
+    - 如果不是同一个组件就不需要做组件更新操作
+    - 直接调用 mountElement 方法将组件返回的 Virtual DOM 生成真实 DOM 显示到页面中，并删除旧的 DOM
+  - 如果是同一个组件，则执行更新组件操作
+    - 其实就是将最新的 props 传递到组件中
+    - 再调用组件的 render 方法获取组件返回的最新的 Virtual DOM 对象
+    - 再将 Virtual DOM 对象传递给 diff 方法，让 diff 方法找出差异，从而将差异更新到真实 DOM 对象中
+- 在更新组件的过程中，还要在不同阶段调用其不同的组件生命周期函数
+- 新增一个 diffComponnent() 方法进行判断对比，可以对比旧组件的实例对象的构造函数与新 Virtual DOM 对象的 type 属性存储的构造函数是否相同，判断是否是同一个组件
+
+```js
+// src/TinyReact/diff.js
+import mountElement from './mountElement'
+import updateTextNode from './updateTextNode'
+import updateNodeElement from './updateNodeElement'
+import isFunction from './isFunction'
+import createDOMElement from './createDOMElement'
+import unmountNode from './unmountNode'
+import diffComponent from './diffComponent'
+export default function diff(virtualDOM, container, oldDOM) {
+  const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
+  const oldComponent = oldVirtualDOM && oldVirtualDOM.component
+  // 判断 oldDOM 是否存在
+  if (!oldDOM) { /*...*/
+  } else if (
+    // 对比的两个节点类型不相同
+    virtualDOM.type !== oldVirtualDOM.type &&
+    // 并且节点的类型不是组件，因为组件要单独处理
+    !isFunction(virtualDOM)
+  ) {/*...*/
+  } else if (isFunction(virtualDOM)) {
+    // 要更新的是组件
+    // 1) virtualDOM 组件本身的 virtualDOM 对象 通过它可以获取到组件最新的 props
+    // 2) oldComponent 要更新的组件的实例对象 通过它可以调用组件的生命周期函数 可以更新组件的 props 属性 可以获取到组件返回的最新的 Virtual DOM
+    // 3) oldDOM 要更新的 DOM 象 在更新组件时 需要在已有 DOM 对象的身上进行修改 实现 DOM 最小化操作 获取旧的 Virtual DOM 对象
+    // 4) container 如果要更新的组件和旧组件不是同一个组件 要直接将组件返回的 Virtual DOM 显示在页面中 此时需要 container 做为父级容器
+    diffComponent(virtualDOM, oldComponent, oldDOM, container)
+  } else if (virtualDOM.type === oldVirtualDOM.type) {/*...*/
+  }
+}
+```
+
+- 之前在 mountComponent 模块下的 buildClassComponent() 方法中，将组件实例对象存储在了 Virtual DOM 对象上，所以可以直接获取 oldCompoenent
+
+```js
+// src/TinyReact/diffComponent.js
+/**
+ * virtualDOM 组件本身的 virtualDOM 对象：通过它可以获取组件最新的 props
+ * oldComponent 要更新的组件的实例对象：通过它可以调用组件的生命周期函数，可以更新组件的 props 属性，可以获取组件返回的最新的 Virtual DOM 对象
+ * oldDOM 要更新的 DOM 对象：在更新组件时，需要在已有 DOM 对象身上进行修改，实现 DOM 最小化操作，可以获取旧的 Virtual DOM 对象，如果是不同组件，则需要通过它删除旧的 DOM
+ * container 父级容器：如果要更新的组件和旧组件不是同一个组件，要直接将组件返回的 Virtual DOM 显示到页面中，此时需要父级容器
+ */
+export default function diffComponent(virtualDOM, oldComponent, oldDOM, container) {
+  // 判断要更新的组件和未更新的组件是否是同一个组件
+  // 只需要确定两者使用的是否是同一个构造函数就可以了
+  if (isSameComponent(virtualDOM, oldComponent)) {
+    // 同一个组件：执行组件更新操作
+  } else {
+    // 不是同一个组件：直接将组件内容显示在页面中
+  }
+}
+
+// 判断是否是同一个组件
+// virtualDOM.type 更新后的组件构造函数
+// oldComponent.constructor 未更新前的组件构造函数
+// 两者等价就表示是同一组件
+function isSameComponent(virtualDOM, oldComponent) {
+  return oldComponent && oldComponent.constructor === virtualDOM.type
+}
+```
+
+### 3. 不同组件
+
+- 如果是不同的组件，则直接执行两个操作：
+  - 挂载新的 DOM：mountElement() 方法已实现
+  - 删除旧的 DOM
+- 将真实 DOM 挂载到页面的操作最终是在 mountNativeElement() 方法中实现的
+- 所以要将删除旧的 DOM 操作添加到里面，这就需要将旧的 DOM 传递到这个方法中
+- 通过 mountElement -> mountComponent -> mountNativeElement 的调用过程执行挂载，所以需要扩展这几个方法，让它们接收 oldDOM，并在 mountNativeElement 中执行删除旧 DOM 操作：
+- 在 diffComponent 中调用 mountElement，并传递 oldDOM
+
+```js
+// src/TinyReact/diffComponent.js
+import mountElement from "./mountElement"
+
+export default function diffComponent(virtualDOM, oldComponent, oldDOM, container) {
+  if (isSameComponent(virtualDOM, oldComponent)) {
+    // 同一个组件：执行组件更新操作
+  } else {
+    // 不是同一个组件
+    mountElement(virtualDOM, container, oldDOM)
+  }
+}
+
+// 判断是否是同一个组件
+function isSameComponent(virtualDOM, oldComponent) {
+  return oldComponent && oldComponent.constructor === virtualDOM.type
+}
+```
+```js
+// src/TinyReact/mountElement.js
+/*...*/
+export default function mountElement(virtualDOM, container, oldDOM) {
+  // Component VS NativeElement
+  if (isFunction(virtualDOM)) {
+    // Component
+    mountComponent(virtualDOM, container, oldDOM)
+  } else {
+    // NativeElement
+    mountNativeElement(virtualDOM, container, oldDOM)
+  }
+}
+```
+```js
+// src/TinyReact/mountComponent.js
+/*...*/
+export default function mountComponent(virtualDOM, container, oldDOM) {
+	/*...*/
+
+  // 判断渲染的组件是否直接返回了另一个组件
+  if (isFunction(nextVirtualDOM)) {
+    mountComponent(nextVirtualDOM, container, oldDOM)
+  } else {
+    mountNativeElement(nextVirtualDOM, container, oldDOM)
+  }
+}
+
+/*...*/
+```
+```js
+// src/TinyReact/mountNativeElement.js
+/*...*/
+export default function mountNativeElement(virtualDOM, container, oldDOM) {
+  const newElement = createDOMElement(virtualDOM)
+
+  // 将转换之后的 DOM 对象放置到页面中
+  container.appendChild(newElement)
+
+  // 判断旧的 DOM 对象是否存在，如果存在则删除
+  if (oldDOM) {
+    unmountNode(oldDOM)
+  }
+
+	/*...*/
+}
+```
+
+### 4. 相同组件
+
+- 组件更新操作
+  - 将最新的 props 传递到组件中：通过调用组件实例的 updateProps 方法
+  - 再调用组件的 render() 方法获取组件返回的最新的 Virtual DOM 对象
+    - 此时要重新存储组件实例对象
+  - 将其传递给 diff() 方法，找出差异，从而将差异更新到真实 DOM 对象中
+
+```js
+// src/TinyReact/diffComponent.js
+import mountElement from "./mountElement"
+import updateComponent from "./updateComponent"
+export default function diffComponent(virtualDOM, oldComponent, oldDOM, container) {
+  if (isSameComponent(virtualDOM, oldComponent)) {
+    // 同一个组件：执行组件更新操作
+    updateComponent(virtualDOM, oldComponent, oldDOM, container)
+  } else {
+    // 不是同一个组件
+    mountElement(virtualDOM, container, oldDOM)
+  }
+}
+
+// 判断是否是同一个组件
+function isSameComponent(virtualDOM, oldComponent) {
+  return oldComponent && oldComponent.constructor === virtualDOM.type
+}
+```
+```js
+// src/TinyReact/updateComponent.js
+import diff from "./diff"
+export default function updateComponent(virtualDOM, oldComponent, oldDOM, container) {
+  // 组件更新
+  // 1. 更新组件的 props
+  oldComponent.updateProps(virtualDOM.props)
+
+  // 2. 获取组件返回的最新的 VirtualDOM
+  let nextVirtualDOM = oldComponent.render()
+  // 重新存储组件实例
+  nextVirtualDOM.component = oldComponent
+
+  // 3. 进行比对
+  diff(nextVirtualDOM, container, oldDOM)
+}
+```
+
+### 5. 调用组件的生命周期函数
+
+- 在组件的更新过程中我们还需要去调用组件的生命周期函数，我们先在 Component 类中将生命周期默认添加进去
+  - 在父类 Component 中定义生命周期函数，这样子类都可以继承
+  - 如果子类要使用生命周期函数，重新定义覆盖即可
+
+```js
+// src/TinyReact/Component.js
+import diff from './diff'
+export default class Component {
+  constructor(props) {
+    this.props = props
+  }
+  setState(state) {
+    this.state = Object.assign({}, this.state, state)
+    // 获取最新的要渲染的 VirtualDOM 对象
+    const virtualDOM = this.render()
+    // 获取旧的 VirtualDOM 对象进行比对
+    const oldDOM = this.getDOM()
+
+    const container = oldDOM.parentNode
+    diff(virtualDOM, oldDOM.parentNode, oldDOM)
+  }
+  setDOM(dom) {
+    this._dom = dom
+  }
+  getDOM() {
+    return this._dom
+  }
+  updateProps(props) {
+    this.props = props
+  }
+
+  // 生命周期函数
+  componentWillMount() {}
+  componentDidMount() {}
+  componentWillReceiveProps(nextProps) {}
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps != this.props || nextState != this.state
+  }
+  componentWillUpdate(nextProps, nextState) {}
+  componentDidUpdate(prevProps, prevState) {}
+  componentWillUnmount() {}
+}
+```
+
+- 在 updateComponent 这个函数中我们应该先调用 componentWillReceviceProps 生命周期，在调用这个生命周期的时候要传入最新的 props
+- 接着我们要调用 shouldComponentUpdate 生命周期，来判断组件是否需要更新
+- 接着要调用 componentWillUpdate 生命周期
+- 在组件更新结束之后需要执行 componentDidUpdate 生命周期，这里传入的应该是更新前的 props，我们可以提前定义一个变量存储起来
+
+```js
+// src/TinyReact/updateComponent.js
+import diff from "./diff"
+export default function updateComponent(virtualDOM, oldComponent, oldDOM, container) {
+  // 调用生命周期函数
+  oldComponent.componentWillReceiveProps(virtualDOM.props)
+  if (oldComponent.shouldComponentUpdate(virtualDOM.props)) {
+    // 未更新前的 props
+    let prevProps = oldComponent.props
+    oldComponent.componentWillUpdate(virtualDOM.props)
+
+    // 组件更新
+    // 1. 更新组件的 props
+    oldComponent.updateProps(virtualDOM.props)
+
+    // 2. 获取组件返回的最新的 VirtualDOM
+    let nextVirtualDOM = oldComponent.render()
+    // 更新 component 组件实例对象
+    nextVirtualDOM.component = oldComponent
+
+    // 3. 进行比对
+    diff(nextVirtualDOM, container, oldDOM)
+
+    // 调用生命周期函数
+    oldComponent.componentDidUpdate(prevProps)
+  }
+}
+```
+
+## ref 属性获取元素的 DOM 对象和组件实例对象
+
+- 在 React 中可以为 React 元素添加 ref 属性，值是一个函数：
+  - 如果是普通元素，通过 ref 属性获取到元素的 DOM 对象
+    - 函数接收的参数是当前元素对应的 DOM 对象
+  - 如果是类组件，通过 ref 属性获取到组件的实例对象
+    - 函数接收的参数是当前组件的实例对象
+  - 函数组件不能使用 ref，因为它没有实例
+
+```js
+class DemoRef extends TinyReact.Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    console.log(this.input.value)
+  }
+  render() {
+    return (
+      <div>
+        <input type="text" ref={input => (this.input=input)} />
+        <button onClick={this.handleClick}>按钮</button>
+      </div>
+    )
+  }
+}
+
+TinyReact.render(<DemoRef />, root)
+```
+
+- 实现思路
+  - 如果是普通 DOM 元素
+    - 在创建节点时（createDOMElement）判断其 Virtual DOM 对象中是否有 ref 属性
+    - 如果有，就调用 ref 属性中所存储的方法，并且将创建出来的 DOM 对象作为参数传递给 ref 方法
+    - 这样在渲染组件节点的时候就可以拿到元素对象并将元素对象存储为组件属性
+
+```js
+// src/TinyReact/createDOMElement.js
+import mountElement from './mountElement'
+import updateNodeElement from './updateNodeElement'
+export default function createDOMElement(virtualDOM) {
+  let newElement = null
+
+  if (virtualDOM.type === 'text') {
+    // 文本节点
+    newElement = document.createTextNode(virtualDOM.props.textContent)
+  } else {
+    // 元素节点
+    newElement = document.createElement(virtualDOM.type)
+
+    updateNodeElement(newElement, virtualDOM)
+  }
+
+  // 将元素对应的 virtual DOM 存储到元素的属性上
+  newElement._virtualDOM = virtualDOM
+
+  // 递归创建子节点
+  virtualDOM.children.forEach(child => {
+    mountElement(child, newElement)
+  })
+
+  // ref 属性
+  if (virtualDOM.props && virtualDOM.props.ref) {
+    virtualDOM.props.ref(newElement)
+  }
+
+  return newElement
+}
+```
+
+- 如果是类组件
+  - 在 mountComponent 方法中，判断当前处理的如果是 class 组件
+    - 则通过类组件返回的 VirtualDOM 对象中获取组件实例对象
+    - 判断组件实例对象中的 props 属性中是否存在 ref 属性
+    - 如果存在就调用 ref 方法，并将组件实例对象传递给 ref 方法
+
+```js
+// src/TinyReact/mountComponent.js
+import isFunctionComponent from './isFunctionComponent'
+import isFunction from './isFunction'
+import mountNativeElement from './mountNativeElement'
+export default function mountComponent(virtualDOM, container, oldDOM) {
+  let nextVirtualDOM = null
+  let component = null
+  // 判断组件是类组件还是函数组件
+  if (isFunctionComponent(virtualDOM)) {
+    // 函数组件
+    nextVirtualDOM = buildFunctionComponent(virtualDOM)
+  } else {
+    // 类组件
+    nextVirtualDOM = buildClassComponent(virtualDOM)
+    component = nextVirtualDOM.component
+  }
+
+  // 判断渲染的组件是否直接返回了另一个组件
+  if (isFunction(nextVirtualDOM)) {
+    mountComponent(nextVirtualDOM, container, oldDOM)
+  } else {
+    mountNativeElement(nextVirtualDOM, container, oldDOM)
+  }
+
+  // 如果是类组件
+  if (component) {
+    component.componentDidMount()
+    // ref 属性
+    if (component.props && component.props.ref) {
+      component.props.ref(component)
+    }
+  }
+}
+
+function buildFunctionComponent(virtualDOM) {
+  return virtualDOM.type(virtualDOM.props || {})
+}
+
+function buildClassComponent(virtualDOM) {
+  const component = new virtualDOM.type(virtualDOM.props || {})
+  const nextVirtualDOM = component.render()
+  // 存储组件实例对象
+  nextVirtualDOM.component = component
+  return nextVirtualDOM
+}
+```
+
+## 使用 key 属性进行节点对比
+
+### 1. key 属性
+
+- 在 React 中，渲染列表数据时会要求在列表元素上添加 key 属性，否则会发出警告
+  - key 属性就是数据的唯一标识，用于 React 识别哪些数据被修改或者删除了，从而达到 DOM 最小化操作的目的
+  - key 属性不需要全局唯一，但是在同一个父节点下的同类型节点之间必须唯一
+  - 也就是说，仅在对比同一个父节点下类型相同的子节点时需要用到 key 属性
+- key 属性的作用是减少 DOM 操作，提高 DOM 操作的性能
+- 例如之前删除节点的示例是按顺序依次对比更新每个节点，然后删除最后一个 li：
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/16.png =500x)
+
+- 如果使用 key 属性，经过对比，只需删除文本为 2 的 li 即可，而不需要更新其他 li 的文本：
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/17.png =500x)
+
+### 2. 节点对比
+
+- 实现思路
+  - 两个元素进行对比时，如果类型相同，并且为元素节点（文本节点不用设置 key），就循环旧的 DOM 对象的子元素，查看其身上是否有 key 属性
+    - 如果都没有，则使用索引的方式对比每个节点
+    - 如果有，就将这个子元素的 DOM 对象存储在一个 JavaScript 对象中
+  - 接着循环要渲染的 Virtual DOM 对象的子元素，在循环的过程中获取这个子元素的 key 属性
+  - 然后使用这个 key 属性去之前的 JavaScript 对象中查找 DOM 对象
+    - 如果能够找到，就说明这个元素已经存在，不需要重新渲染
+      - 通过与旧 DOM 对象下相同索引的子元素是否相同，判断位置是否发生了变化
+      - 如果位置变化，则将当前元素移动到旧 DOM 对象下当前索引的位置（通过 insertBefore 移动到被对比的旧的子元素前面）
+      - 如果位置没有发生变化，则不需要渲染
+    - 如果找不到这个元素，说明这个元素是新增的，需要渲染，通过调用 mountElement 直接渲染到页面中
+- 示例
+
+```js
+class KeyDemo extends TinyReact.Component {
+  constructor() {
+    super()
+    this.state = {
+      persons: [
+        { id: 1, name: '张三' },
+        { id: 2, name: '李四' },
+        { id: 3, name: '王五' },
+        { id: 4, name: '赵六' }
+      ]
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    const newState = JSON.parse(JSON.stringify(this.state))
+    // 位置变化
+    newState.persons.push(newState.persons.shift())
+    // 添加元素
+    // newState.persons.splice(1, 0, { id: 0, name: '李逵' })
+    // 删除元素
+    // newState.persons.pop()
+    this.setState(newState)
+  }
+  render() {
+    return (
+      <div>
+        <ul>
+          {this.state.persons.map(person => (
+            <li key={person.id}>{person.name}</li>
+          ))}
+        </ul>
+        <button onClick={this.handleClick}>按钮</button>
+      </div>
+    )
+  }
+}
+
+TinyReact.render(<KeyDemo />, root)
+```
+
+- 位置变化
+
+```js
+// src/TinyReact/diff.js
+import mountElement from './mountElement'
+import updateTextNode from './updateTextNode'
+import updateNodeElement from './updateNodeElement'
+import isFunction from './isFunction'
+import createDOMElement from './createDOMElement'
+import unmountNode from './unmountNode'
+import diffComponent from './diffComponent'
+export default function diff(virtualDOM, container, oldDOM) {
+  const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
+  const oldComponent = oldVirtualDOM && oldVirtualDOM.component
+  // 判断 oldDOM 是否存在
+  if (!oldDOM) {
+    mountElement(virtualDOM, container)
+  } else if (
+    // 对比的两个节点类型不相同
+    virtualDOM.type !== oldVirtualDOM.type &&
+    // 并且节点的类型不是组件，因为组件要单独处理
+    !isFunction(virtualDOM)
+  ) {
+    // 节点类型不相同
+    const newElement = createDOMElement(virtualDOM)
+    oldDOM.parentNode.replaceChild(newElement, oldDOM)
+  } else if (isFunction(virtualDOM)) {
+    // 组件
+    diffComponent(virtualDOM, oldComponent, oldDOM, container)
+  } else if (virtualDOM.type === oldVirtualDOM.type) {
+    // 节点类型相同
+    if (virtualDOM.type === 'text') {
+      // 文本节点：更新内容
+      updateTextNode(virtualDOM, oldVirtualDOM, oldDOM)
+    } else {
+      // 元素节点：更新元素属性
+      updateNodeElement(oldDOM, virtualDOM, oldVirtualDOM)
+    }
+
+    // 1. 将拥有 key 属性的子元素放置在一个单独的对象中
+    const keyedElements = {}
+    for (let i = 0, len = oldDOM.childNodes.length; i < len; i++) {
+      const domElement = oldDOM.childNodes[i]
+      if (domElement.nodeType === 1) {
+        // 元素节点
+        const key = domElement._virtualDOM.props.key
+        if (key) {
+          keyedElements[key] = domElement
+        }
+      }
+    }
+
+    const hasNokey = Object.keys(keyedElements).length === 0
+
+    if (hasNokey) {
+      // 对比子节点
+      virtualDOM.children.forEach((child, i) => {
+        diff(child, oldDOM, oldDOM.childNodes[i])
+      })
+    } else {
+      // 2. 循环 virtualDOM 的子元素，获取子元素的 key 属性
+      virtualDOM.children.forEach((child, i) => {
+        const key = child.props.key
+        if (key !== undefined) {
+          const domElement = keyedElements[key]
+          if (domElement) {
+            // 3. 看看当前位置的元素是不是期望的元素
+            if (oldDOM.childNodes[i] && oldDOM.childNodes[i] !== domElement) {
+              oldDOM.insertBefore(domElement, oldDOM.childNodes[i])
+            }
+          }
+        }
+      })
+    }
+
+    // 删除节点
+    // 获取旧节点
+    const oldChildNodes = oldDOM.childNodes
+    // 判断旧节点的数量
+    if (oldChildNodes.length > virtualDOM.children.length) {
+      // 有节点需要被删除
+      for (let i = oldChildNodes.length - 1; i > virtualDOM.children.length; i--) {
+        unmountNode(oldChildNodes[i])
+      }
+    }
+  }
+}
+```
+
+> [!warning]
+> 这里通过 domElement._virtualDOM.props.key 获取 key，而不是 domElement.getAttribute('key') 获取，是因为 React 并没有将 key 属性添加到真实的 DOM 元素上，这里与 React 保持一致
+
+- 可以通过 chrome 浏览器查看 Elements 元素：
+  - 当未设置 key 属性时，点击按钮，4个 li 都闪烁（表示重新渲染）
+  - 当设置 key 属性时，点击按钮，只有3个 li 由于位置发生变化，发生了闪烁（重新渲染）
+
+### 3. 新增节点
+
+- 示例修改
+
+```js
+handleClick() {
+  const newState = JSON.parse(JSON.stringify(this.state))
+  // 位置变化
+  // newState.persons.push(newState.persons.shift())
+  // 添加元素
+  newState.persons.splice(1, 0, { id: 0, name: '李逵' })
+  // 删除元素
+  // newState.persons.pop()
+  this.setState(newState)
+}
+```
+
+- mountElement 最终通过 mountNativeElement 向页面挂载元素
+- 当前使用的是 container.appendChild(newElement)，所以新增的节点总会插入到容器的尾部
+- 所以要修改这个挂载方式，使其可以指定插入节点的位置（旧节点的前面）
+
+> [!info]
+> insertBefore(newnode, existingnode)：
+> - newnode 要插入的节点对象
+> - existingnode 可选，在其之前插入新节点，如果未指定则会在结尾插入 newnode
+>   - 如果与 newnode 相同，则会执行移动操作
+
+```js
+// src/TinyReact/diff.js
+/*...*/
+export default function diff(virtualDOM, container, oldDOM) {
+  const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
+  const oldComponent = oldVirtualDOM && oldVirtualDOM.component
+  // 判断 oldDOM 是否存在
+  if (!oldDOM) {/*...*/
+  } else if (
+    // 对比的两个节点类型不相同
+    virtualDOM.type !== oldVirtualDOM.type &&
+    // 并且节点的类型不是组件，因为组件要单独处理
+    !isFunction(virtualDOM)
+  ) {/*...*/
+  } else if (isFunction(virtualDOM)) {/*...*/
+  } else if (virtualDOM.type === oldVirtualDOM.type) {
+    // 节点类型相同
+    /*...*/
+
+    if (hasNokey) {
+      // 对比子节点
+      virtualDOM.children.forEach((child, i) => {
+        diff(child, oldDOM, oldDOM.childNodes[i])
+      })
+    } else {
+      // 2. 循环 virtualDOM 的子元素，获取子元素的 key 属性
+      virtualDOM.children.forEach((child, i) => {
+        const key = child.props.key
+        if (key !== undefined) {
+          const domElement = keyedElements[key]
+          if (domElement) {
+            // 3. 看看当前位置的元素是不是期望的元素
+            if (oldDOM.childNodes[i] && oldDOM.childNodes[i] !== domElement) {
+              oldDOM.insertBefore(domElement, oldDOM.childNodes[i])
+            }
+          } else {
+            // 新增元素
+            mountElement(child, oldDOM, oldDOM.childNodes[i])
+          }
+        }
+      })
+    }
+
+    // 删除节点
+    // 获取旧节点
+    const oldChildNodes = oldDOM.childNodes
+    // 判断旧节点的数量
+    if (oldChildNodes.length > virtualDOM.children.length) {
+      // 有节点需要被删除
+      for (let i = oldChildNodes.length - 1; i > virtualDOM.children.length; i--) {
+        unmountNode(oldChildNodes[i])
+      }
+    }
+  }
+}
+```
+```js
+// src/TinyReact/mountElement.js
+import createDOMElement from './createDOMElement'
+import unmountNode from './unmountNode'
+export default function mountNativeElement(virtualDOM, container, oldDOM) {
+  const newElement = createDOMElement(virtualDOM)
+
+  // 将转换之后的 DOM 对象放置到页面中
+  if (oldDOM) {
+    container.insertBefore(newElement, oldDOM)
+  } else {
+    container.appendChild(newElement)
+  }
+
+  // 判断旧的 DOM 对象是否存在，如果存在则删除
+  if (oldDOM) {
+    unmountNode(oldDOM)
+  }
+
+  // 获取类组件的实例对象
+  const component = virtualDOM.component
+
+  // 判断是否是类组件返回的 VirtualDOM
+  if (component) {
+    component.setDOM(newElement)
+  }
+}
+```
+
+### 4. 卸载节点
+
+- 在对比节点的过程中，如果旧节点的数量多于要渲染的新节点的数量，就说明有节点被删除了
+  - 先判断 keyedElements 对象中是否有元素
+    - 如果没有就使用索引方式删除
+    - 如果有就要使用 key 属性对比的方式进行删除
+- 实现思路
+  - 循环旧节点，获取旧节点对应的 key 属性
+  - 然后根据 key 属性在新节点中查找这个旧节点
+    - 如果找到就说明这个节点没有被删除
+    - 如果没有找到，就说明节点被删除了，调用卸载节点的方法卸载节点即可
+- 示例修改
+
+```js
+handleClick() {
+  const newState = JSON.parse(JSON.stringify(this.state))
+  // 位置变化
+  // newState.persons.push(newState.persons.shift())
+  // 添加元素
+  // newState.persons.splice(1, 0, { id: 0, name: '李逵' })
+  // 删除元素
+  newState.persons.pop()
+  this.setState(newState)
+}
+```
+
+- diff
+
+```js
+// src/TinyReact/diff.js
+/*...*/
+export default function diff(virtualDOM, container, oldDOM) {
+  const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
+  const oldComponent = oldVirtualDOM && oldVirtualDOM.component
+  // 判断 oldDOM 是否存在
+  if (!oldDOM) {/*...*/
+  } else if (
+    // 对比的两个节点类型不相同
+    virtualDOM.type !== oldVirtualDOM.type &&
+    // 并且节点的类型不是组件，因为组件要单独处理
+    !isFunction(virtualDOM)
+  ) {/*...*/ 
+  } else if (isFunction(virtualDOM)) {/*...*/
+  } else if (virtualDOM.type === oldVirtualDOM.type) {
+    // 节点类型相同
+    /*...*/
+
+    // 删除节点
+    // 获取旧节点
+    const oldChildNodes = oldDOM.childNodes
+    // 判断旧节点的数 量
+    if (oldChildNodes.length > virtualDOM.children.length) {
+      // 有节点需要被删除
+      if (hasNokey) {
+        for (let i = oldChildNodes.length - 1; i > virtualDOM.children.length; i--) {
+          unmountNode(oldChildNodes[i])
+        } 
+      } else {
+        // 通过 key 属性删除节点
+        for (let i = 0; i < oldChildNodes.length; i++) {
+          const oldChild = oldChildNodes[i]
+          const oldChildKey = oldChild._virtualDOM.props.key
+          const found = virtualDOM.children.some(newChild => {
+            return oldChildKey === newChild.props.key
+          })
+          if (!found) {
+            unmountNode(oldChild)
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+#### 4.1 卸载节点需要考虑的几种情况
+
+- 卸载节点并不是说将节点直接删除就可以了，还需要考虑以下几种情况
+  - 如果要删除的节点是文本节点，可以直接删除
+  - 如果要删除的节点由组件生成，需要调用组件卸载生命周期函数 componentWillUnmount
+  - 如果要删除的节点中包含了其他组件生成的节点，需要调用其他组件的卸载生命周期函数
+  - 如果要删除的节点身上有 ref 属性，还需要删除通过 ref 属性传递给组件的 DOM 节点对象
+  - 如果要删除的节点身上有事件，需要删除事件对应的事件处理函数
+- 示例
+
+```js
+class DemoRef extends TinyReact.Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    console.log(this.input.value)
+    console.log(this.alert)
+  }
+  componentWillUnmount() {
+    console.log('componentWillUnmount')
+  }
+  render() {
+    return (
+      <div>
+        <input type="text" ref={input => (this.input = input)} />
+        <button onClick={this.handleClick}>按钮</button>
+        <Alert ref={alert => (this.alert = alert)} name="张三" age={20} />
+      </div>
+    )
+  }
+}
+
+// TinyReact.render(<DemoRef />, root)
+
+class KeyDemo extends TinyReact.Component {
+  constructor() {
+    super()
+    this.state = {
+      persons: [
+        { id: 1, name: '张三' },
+        { id: 2, name: '李四' },
+        { id: 3, name: '王五' },
+        { id: 4, name: '赵六' }
+      ]
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    const newState = JSON.parse(JSON.stringify(this.state))
+    // 位置变化
+    // newState.persons.push(newState.persons.shift())
+    // 添加元素
+    // newState.persons.splice(1, 0, { id: 0, name: '李逵' })
+    // 删除元素
+    newState.persons.pop()
+    this.setState(newState)
+  }
+  render() {
+    return (
+      <div>
+        <ul>
+          {this.state.persons.map(person => (
+            <li key={person.id}>
+              {person.name}
+              <DemoRef />
+            </li>
+          ))}
+        </ul>
+        <button onClick={this.handleClick}>按钮</button>
+      </div>
+    )
+  }
+}
+
+TinyReact.render(<KeyDemo />, root)
+```
+```js
+// src/TinyReact/unmountNode.js
+export default function unmountNode(node) {
+  const virtualDOM = node._virtualDOM
+  // 1. 文本节点可以直接删除
+  if (virtualDOM.type === 'text') {
+    // 直接删除
+    node.remove()
+    // 阻止程序向下执行
+    return
+  }
+
+  // 2. 节点是否是由组件生成
+  const component = virtualDOM.component
+  // 如果 component 存在，就说明节点是由组件生成的
+  if (component) {
+    component.componentWillUnmount()
+  }
+
+  // 3. 节点身上是否有 ref 属性
+  if (virtualDOM.props && virtualDOM.props.ref) {
+    virtualDOM.props.ref(null)
+  }
+
+  // 4. 节点的属性中是否有事件属性
+  Object.keys(virtualDOM.props).forEach(propName => {
+    if (propName.startsWith('on')) {
+      const eventName = propName.toLowerCase().slice(0, 2)
+      const eventHandler = virtualDOM.props[propName]
+      node.removeEventListener(eventName, eventHandler)
+    }
+  })
+
+  // 5. 递归删除子节点
+  if (node.childNodes.length > 0) {
+    for (let i = 0; i < node.childNodes.length; i++) {
+      unmountNode(node.childNodes[i])
+      i--
+    }
+  }
+
+  // 删除节点
+  node.remove()
+}
+```
+
+
+
