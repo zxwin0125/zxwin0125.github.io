@@ -996,10 +996,10 @@ class Alert extends TinyReact.Component {
 > [!info]
 > 示例：创建两个 Virtual DOM，在页面加载时渲染第一个 Virtual DOM，在延迟 2 秒 后渲染第二个 Virtual DOM
 > - 两个 Virtual DOM 有一些修改：
->   - `<h2>`元素的 data-test
->   - 元素被改变 `<h3>` to `<h6>`
->   - `<span>`的文本内容
->   - `<button>`点击事件的 alert 内容
+>   - h2 元素的 data-test
+>   - 元素被改变 h3 to h6
+>   - span 的文本内容
+>   - button 点击事件的 alert 内容
 
 ```js
 // src/index.js
@@ -1051,7 +1051,7 @@ setTimeout(() => {
 }, 2000)
 ```
 
-- 在更新 DOM 的时候，要 **<font color=red>先对比两个 Virtual DOM 的差异，然后仅重新渲染差异部分，以达到最小更新</red>**
+- 在更新 DOM 的时候，要 **<font color=red>先对比两个 Virtual DOM 的差异，然后仅重新渲染差异部分，以达到最小更新</font>**
 
 ### 1. 获取更新前的 Virtual DOM
 
