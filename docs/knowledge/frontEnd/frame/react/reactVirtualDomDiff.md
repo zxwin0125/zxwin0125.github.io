@@ -1053,9 +1053,7 @@ setTimeout(() => {
 
 - 在更新 DOM 的时候，要 **<font color=red>先对比两个 Virtual DOM 的差异，然后仅重新渲染差异部分，以达到最小更新</red>**
 
-### 1. Virtual DOM 比对
-
-#### 1.1 获取更新前的 Virtual DOM
+### 1. 获取更新前的 Virtual DOM
 
 - 在进行 Virtual DOM 对比时，需要用到更新后的 Virtual DOM 和更新前的 Virtual DOM，更新后的 Virtual DOM 目前可以通过 render 方法进行传递
 - 现在的问题是 **<font color=red>更新前的 Virtual DOM 要如何获取呢？</font>**
@@ -1111,9 +1109,9 @@ export default function diff(virtualDOM, container, oldDOM) {
 }
 ```
 
-#### 1.2 节点类型相同的情况
+### 2. 节点类型相同的情况
 
-##### 文本节点
+#### 2.1 文本节点
 
 - 节点类型相同的时候，根据节点的类型选择更新方式：
   - 文本节点：对比文本节点内容变化，更新文本内容
@@ -1162,7 +1160,7 @@ export default function updateTextNode(virtualDOM, oldVirtualDOM, oldDOM) {
 }
 ```
 
-##### 元素节点
+#### 2.2 元素节点
 
 - 对比新旧元素节点的属性 props 并更新
 - 更新元素节点的属性使用的是之前定义过的 updateNodeElement() 方法
@@ -1267,7 +1265,7 @@ export default function updateNodeElement(newElement, virtualDOM = {}, oldVirtua
 }
 ```
 
-#### 1.3 节点类型不同的情况
+### 3. 节点类型不同的情况
 
 - 当两个节点类型不相同的时候，就没有对比的必要了
 - 只需要用新的 Virtual DOM 生成新的真实 DOM 对象，然后使用新的 DOM 对象替换旧的 DOM 对象即可
@@ -1314,7 +1312,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 }
 ```
 
-### 2. Diff 对比
+### 4. Diff 对比
 
 - Virtual DOM 对比（Diff）的算法有两个原则：
   - 同级节点对比
@@ -1347,7 +1345,7 @@ export default function diff(virtualDOM, container, oldDOM) {
   - 当第一个 li 节点下的 p 节点对比完成后，接着对比 li 的兄弟节点
 - 对应到代码中，就是在对比当前节点的过程中，递归对比它的子节点，当全部对比完成后，继续对比下一个兄弟节点
 
-### 3. 删除节点
+### 5. 删除节点
 
 - 时机：在节点更新完成之后才能分析哪些节点应该被删除
 - 范围：发生在同一个父节点下的所有子节点身上
@@ -1412,9 +1410,9 @@ export default function unmountNode(node) {
 }
 ```
 
-### 4. setState 方法实现类组件状态更新
+### 6. setState 方法实现类组件状态更新
 
-#### 4.1 更新 state
+#### 6.1 更新 state
 
 - 要更新类组件的状态，要用到 setState() 方法
   - setState 也是父类 （Component）定义的方法
@@ -1468,7 +1466,7 @@ export default class Component {
 }
 ```
 
-#### 4.2 对比新旧 Virtual DOM
+#### 6.2 对比新旧 Virtual DOM
 
 - state 发生变化后要重新生成新的 Virtual DOM 对象与旧的进行比对，并将差异更新到旧的 DOM 中
   - 获取新的 Virtual DOM 对象：调用 render() 方法
