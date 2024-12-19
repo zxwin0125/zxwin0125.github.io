@@ -1051,7 +1051,7 @@ setTimeout(() => {
 }, 2000)
 ```
 
-- 在更新 DOM 的时候，要先对比两个 Virtual DOM 的差异，然后仅重新渲染差异部分，以达到最小更新
+- 在更新 DOM 的时候，要 **<font color=red>先对比两个 Virtual DOM 的差异，然后仅重新渲染差异部分，以达到最小更新</red>**
 
 ### 1. Virtual DOM 比对
 
@@ -1062,7 +1062,31 @@ setTimeout(() => {
   - 对于更新前的 Virtual DOM，对应的其实就是已经在页面中显示的真实 DOM 对象
   - 那么在创建真实 DOM 对象时，就可以将 Virtual DOM 添加到真实 DOM 对象的属性中
   - 在进行 Virtual DOM 对比之前，就可以通过真实 DOM 对象获取其对应的 Virtual DOM 对象了
-- 其实就是通过 render 方法的第三个参数获取的，container.firstChild
+
+```js
+export default function createDOMElement(virtualDOM) {
+	let newElement = null;
+	if (virtualDOM.type === 'text') {
+		// 文本节点
+		newElement = document.createTextNode(virtualDOM.props.textContent);
+	} else {
+		// 元素节点
+		newElement = document.createElement(virtualDOM.type);
+		updateNodeElement(newElement, virtualDOM);
+	}
+
+  // 将 Virtual DOM 添加到真实 DOM 对象的属性中
+	newElement._virtualDOM = virtualDOM;
+
+	// 递归创建子节点
+	virtualDOM.children.forEach(child => {
+		mountElement(child, newElement);
+	});
+	return newElement;
+}
+```
+
+- 然后通过 render 方法的第三个参数获取的，container.firstChild
 
 > [!warning]
 > 为什么是 container.firstChild<br>
@@ -1073,6 +1097,17 @@ setTimeout(() => {
 import diff from './diff'
 export default function render(virtualDOM, container, oldDOM = container.firstChild) {
   diff(virtualDOM, container, oldDOM)
+}
+```
+```js
+export default function diff(virtualDOM, container, oldDOM) {
+  // 获取旧的 VirtualDOM
+	const oldVirtualDOM = oldDOM && oldDOM._virtualDOM;
+	// 判断是否存在 oldDOM
+	if (!oldDOM) {
+		// 如果不存在 不需要对比 直接将 Virtual DOM 转换为真实 DOM
+		mountElement(virtualDOM, container);
+	}
 }
 ```
 
@@ -1377,7 +1412,7 @@ export default function unmountNode(node) {
 }
 ```
 
-### 4. setState 方法实现 class 组件状态更新
+### 4. setState 方法实现类组件状态更新
 
 #### 4.1 更新 state
 
@@ -1922,7 +1957,7 @@ export default function createDOMElement(virtualDOM) {
 ```
 
 - 如果是类组件
-  - 在 mountComponent 方法中，判断当前处理的如果是 class 组件
+  - 在 mountComponent 方法中，判断当前处理的如果是类组件
     - 则通过类组件返回的 VirtualDOM 对象中获取组件实例对象
     - 判断组件实例对象中的 props 属性中是否存在 ref 属性
     - 如果存在就调用 ref 方法，并将组件实例对象传递给 ref 方法
