@@ -1396,7 +1396,7 @@ export default function diff(virtualDOM, container, oldDOM) {
     // 判断旧节点的数量，如果旧节点的数量多于要渲染的新节点的长度
     if (oldChildNodes.length > virtualDOM.children.length) {
       // 有节点需要被删除
-      for (let i = oldChildNodes.length - 1; i > virtualDOM.children.length; i--) {
+      for (let i = oldChildNodes.length - 1; i > virtualDOM.children.length - 1; i--) {
         unmountNode(oldChildNodes[i])
       }
     }
