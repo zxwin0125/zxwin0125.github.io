@@ -2234,7 +2234,7 @@ handleClick() {
   // 位置变化
   // newState.persons.push(newState.persons.shift())
   // 添加元素
-  newState.persons.splice(1, 0, { id: 0, name: '李逵' })
+  newState.persons.splice(1, 0, { id: 5, name: '李逵' })
   // 删除元素
   // newState.persons.pop()
   this.setState(newState)
