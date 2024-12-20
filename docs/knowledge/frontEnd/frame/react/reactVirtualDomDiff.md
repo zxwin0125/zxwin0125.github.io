@@ -120,7 +120,7 @@ const before = {
 
 ### 1. 替换编译 JSX 时使用的函数
 
-- 在 React 代码执行前，JSX 会先被 Babel 转换为 React.createElement() 方法的调用
+- 在 React 代码执行前，JSX 会先被 Babel 转换为 React.createElement 方法的调用
   - 在调用 createElement 方法时，Babel 会向这个方法传入元素的类型、属性、子元素作为参数
   - createElement 方法的返回值为构建好的 Virtual DOM 对象
 - 而当前我们要模拟一个精简版的 createElement 方法：TinyReact.createElement
@@ -154,7 +154,7 @@ const before = {
   - type：表示节点的类型
   - props：表示节点的属性
   - children：表示子节点
-- 新建 src/TinyReact/createElement.js 文件定义 createElement() 方法：
+- 新建 src/TinyReact/createElement.js 文件定义 createElement 方法：
 
 ```js
 /**
@@ -458,7 +458,7 @@ export default function mountNativeElement(virtualDOM, container) {
 ```
 
 - 现在打开页面可以看到 Virtual DOM 被正常渲染到页面中了
-- 创建节点的方法在其他地方也会用到，所以这里将它单独作为一个方法 createDOMElement() 提取出来：
+- 创建节点的方法在其他地方也会用到，所以这里将它单独作为一个方法 createDOMElement 提取出来：
 
 ```js
 // src/TinyReact/mountNativeElement.js
@@ -498,19 +498,19 @@ export default function createDOMElement(virtualDOM) {
 
 > [!important]
 > 1. 在 HTML 文件中添加了一个 root 容器，用于放置 Virtual DOM 转换的真实 DOM
-> 2. render() 方法用于将 Virtual DOM 转换的真实 DOM，并放置到容器中 
-> 3. render() 方法是框架向外部提供开发者使用的方法，其中使用了一些内部方法，例如 diff()
-> 4. diff() 方法接受3个参数：
+> 2. render 方法用于将 Virtual DOM 转换的真实 DOM，并放置到容器中 
+> 3. render 方法是框架向外部提供开发者使用的方法，其中使用了一些内部方法，例如 diff
+> 4. diff 方法接受3个参数：
 >   - 要转换的 Virtual DOM
 >   - 转换后要放置的位置
 >   - 页面中已经存在的旧的 DOM 节点
-> 5. diff() 中要进行判断，如果存在旧的 DOM 节点则进行比对，如果不存在则直接挂载 mountElement()
-> 6. mountElement() 挂载 DOM 要判断当前是组件 Virtual DOM 还是普通的 Virtual DOM，执行相应的处理（当前只处理了普通的 Virtual DOM）
-> 7. 如果是普通的 Virtual DOM 则调用 mountNativeElement() 转换为真实 DOM 并展示到页面中
-> 8. mountNativeElement()
+> 5. diff 中要进行判断，如果存在旧的 DOM 节点则进行比对，如果不存在则直接挂载 mountElement
+> 6. mountElement 挂载 DOM 要判断当前是组件 Virtual DOM 还是普通的 Virtual DOM，执行相应的处理（当前只处理了普通的 Virtual DOM）
+> 7. 如果是普通的 Virtual DOM 则调用 mountNativeElement 转换为真实 DOM 并展示到页面中
+> 8. mountNativeElement
 >   - 先创建一个 newElement 变量用于存储创建的节点
 >   - 然后判断节点类型 type，创建相应的节点 node
->   - 然后还要递归转换当前节点的子节点，继续调用 mountElement() 方法
+>   - 然后还要递归转换当前节点的子节点，继续调用 mountElement 方法
 >   - 最后将转换后的 DOM 对象 ( newElement ) 放置到页面中
 
 ## 为 DOM 对象添加属性
@@ -522,11 +522,11 @@ export default function createDOMElement(virtualDOM) {
 > 在添加属性的时候还要进行一些判断：
 > - 是否是事件属性
 >   - 根据属性名是否以 on 开头判断
->   - 然后使用 addEventListener() 添加事件处理函数
-> - 是否是 checked 或 value 属性，无法使用 setAttribute() 设置
+>   - 然后使用 addEventListener 添加事件处理函数
+> - 是否是 checked 或 value 属性，无法使用 setAttribute 设置
 > - 是否是 children 属性，它根本不是属性，而是提供给 React 元素，用于获取子元素的
 > - 是否是 className，添加 class 属性
-> - 普通属性用 setAttribute() 方法设置即可
+> - 普通属性用 setAttribute 方法设置即可
 
 ```js
 // src/TinyReact/createDOMElement.js
@@ -677,8 +677,8 @@ export default function mountComponent(virtualDOM, container) {
 > 在渲染组件的时候还要区分是函数型组件还是类组件
 
 > [!warning]
-> 主要区别是类组件的 Virtual DOM 对象的 type 存储的函数的原型包含一个 render() 方法<br>
-> 因为定义类组件必须定义 render() 方法返回渲染的内容，而函数组件则直接返回
+> 主要区别是类组件的 Virtual DOM 对象的 type 存储的函数的原型包含一个 render 方法<br>
+> 因为定义类组件必须定义 render 方法返回渲染的内容，而函数组件则直接返回
 
 ```js
 class Foo {
@@ -777,7 +777,7 @@ function buildFunctionComponent(virtualDOM) {
 }
 ```
 
-- 而当函数组件返回的内容中包含其他组件时，会在递归创建 DOM 子节点的时候调用 mountElement()
+- 而当函数组件返回的内容中包含其他组件时，会在递归创建 DOM 子节点的时候调用 mountElement
 - 该方法又会重新判断组件的类型，不用额外处理
 
 ```js
@@ -841,7 +841,7 @@ function buildFunctionComponent(virtualDOM) {
 
 ### 5. 类组件
 
-> 类组件的内容是调用这个类创建的实例对象的 render() 方法返回的内容
+> 类组件的内容是调用这个类创建的实例对象的 render 方法返回的内容
 
 - 需要实例化类组件得到类组件实例对象，通过类组件实例对象调用类组件中的 render 方法，获取组件要渲染的 Virtual DOM
 - 在 React 中，类组件会继承 React.Component，这里先定义一个 Component 类：
@@ -961,7 +961,7 @@ class Alert extends TinyReact.Component {
 TinyReact.render(<Alert name="张三" age={20} />, root)
 ```
 
-- JavaScript 的 class 默认会添加一个 constructor() 构造函数，如果是继承其他类的子类，则构造函数内部还会调用 super()
+- JavaScript 的 class 默认会添加一个 constructor 构造函数，如果是继承其他类的子类，则构造函数内部还会调用 super
 
 ```js
 // 子类默认添加的构造函数
@@ -989,7 +989,7 @@ class Alert extends TinyReact.Component {
 ```
 
 > [!warning]
-> 如果要显示定义构造函数中的内容，必须要手动调用 super()
+> 如果要显示定义构造函数中的内容，必须要手动调用 super
 
 ## 更新 DOM 元素
 
@@ -1163,7 +1163,7 @@ export default function updateTextNode(virtualDOM, oldVirtualDOM, oldDOM) {
 #### 2.2 元素节点
 
 - 对比新旧元素节点的属性 props 并更新
-- 更新元素节点的属性使用的是之前定义过的 updateNodeElement() 方法
+- 更新元素节点的属性使用的是之前定义过的 updateNodeElement 方法
 
 > [!info]
 > 更新元素节点有以下几种情况：
@@ -1414,7 +1414,7 @@ export default function unmountNode(node) {
 
 #### 6.1 更新 state
 
-- 要更新类组件的状态，要用到 setState() 方法
+- 要更新类组件的状态，要用到 setState 方法
   - setState 也是父类 （Component）定义的方法
   - setState 方法是组件实例调用的，所以内部的 this 指向实例对象
 - 该方法可以接受一个对象，调用结果会用传递的对象浅合并类组件的 state 属性
@@ -1469,16 +1469,16 @@ export default class Component {
 #### 6.2 对比新旧 Virtual DOM
 
 - state 发生变化后要重新生成新的 Virtual DOM 对象与旧的进行比对，并将差异更新到旧的 DOM 中
-  - 获取新的 Virtual DOM 对象：调用 render() 方法
+  - 获取新的 Virtual DOM 对象：调用 render 方法
   - 获取旧的 DOM 对象：
     - 添加用于存储/获取 DOM 对象的方法，在挂载真实 DOM 时进行存储，之后可以通过 DOM 对象的 _virtualDOM 属性获取它的 Virtual DOM
-    - 在 mountNativeElement() 中调用存储 DOM 的方法，将 DOM 存储到组件实例对象上
-- mountNativeElement() 方法中如何访问组件实例对象：
-  - 在挂载类组件的时候调用了 buildClassComponent() 方法
+    - 在 mountNativeElement 中调用存储 DOM 的方法，将 DOM 存储到组件实例对象上
+- mountNativeElement 方法中如何访问组件实例对象：
+  - 在挂载类组件的时候调用了 buildClassComponent 方法
   - 内部实例化了组件实例对象
-  - 然后生成了 Virtual DOM 对象（render()），并返回
-  - 这个 Virtual DOM 又传递给 mountNativeElement()
-- 所以可以在 buildClassComponent() 方法内部，将实例对象存储在 Virtual DOM 对象中进行传递
+  - 然后生成了 Virtual DOM 对象 render，并返回
+  - 这个 Virtual DOM 又传递给 mountNativeElement
+- 所以可以在 buildClassComponent 方法内部，将实例对象存储在 Virtual DOM 对象中进行传递
 
 ```js
 // src/TinyReact/Component.js
@@ -1619,7 +1619,7 @@ setTimeout(() => {
     - 再调用组件的 render 方法获取组件返回的最新的 Virtual DOM 对象
     - 再将 Virtual DOM 对象传递给 diff 方法，让 diff 方法找出差异，从而将差异更新到真实 DOM 对象中
 - 在更新组件的过程中，还要在不同阶段调用其不同的组件生命周期函数
-- 新增一个 diffComponnent() 方法进行判断对比，可以对比旧组件的实例对象的构造函数与新 Virtual DOM 对象的 type 属性存储的构造函数是否相同，判断是否是同一个组件
+- 新增一个 diffComponnent 方法进行判断对比，可以对比旧组件的实例对象的构造函数与新 Virtual DOM 对象的 type 属性存储的构造函数是否相同，判断是否是同一个组件
 
 ```js
 // src/TinyReact/diff.js
@@ -1653,7 +1653,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 }
 ```
 
-- 之前在 mountComponent 模块下的 buildClassComponent() 方法中，将组件实例对象存储在了 Virtual DOM 对象上，所以可以直接获取 oldCompoenent
+- 之前在 mountComponent 模块下的 buildClassComponent 方法中，将组件实例对象存储在了 Virtual DOM 对象上，所以可以直接获取 oldCompoenent
 
 ```js
 // src/TinyReact/diffComponent.js
@@ -1685,9 +1685,9 @@ function isSameComponent(virtualDOM, oldComponent) {
 ### 3. 不同组件
 
 - 如果是不同的组件，则直接执行两个操作：
-  - 挂载新的 DOM：mountElement() 方法已实现
+  - 挂载新的 DOM：mountElement 方法已实现
   - 删除旧的 DOM
-- 将真实 DOM 挂载到页面的操作最终是在 mountNativeElement() 方法中实现的
+- 将真实 DOM 挂载到页面的操作最终是在 mountNativeElement 方法中实现的
 - 所以要将删除旧的 DOM 操作添加到里面，这就需要将旧的 DOM 传递到这个方法中
 - 通过 mountElement -> mountComponent -> mountNativeElement 的调用过程执行挂载，所以需要扩展这几个方法，让它们接收 oldDOM，并在 mountNativeElement 中执行删除旧 DOM 操作：
 - 在 diffComponent 中调用 mountElement，并传递 oldDOM
@@ -1762,9 +1762,9 @@ export default function mountNativeElement(virtualDOM, container, oldDOM) {
 
 - 组件更新操作
   - 将最新的 props 传递到组件中：通过调用组件实例的 updateProps 方法
-  - 再调用组件的 render() 方法获取组件返回的最新的 Virtual DOM 对象
+  - 再调用组件的 render 方法获取组件返回的最新的 Virtual DOM 对象
     - 此时要重新存储组件实例对象
-  - 将其传递给 diff() 方法，找出差异，从而将差异更新到真实 DOM 对象中
+  - 将其传递给 diff 方法，找出差异，从而将差异更新到真实 DOM 对象中
 
 ```js
 // src/TinyReact/diffComponent.js
