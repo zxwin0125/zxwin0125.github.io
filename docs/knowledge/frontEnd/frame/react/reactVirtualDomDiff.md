@@ -1982,6 +1982,32 @@ export default function createDOMElement(virtualDOM) {
     - 如果存在就调用 ref 方法，并将组件实例对象传递给 ref 方法
 
 ```js
+class DemoRef extends TinyReact.Component {
+  constructor() {
+    super()
+    this.handleClick = this.handleClick.bind(this)
+  }
+  handleClick() {
+    console.log(this.input.value)
+		console.log(this.alert);
+  }
+	componentDidMount() {
+		console.log("componentDidMount");
+	}
+  render() {
+    return (
+      <div>
+        <input type="text" ref={input => (this.input=input)} />
+        <button onClick={this.handleClick}>按钮</button>
+				<Alert ref={alert => (this.alert = alert)} name="张三" age={20} />
+      </div>
+    )
+  }
+}
+
+TinyReact.render(<DemoRef />, root)
+```
+```js
 // src/TinyReact/mountComponent.js
 import isFunctionComponent from './isFunctionComponent'
 import isFunction from './isFunction'
