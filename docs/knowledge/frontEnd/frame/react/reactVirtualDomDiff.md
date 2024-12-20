@@ -1802,6 +1802,14 @@ export default function updateComponent(virtualDOM, oldComponent, oldDOM, contai
   diff(nextVirtualDOM, container, oldDOM)
 }
 ```
+```js
+export default class Component {
+  // ...
+   updateProps(props) {
+    this.props = props
+  }
+}
+```
 
 ### 5. 调用组件的生命周期函数
 
@@ -1880,6 +1888,19 @@ export default function updateComponent(virtualDOM, oldComponent, oldDOM, contai
     // 调用生命周期函数
     oldComponent.componentDidUpdate(prevProps)
   }
+}
+```
+```js
+componentWillReceiveProps(nextProps) {
+  console.log("componentWillReceiveProps");
+}
+
+componentWillUpdate() {
+  console.log("componentWillUpdate");
+}
+
+componentDidUpdate() {
+  console.log("componentDidUpdate");
 }
 ```
 
