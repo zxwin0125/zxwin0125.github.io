@@ -144,6 +144,7 @@ export default sidebar({
 						'reactBasics.md',
 						'reactJSX.md',
 						'reactVirtualDomDiff.md',
+						'reactFiber.md',
 						'reactHooks.md'
 					],
 				},
