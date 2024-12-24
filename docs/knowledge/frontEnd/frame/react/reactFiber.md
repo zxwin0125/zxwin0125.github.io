@@ -247,7 +247,7 @@ var handle = window.requestIdleCallback(callback[, options])
 
 - callback：一个在空闲时间即将被调用的回调函数
   - 该函数接收一个形参：IdleDeadline，它提供一个方法和一个属性：
-    - 方法：timeRemaining()
+    - 方法：timeRemaining 
       - 用于获取浏览器空闲期的剩余时间，也就是空余时间
         - 返回值是毫秒数
         - 如果闲置期结束，则返回 0
@@ -391,17 +391,18 @@ btn2.onclick = function () {
 
 ### 3. 实现思路
 
-- 在 Fiber 方案中，为了实现任务的终止再继续，DOM 对比算法被拆分成了两阶段：
-  1. render 阶段（可中断）
-    - VirtualDOM 的比对，构建 Fiber 对象，构建链表
-  2. commit 阶段（不可中断）
-    - 根据构建的链表进行 DOM 操作
+> [!important]
+> 在 Fiber 方案中，为了实现任务的终止再继续，DOM 对比算法被拆分成了两阶段：
+> 1. render 阶段（可中断）
+>   - VirtualDOM 的比对，构建 Fiber 对象，构建链表
+> 2. commit 阶段（不可中断）
+>   - 根据构建的链表进行 DOM 操作
 
 > [!info]
 > 整体过程：
 > 1. 在使用 React 编写用户界面的时候仍然使用 JSX 语法
-> 2. Babel 会将 JSX 语法转换成 React.createElement() 方法的调用
-> 3. React.createElement() 方法调用后会返回 VirtualDOM 对象
+> 2. Babel 会将 JSX 语法转换成 React.createElement 方法的调用
+> 3. React.createElement 方法调用后会返回 VirtualDOM 对象
 > 4. 接下来就可以执行第一个阶段了：**<font color=red>构建 Fiber 对象</font>**
 >   - 采用循环的方式从 VirtualDOM 对象中，找到每一个内部的 VirtualDOM 对象
 >   - 为每一个 VirtualDOM 对象构建 Fiber 对象
@@ -410,8 +411,8 @@ btn2.onclick = function () {
 > 5. 接着进行第二阶段的操作：执行 DOM 操作
 >   - 在循环链表的过程中，根据当前节点存储的要执行的操作的类型，将这个操作应用到真实 DOM 中
 
-> [important]
-> - DOM 初始渲染：根据 VirtualDOM --> 创建 Fiber 对象 及 构建链表 --> 将 Fiber 对象存储的操作应用到真实 DOM 中
+> [!important]
+> - DOM 初始渲染：根据 VirtualDOM --> 创建 Fiber 对象及构建链表 --> 将 Fiber 对象存储的操作应用到真实 DOM 中
 > - DOM 更新操作：newFiber(重新获取所有 Fiber 对象) --> newFiber vs oldFiber(获取旧的 Fiber 对象，进行比对) 将差异操作追加到链表 --> 将 Fiber 对象应用到真实 DOM 中
 
 ### 4. Fiber 对象
@@ -428,7 +429,7 @@ btn2.onclick = function () {
 - 在 React 16，将整个任务拆分成一个个小的任务进行处理，每个小的任务指的就是一个 Fiber 节点的构建
 - 任务会在浏览器的空闲时间被执行，每个单元执行完成后，React 都会检查是否还有空余时间，如果有就交还主线程的控制权
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/20.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/20.png =500x)
 
 #### 4.3 数据结构
 
@@ -437,7 +438,7 @@ btn2.onclick = function () {
 - 在 render 阶段的时候，React 会从上（root）向下，再从下向上构建所有节点对应的 Fiber 对象，在从下向上的同时还会构建链表，最后将链头存储到 Root Fiber
   - 从上向下
     - 从 Root 节点开始构建，优先构建子节点
-  -c从下向上
+  - 从下向上
     - 如果当前节点没有子节点，就会构建下一个兄弟节点
     - 如果当前节点没有子节点，也没有下一个兄弟节点，就会返回父节点，构建父节点的兄弟节点
     - 如果父节点的下一个兄弟节点有子节点，就继续向下构建
@@ -475,7 +476,7 @@ btn2.onclick = function () {
 </div>
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/21.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/21.png =500x)
 
 ```js
 // B1 的 Fiber 对象包含这几个属性：
@@ -485,3 +486,911 @@ btn2.onclick = function () {
   parent: A1_Fiber
 }
 ```
+
+## 实现 Fiber 算法
+
+### 1. 准备工作
+
+> 准备一段 JSX，之后实现 Fiber 算法将这段 JSX 内容渲染到页面中
+
+```jsx
+// src/index.js
+import React from './react'
+const jsx = (
+  <div>
+    <p>Hello React</p>
+  </div>
+)
+
+console.log(jsx)
+```
+
+- Babel 会将 JSX 转换成 React.createElement 方法的调用，调用结果是生成的 VirtualDOM 对象，所以文件中要先引入 React 模块
+- 改写 React 的算法，这里使用自定义的 React 模块
+
+```js
+// src/react/index.js
+import createElement from './CreateElement'
+export default {
+  createElement
+}
+```
+
+```js
+// src/react/CreateElement/index.js
+/**
+ * 创建 Virtual DOM
+ * @param {string} type 类型
+ * @param {object | null} props 属性
+ * @param  {createElement[]} children 子元素
+ * @return {object} Virtual DOM
+ */
+export default function createElement(type, props, ...children) {
+  const childElements = [].concat(...children).reduce((result, child) => {
+    if (child !== false && child !== true && child !== null) {
+      if (child instanceof Object) {
+        result.push(child)
+      } else {
+        // 文本节点
+        result.push(createElement('text', { textContent: child }))
+      }
+    }
+    return result
+  }, [])
+  return {
+    type,
+    props: Object.assign({ children: childElements }, props)
+  }
+}
+```
+
+### 2. 创建任务队列并添加任务
+
+- 将 VirtualDOM 对象转换成真实 DOM 对象，渲染到页面中，需要用到 render 方法
+
+```js
+// src/index.js
+import React, { render } from './react'
+
+const root = document.getElementById('root')
+
+const jsx = (
+  <div>
+    <p>Hello React</p>
+  </div>
+)
+render(jsx, root)
+```
+
+```js
+// src/react/index.js
+import createElement from './CreateElement'
+export { render } from './Reconciliation'
+export default {
+  createElement
+}
+```
+
+- 在 react 目录下创建 Reconciliation 文件夹，放置 Fiber 算法的核心逻辑，在其中定义 render方法
+
+```js
+// src/react/Reconciliation/index.js
+export const render = (element, dom) => {
+  /**
+   * 1. 向任务队列中添加任务
+   * 2. 指定在浏览器空闲时执行任务
+   */
+  /**
+   * 任务就是通过 vdom 对象 构建的 fiber 对象，对象中存储着要执行的操作，如JSX 的初始化渲染、组件状态的更新等
+   * 任务队列是一个存储各种任务的数组
+   */
+}
+```
+
+- 在 react 目录下新建 Misc（杂项）文件夹，放置实现主业务逻辑的时候需要的一些辅助方法，在其中定义创建和管理任务队列的方法
+
+```js
+// src\react\Misc\CreateTaskQueue\index.js
+const CreateTaskQueue = () => {
+  // 创建一个任务队列
+  const taskQueue = []
+  return {
+    // 向任务队列添加任务
+    push: item => taskQueue.push(item),
+    // 删除并获取队列中的第一个任务（先进先出原则）
+    pop: () => taskQueue.shift()
+  }
+}
+
+export default CreateTaskQueue
+```
+
+```js
+// src\react\Misc\index.js
+export { default as createTaskQueue } from './CreateTaskQueue'
+```
+
+#### 2.1 向任务队列中添加任务
+
+```js
+// src/react/Reconciliation/index.js
+import { createTaskQueue } from '../Misc'
+
+const taskQueue = createTaskQueue()
+
+export const render = (element, dom) => {
+  /**
+   * 1. 向任务队列中添加任务
+   * 2. 指定在浏览器空闲时执行任务
+   */
+  /**
+   * 任务就是通过 vdom 对象 构建的 fiber 对象，对象中存储着要执行的操作，如JSX 的初始化渲染、组件状态的更新等
+   * 任务队列是一个存储各种任务的数组
+   */
+
+  taskQueue.push({
+    // 父级真实 DOM 对象
+    dom,
+    props: {
+      // 子级 vdom 对象
+      children: element
+    }
+  })
+
+  console.log(taskQueue.pop());
+}
+```
+
+### 3. 实现任务的调度逻辑
+
+> 扩展 render 方法，实现「指定在浏览器空闲时执行任务」
+
+1. 内部调用 requestIdleCallback 方法，创建空闲期工作内容，在浏览器空闲时间执行任务
+  - 向 requestIdleCallback 方法传递一个回调函数 performTask 
+
+> [!info]
+> performTask 译为「执行任务」
+>   - performTask 接收一个形参 deadline 用于获取空余时间
+>   - performTask 方法只负责调度任务，执行任务交给另一个方法 workLoop
+
+> [!info]
+> workLoop 译为「循环工作」
+>   - workLoop 调用的时候，将 deadline 传递进去
+>   - workLoop 先判断当前是否有要执行的子任务
+>     - 如果没有则获取子任务 getFirstTask
+>       - getFirstTask 不是获取任务队列中的第一个任务，而是获取队列中第一个任务中的第一个小任务
+>       - 该方法先从任务队列中获取第一个大任务
+>       - 然后再获取这个任务中的小任务，以此将一个大的任务拆分成一个个小任务
+>     - 如果有，并且浏览器空余时间满足条件，则执行子任务
+>     - 由于子任务不止一个，所以要循环（while）执行
+>     - 在 while 循环中使用一个函数 executeTask 去执行子任务
+
+> [!info]
+> executeTask 方法
+>   - 接收任务(Fiber 对象)并执行
+>   - 返回一个新的任务用于替换当前子任务，保证循环继续执行
+
+2. 当有高优先的任务要执行的时候，requestIdleCallback 中执行的任务会被中断
+  - 也就是跳出 while 循环，workLoop 执行结束
+  - 为了让任务继续执行，需要再次调用 requestIdleCallback 创建空闲期工作内容
+  - 调用之前还需要判断当前任务是否执行完成，判断依据：
+    - 当前子任务是否存在
+    - 任务队列中是否还有任务
+
+```js
+// src/react/Reconciliation/index.js
+import { createTaskQueue } from '../Misc'
+
+const taskQueue = createTaskQueue()
+// 当前要执行的子任务
+let subTask = null
+
+const getFirstTask = () => {}
+
+const executeTask = fiber => {}
+
+const workLoop = deadline => {
+  // 如果子任务不存在，则获取子任务
+  if (!subTask) {
+    subTask = getFirstTask()
+  }
+
+  // 如果子任务存在，并且浏览器有空余时间，则执行子任务
+  while (subTask && deadline.timeRemaining() > 1) {
+    // executeTask 接收任务 + 执行任务 + 返回新的任务
+    subTask = executeTask(subTask)
+  }
+}
+
+const performTask = deadline => {
+  // 执行任务
+  workLoop(deadline)
+
+  // 判断当前任务是否执行完成
+  if (subTask || !taskQueue.isEmpty()) {
+    // 再次告诉浏览器在空余时间继续执行任务
+    requestIdleCallback(performTask)
+  }
+}
+
+export const render = (element, dom) => {
+  /**
+   * 1. 向任务队列中添加任务
+   * 2. 指定在浏览器空闲时执行任务
+   */
+  /**
+   * 任务就是通过 vdom 对象 构建的 fiber 对象，对象中存储着要执行的操作，如JSX 的初始化渲染、组件状态的更新等
+   * 任务队列是一个存储各种任务的数组
+   */
+
+  taskQueue.push({
+    // 父级真实 DOM 对象
+    dom,
+    props: {
+      // 子级 vdom 对象
+      children: element
+    }
+  })
+
+  // 创建空闲期工作内容，在浏览器空闲时间执行任务
+  requestIdleCallback(performTask)
+
+  console.log(taskQueue.pop());
+}
+```
+
+- 为任务队列添加一个判断是否为空的方法
+
+```js
+// src\react\Misc\CreateTaskQueue\index.js
+const CreateTaskQueue = () => {
+  // 创建一个任务队列
+  const taskQueue = []
+  return {
+    // 向任务队列添加任务
+    push: item => taskQueue.push(item),
+    // 删除并获取队列中的第一个任务（先进先出原则）
+    pop: () => taskQueue.shift(),
+    // 判断任务队列中是否还有任务
+    isEmpty: () => taskQueue.length === 0
+  }
+}
+
+export default CreateTaskQueue
+```
+
+### 4. 构建节点的 Fiber 对象
+
+#### 4.1 构建顺序
+
+> 为每一个节点构建对应的 Fiber 对象
+
+```js
+// Fiber 对象
+{
+  type				节点类型（元素、文本、组件）（具体的类型）
+  props				节点属性（props中包含children属性，标识当前节点的子级 VirtualDOM）
+  stateNode		节点的真实 DOM 对象 | 类组件实例对象 | 函数组件的定义方法
+  tag					节点标记（对具体类型的分类 host_root[顶级节点root] || host_component[普通DOM节点] || class_component[类组件] || function_component[函数组件]）
+  effects			数组，存储需要更改的 Fiber 对象
+  effectTag		当前 Fiber 需要被执行的操作（新增 placement、删除 deletion、修改 update）
+  parent			当前 Fiber 的父级 Fiber
+  child				当前 Fiber 的子级 Fiber
+  sibling			当前 Fiber 的下一个兄弟 Fiber
+  alternate		当前节点对应的旧 Fiber 的备份，用于新旧 Fiber 比对 alternate 当前 Fiber 的备份，用于新旧 Fiber 比对
+}
+```
+
+> [!important]
+> - 构建的时候是从最外层节点开始构建的
+> - 外层节点构建完成后，再去构建它的子节点
+> - 当子节点构建完成后，要指定它们之间的关系
+> - 关系计算逻辑：
+>   - 只有第一个子级才算是父级的子级（父级 Fiber 对象的 child 只会存储第一个子级）
+>   - 第二个子级是第一个子级的下一个兄弟节点，依次类推（兄弟子级也会存储它们的父级）
+> - 构建完成后，再判断父级下的第一个子级是否还有子级
+>   - 如果有则继续向下构建
+>   - 如果没有判断下一个兄弟节点是否有子级
+>   - 如果都没有，则向上判断父级的兄弟节点
+>   - 最终又回到最外层的节点
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/22.png)
+
+- 如图所示，构建的顺序为：A --> B --> C --> [A -> B ->] D --> [B -> D ->] E --> F --> [D -> E -> F -> D -> B -> C] --> G --> H --> [c -> G -> H -> A]
+- []中是寻找要构建节点的中间过程
+
+#### 4.2 构建根节点的 Fiber 对象
+
+- 当前示例的最外层节点就是 id 为 root 的节点，它的子节点就是添加的 div
+- 构建最外层节点（根节点）的工作在 getFirstTask 中执行：
+  - 该方法从任务队列中获取任务（Fiber 对象）
+  - 然后将其作为根节点的 Fiber 对象返回
+  - 根节点中有一些不需要的属性
+  - 根节点的 child 子级，由构建它的子节点的时候进行赋值
+
+```js
+// src/react/Reconciliation/index.js
+import { createTaskQueue } from '../Misc'
+
+const taskQueue = createTaskQueue()
+// 当前要执行的子任务
+let subTask = null
+
+const getFirstTask = () => {
+  // 从任务队列中获取任务
+  const task = taskQueue.pop()
+
+  // 返回最外层节点的 Fiber 对象
+  return {
+    // 最外层节点不需要的属性：
+    // type: '',
+    // effectTag: null,
+    // parent: null,
+    // sibling: null,
+
+    props: task.props,
+    stateNode: task.dom,
+    tag: 'host_root',
+    effects: [], // 暂不指定
+    child: null, // 在构建子节点的时候指定其与父节点的关系
+    alternate: null // 暂不指定
+  }
+}
+
+/*...*/
+```
+
+#### 4.3 构建子节点的 Fiber 对象
+
+- 在执行任务 executeTask 时通过调用 reconcileChildren 构建子节点的 Fiber 对象，还要在里面指明父子节点、兄弟节点的关系，所以要将父节点 fiber 和子节点 fiber.props.children 传递进去：
+
+```js
+// src/react/Reconciliation/index.js
+/*...*/
+const reconcileChildren = (fiber, children) => {}
+
+const executeTask = fiber => {
+  // 构建子级 fiber 对象
+  reconcileChildren(fiber, fiber.props.children)
+}
+/*...*/
+```
+
+> [!warning]
+> reconcileChildren 接收的 children 还要处理一下，因为它可能是对象也可能是数组
+> - 当它是 render 方法返回的，它是对象
+> - 当它是 createElement 方法返回的，它是数组
+
+- 定义一个方法将 children 转换成数组
+
+```js
+// src\react\Misc\Arrified\index.js
+const arrified = arg => (Array.isArray(arg) ? arg : [arg])
+
+export default arrified
+```
+
+```js
+// src\react\Misc\index.js
+export { default as createTaskQueue } from './CreateTaskQueue'
+export { default as arrified } from './Arrified'
+```
+
+```js
+// src/react/Reconciliation/index.js
+/*...*/
+const reconcileChildren = (fiber, children) => {
+  // 将 children 转换成数组
+  const arrifiedChildren = arrified(children)
+}
+
+const executeTask = fiber => {
+  // 构建子级 fiber 对象
+  reconcileChildren(fiber, fiber.props.children)
+}
+/*...*/
+```
+
+- 然后遍历每个子节点，创建 Fiber 对象，并根据判断设置父节点的 child 和当前节点的 sibling 属性
+
+```js
+// src/react/reconciliation/index.js
+/*...*/
+const reconcileChildren = (fiber, children) => {
+  // 将 children 转换成数组
+  const arrifiedChildren = arrified(children)
+
+  let index = 0
+  let numberOfElements = arrifiedChildren.length
+  let element = null
+  let newFiber = null
+  let prevFiber = null
+
+  while (index < numberOfElements) {
+    element = arrifiedChildren[index]
+    newFiber = {
+      type: element.type,
+      props: element.props,
+      tag: 'host_component', // 暂时处理普通DOM节点
+      effects: [], // 暂不指定
+      effectTag: 'placement', // 暂时处理追加节点的操作
+      stateNode: null, // 暂不指定
+      parent: fiber
+    }
+    
+    // 指明父子关系、兄弟关系
+    if (index === 0) {
+      // 父节点的子节点只能是第一个子节点
+      fiber.child = newFiber
+    } else {
+      // 其它的节点作为上一个节点的兄弟节点
+      prevFiber.sibling = newFiber
+    }
+
+    prevFiber = newFiber
+
+    index++
+  }
+}
+/*...*/
+```
+
+#### 4.4 完善 Fiber 对象的 stateNode 属性
+
+> [!info]
+> stateNode 属性的值取决于当前节点的类型：
+>   - 普通节点：存储当前节点对应的 DOM 对象
+>   - 组件：存储当前组件的实例对象
+
+- 创建节点对应的 DOM 对象
+
+```js
+// src\react\DOM\createDOMElement.js
+import updateNodeElement from './updateNodeElement'
+export default function createDOMElement(virtualDOM) {
+  let newElement = null
+
+  if (virtualDOM.type === 'text') {
+    // 文本节点
+    newElement = document.createTextNode(virtualDOM.props.textContent)
+  } else {
+    // 元素节点
+    newElement = document.createElement(virtualDOM.type)
+
+    updateNodeElement(newElement, virtualDOM)
+  }
+
+  return newElement
+}
+```
+
+```js
+// src\react\DOM\updateNodeElement.js
+/**
+ * @param {*} newElement 要更新的 DOM 元素对象
+ * @param {*} virtualDOM 新的 Virtual DOM 对象
+ * @param {*} oldVirtualDOM 旧的 Virtual DOM 对象
+ */
+export default function updateNodeElement(newElement, virtualDOM = {}, oldVirtualDOM = {}) {
+  // 获取节点对应的属性对象
+  const newProps = virtualDOM.props
+  const oldProps = oldVirtualDOM.props || {}
+
+  // 属性被修改或添加属性的情况
+  Object.keys(newProps).forEach(propName => {
+    // 获取属性值
+    const newPropsValue = newProps[propName]
+    const oldPropsValue = oldProps[propName]
+
+    if (newPropsValue !== oldPropsValue) {
+      if (propName.startsWith('on')) {
+        // 判断属性是否是事件属性
+        // 事件名称 onClick -> click
+        const eventName = propName.toLowerCase().slice(2)
+        // 为元素添加事件
+        newElement.addEventListener(eventName, newPropsValue)
+
+        // 删除原有事件的事件处理函数
+        if (oldPropsValue) {
+          newElement.removeEventListener(eventName, oldPropsValue)
+        }
+      } else if (propName === 'value' || propName === 'checked') {
+        // 判断是否是不能用 setAttribute() 设置的属性
+        newElement[propName] = newPropsValue
+      } else if (propName !== 'children') {
+        // 过滤 children 属性
+        if (propName === 'className') {
+          newElement.setAttribute('class', newPropsValue)
+        } else {
+          newElement.setAttribute(propName, newPropsValue)
+        }
+      }
+    }
+  })
+
+  // 判断属性被删除的情况
+  Object.keys(oldProps).forEach(propName => {
+    const newPropsValue = newProps[propName]
+    const oldPropsValue = oldProps[propName]
+    if (!newPropsValue) {
+      // 属性被删除
+      if (propName.startsWith('on')) {
+        // 判断属性是否是事件属性
+        const eventName = propName.toLowerCase().slice(2)
+        // 为元素添加事件
+        newElement.removeEventListener(eventName, oldPropsValue)
+      } else if (propName !== 'children') {
+        newElement.removeAttribute(propName)
+      }
+    }
+  })
+}
+```
+
+```js
+// src\react\DOM\index.js
+export { default as createDOMElement } from './createDOMElement'
+export { default as updateNodeElement } from './updateNodeElement'
+```
+
+- 定义一个方法用于获取 stateNode 的值（当前只处理普通节点）
+
+```js
+// src\react\Misc\CreateStateNode\index.js
+import { createDOMElement } from '../../DOM'
+
+const createStateNode = fiber => {
+  if (fiber.tag === 'host_component') {
+    return createDOMElement(fiber)
+  }
+}
+
+export default createStateNode
+```
+
+```js
+// src\react\Misc\index.js
+export { default as createTaskQueue } from './CreateTaskQueue'
+export { default as arrified } from './Arrified'
+export { default as createStateNode } from './CreateStateNode'
+```
+
+```js
+// src/react/Reconciliation/index.js
+import { createTaskQueue, arrified, createStateNode } from '../Misc'
+
+/*...*/
+
+const reconcileChildren = (fiber, children) => {
+  // 将 children 转换成数组
+  const arrifiedChildren = arrified(children)
+
+  let index = 0
+  let numberOfElements = arrifiedChildren.length
+  let element = null
+  let newFiber = null
+  let prevFiber = null
+
+  while (index < numberOfElements) {
+    element = arrifiedChildren[index]
+    newFiber = {
+      type: element.type,
+      props: element.props,
+      tag: 'host_component', // 暂时处理普通DOM节点
+      effects: [], // 暂不指定
+      effectTag: 'placement', // 暂时处理追加节点的操作
+      parent: fiber
+    }
+
+    newFiber.stateNode = createStateNode(newFiber)
+
+    console.log(newFiber)
+
+    /*...*/
+  }
+}
+
+/*...*/
+```
+
+#### 4.5 完善 Fiber 对象的 tag 属性
+
+> [!info]
+> tag 属性标识节点的具体分类：
+>   - host_root：根节点
+>   - host_component：普通节点
+>   - class_component：类组件
+>   - function_component：函数型组件
+
+- 当前将子节点的 tag 设置为固定 host_component，现在要将它改为动态的，根据节点的类型设置对应的值（当前仅处理普通节点的情况）
+
+> 根节点不需要动态获取，它固定为 host_root
+
+- 定义一个方法用于获取 tag
+
+```js
+// src\react\Misc\GetTag\index.js
+const getTag = vdom => {
+  if (typeof vdom.type === 'string') {
+    // 普通节点
+    return 'host_component'
+  }
+}
+
+export default getTag
+```
+
+```js
+// src\react\Misc\index.js
+export { default as createTaskQueue } from './CreateTaskQueue'
+export { default as arrified } from './Arrified'
+export { default as createStateNode } from './CreateStateNode'
+export { default as getTag } from './GetTag'
+```
+
+```js
+// src/react/Reconciliation/index.js
+import { createTaskQueue, arrified, createStateNode, getTag } from '../Misc'
+
+/*...*/
+
+const reconcileChildren = (fiber, children) => {
+  // 将 children 转换成数组
+  const arrifiedChildren = arrified(children)
+
+  let index = 0
+  let numberOfElements = arrifiedChildren.length
+  let element = null
+  let newFiber = null
+  let prevFiber = null
+
+  while (index < numberOfElements) {
+    element = arrifiedChildren[index]
+    newFiber = {
+      type: element.type,
+      props: element.props,
+      tag: getTag(element),
+      effects: [], // 暂不指定
+      effectTag: 'placement', // 暂时处理追加节点的操作
+      parent: fiber
+    }
+
+    newFiber.stateNode = createStateNode(newFiber)
+
+    console.log(newFiber)
+
+    /*...*/
+  }
+}
+
+/*...*/
+```
+
+#### 4.6 构建左侧节点树中的剩余子节点的 Fiber 对象
+
+- 当前示例的最外层节点是 root，它的子级是 div，div 的子级是 p，p 的子级是文本节点
+- 它们都是节点树中的最左侧节点
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/23.png)
+
+- 当构建完 div 后，接着判断 root 是否有子级（只有第一个子级会存储在 Fiber 对象的 child 属性上）
+- 如果有，则将这个子级通过 executeTask 返回
+  - 这样，这个子级的 Fiber 将会重新赋值给当前子任务 subFiber
+  - 在 workLoop 的循环中继续执行 executeTask
+  - 这个子级将作为父级（fiber），这个子级的子级作为子级（children），传递给构建子节点 Fiber 对象的方法：reconcileChildren(fiber, children)
+- 这样就是不断向下构建节点的子级，最终最左侧的节点树将构建完成
+
+```js
+// src/react/Reconciliation/index.js
+/*...*/
+const executeTask = fiber => {
+  // 构建子级 fiber 对象
+  reconcileChildren(fiber, fiber.props.children)
+
+  if (fiber.child) {
+    return fiber.child
+  }
+
+  console.log(fiber);
+}
+/*...*/
+```
+
+- 打印最后创建的 fiber 对象，就是最后的文本节点，通过 parent 属性，可以查看它的上级节点
+
+#### 4.7 构建其它剩余节点的 Fiber 对象
+
+- 当构建完左侧节点树中的节点，此时定位到的一定是左侧最后一层的第一个节点（如图上的 textNode）
+- 接下来要根据这个节点来构建其它节点的 Fiber 对象
+
+> [!important]
+> 查找的原则是：如果这个节点有同级节点（sibling）则构建同级节点的子级（child：第一个子节点），如果没有同级，则返回它的父级（parent），查看父级有没有同级
+
+- 如果退回到了根节点，则表示所有的节点已经构建完成
+- 修改示例，增加同级节点
+
+```js
+// src/index.js
+import React, { render } from './react'
+
+const root = document.getElementById('root')
+
+const jsx = (
+  <div>
+    <p>Hello React</p>
+    <p>Hi Fiber</p>
+  </div>
+)
+render(jsx, root)
+```
+
+- 此时查看 executeTask 中打印的 Fiber 对象，可以看到打印的是 Hello React 文本节点，查看它的父节点 p 可以看到兄弟节点属性指向了另一个 p，但是这个节点还没有构建子节点的 Fiber 对象
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/24.png)
+
+- 构建其它节点
+
+```js
+const executeTask = fiber => {
+  // 构建子级 fiber 对象
+  reconcileChildren(fiber, fiber.props.children)
+
+  /**
+   * 如果子级存在 返回子级
+   * 将这个子级当作父级 构建这个父级下的子级
+   */
+  if (fiber.child) {
+    return fiber.child
+  }
+
+  let currentExecutelyFiber = fiber
+
+  while (currentExecutelyFiber.parent) {
+    if (currentExecutelyFiber.sibling) {
+      return currentExecutelyFiber.sibling
+    }
+
+    currentExecutelyFiber = currentExecutelyFiber.parent
+  }
+
+  console.log(fiber);
+}
+```
+
+- 到此所有节点 Fiber 对象构建完成
+
+### 5. 构建 effects 数组
+
+> 现在所有节点的 Fiber 对象已经构建完成，要将所有 Fiber 对象存储到一个数组中
+
+- 因为在 Fiber 算法的第二阶段，要循环这个数组，统一获取 Fiber 对象，从而构建真实 DOM 对象，并且要将构建出来的真实 DOM 对象添加到页面中，Fiber 对象中的 effects 数组就是用来存储 Fiber 对象的
+- 最终目标是将所有 Fiber 对象都存储在最外层节点的 effects 数组中
+- 如何实现：
+  - 每个节点的 Fiber 对象都有 effects 数组
+  - 最外层节点的 effects 数组负责存放所有 Fiber 对象
+  - 其它节点的 effects 数组负责协助搜集 Fiber 对象
+  - 最终会将所有收集到的 Fiber 对象汇总在最外层节点的 effects 数组中
+
+> [!important]
+> 收集 Fiber 对象的具体过程：
+> 1. 当左侧节点树中的节点全部构建完成以后，开启了一个 while 循环去构建其它节点
+> 2. 在构建其它节点的过程中，找到每个节点的父级 Fiber 对象
+> 3. 此时就可以通过数组的合并操作为这个节点的 effects 数组添加 Fiber 对象了：
+>   - 将父级 effects 数组和子级 effects 数组中的值进行合并
+>   - 子级中的 effects 数组和子级 Fiber 对象进行合并
+> 4. 这个数组的合并操作在 while 循环的过程中不断进行，并且 while 是从最底层节点开始循环的
+> 5. 循环结束之后，在最外层节点的 effects 数组就包含所有的 Fiber 对象了
+
+```js
+const executeTask = fiber => {
+  // 构建子级 fiber 对象
+  reconcileChildren(fiber, fiber.props.children)
+
+  /**
+   * 如果子级存在 返回子级
+   * 将这个子级当作父级 构建这个父级下的子级
+   */
+  if (fiber.child) {
+    return fiber.child
+  }
+
+  /**
+   * 如果存在同级 返回同级 构建同级的子级
+   * 如果同级不存在 返回到父级 看父级是否有同级
+   */
+  let currentExecutelyFiber = fiber
+
+  while (currentExecutelyFiber.parent) {
+    // 通过将 Fiber 对象合并到 effects 数组，收集所有 Fiber 对象
+    currentExecutelyFiber.parent.effects = currentExecutelyFiber.parent.effects.concat(
+      currentExecutelyFiber.effects.concat([currentExecutelyFiber])
+    )
+
+    // 返回其它节点去构建 Fiber 对象
+    if (currentExecutelyFiber.sibling) {
+      return currentExecutelyFiber.sibling
+    }
+
+    currentExecutelyFiber = currentExecutelyFiber.parent
+  }
+
+  console.log(fiber)
+}
+```
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/25.png)
+
+### 6. Fiber 第二阶段 - 实现初始渲染
+
+> 在第二个阶段当中，要进行真实 DOM 操作，构建 DOM 节点之间的关系，构建完成后将真实 DOM 节点添加到页面中
+
+#### 6.1 获取所有 Fiber 对象
+
+- 当构建完所有节点的 Fiber 对象后，只需通过最外层节点的 effects 属性就可以获取到所有的 Fiber 对象
+- 当 executeTask 方法不再返回一个新的 Fiber 对象，就表示所有节点已经构建完成，也表示 while 循环一直判断到最外层节点并结束，此时 currentExecutelyFiber 就是最外层节点
+- 这样就可以获取所有 Fiber 对象，进行 Fiber 算法的第二个阶段了
+  - 当所有节点构建完成后，将最外层节点存储到一个全局变量，以便进行第二阶段的时候可以获取到
+  - 当 executeTask 中 while 循环结束，并未返回新的 Fiber 对象，则会结束 workLoop 中的 while 循环，此时就要进入第二阶段了
+
+```js
+// src/react/Reconciliation/index.js
+import { createTaskQueue, arrified, createStateNode, getTag } from '../Misc'
+
+/*...*/
+
+// 存储根节点所对应的 Fiber 对象
+let pendingCommit = null
+
+const commitAllWork = fiber => {
+  console.log(fiber.effects)
+}
+
+/*...*/
+
+const executeTask = fiber => {
+	/*...*/
+
+  while (currentExecutelyFiber.parent) {
+		/*...*/
+  }
+
+  pendingCommit = currentExecutelyFiber
+}
+
+const workLoop = deadline => {
+  // 如果子任务不存在，则获取子任务
+  if (!subTask) {
+    subTask = getFirstTask()
+  }
+
+  // 如果子任务存在，并且浏览器有空余时间，则执行子任务
+  while (subTask && deadline.timeRemaining() > 1) {
+    // executeTask 接收任务 + 执行任务 + 返回新的任务
+    subTask = executeTask(subTask)
+  }
+
+  if (pendingCommit) {
+    commitAllWork(pendingCommit)
+  }
+}
+
+/*...*/
+```
+
+#### 6.2 追加节点
+
+- 现在只需遍历 Fiber 数组，根据节点 effectTag 进行操作
+- 当前示例的每个节点的 effectTag 都是 placement 追加节点
+- 只需将每个节点追加到它们的父节点下，最终这些节点会被追加到最外层节点，从而显示在页面中
+
+```js
+const commitAllWork = fiber => {
+  fiber.effects.forEach(item => {
+    if (item.effectTag === 'placement') {
+      item.parent.stateNode.appendChild(item.stateNode)
+    }
+  })
+}
+```
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/26.png)
