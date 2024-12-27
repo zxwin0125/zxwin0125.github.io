@@ -370,9 +370,9 @@ import VueRouter from '../vuerouter'
 - init 方法用于包装一些初始化方法
 
 ```js
-// /src/vue-router/index.js
+// src/vue-router/index.js
 export default class VueRouter {
-	init () {
+  init() {
     // this.initRouteMap()
     // this.initComponents(_Vue)
     // this.initEvent()
@@ -436,7 +436,8 @@ export default class VueRouter {
       }
     })
   }
-	init () {
+
+  init() {
     // this.initRouteMap()
     // this.initComponents(_Vue)
     // this.initEvent()
@@ -446,7 +447,7 @@ export default class VueRouter {
 
 #### 2.5 构造函数
 
-- 构造函数接收 Options 对象参数，最终返回 vue-router 对象
+- 构造函数接收 options 对象参数，最终返回 vue-router 对象
 - 构造函数中需要初始化3个属性
   1. options 记录构造函数传入的 options 对象
   2. routeMap 由 route 规则解析的，以 path 为 key，以 component 为 value 的键值对对象，`<router-view>`组件会通过这个对象找到对应的组件
