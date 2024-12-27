@@ -23,7 +23,7 @@ vue create vue-router-basic-usage
 > 实例化 vue 时配置了 router 属性（router 路由对象），会在 vue 实例对象中注入以下属性
 > 1. $route：路由规则
 >   - 存储了当前路由的规则和数据
-> 2. $router：VueRouter（路由对象）的实例
+> 2. $router：vue-router（路由对象）的实例
 >   - 提供一些和路由相关的方法（查看`$router.__proto__`），push、replace、go 等
 >   - 和路由相关的信息
 >     1. mode 当前模式hash history
@@ -291,3 +291,378 @@ http {
 
 3. 根据当前路由地址找到对应的组件，重新渲染
 
+### 2. vue-router 简单实现
+
+#### 2.1 分析
+
+- 回顾核心代码
+
+```js
+// router/index.js
+// 注册插件
+Vue.use(vue-router)
+// 创建路由对象
+const router = new vue-router({
+  routes: [
+    { name: 'home', path: '/', component: homeComponent }
+  ]
+})
+
+// main.js
+// 创建 Vue 实例，注册 router 对象
+new Vue({
+  router,
+  render: h => h(App)
+}).$mount('#app')
+```
+
+1. vue-router 是一个插件，需要使用 Vue.use 注册
+  - Vue.use 接收一个参数
+    - 参数为函数：会执行这个函数
+    - 参数为对象：会执行这个对象的 install 方法
+  - vue-router是一个对象，所以需要内部实现一个 install 方法
+2. new 创建一个 vue-router 实例
+  - 所以 vue-router 应该是一个构造函数或类
+  - 构造函数结构一个对象参数，里面传入路由规则
+    - 路由规则核心要记录的是对应的路径 path 和组件 component
+3. 创建 Vue 实例，构造函数参数中传入 vue-router 实例对象
+
+- 总结
+  1. vue-router 应该是个类，内部应该有一个 install 的静态方法
+  2. vue-router 构造函数接收一个对象参数，里面传入路由规则
+
+#### 2.2 UML 类图
+
+- 首先通过类图整理 vue-router 类需要定义的成员
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/02.png)
+
+- 类图分为三部分：（+ 表示 public，# 表示 protected，- 表示 private，_ 开头表示 static）
+
+1. 类的名称 VueRouter
+2. 类的属性
+  - options 记录构造函数中传入的对象，包含一个 routes 对象（route 路由规则）
+  - routeMap 用来记录路由地址和组件的对应关系，将来会将路由规则解析到 routeMap
+  - data 一个包含 current 的响应式的对象
+    - current 用于记录当前路由地址
+    - 响应式目的：路由地址发生变化后，对应的组件要自动更新，通过 Vue.observable 方法将 data 转化为响应式对象
+3. 类的方法
+  - Constructor 构造函数，初始化类的属性
+  - install 用于实现 vue 的插件机制，包括注入router对象，以及调用一些初始化方法
+  - init 用于调用 initEvent initRouteMap initComponents 方法
+  - initEvent 用于注册 popstate 事件，用于监听浏览器历史的变化
+  - initRouteMap 用于初始化 routeMap 属性
+    - 它把构造函数中传入的路由规则，转化为键值对的形式，存储到 routeMap 对象中
+      - key：路由地址
+      - value：对应的组件
+    - 在`<router-view>`组件中会使用到 routeMap
+  - initComponents 用于创建`<router-view>`和`<router-link>`组件
+
+#### 2.3 init
+
+- 使用 vue-cli 创建应用模板，在此基础上替换 vue-router 插件
+
+```js
+// import VueRouter from 'vue-router'
+import VueRouter from '../vuerouter'
+```
+
+- init 方法用于包装一些初始化方法
+
+```js
+// /src/vue-router/index.js
+export default class VueRouter {
+	init () {
+    // this.initRouteMap()
+    // this.initComponents(_Vue)
+    // this.initEvent()
+  }
+}
+```
+
+#### 2.4 install
+
+- Vue.use 调用 install 方法时会传递两个参数
+  1. Vue：Vue 的构造函数
+  2. Options：可选的选项对象（当前不需要）
+- install 中需要做的事情
+  1. 判断当前插件是否已经被安装
+  2. 把 Vue 的构造函数添加到全局变量中
+    - 因为 install 方法是一个静态方法
+    - 将来在 vue-router 的实例中还要使用 Vue，例如在 initComponents 中创建组件时，需要调用 Vue.component
+  3. 把创建 Vue 实例时传入的 router 对象，注入到所有Vue 实例上，例如：`this.$router`
+    - 所有的组件也都是 Vue 实例，也需要被注入，想要所有的实例共享一个成员，应该把它设置到构造函数的原型(prototype)上
+    - 在 install 内部获取创建 Vue 实例时传入的 `$options` 对象，需要用到混入 mixin
+      1. 因为 install 内部的 this 不是指向 Vue 实例，因而获取不到创建 Vue 实例时传入的 `$options` 对象
+      2. mixin 可以为所有 Vue 实例/组件定义一个混入对象，当 Vue 实例/组件被使用时，混入对象的选项将被「混合」进该实例/组件本身的选项
+        - 同名数据对象合并，以实例/组件数据为先
+        - 同名钩子函数合并为一个数组，全部被调用，混入对象的钩子将在实例/组件自身钩子之前调用
+        - 值为对象的选项，例如 methods、components 等，将被合并为同一个对象，同名冲突时，以实例/组件为先
+      3. 在 mixin 中定义一个 beforeCreate 钩子，在钩子函数中为 Vue 实例注入 router 对象
+        - 因为 beforeCreate 的调用者是 Vue 实例，所以它内部的 this 就指向 Vue 实例
+  4. 调用一些初始化方法
+    - 在向 Vue 实例注入 router 对象的时候，调用 router 对象的初始化方法
+      1. 初始化 routeMap
+      2. 注册组件
+      3. 注册事件
+
+```js
+// /src/vue-router/index.js
+let _Vue = null
+
+export default class VueRouter {
+  static install (Vue) {
+    // 1. 判断当前插件是否已经被安装
+    if (VueRouter.install.installed) {
+      return
+    }
+    // 创建一个用于记录插件是否被安装的变量
+    VueRouter.install.installed = true
+
+    // 2. 把Vue构造函数记录到全局变量
+    _Vue = Vue
+
+    // 3. 把创建Vue实例时传入的router对象注入到所有Vue实例上
+    // 混入
+    _Vue.mixin({
+      beforeCreate () {
+        // Vue实例的$options中才有router，组件中没有传递router对象
+        // 混入的beforeCreate会在 实例 和 组件 中都调用
+        // 所以需要判断如果是实例才注入，避免组件也会执行，导致无意义的执行
+        if (this.$options.router) {
+          _Vue.prototype.$router = this.$options.router
+          this.$options.router.init()
+        }
+      }
+    })
+  }
+	init () {
+    // this.initRouteMap()
+    // this.initComponents(_Vue)
+    // this.initEvent()
+  }
+}
+```
+
+#### 2.5 构造函数
+
+- 构造函数接收 Options 对象参数，最终返回 vue-router 对象
+- 构造函数中需要初始化3个属性
+  1. options 记录构造函数传入的 options 对象
+  2. routeMap 由 route 规则解析的，以 path 为 key，以 component 为 value 的键值对对象，`<router-view>`组件会通过这个对象找到对应的组件
+  3. data 一个包含当前路由地址（current，默认为当前路径）的响应式对象，通过 Vue.observable 将其转化为响应式对象
+
+```js
+constructor (options) {
+  this.options = options
+  this.routeMap = {}
+  this.data = _Vue.observable({
+    current: window.location.pathname
+  })
+}
+```
+
+#### 2.6 initRouteMap
+
+- 该方法的作用是将构造函数中传入的 route 规则转化为键值对的形式，存储到 routeMap 对象，以方便当路由地址发生变化时，很方便的根据 routeMap 对象找到对应的组件
+  - key：路由地址
+  - value：路由地址对应的组件
+
+```js
+initRouteMap () {
+  // 遍历所有的路由规则，把路由规则解析成键值对的形式，存储到 routeMap 中
+  this.options.routes.forEach(route => {
+    this.routeMap[route.path] = route.component
+  })
+}
+```
+
+#### 2.7 initComponents - router-link
+
+- initComponents 方法用于创建`<router-link>`和`<router-view>`组件
+- 创建组件使用 Vue.component
+
+```js
+<router-link to="/">Home</router-link>
+// 渲染为
+<a href="/">Home</a>
+```
+
+- router-link 组件最终渲染成一个超链接
+  - 链接地址是参数 to 传递的字符串，接收参数使用 props
+  - 文本内容是 router-link 标签包裹的文本，使用插槽（slot）获取文本
+  - 使用 template 渲染一个超链接
+
+```js
+// 通过参数传递Vue构造函数的目的是减少这个函数和外部的依赖
+initComponents (Vue) {
+  Vue.component('router-link', {
+    props: {
+      to: String
+    },
+    template: '<a :href="to"><slot></slot></a>'
+  })
+}
+```
+
+- 此时在 init 方法中放开 initRouteMap 和 initComponents 的调用，运行项目有两个报错
+  1. 未注册`<router-view>`组件，此报错暂时忽略
+  2. `You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.`
+    - 您使用的是 Vue 的仅运行时版本，其中模板编辑器不可用，可以使用预编译把模板编译成 render 函数，或者使用编译器版本的Vue
+
+#### 2.8 Vue 的构建版本
+
+> Vue 的构建版本包含运行时版和完整版
+
+- 运行时版(runtime)：不支持 template 模板，需要打包的时候提前编译
+- 完整版：包含运行时和编译器，因为多了一个编译器，所以体积比运行时版大 10k 左右
+  - 编译器的作用：在程序运行的时候把模板转换成 render 函数
+  - 性能不如运行时版本
+- vue-cli 创建的项目，默认使用的是运行时版本
+
+#### 2.9 完整版的 Vue
+
+- 参考 [vue-cli 官方文档 - 配置参考](https://cli.vuejs.org/zh/config/#jest)
+- vue-cli 默认使用运行时版本，想要修改 vue-cli 的配置，需要在项目根目录创建一个`vue.config.js`的配置文件
+- 在配置中开启`runtimeCompiler`选项
+  - Default: false
+  - 是否使用包含运行时编译器的 Vue 构建版本，设置为 true 后就可以在创建 Vue 实例及注册组件时使用 template 选项了，但是这会让应用额外增加 10kb 左右
+- 现在就解决了之前的版本错误
+
+#### 2.10 运行时版本的 Vue - render
+
+- 运行时版本的 Vue 不带编译器，也就是不支持组件中的 template 选项，而编译器的作用就是将 template 编译成 render 函数
+- 运行时版本的 Vue 中，可以直接编写 render 函数，以实现不需要编译器
+- 当前项目中的单文件组件（.vue文件）可以使用 template，是因为在运行时对其进行了打包，打包过程中将其编译成了 render 函数，这叫做预编译 pre-compile
+
+##### 编写 render 函数
+
+- render 函数接收一个 createElement 方法作为参数，一般命名为 h，h 方法用于创建虚拟 DOM，并将结果返回
+- Vue 选项中如果包含 render 函数，则 Vue 构造函数就不会从 template 选项或通过 el 选项指定的挂载元素中提取处 HTML 模板编译 render 函数
+- 渲染函数 render-function，参考[官方文档——渲染函数 & JSX](https://cn.vuejs.org/v2/guide/render-function.html)
+
+```js
+// 通过参数传递 Vue 构造函数的目的是减少这个函数和外部的依赖
+initComponents (Vue) {
+  Vue.component('router-link', {
+    props: {
+      to: String
+    },
+
+    // template 选项需要编译器支持
+    // template: '<a :href="to"><slot></slot></a>'
+
+    // 直接编写 render 函数
+    render (h) {
+      return h('a', {
+        attrs: {
+          href: this.to
+        }
+      }, [this.$slots.default])
+    }
+  })
+}
+```
+
+#### 2.11 initComponents - router-view
+
+> router-view 组件相当于一个占位符
+
+- router-view 组件内容要根据当前路由地址获取对应的路由组件，并渲染到 router-view 的位置上
+- vue 的 createElement(h) 函数还可以直接将一个组件转化成虚拟DOM
+
+```js
+// 通过参数传递Vue构造函数的目的是减少这个函数和外部的依赖
+initComponents (Vue) {
+  Vue.component('router-link', {
+    props: {
+      to: String
+    },
+    render (h) {
+      return h('a', {
+        attrs: {
+          href: this.to
+        }
+      }, [this.$slots.default])
+    }
+  })
+
+  const self = this
+  Vue.component('router-view', {
+    render (h) {
+      // 此处this指向Vue实例，所以要从外部获取指向VueRouter实例的this
+      // 也可以使用this.$router
+      const component = self.routeMap[self.data.current]
+      return h(component)
+    }
+  })
+}
+```
+
+#### 2.12 initComponents - 跳转处理
+
+- 此时根目录地址的 router-view 中的内容可以正常显示，点击 router-link 链接可以实现跳转（暂时未实现 router-view 更新）
+- 但是跳转过程发现页面进行了服务器请求，因为当前 router-link 编译成一个超链接，点击超链接默认会向服务器发送请求，而在单页应用的 history 模式中进行「跳转」，不希望向服务器发送请求
+- 所以现在需要实现几件事情
+  1. 取消超链接默认跳转，避免向服务器发送请求，为这个超链接注册一个点击事件，取消超链接后续任务（跳转）的执行
+  2. 变更地址栏上的地址为超链接 href 属性上的地址，但不要向服务器发送请求，使用 history.pushState 方法实现
+  3. 重新渲染新地址对应的内容，将当前地址更新到 this.data.current 中，由于 this.data 是响应式对象，所以它的变更会同步到 router-view 组件的 render 函数中，从而实现视图的更新
+
+```js
+initComponents (Vue) {
+  Vue.component('router-link', {
+    props: {
+      to: String
+    },
+    render (h) {
+      return h('a', {
+        attrs: {
+          href: this.to
+        },
+        on: {
+          click: this.clickHandler
+        }
+      }, [this.$slots.default])
+    },
+    methods: {
+      clickHandler (e) {
+        history.pushState({}, '', this.to)
+        this.$router.data.current = this.to
+        // 阻止默认行为
+        e.preventDefault()
+      }
+    }
+  })
+
+  const self = this
+  Vue.component('router-view', {
+    render (h) {
+      const component = self.routeMap[self.data.current]
+      return h(component)
+    }
+  })
+}
+```
+
+#### 2.13 initEvent
+
+- 该方法中注册 popstate 事件，以上实现的内容，当操作浏览器的前进后退时，根目录/以外的地址不会正常渲染对应组件的内容
+- 这是因为没有对这些操作进行相应的处理，所以需要使用 popstate 监听历史地址发生变化，从而加载对应的组件
+
+> [!warning]
+> pushState 和 replaceState 方法不会触发 popstate 事件
+
+- popstate 事件要做的事情
+  1. 把当前地址栏上的地址取出来，只需要路径部分，即 location.pathname
+  2. 这个路径部分就是路由地址，将其存储在 this.data.current 中，实现视图更新
+
+```js
+initEvent () {
+  window.addEventListener('popstate', () => {
+    // 当前使用箭头函数，this指向VueRouter实例
+    this.data.current = window.location.pathname
+  })
+}
+```
+
+- 此时操作前进后端，视图会跟着变化，到此 vue-router 简单模拟完成
