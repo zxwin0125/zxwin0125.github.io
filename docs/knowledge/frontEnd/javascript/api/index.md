@@ -3,7 +3,7 @@ title: 我们不背诵 API，只实现 API
 date: 2024-07-28
 category:
   - JavaScript
-order: 3
+order: 1
 ---
 
 > 实现一个 API，除了可以考察面试者对这个 API 的理解，更能体现开发者的编程思维和代码能力

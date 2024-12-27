@@ -127,7 +127,21 @@ export default sidebar({
 			icon: 'https://s21.ax1x.com/2024/09/19/pAKfpp4.png',
 			prefix: 'javascript/',
 			collapsible: true,
-			children: 'structure',
+			children: [
+				'this.md',
+				'closure.md',
+				'asynchronous.md',
+				'promise.md',
+				'objectPrototype.md',
+				'es6Next.md',
+				'other.md',
+				{
+					text: 'API',
+					prefix: 'api/',
+					collapsible: true,
+					children: 'structure',
+				}
+			],
 		},
 		{
 			text: '前端框架',
