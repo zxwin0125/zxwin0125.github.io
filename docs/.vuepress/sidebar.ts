@@ -179,7 +179,12 @@ export default sidebar({
 			collapsible: true,
 			children: [
 				'index.md',
-				'scaffoldingTool.md',
+				{
+					text: '聊聊脚手架',
+					prefix: 'scaffoldingTool/',
+					collapsible: true,
+					children: 'structure',
+				},
 				{
 					text: '关于自动化构建',
 					prefix: 'automatedConstruction/',
@@ -191,6 +196,14 @@ export default sidebar({
 					prefix: 'module/',
 					collapsible: true,
 					children: 'structure',
+				},
+				{
+					text: '打包工具有哪些',
+					prefix: 'buildTool/',
+					collapsible: true,
+					children: [
+						'gulpAndWebpack.md',
+					],
 				},
 				// 'webpack.md',
 				// 'codeSpecification.md',
