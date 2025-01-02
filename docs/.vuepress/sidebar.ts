@@ -159,6 +159,14 @@ export default sidebar({
 						'reactJSX.md',
 						'reactVirtualDomDiff.md',
 						'reactFiber.md',
+						{
+							text: '核心源码分析',
+							prefix: 'sourceCode/',
+							collapsible: true,
+							children: [
+								'env.md'
+							]
+						},
 						'reactHooks.md'
 					],
 				},
