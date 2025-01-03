@@ -164,7 +164,8 @@ export default sidebar({
 							prefix: 'sourceCode/',
 							collapsible: true,
 							children: [
-								'env.md'
+								'env.md',
+								'createReactElement.md'
 							]
 						},
 						'reactHooks.md'
