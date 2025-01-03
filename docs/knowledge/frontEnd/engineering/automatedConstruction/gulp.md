@@ -1,6 +1,9 @@
 ---
 title: Gulp
 date: 2021-04-07
+star: true
+category: 
+  - 自动化构建
 order: 3
 ---
 
@@ -8,23 +11,23 @@ order: 3
 
 > [!important]
 > **<font color=red>易用</font>**
-> - gulp 相比 grunt 更简洁，而且遵循代码优于配置策略，维护 gulp 更像是写代码
+> - gulp 相比 grunt 更简洁，而且 **<font color=red>遵循代码优于配置策略</font>**，维护 gulp 更像是写代码
 >
 > **<font color=red>高效</font>**<br>
-> - gulp 相比 grunt 更有设计感，核心设计基于 Unix 流的概念，通过管道连接，不需要写中间文件
+> - gulp 相比 grunt 更有设计感，**<font color=red>核心设计基于 Unix 流的概念，通过管道连接，不需要写中间文件</font>**
 >
 > **<font color=red>高质量</font>**<br>
 > - gulp 的每个插件只完成一个功能，这也是 Unix 的设计原则之一，各个功能通过流进行整合并完成复杂的任务
 >   - 例如：grunt 的 imagemin 插件不仅压缩图片，同时还包括缓存功能
 >   - 在 gulp 中，缓存是另一个插件，可以被别的插件使用，这样就促进了插件的可重用性
->   - 目前官方列出的有673个插件
+>   - 目前官方列出的有4206个插件
 >
 > **<font color=red>易学</font>**<br>
-> - gulp 的核心 API 只有5个，掌握了5个 API 就学会了 gulp，之后便可以通过管道流组合自己想要的任务
+> - gulp 的核心 API 只有14个，掌握了14个 API 就学会了 gulp，之后便可以通过管道流组合自己想要的任务
 >
 > **<font color=red>流</font>**<br>
 > - 使用 grunt 的 I/O 过程中会产生一些中间态的临时文件，一些任务生成临时文件，其它任务可能会基于临时文件再做处理并生成最终的构建后文件
-> - 而使用 gulp 的优势就是利用流的方式进行文件的处理，通过管道将多个任务和操作连接起来，因此只有一次 I/O 的过程，流程更清晰，更纯粹
+> - 而使用 gulp 的优势就是 **<font color=red>利用流的方式进行文件的处理，通过管道将多个任务和操作连接起来，因此只有一次 I/O 的过程</font>**，流程更清晰，更纯粹
 >
 > **<font color=red>代码优于配置</font>**<br>
 > - 维护 gulp 更像是写代码，而且 gulp 遵循 CommonJS 规范，因此跟写 Node 程序没有差别
@@ -33,7 +36,7 @@ order: 3
 
 > [!info]
 > 使用 gulp 非常简单：
-> - 现在项目中安装 gulp 的开发依赖，然后在根目录添加 gulpfile.js文件用于编写构建任务
+> - 现在项目中安装 gulp 的开发依赖，然后在根目录添加 gulpfile.js 文件用于编写构建任务
 > - 然后在命令行终端使用 gulp 模块的 cli 去运行这些任务
 
 - 安装 gulp 模块作为开发依赖，会同时安装 gulp-cli 的模块
@@ -43,7 +46,7 @@ yarn add gulp --dev
 ```
 
 - 创建 gulpfile.js 文件，定义一些需要 gulp 执行的构建任务
-  - 因为这个文件运行在 node 环境中，所以它可以使用 commonJs 的规范
+  - 因为这个文件运行在 node 环境中，所以它可以使用 CommonJS 的规范
   - 这个文件定义构建任务的方式就是
     - 通过导出函数成员去定义（通过 exports 导出）
   - 最新的 gulp 当中取消了同步模式，约定每一个任务都必须是异步任务，当我们执行完任务后必须通过回调函数标记任务已经完成（函数成员的形参得到）
@@ -170,11 +173,11 @@ exports.async = async () => {
 > JavaScript 中处理异步函数的常见方式，在 gulp 中都被支持<br>
 > gulp 中还支持 stream 这种方式，因为构建系统大都是在处理文件
 
-- 在任务函数中需要返回一个 stream 对象
-  - 例如在 fs 模块中提供的 createReadStream 创建一个读取文件的文件流对象
-    - 通过 writeReadStream 创建一个写入文件的文件流对象
-    - 通过 pipe 的方式导入到 writeReadStream 中，文件复制
-    - 把 readStream 给 return 出来
+- 在任务函数中需要返回一个 stream 对象，例如
+  - 在 fs 模块中提供的 createReadStream 创建一个读取文件的文件流对象 readStream
+  - 通过 createWriteStream 创建一个写入文件的文件流对象 writeStream
+  - 通过 pipe 的方式导入到 writeReadStream 中，文件复制
+  - 把 readStream 给 return 出来
 
 ```javascript
 const fs = require("fs");
@@ -191,8 +194,7 @@ exports.stream = ()=>{
 
 > [!important]
 > 模拟一下 gulp 中做的事情：
-> - 接收到 readStream 后为它注册了一个 end 事件
-> - 在 end 事件中结束了任务的执行
+> - 接收到 readStream 后为它注册了一个 end 事件，在 end 事件中结束了任务的执行
 > - 执行 stream2，可以发现任务也可以正常结束，这意味着其实 gulp 也只是注册这个事件去监听任务的结束罢了
 
 ```javascript
@@ -201,7 +203,7 @@ exports.stream2 = (done)=>{
   const writeStream = fs.createWriteStream('temp.txt')
   readStream.pipe(writeStream);
   readStream.on('end',()=>{
-      done()
+    done()
   })
 }
 ```
@@ -215,7 +217,7 @@ exports.stream2 = (done)=>{
   - 导入 stream 模块的 transform 类，这个类型可以创建文件转换流对象
   - 创建文件的写入流
   - 把读取到的数据导入转换流进行转换后，最后导入到写入文件流中，完成文件的转换构建过程
-  - 最后通过 return 的方式把 steam 返回，这样 gul p就可以根据流的状态判断任务是否执行完成
+  - 最后通过 return 的方式把 steam 返回，这样 gulp 就可以根据流的状态判断任务是否执行完成
 
 ```javascript
 const fs = require("fs");
@@ -255,18 +257,16 @@ exports.default =  ()=>{
 ## gulp 文件操作 API + 插件的使用
 
 > [!info]
-> gulp 中也提供了专门用于去创建读取流和写入流的 API， 更强大也更易于使用
-> 至于负责文件加工的转换流一般是通过独立的插件来提供
+> - gulp 中也提供了专门用于去创建读取流和写入流的 API，更强大也更易于使用
+> - 至于负责文件加工的转换流一般是通过独立的插件来提供
 
 > [!important]
 > 一般通过 gulp 创建构建任务的工作流程
-> - 先通过 src 方法去创建读取流
-> - 再通过插件提供的转换流来实现文件加工
-> - 最后通过 gulp 提供的 dist 方法创建写入流从而写入到目标文件
-
-- `src()` 接受 glob 参数，并从文件系统中读取文件然后生成一个 Node 流（stream），它将所有匹配的文件读取到内存中并通过流（stream）进行处理
-- `dest()` 可以用在管道（pipeline）中间用于将文件的中间状态写入文件系统
-- 通过插件提供的转换流来实现文件加工
+> 1. 先通过 src 方法去创建读取流
+>   - src 接受 glob 参数，并从文件系统中读取文件然后生成一个 Node 流（stream），它将所有匹配的文件读取到内存中并通过流（stream）进行处理
+> 2. 再通过插件提供的转换流来实现文件加工
+> 3. 最后通过 gulp 提供的 dist 方法创建写入流从而写入到目标文件
+>   - dest 可以用在管道（pipeline）中间用于将文件的中间状态写入文件系统
 
 ```javascript
 const { src , dest } = require("gulp");
@@ -290,7 +290,7 @@ exports.default =  ()=>{
 }
 ```
 
-- 这种通过 src 去 pipe 到 一个或多个插件转换流，再 pipe 到写入流这样的过程，就是使用 gulp 的常规过程
+- 这种通过 src 去 pipe 到一个或多个插件转换流，再 pipe 到写入流这样的过程，就是使用 gulp 的常规过程
 
 ## gulp 自动化构建案例
 
