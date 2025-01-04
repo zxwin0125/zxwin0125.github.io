@@ -165,7 +165,8 @@ export default sidebar({
 							collapsible: true,
 							children: [
 								'env.md',
-								'createReactElement.md'
+								'createReactElement.md',
+								'reactArchitecture.md'
 							]
 						},
 						'reactHooks.md'
