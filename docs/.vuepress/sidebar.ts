@@ -166,7 +166,8 @@ export default sidebar({
 							children: [
 								'env.md',
 								'createReactElement.md',
-								'reactArchitecture.md'
+								'reactArchitecture.md',
+								'reactRender.md'
 							]
 						},
 						'reactHooks.md'

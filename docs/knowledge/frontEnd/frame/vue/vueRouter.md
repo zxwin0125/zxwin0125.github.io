@@ -1,5 +1,10 @@
 ---
 title: Vue Router 原理实现
+star: true
+category:
+	- Vue
+tag:
+  - Vue Router
 order: 2
 ---
 
@@ -12,6 +17,10 @@ npm install -g @vue/cli
 
 vue create vue-router-basic-usage
 ```
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/02.png)
+
+### 1. 使用步骤
 
 1. 注册路由插件，配置路由规则
 2. 创建 router 路由对象，并将规则传递进去
@@ -26,12 +35,75 @@ vue create vue-router-basic-usage
 > 2. $router：vue-router（路由对象）的实例
 >   - 提供一些和路由相关的方法（查看`$router.__proto__`），push、replace、go 等
 >   - 和路由相关的信息
->     1. mode 当前模式hash history
+>     1. mode 当前模式 hash history
 >     2. currentRoute 当前路由规则
->       - 有些情况无法通过$route获取当前路由信息，例如插件中。
->       - 可以想办法拿到$router
+>       - 有些情况无法通过 $route 获取当前路由信息，例如插件中
+>       - 可以想办法拿到 $router
 
-### 1 动态路由
+```js
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+import Index from '../views/Index.vue'
+// 1. 注册路由插件
+Vue.use(VueRouter)
+
+// 路由规则
+const routes = [
+  {
+    path: '/',
+    name: 'Index',
+    component: Index
+  },
+  {
+    path: '/blog',
+    name: 'Blog',
+    component: () => import(/* webpackChunkName: "blog" */ '../views/Blog.vue')
+  },
+  {
+    path: '/photo',
+    name: 'Photo',
+    component: () => import(/* webpackChunkName: "photo" */ '../views/Photo.vue')
+  }
+]
+// 2. 创建 router 对象
+const router = new VueRouter({
+  routes
+})
+
+export default router
+```
+```js
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+
+Vue.config.productionTip = false
+
+new Vue({
+  // 3. 注册 router 对象
+  router,
+  render: h => h(App)
+}).$mount('#app')
+```
+```vue
+<template>
+  <div id="app">
+    <div>
+      <img src="@/assets/logo.png" alt="">
+    </div>
+    <div id="nav">
+      <!-- 5. 创建链接 -->
+      <router-link to="/">Index</router-link> |
+      <router-link to="/blog">Blog</router-link> |
+      <router-link to="/photo">Photo</router-link>
+    </div>
+    <!-- 4. 创建路由组建的占位 -->
+    <router-view/>
+  </div>
+</template>
+```
+
+### 2. 动态路由
 
 > [!tip]
 > 配置路由规则的时候
@@ -53,6 +125,43 @@ vue create vue-router-basic-usage
 > - 通过路由规则获取的缺点是这个组件必须强依赖这个路由，也就是使用这个组件时，必须在路由上配置这个参数
 > - 使用 props 可以使组件不依赖这个路由
 
+```js
+const routes = [
+  {
+    path: '/',
+    name: 'Index',
+    component: Index
+  },
+  {
+    path: '/detail/:id',
+    name: 'Detail',
+    // 开启 props，会把 URL 中的参数传递给组件
+    // 在组件中通过 props 来接收 URL 参数
+    props: true,
+    component: () => import(/* webpackChunkName: "detail" */ '../views/Detail.vue')
+  }
+]
+```
+```vue
+<template>
+  <div>
+    <!-- 方式1： 通过当前路由规则，获取数据 -->
+    通过当前路由规则获取：{{ $route.params.id }}
+
+    <br>
+    <!-- 方式2：路由规则中开启 props 传参 -->
+    通过开启 props 获取：{{ id }}
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Detail',
+  props: ['id']
+}
+</script>
+```
+
 ### 2. 嵌套路由
 
 > 当多个路由组件都有相同的内容，可以把这些相同的内容提取到一个公共的组件中
@@ -69,18 +178,31 @@ vue create vue-router-basic-usage
 > 2. component：当访问合并后的 path 时，页面会分别加载 Layout 组件和对应的 Index 组件，并把它们合并到一起
 
 ```js
-const routes = {
+const routes = [
+  {
+    name: 'login',
+    path: '/login',
+    component: Login
+  },
+  // 嵌套路由
   {
     path: '/',
     component: Layout,
     children: [
       {
-        path: '',
         name: 'index',
+        path: '',
         component: Index
       },
+      {
+        name: 'detail',
+        path: 'detail/:id',
+        props: true,
+        component: () => import('@/views/Detail.vue')
+      }
+    ]
   }
-}
+]
 ```
 
 ### 3. 编程式导航
@@ -107,6 +229,76 @@ const routes = {
     - 刷新整个页面效果同 F5（有瞬间白屏）
     - safari 不支持
   4. 超出历史记录数量，就会失败
+
+```vue
+<template>
+  <div>
+    用户名：<input type="text" /><br />
+    密&nbsp;&nbsp;码：<input type="password" /><br />
+
+    <button @click="push"> push </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Login',
+  methods: {
+    push () {
+      this.$router.push('/')
+      // this.$router.push({ name: 'Home' })
+    }
+  }
+}
+</script>
+```
+```vue
+<template>
+  <div class="home">
+    <div id="nav">
+      <router-link to="/">Index</router-link>
+    </div>
+    <button @click="replace"> replace </button>
+
+    <button @click="goDetail"> Detail </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Index',
+  methods: {
+    replace () {
+      this.$router.replace('/login')
+    },
+    goDetail () {
+      this.$router.push({ name: 'Detail', params: { id: 1 } })
+    }
+  }
+}
+</script>
+```
+```vue
+<template>
+  <div>
+    路由参数：{{ id }}
+
+    <button @click="go"> go(-2) </button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'Detail',
+  props: ['id'],
+  methods: {
+    go () {
+      this.$router.go(-2)
+    }
+  }
+}
+</script>
+```
 
 ### 4. Hash 和 History 模式区别
 
@@ -150,6 +342,31 @@ const routes = {
   - 所以在服务器端应该配置，除了静态资源外的所有路径，都返回单页应用的 `index.html`
   - vue-cli 创建的应用启动的服务器已经进行了 history 的配置
   - 重现这个问题，需要将应用打包，部署到 node 服务器或者 nginx 服务器
+
+```js
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: Home
+  },
+  {
+    path: '/about',
+    name: 'About',
+    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+  },
+  {
+    path: '*',
+    name: '404',
+    component: () => import(/* webpackChunkName: "404" */ '../views/404.vue')
+  }
+]
+
+const router = new VueRouter({
+  mode: 'history',
+  routes
+})
+```
 
 #### 5.1 History 模式 - Node.js 服务器配置
 
@@ -335,7 +552,7 @@ new Vue({
 
 - 首先通过类图整理 vue-router 类需要定义的成员
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/02.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/03.png =500x)
 
 - 类图分为三部分：（+ 表示 public，# 表示 protected，- 表示 private，_ 开头表示 static）
 

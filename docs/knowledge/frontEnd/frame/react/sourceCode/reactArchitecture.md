@@ -248,6 +248,19 @@ type Fiber = {
 
 - updateQueue 属性的值其实就是 JavaScript 对象，对象中会以链表的方式存储一个个要更新的任务
 
+```js
+const queue: <State> = {
+  // 上一次更新之后的 state, 作为下一次更新的基础
+  baseState: fiber.memoizedState,
+  baseQueue: null,
+  shared: {
+    pending: null,
+  },
+  effects: null,
+}
+fiber.updateQueue = queue;
+```
+
 #### 2. effectTag
 
 - effectTag 属性表示的是当前 Fiber 节点对应的 DOM 节点要进行什么样的操作
