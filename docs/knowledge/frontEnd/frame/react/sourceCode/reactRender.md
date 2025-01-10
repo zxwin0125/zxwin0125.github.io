@@ -3103,7 +3103,7 @@ function commitPlacement(finishedWork: Fiber): void {
 }
 ```
 
-###### 2.3.3 getHostParentFiber
+**getHostParentFiber**
 
 ```js
 // 获取 HostRootFiber 对象
@@ -3128,7 +3128,7 @@ function getHostParentFiber(fiber: Fiber): Fiber {
 }
 ```
 
-###### 2.3.4 insertOrAppendPlacementNodeIntoContainer
+**insertOrAppendPlacementNodeIntoContainer**
 
 - 判断节点的类型：
   - 如果是普通元素或文本，则根据 before 调用对应的方法
@@ -3182,7 +3182,7 @@ function insertOrAppendPlacementNodeIntoContainer(
 }
 ```
 
-###### 2.3.5 insertInContainerBefore
+**insertInContainerBefore**
 
 - 判断父容器是否是注释节点
   - 如果是则找到注释节点的父级
@@ -3206,7 +3206,7 @@ export function insertInContainerBefore(
 }
 ```
 
-###### 2.3.6 appendChildToContainer
+**appendChildToContainer**
 
 - 判断父容器是否是注释节点
   - 如果是，获取注释节点的父级，调用 insertBefore 插入节点
