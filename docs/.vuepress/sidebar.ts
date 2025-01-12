@@ -177,7 +177,11 @@ export default sidebar({
 					text: '学一学 Vue',
 					prefix: 'vue/',
 					collapsible: true,
-					children: 'structure',
+					children: [
+						'vueBasics.md',
+						'vueRouter.md',
+						'vueResponsive.md'
+					],
 				},
 				// 'frameIsomorphic.md',
 				// 'frameStudy.md'
