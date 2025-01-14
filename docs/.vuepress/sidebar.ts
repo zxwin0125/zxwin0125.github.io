@@ -180,7 +180,8 @@ export default sidebar({
 					children: [
 						'vueBasics.md',
 						'vueRouter.md',
-						'vueResponsive.md'
+						'vueResponsive.md',
+						'vueVirtualDOM.md'
 					],
 				},
 				// 'frameIsomorphic.md',
