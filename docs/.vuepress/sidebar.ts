@@ -218,12 +218,13 @@ export default sidebar({
 					prefix: 'buildTool/',
 					collapsible: true,
 					children: [
+						'index.md',
 						{
 							text: 'Webpack',
 							prefix: 'webpack/',
 							collapsible: true,
 							children: [
-								'index.md'
+								'introduce.md'
 							]
 						},
 						'gulpAndWebpack.md',
