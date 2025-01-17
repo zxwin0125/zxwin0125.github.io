@@ -224,7 +224,8 @@ export default sidebar({
 							prefix: 'webpack/',
 							collapsible: true,
 							children: [
-								'introduce.md'
+								'introduce.md',
+								'loader.md'
 							]
 						},
 						'gulpAndWebpack.md',
