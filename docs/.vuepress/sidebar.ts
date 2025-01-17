@@ -225,7 +225,8 @@ export default sidebar({
 							collapsible: true,
 							children: [
 								'introduce.md',
-								'loader.md'
+								'loader.md',
+								'plugin.md'
 							]
 						},
 						'gulpAndWebpack.md',
