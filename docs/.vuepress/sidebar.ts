@@ -226,7 +226,8 @@ export default sidebar({
 							children: [
 								'introduce.md',
 								'loader.md',
-								'plugin.md'
+								'plugin.md',
+								'experience.md'
 							]
 						},
 						'gulpAndWebpack.md',
