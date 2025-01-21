@@ -227,7 +227,8 @@ export default sidebar({
 								'introduce.md',
 								'loader.md',
 								'plugin.md',
-								'experience.md'
+								'experience.md',
+								'prodOptimize.md'
 							]
 						},
 						'gulpAndWebpack.md',
