@@ -231,7 +231,9 @@ export default sidebar({
 								'prodOptimize.md'
 							]
 						},
-						'gulpAndWebpack.md',
+						'rollup.md',
+						'parcel.md'
+						// 'gulpAndWebpack.md',
 					],
 				},
 				// 'webpack.md',
