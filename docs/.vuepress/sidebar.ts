@@ -236,6 +236,12 @@ export default sidebar({
 						// 'gulpAndWebpack.md',
 					],
 				},
+				{
+					text: '规范化标准',
+					prefix: 'normalize/',
+					collapsible: true,
+					children: 'structure',
+				}
 				// 'webpack.md',
 				// 'codeSpecification.md',
 				// 'projectOrganizationDesign.md',
