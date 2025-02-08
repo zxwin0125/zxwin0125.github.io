@@ -318,9 +318,9 @@ export default sidebar({
 		},
   ],
 	'/project/': [
-		'bill.md',
-		'billReconfiguration.md'
+		// 'bill.md',
+		// 'billReconfiguration.md'
 	],
 	'/work/': 'structure',
-	'/manage/': 'structure',
+	// '/manage/': 'structure',
 });

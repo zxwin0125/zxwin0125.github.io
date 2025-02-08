@@ -52,12 +52,12 @@ export default navbar([
 			// },
 		],
 	},
-	{ text: '项目相关', icon: 'diagram-project', link: '/project/bill' },
+	{ text: '项目相关', icon: 'diagram-project', link: '/project/index' },
 	{ text: '工作技能', icon: 'laptop-code', link: '/work/bitOne' },
 	{
 		text: '学会管理',
 		icon: 'users-gear',
-		link: '/manage/newComers',
+		link: '/manage/index',
 	},
 	// {
 	//   text: "应用",
