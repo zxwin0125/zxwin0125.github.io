@@ -29,7 +29,7 @@ order: 8
     - Object.prototype.toString
     - constructor
 
-## 使用 typeof 判断类型
+### 使用 typeof 判断类型
 
 - 基本类型可以使用 typeof 来判断：
 
@@ -69,7 +69,7 @@ typeof foo // "symbol"
     - **使用 typeof 可以准确判断出除 null 以外的基本类型，以及 function 类型、symbol 类型**
     - **null 会被 typeof 判断为 object**
 
-## 使用 instanceof 判断类型
+### 使用 instanceof 判断类型
 
 - 再来看看 instanceof：
     - **使用 a instanceof B 判断的是：a 是否为 B 的实例，即 a 的原型链上是否存在 B 构造函数**
@@ -143,7 +143,7 @@ const p = new Person('zxwin')
 instanceofMock(p, Person) // true
 ```
 
-## 使用 constructor 和 Object.prototype.toString 判断类型
+### 使用 constructor 和 Object.prototype.toString 判断类型
 
 - 使用 Object.prototype.toString 判断类型，我们称之为「万能方法」，「终极方法」：
 

@@ -161,7 +161,7 @@ export default sidebar({
 						'reactFiber.md',
 						{
 							text: '核心源码分析',
-							prefix: 'sourceCode/',
+							prefix: 'reactSourceCode/',
 							collapsible: true,
 							children: [
 								'env.md',
@@ -179,9 +179,24 @@ export default sidebar({
 					collapsible: true,
 					children: [
 						'vueBasics.md',
-						'vueRouter.md',
-						'vueResponsive.md',
-						'vueVirtualDOM.md'
+						{
+							text: '相关核心原理',
+							prefix: 'vuePrinciple/',
+							collapsible: true,
+							children: 'structure',
+						},
+						{
+							text: '核心源码分析',
+							prefix: 'vueSourceCode/',
+							collapsible: true,
+							children: 'structure',
+						},
+						{
+							text: 'Vuex 数据流管理',
+							prefix: 'vuex/',
+							collapsible: true,
+							children: 'structure',
+						}
 					],
 				},
 				// 'frameIsomorphic.md',
