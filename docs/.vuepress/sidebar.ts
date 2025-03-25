@@ -128,7 +128,7 @@ export default sidebar({
 			prefix: 'javascript/',
 			collapsible: true,
 			children: [
-				'this.md',
+				'01_this.md',
 				'closure.md',
 				'asynchronous.md',
 				'promise.md',

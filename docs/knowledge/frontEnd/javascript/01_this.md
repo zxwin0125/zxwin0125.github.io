@@ -1,33 +1,24 @@
 ---
-title: 一网打尽 this，对执行上下文说 Yes
+title: this 到底指向谁呢？
 date: 2023-11-16
 category:
   - JavaScript
 order: 1
 ---
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/01.png =700x)
+**<font color=red>如果让你用一句话总结 this 的指向，你会怎么说？注意只用一句话</font>**
 
-## this 到底指向谁
+> 我之前会这样回答：this 的指向是在调用的时候确定的，也就是说谁调用了 this，this 就指向谁
 
-> **<font color=red>请用一句话总结 this 的指向，注意只用一句话</font>**
+- 这么说没啥大问题，但是也不全面
+- 如果面试官要求用更加规范的语言进行总结，那这时候该怎么回答好？
+> 我觉得还是要回到 JavaScript 中一个最基本的概念来分析，那就是 **<font color=red>执行上下文</font>**
 
-- 有一种广泛流传的说法是：谁调用它，this 就指向谁，this 的指向是在调用时确定的
-> 这么说没有太大的问题，可是并不全面
-- 面试官要求用更加规范的语言进行总结，那么他到底在等什么样的回答呢？
-  - 还要回到 JavaScript 中一个最基本的概念分析 —— **<font color=red>执行上下文</font>**
-- 事实上，调用函数会创建新的属于函数自身的执行上下文
-- 执行上下文的调用创建阶段会决定 this 的指向，到此可以得出的一个结论：- **<font color=red>this 的指向，是在调用函数时根据执行上下文所动态确定的</font>**
+> [!important]
+> - 实际上，在 JavaScript 中，调用函数的时候，就会创建出一个新的属于函数本身的执行上下文，而在执行上下文创建的时候，确定了 this 的指向
+> - 所以，**<font color=red>this 的指向，是在调用函数时根据执行上下文所动态确定的</font>**
 
->[!info]
-> 具体环节和规则，可以先'死记硬背'以下几条规律，后面再慢慢一一分析：
-> - 在函数体中，简单调用该函数时（非显式/隐式绑定下），严格模式下 this 绑定到 undefined，否则绑定到全局对象 window／global
-> - 一般构造函数 new 调用，绑定到新创建的对象上
->   - 一般由 call/apply/bind 方法显式调用，绑定到指定参数的对象上
->   - 一般由上下文对象调用，绑定在该对象上
->   - 箭头函数中，根据外层上下文绑定的 this 决定 this 指向
-
-## 实战例题分析
+## 具体分析下 this 的规则
 
 ### 1. 全局环境下的 this
 
@@ -36,11 +27,11 @@ order: 1
 
 ```js
 function f1() {
-	console.log(this);
+ console.log(this);
 }
 function f2() {
-	'use strict';
-	console.log(this);
+ 'use strict';
+ console.log(this);
 }
 f1(); // window
 f2(); // undefined
@@ -50,11 +41,11 @@ f2(); // undefined
 
 ```js
 const foo = {
-	bar: 10,
-	fn: function () {
-		console.log(this); // window
-		console.log(this.bar); // undefined
-	},
+ bar: 10,
+ fn: function () {
+  console.log(this); // window
+  console.log(this.bar); // undefined
+ },
 };
 var fn1 = foo.fn;
 fn1();
@@ -73,11 +64,11 @@ console.log(window.bar);
 
 ```js
 const foo = {
-	bar: 10,
-	fn: function () {
-		console.log(this);
-		console.log(this.bar);
-	},
+ bar: 10,
+ fn: function () {
+  console.log(this);
+  console.log(this.bar);
+ },
 };
 foo.fn();
 ```
@@ -99,10 +90,10 @@ foo.fn();
 
 ```js
 const student = {
-	name: 'zx',
-	fn: function () {
-		return this;
-	},
+ name: 'zx',
+ fn: function () {
+  return this;
+ },
 };
 console.log(student.fn() === student); // true
 ```
@@ -111,13 +102,13 @@ console.log(student.fn() === student); // true
 
 ```js
 const person = {
-	name: 'zxwin',
-	brother: {
-		name: 'Mike',
-		fn: function () {
-			return this.name;
-		},
-	},
+ name: 'zxwin',
+ brother: {
+  name: 'Mike',
+  fn: function () {
+   return this.name;
+  },
+ },
 };
 console.log(person.brother.fn());
 ```
@@ -130,26 +121,26 @@ console.log(person.brother.fn());
 
 ```js
 const o1 = {
-	text: 'o1',
-	fn: function () {
-		return this.text;
-	},
+ text: 'o1',
+ fn: function () {
+  return this.text;
+ },
 };
 const o2 = {
-	text: 'o2',
-	fn: function () {
-		return o1.fn();
-	},
+ text: 'o2',
+ fn: function () {
+  return o1.fn();
+ },
 };
 const o3 = {
-	text: 'o3',
-	fn: function () {
-		// 将 o1.fn 方法的引用赋值给局部变量 fn
-		// 此时 fn 是一个独立函数，脱离了对象绑定，不再关联 o1 对象
-		var fn = o1.fn;
-		// 独立函数调用，默认绑定，this 指向全局对象或严格模式下的 undefined
-		return fn();
-	},
+ text: 'o3',
+ fn: function () {
+  // 将 o1.fn 方法的引用赋值给局部变量 fn
+  // 此时 fn 是一个独立函数，脱离了对象绑定，不再关联 o1 对象
+  var fn = o1.fn;
+  // 独立函数调用，默认绑定，this 指向全局对象或严格模式下的 undefined
+  return fn();
+ },
 };
 
 console.log(o1.fn()); // o1
@@ -164,17 +155,17 @@ console.log(o3.fn()); // undefined
 
 ```js
 const o1 = {
-	text: 'o1',
-	fn: function () {
-		return this.text;
-	},
+ text: 'o1',
+ fn: function () {
+  return this.text;
+ },
 };
 
 const o2 = {
-	text: 'o2',
-	// o2.fn 引用了 o1 的 fn 方法，但是并没有执行这个方法
-	// 此时 o2.fn 成为 o2 对象的方法
-	fn: o1.fn,
+ text: 'o2',
+ // o2.fn 引用了 o1 的 fn 方法，但是并没有执行这个方法
+ // 此时 o2.fn 成为 o2 对象的方法
+ fn: o1.fn,
 };
 
 console.log(o2.fn()); // 隐式绑定（如 o2.fn()）会将 this 绑定到调用该方法的对象（即 o2）
@@ -185,7 +176,9 @@ console.log(o2.fn()); // 隐式绑定（如 o2.fn()）会将 this 绑定到调�
 ### 3. bind/call/apply 改变 this 指向
 
 - 上文提到 bind/call/apply，在这个概念上，比较常见的基础考察点是： **<font color=red>bind/call/apply 三个方法的区别</font>**
+
 > 一句话总结，他们都是用来改变相关函数 this 指向的
+
 - 但是 call/apply 是直接进行相关函数调用，call/apply 之间的区别主要体现在参数设定上
 - bind 不会执行相关函数，而是返回一个新的函数，这个新的函数已经自动绑定了新的 this 指向，开发者需要手动调用即可
 - 用代码来总结：
@@ -207,13 +200,13 @@ fn.bind(target, 'arg1', 'arg2')();
 
 ```js
 const foo = {
-	name: 'zx',
-	logName: function () {
-		console.log(this.name);
-	},
+ name: 'zx',
+ logName: function () {
+  console.log(this.name);
+ },
 };
 const bar = {
-	name: 'mike',
+ name: 'mike',
 };
 console.log(foo.logName.call(bar)); // mike
 ```
@@ -226,7 +219,7 @@ console.log(foo.logName.call(bar)); // mike
 
 ```js
 function Foo() {
-	this.bar = 'zx';
+ this.bar = 'zx';
 }
 const instance = new Foo();
 console.log(instance.bar); // zx
@@ -250,9 +243,9 @@ Foo.call(obj);
 
 ```js
 function Foo() {
-	this.user = 'zx';
-	const o = {};
-	return o;
+ this.user = 'zx';
+ const o = {};
+ return o;
 }
 const instance = new Foo();
 console.log(instance.user); // undefined
@@ -262,8 +255,8 @@ console.log(instance.user); // undefined
 
 ```js
 function Foo() {
-	this.user = 'zx';
-	return 1;
+ this.user = 'zx';
+ return 1;
 }
 const instance = new Foo();
 console.log(instance.user); // zx
@@ -282,11 +275,11 @@ console.log(instance.user); // zx
 
 ```js
 const foo = {
-	fn: function () {
-		setTimeout(function () {
-			console.log(this);
-		});
-	},
+ fn: function () {
+  setTimeout(function () {
+   console.log(this);
+  });
+ },
 };
 console.log(foo.fn());
 ```
@@ -296,11 +289,11 @@ console.log(foo.fn());
 
 ```js
 const foo = {
-	fn: function () {
-		setTimeout(() => {
-			console.log(this);
-		});
-	},
+ fn: function () {
+  setTimeout(() => {
+   console.log(this);
+  });
+ },
 };
 console.log(foo.fn());
 
@@ -318,17 +311,17 @@ console.log(foo.fn());
 
 ```js
 function foo(a) {
-	console.log(this.a);
+ console.log(this.a);
 }
 
 const obj1 = {
-	a: 1,
-	foo: foo,
+ a: 1,
+ foo: foo,
 };
 
 const obj2 = {
-	a: 2,
-	foo: foo,
+ a: 2,
+ foo: foo,
 };
 
 obj1.foo.call(obj2); // 2
@@ -339,7 +332,7 @@ obj2.foo.call(obj1); // 1
 
 ```js
 function foo(a) {
-	this.a = a;
+ this.a = a;
 }
 
 const obj1 = {};
@@ -366,17 +359,17 @@ console.log(baz.a); // 3
 
 ```js
 function foo() {
-	return a => {
-		console.log(this.a);
-	};
+ return a => {
+  console.log(this.a);
+ };
 }
 
 const obj1 = {
-	a: 2,
+ a: 2,
 };
 
 const obj2 = {
-	a: 3,
+ a: 3,
 };
 
 const bar = foo.call(obj1);
@@ -393,15 +386,15 @@ console.log(bar.call(obj2)); // 2
 ```js
 var a = 123;
 const foo = () => a => {
-	console.log(this.a);
+ console.log(this.a);
 };
 
 const obj1 = {
-	a: 2,
+ a: 2,
 };
 
 const obj2 = {
-	a: 3,
+ a: 3,
 };
 
 var bar = foo.call(obj1);
@@ -413,15 +406,15 @@ console.log(bar.call(obj2));
 ```js
 const a = 123;
 const foo = () => a => {
-	console.log(this.a);
+ console.log(this.a);
 };
 
 const obj1 = {
-	a: 2,
+ a: 2,
 };
 
 const obj2 = {
-	a: 3,
+ a: 3,
 };
 
 var bar = foo.call(obj1);
@@ -435,20 +428,20 @@ console.log(bar.call(obj2)); // undefined
 ### 开放例题分析
 
 - 事实上，this 的指向涉及的规范繁多，优先级也较为混乱
-- 其中，最典型的一道题目为： **<font color=red>实现一个bind 函数</font>**
+- 其中，最典型的一道题目为： **<font color=red>实现一个 bind 函数</font>**
 
 ```js
 Function.prototype.bind =
-	Function.prototype.bind ||
-	function (context) {
-		var me = this;
-		var args = Array.prototype.slice.call(arguments, 1);
-		return function bound() {
-			var innerArgs = Array.prototype.slice.call(arguments);
-			var finalArgs = args.concat(innerArgs);
-			return me.apply(context, finalArgs);
-		};
-	};
+ Function.prototype.bind ||
+ function (context) {
+  var me = this;
+  var args = Array.prototype.slice.call(arguments, 1);
+  return function bound() {
+   var innerArgs = Array.prototype.slice.call(arguments);
+   var finalArgs = args.concat(innerArgs);
+   return me.apply(context, finalArgs);
+  };
+ };
 ```
 
 - 这样的实现已经非常不错了，但是，就如同之前 this 优先级分析所示： **<font color=red>bind 返回的函数如果作为构造函数，搭配 new 关键字出现的话，绑定 this 就需要'被忽略'</font>**
@@ -457,4 +450,4 @@ Function.prototype.bind =
 - 另外一个细节是，函数具有 length 属性，表示形参的个数
   - 上述实现方式形参的个数显然会失真
   - 代码的实现就需要对 length 属性进行还原
-  - 可是 **<font color=red>难点在于：函数的length 属性值是不可重写的</font>**
+  - 可是 **<font color=red>难点在于：函数的 length 属性值是不可重写的</font>**
