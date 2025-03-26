@@ -12,9 +12,10 @@ order: 1
 
 - 这么说没啥大问题，但是也不全面
 - 如果面试官要求用更加规范的语言进行总结，那这时候该怎么回答好？
-> 我觉得还是要回到 JavaScript 中一个最基本的概念来分析，那就是 **<font color=red>执行上下文</font>**
+  > 我觉得还是要回到 JavaScript 中一个最基本的概念来分析，那就是 **<font color=red>执行上下文</font>**
 
 > [!important]
+>
 > - 实际上，在 JavaScript 中，调用函数的时候，就会创建出一个新的属于函数本身的执行上下文，而在执行上下文创建的时候，确定了 this 的指向
 > - 所以，**<font color=red>this 的指向，是在调用函数时根据执行上下文所动态确定的</font>**
 
@@ -22,67 +23,61 @@ order: 1
 
 ### 1. 全局环境下的 this
 
-- 这种情况相对简单直接，函数在浏览器全局环境中被简单调用，非严格模式下 this 指向 window
-- 在 use strict 指明严格模式的情况下就是 undefined
+- **<font color=red>在浏览器全局环境中调用函数，如果是非严格模式，this 指向 window，如果是 use strict 严格模式，this 指向 undefined</font>**
+- **示例**
 
 ```js
 function f1() {
- console.log(this);
+	console.log(this);
 }
 function f2() {
- 'use strict';
- console.log(this);
+	'use strict';
+	console.log(this);
 }
 f1(); // window
 f2(); // undefined
 ```
 
-- 注意其变种，请再看一道题目：
+- **把示例变种一下**
+  - fn 函数在 foo 对象中被引用，把 fn 函数再赋值给 fn1，并执行 fn1
 
 ```js
 const foo = {
- bar: 10,
- fn: function () {
-  console.log(this); // window
-  console.log(this.bar); // undefined
- },
+	bar: 10,
+	fn: function () {
+		console.log(this); // window
+		console.log(this.bar); // undefined
+	},
 };
 var fn1 = foo.fn;
 fn1();
 ```
 
-- 这里 this 仍然指向的是 window
-  - 虽然 fn 函数在 foo 对象中作为方法被引用，但是在赋值给 fn1 之后，fn1 的执行仍然是在 window 的全局环境中
-  - 因此输出 window 和 undefined，它们相当于：
+- **解析**
+  - 虽然 fn 赋值给了 fn1，但是 fn1 的执行仍然是在 window 的全局环境中，所以实际上的执行是以下这样的：
 
 ```js
 console.log(window);
 console.log(window.bar);
 ```
 
-- 还是上面这道题目，如果调用改变为：
+- **再变种一下**
+  - 直接调用 foo 对象中引用的 fn 函数
 
 ```js
 const foo = {
- bar: 10,
- fn: function () {
-  console.log(this);
-  console.log(this.bar);
- },
+	bar: 10,
+	fn: function () {
+		console.log(this); // { bar: 10, fn: ƒ }
+		console.log(this.bar); // 10
+	},
 };
 foo.fn();
 ```
 
-- 将会输出：
-
-```js
-{bar: 10, fn: ƒ}
-10
-```
-
-- 因为这个时候 this 指向的是最后调用它的对象，在 foo.fn() 语句中 this 指向 foo 对象，请记住：
-  - 在执行函数时，如果函数中的 this 是被上一级的对象所调用，那么 this 指向的就是上一级的对象
-  - 否则指向全局环境
+- **解析**
+  - 这个时候是 foo 对象调用的 fn 函数，fn 函数里的 this 指向的是最后调用它的 foo 对象
+  - **<font color=red>在调用函数时，如果函数里的 this 是被上一级的对象所调用的，那这个 this 指向的就是上一级的那个对象，否则指向全局环境</font>**
 
 ### 2. 上下文对象调用中的 this
 
@@ -90,10 +85,10 @@ foo.fn();
 
 ```js
 const student = {
- name: 'zx',
- fn: function () {
-  return this;
- },
+	name: 'zx',
+	fn: function () {
+		return this;
+	},
 };
 console.log(student.fn() === student); // true
 ```
@@ -102,13 +97,13 @@ console.log(student.fn() === student); // true
 
 ```js
 const person = {
- name: 'zxwin',
- brother: {
-  name: 'Mike',
-  fn: function () {
-   return this.name;
-  },
- },
+	name: 'zxwin',
+	brother: {
+		name: 'Mike',
+		fn: function () {
+			return this.name;
+		},
+	},
 };
 console.log(person.brother.fn());
 ```
@@ -121,26 +116,26 @@ console.log(person.brother.fn());
 
 ```js
 const o1 = {
- text: 'o1',
- fn: function () {
-  return this.text;
- },
+	text: 'o1',
+	fn: function () {
+		return this.text;
+	},
 };
 const o2 = {
- text: 'o2',
- fn: function () {
-  return o1.fn();
- },
+	text: 'o2',
+	fn: function () {
+		return o1.fn();
+	},
 };
 const o3 = {
- text: 'o3',
- fn: function () {
-  // 将 o1.fn 方法的引用赋值给局部变量 fn
-  // 此时 fn 是一个独立函数，脱离了对象绑定，不再关联 o1 对象
-  var fn = o1.fn;
-  // 独立函数调用，默认绑定，this 指向全局对象或严格模式下的 undefined
-  return fn();
- },
+	text: 'o3',
+	fn: function () {
+		// 将 o1.fn 方法的引用赋值给局部变量 fn
+		// 此时 fn 是一个独立函数，脱离了对象绑定，不再关联 o1 对象
+		var fn = o1.fn;
+		// 独立函数调用，默认绑定，this 指向全局对象或严格模式下的 undefined
+		return fn();
+	},
 };
 
 console.log(o1.fn()); // o1
@@ -155,17 +150,17 @@ console.log(o3.fn()); // undefined
 
 ```js
 const o1 = {
- text: 'o1',
- fn: function () {
-  return this.text;
- },
+	text: 'o1',
+	fn: function () {
+		return this.text;
+	},
 };
 
 const o2 = {
- text: 'o2',
- // o2.fn 引用了 o1 的 fn 方法，但是并没有执行这个方法
- // 此时 o2.fn 成为 o2 对象的方法
- fn: o1.fn,
+	text: 'o2',
+	// o2.fn 引用了 o1 的 fn 方法，但是并没有执行这个方法
+	// 此时 o2.fn 成为 o2 对象的方法
+	fn: o1.fn,
 };
 
 console.log(o2.fn()); // 隐式绑定（如 o2.fn()）会将 this 绑定到调用该方法的对象（即 o2）
@@ -200,13 +195,13 @@ fn.bind(target, 'arg1', 'arg2')();
 
 ```js
 const foo = {
- name: 'zx',
- logName: function () {
-  console.log(this.name);
- },
+	name: 'zx',
+	logName: function () {
+		console.log(this.name);
+	},
 };
 const bar = {
- name: 'mike',
+	name: 'mike',
 };
 console.log(foo.logName.call(bar)); // mike
 ```
@@ -219,7 +214,7 @@ console.log(foo.logName.call(bar)); // mike
 
 ```js
 function Foo() {
- this.bar = 'zx';
+	this.bar = 'zx';
 }
 const instance = new Foo();
 console.log(instance.bar); // zx
@@ -243,9 +238,9 @@ Foo.call(obj);
 
 ```js
 function Foo() {
- this.user = 'zx';
- const o = {};
- return o;
+	this.user = 'zx';
+	const o = {};
+	return o;
 }
 const instance = new Foo();
 console.log(instance.user); // undefined
@@ -255,8 +250,8 @@ console.log(instance.user); // undefined
 
 ```js
 function Foo() {
- this.user = 'zx';
- return 1;
+	this.user = 'zx';
+	return 1;
 }
 const instance = new Foo();
 console.log(instance.user); // zx
@@ -275,11 +270,11 @@ console.log(instance.user); // zx
 
 ```js
 const foo = {
- fn: function () {
-  setTimeout(function () {
-   console.log(this);
-  });
- },
+	fn: function () {
+		setTimeout(function () {
+			console.log(this);
+		});
+	},
 };
 console.log(foo.fn());
 ```
@@ -289,11 +284,11 @@ console.log(foo.fn());
 
 ```js
 const foo = {
- fn: function () {
-  setTimeout(() => {
-   console.log(this);
-  });
- },
+	fn: function () {
+		setTimeout(() => {
+			console.log(this);
+		});
+	},
 };
 console.log(foo.fn());
 
@@ -311,17 +306,17 @@ console.log(foo.fn());
 
 ```js
 function foo(a) {
- console.log(this.a);
+	console.log(this.a);
 }
 
 const obj1 = {
- a: 1,
- foo: foo,
+	a: 1,
+	foo: foo,
 };
 
 const obj2 = {
- a: 2,
- foo: foo,
+	a: 2,
+	foo: foo,
 };
 
 obj1.foo.call(obj2); // 2
@@ -332,7 +327,7 @@ obj2.foo.call(obj1); // 1
 
 ```js
 function foo(a) {
- this.a = a;
+	this.a = a;
 }
 
 const obj1 = {};
@@ -359,17 +354,17 @@ console.log(baz.a); // 3
 
 ```js
 function foo() {
- return a => {
-  console.log(this.a);
- };
+	return a => {
+		console.log(this.a);
+	};
 }
 
 const obj1 = {
- a: 2,
+	a: 2,
 };
 
 const obj2 = {
- a: 3,
+	a: 3,
 };
 
 const bar = foo.call(obj1);
@@ -386,15 +381,15 @@ console.log(bar.call(obj2)); // 2
 ```js
 var a = 123;
 const foo = () => a => {
- console.log(this.a);
+	console.log(this.a);
 };
 
 const obj1 = {
- a: 2,
+	a: 2,
 };
 
 const obj2 = {
- a: 3,
+	a: 3,
 };
 
 var bar = foo.call(obj1);
@@ -406,15 +401,15 @@ console.log(bar.call(obj2));
 ```js
 const a = 123;
 const foo = () => a => {
- console.log(this.a);
+	console.log(this.a);
 };
 
 const obj1 = {
- a: 2,
+	a: 2,
 };
 
 const obj2 = {
- a: 3,
+	a: 3,
 };
 
 var bar = foo.call(obj1);
@@ -432,16 +427,16 @@ console.log(bar.call(obj2)); // undefined
 
 ```js
 Function.prototype.bind =
- Function.prototype.bind ||
- function (context) {
-  var me = this;
-  var args = Array.prototype.slice.call(arguments, 1);
-  return function bound() {
-   var innerArgs = Array.prototype.slice.call(arguments);
-   var finalArgs = args.concat(innerArgs);
-   return me.apply(context, finalArgs);
-  };
- };
+	Function.prototype.bind ||
+	function (context) {
+		var me = this;
+		var args = Array.prototype.slice.call(arguments, 1);
+		return function bound() {
+			var innerArgs = Array.prototype.slice.call(arguments);
+			var finalArgs = args.concat(innerArgs);
+			return me.apply(context, finalArgs);
+		};
+	};
 ```
 
 - 这样的实现已经非常不错了，但是，就如同之前 this 优先级分析所示： **<font color=red>bind 返回的函数如果作为构造函数，搭配 new 关键字出现的话，绑定 this 就需要'被忽略'</font>**
