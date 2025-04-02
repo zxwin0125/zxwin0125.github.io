@@ -81,19 +81,9 @@ foo.fn();
 
 ### 2. 上下文对象调用中的 this
 
-- 如上结论，面对下题时便不再困惑，最终结果将会返回 true
+- 如果有更复杂的嵌套关系呢，这时候 this 又指向谁呢？
 
-```js
-const student = {
-	name: 'zx',
-	fn: function () {
-		return this;
-	},
-};
-console.log(student.fn() === student); // true
-```
-
-- 当存在更复杂的调用关系时，请看例题：
+**示例**
 
 ```js
 const person = {
@@ -105,14 +95,12 @@ const person = {
 		},
 	},
 };
-console.log(person.brother.fn());
+console.log(person.brother.fn()); // Mike
 ```
 
-- **<font color=red>在这种嵌套的关系中，this 指向最后调用它的对象</font>**，因此输出将会是：Mike，到此，this 的上下文对象调用已经理解得比较清楚了
-- 再看一道更高阶的题目：
-  - 第一个 console 最简单，o1 没有问题，难点在第二个和第三个上面，关键还是看调用 this 的那个函数
-  - 第二个 console 的 o2.fn()，最终还是调用 o1.fn()，因此答案仍然是 o1
-  - 最后一个，在进行 var fn = o1.fn 赋值之后，是'裸奔'调用，因此这里的 this 指向 window，答案当然是 undefined
+- 像以上这种嵌套关系，this 指向的是最后调用它的那个对象，即 brother 这个对象，所以输出 Mike
+
+**进阶一下**
 
 ```js
 const o1 = {
@@ -121,17 +109,19 @@ const o1 = {
 		return this.text;
 	},
 };
+
 const o2 = {
 	text: 'o2',
 	fn: function () {
 		return o1.fn();
 	},
 };
+
 const o3 = {
 	text: 'o3',
 	fn: function () {
 		// 将 o1.fn 方法的引用赋值给局部变量 fn
-		// 此时 fn 是一个独立函数，脱离了对象绑定，不再关联 o1 对象
+		// 此时 fn 是一个独立函数，脱离了对象绑定，不再关联 o1 对象，也不关联 o3 对象
 		var fn = o1.fn;
 		// 独立函数调用，默认绑定，this 指向全局对象或严格模式下的 undefined
 		return fn();
@@ -143,11 +133,40 @@ console.log(o2.fn()); // o1
 console.log(o3.fn()); // undefined
 ```
 
-- 紧接着追问，如果需要让 o2.fn() 输出 o2，该怎么做？
-  - 一般开发者可能会想到使用 bind/call/apply 来对 this 的指向进行干预，这确实是一种思路
-  - 但是接着问，**<font color=red>如果不能使用 bind/call/apply，有别的方法吗？</font>**
-- 考察候选人基础掌握的深度以及随机应变的思维能力，答案为：
+**解析**
+  - 第一个 console，fn 函数是作为 o1 对象的方法被调用的，fn 函数里面的 this 指向 fn 函数的上一级 o1 对象，也就是 o1.text，输出 'o1'
+  - 第二个 console，o2 对象里的 fn 函数最终还是调用 o1 对象里的 fn 函数，this 指向的还是 o1 对象，也就是 o1.text，输出 'o1'
 
+**重点解析**
+  - 第三个 console，在 o3 对象的 fn 函数里进行 var fn = o1.fn 赋值操作
+    - 赋值之后，fn 只是对 o1 对象里的 fn 函数的引用，不和任何对象进行绑定了，fn 是独立函数
+    - return fn() 是直接调用 fn 这个独立函数，那在严格模式下，this 指向 undefined，非严格模式，指向全局对象，如果在浏览器中，就是 window
+    - 所以 this.text 相当于 window.text，返回 undefined
+
+> [!warning]
+>
+> **<font color=red>为啥 fn 是独立函数？</font>**
+> - 在 JavaScript 中，函数本质上都是独立的，不会永久的绑定到任何特定的对象
+> - 当执行 var fn = o1.fn 时，只是复制了这个函数引用，而不是连同它的上下文一起复制，不会自动携带 o1 的绑定
+> - 而 o1.fn() 里的 fn 是作为方法调用，里面的语法 obj.method() 会隐式设置 this 的绑定，所以这里 this 会自动绑定到 o1
+
+**再问一下**
+  - 如果需要让 o2.fn() 输出 o2，该怎么做呢？
+  - 最简单的方式就是用 bind/call/apply 对 this 的指向进行显示绑定
+
+```js
+const o2 = {
+  text: 'o2',
+  fn: function() {
+    return o1.fn.call(this); // 显式绑定this到当前对象
+  }
+};
+```
+
+**<font color=red>如果不能使用 bind/call/apply，还有别的方法吗？</font>**
+
+- 可以这样写
+  
 ```js
 const o1 = {
 	text: 'o1',
@@ -158,15 +177,18 @@ const o1 = {
 
 const o2 = {
 	text: 'o2',
-	// o2.fn 引用了 o1 的 fn 方法，但是并没有执行这个方法
-	// 此时 o2.fn 成为 o2 对象的方法
+	// o2.fn 引用了 o1 的 fn 函数，但是并没有把这个函数作为方法去执行
 	fn: o1.fn,
 };
 
-console.log(o2.fn()); // 隐式绑定（如 o2.fn()）会将 this 绑定到调用该方法的对象（即 o2）
+// 当执行 o2 对象里的 fn 函数，这个时候，fn 就作为 o2 对象的方法调用
+// 会将 this 隐式绑定到调用 fn 方法的 o2 对象上
+o2.fn() 
 ```
 
-- 还是应用那个重要的结论：this 指向最后调用它的对象，在 fn 执行时，挂到 o2 对象上即可，提前进行了赋值操作
+**还是那个结论**
+
+- **<font color=red>this 指向最后调用它的对象</font>**，在 o2 对象中，提前进行 fn 函数的赋值操作，把 fn 函数挂载到 o2 对象上，这样在 fn 执行的时候，this 就会隐式绑定到 o2 对象上
 
 ### 3. bind/call/apply 改变 this 指向
 
