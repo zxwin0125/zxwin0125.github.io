@@ -190,15 +190,16 @@ o2.fn()
 
 - **<font color=red>this 指向最后调用它的对象</font>**，在 o2 对象中，提前进行 fn 函数的赋值操作，把 fn 函数挂载到 o2 对象上，这样在 fn 执行的时候，this 就会隐式绑定到 o2 对象上
 
-### 3. bind/call/apply 改变 this 指向
+### 3. bind / call / apply 改变 this 指向
 
-- 上文提到 bind/call/apply，在这个概念上，比较常见的基础考察点是： **<font color=red>bind/call/apply 三个方法的区别</font>**
+- 通常 bind / call / apply 是用来改变 this 指向的，那 **<font color=red>bind / call / apply 三个方法的区别是啥呢？</font>**
 
-> 一句话总结，他们都是用来改变相关函数 this 指向的
+> [!important]
+>
+> - call / apply 是直接进行相关函数的调用，它们两个的区别主要体现在参数设定上
+> - bind 不会执行相关函数，而是返回一个新的函数，这个新的函数已经自动绑定了新的 this 指向，我们只需要手动调用就行了
 
-- 但是 call/apply 是直接进行相关函数调用，call/apply 之间的区别主要体现在参数设定上
-- bind 不会执行相关函数，而是返回一个新的函数，这个新的函数已经自动绑定了新的 this 指向，开发者需要手动调用即可
-- 用代码来总结：
+**示例**
 
 ```js
 const target = {};
@@ -213,7 +214,7 @@ const target = {};
 fn.bind(target, 'arg1', 'arg2')();
 ```
 
-- 例题分析：
+**实战例题**
 
 ```js
 const foo = {
@@ -222,13 +223,15 @@ const foo = {
 		console.log(this.name);
 	},
 };
+
 const bar = {
 	name: 'mike',
 };
+
 console.log(foo.logName.call(bar)); // mike
 ```
 
-- 对 call/apply/bind 的高级考察往往会结合构造函数以及组合式实现继承
+- 这里使用了 call 方法将 logName 函数的 this 显式绑定到了 bar 对象，所以 this.name 访问的是 bar.name，输出 "mike"
 
 ### 4. 构造函数和 this
 
