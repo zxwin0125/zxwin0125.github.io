@@ -120,7 +120,10 @@ export default sidebar({
 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
 			prefix: 'css/',
 			collapsible: true,
-			children: 'structure',
+			children: [
+				'01_cssCenter.md',
+				'02_bfc.md',
+			],
 		},
 		{
 			text: 'JavaScript',
