@@ -107,3 +107,356 @@
 - **缺点**：
 - **代表**：Salesforce Lightning Design System 
 
+### 【中高级】请举例css、cssinjs、tailwindcss的使用技巧与方案价值体现
+#### CSS使用技巧与价值体现
+CSS值得关注的技巧：
+- **变量复用**：通过`:root`定义全局变量，提升可维护性。
+- **BEM命名规范**：使代码更清晰。
+- **Flex布局**：快速实现响应式设计。
+
+**示例：一个按钮组件**
+**HTML文件**：
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>CSS 示例</title>
+</head>
+<body>
+    <div class="button-container">
+        <button class="button button--primary">Primary Button</button>
+        <button class="button button--secondary">Secondary Button</button>
+    </div>
+</body>
+</html>
+```
+
+**CSS文件**：
+```css
+/* 定义全局变量 */
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --button-padding: 10px 20px;
+    --button-radius: 5px;
+}
+
+/* BEM命名 */
+.button {
+    padding: var(--button-padding);
+    border-radius: var(--button-radius);
+    border: none;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button--primary {
+    background-color: var(--primary-color);
+}
+
+.button--primary:hover {
+    background-color: darken(var(--primary-color), 10%);
+}
+
+.button--secondary {
+    background-color: var(--secondary-color);
+}
+
+.button--secondary:hover {
+    background-color: darken(var(--secondary-color), 10%);
+}
+
+/* 响应式技巧 */
+@media (max-width: 600px) {
+   .button {
+        font-size: 14px;
+    }
+}
+```
+
+**方案价值体现**
+- 通过变量和BEM规范，增强了代码的模块化和复用性。
+- 响应式设计提升了适配能力。
+
+#### CSS - in - JS使用技巧与价值体现
+CSS - in - JS亮点：
+- **动态样式**：支持根据状态生成样式。
+- **样式隔离**：避免全局污染。
+- **嵌套规则**：便于层级关系定义。
+
+**示例：React + Styled - components**
+**安装依赖**：
+```bash
+npm install styled - components
+```
+
+**React代码**：
+```jsx
+import React, { useState } from "react";
+import styled from "styled - components";
+
+// 动态样式
+const Button = styled.button`
+    padding: 10px 20px;
+    border - radius: 5px;
+    border: none;
+    color: white;
+    font - size: 16px;
+    cursor: pointer;
+    background - color: ${(props) => (props.primary? "#3498db" : "#2ecc71")};
+    &:hover {
+        background - color: ${(props) => (props.primary? "#2980b9" : "#27ae60")};
+    }
+`;
+
+const App = () => {
+    const [primary, setPrimary] = useState(true);
+
+    return (
+        <div>
+            <Button primary={primary} onClick={() => setPrimary(!primary)}>
+                {primary? "Primary Button" : "Secondary Button"}
+            </Button>
+        </div>
+    );
+};
+
+export default App;
+```
+
+**方案价值体现**
+- 样式与组件绑定，减少上下文切换，易于理解。
+- 动态样式让交互更灵活（如`primary`属性）。
+
+#### TailwindCSS使用技巧与价值体现
+TailwindCSS优势：
+- **原子化设计**：快速实现复杂布局。
+- **样式集中管理**：通过配置文件定制主题。
+- **快速迭代**：减少自定义CSS编写时间。
+
+**示例：按钮组件**
+**安装依赖**：
+```bash
+npm install tailwindcss
+npx tailwindcss init
+```
+
+**配置文件（tailwind.config.js）**：
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+    content: ["**/*.{html,js}"],
+    theme: {
+        extend: {
+            colors: {
+                primary: "#3498db",
+                secondary: "#2ecc71"
+            }
+        }
+    },
+    plugins: []
+};
+```
+
+**入口css样式**：
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+**编译输出**：
+```bash
+npx tailwind -i style.css -o output.css --watch
+``` 
+
+### HTML文件
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="./output.css" rel="stylesheet">
+</head>
+<body>
+    <h1 class="text-3xl font-bold underline text-primary">Hello world!</h1>
+    <h2 class="text-2xl text-secondary">hello world</h2>
+</body>
+</html>
+```
+
+### 方案价值体现
+- 开箱即用的类名加快开发速度。
+- 配置灵活（如主题扩展）满足不同项目需求。
+
+### 总结
+| 特性 | CSS | CSS - in - JS | TailwindCSS |
+| --- | --- | --- | --- |
+| 学习曲线 | 低 | 中 | 高 |
+| 动态样式支持 | 弱 | 强 | 强 |
+| 可维护性 | 高（配合BEM等） | 高（模块化、隔离） | 中（HTML中类名较多） |
+| 适合场景 | 静态页面、小型项目 | React等现代框架 | 快速开发、设计系统 |
+
+### 【专家级】如果你是前端Leader，在项目架构初期，如何考虑选择合适的样式体系方案
+#### 样式体系选择的思考框架
+在项目架构初期，选择样式体系时需要综合考虑以下因素：
+- **项目特点**：团队规模、交付周期、性能要求。
+- **技术适配性**：是否适合现有的技术栈和工具链。
+- **团队能力**：成员对样式工具的熟悉程度。
+- **未来扩展性**：是否支持模块化、响应式、动态样式等特性。
+
+#### 样式方案技术评审
+#### CSS与Module CSS的基础与进阶
+#### 核心概念
+1. **选择器与优先级计算规则**：
+    - 理解层叠规则，避免优先级混乱。
+2. **常用布局方案**：
+    - **Flexbox**：一维布局，适用于弹性盒子模型。
+    - **Grid**：二维布局，适合复杂页面设计。
+3. **动画与过渡**：
+    - 利用`transition`和`@keyframes`实现交互效果。
+
+#### 高级技巧
+1. **使用变量与计算属性**：
+    - CSS变量（`--color-primary`）实现主题统一。
+    - 动态计算属性提升样式复用性。
+2. **高效媒体查询与响应式设计**：
+    - 使用`@media`定义断点，适配不同屏幕。
+3. **命名规范对比**：
+    - BEM提高可读性，适合团队协作。
+    - 工具化命名（如原子类）更高效但可读性较低。
+
+#### 性能优化
+1. **避免重排与重绘**：
+    - 减少`position: absolute`或`float`引发的复杂计算。
+2. **优化工具**：
+    - 使用`contain`限制渲染范围。
+    - 利用`will-change`提前优化GPU加速。
+
+#### CSS - in - JS的核心用法与优劣分析
+#### 背景与发展
+- **为什么需要CSS - in - JS?**
+    - 随着组件化的普及，CSS - in - JS提供了动态、模块化的样式管理。
+- **主流框架对比**：
+    - **Styled - Components**：直观、易用，性能较好。
+    - **Emotion**：灵活性高，支持TypeScript。
+    - **JSS**：适合复杂定制场景。
+
+#### 核心特性
+1. **动态样式**：
+    - 基于`props`或状态动态生成样式。
+2. **嵌套与继承**：
+    - 模仿传统CSS的嵌套规则，简化代码结构。
+3. **Scoped样式**：
+    - 避免全局污染，提升模块化。
+
+#### 最佳实践
+1. **性能控制**：
+    - 避免频繁注入动态样式。
+2. **类型安全**：
+    - 结合TypeScript定义样式属性。
+3. **主题系统**：
+    - 实现基于主题的样式切换。
+
+#### 限制与挑战
+- **性能问题**：大规模项目中可能引入注入开销。
+- **兼容性**：与传统CSS或样式库结合需要额外适配。
+
+#### TailwindCSS的核心用法与进阶
+#### 核心理念
+- 原子化CSS通过预定义类名（如`bg - blue - 500`）快速实现设计。
+- 减少自定义样式，提升生产效率。
+
+#### 基础使用
+1. **配置文件自定义**：
+    - `tailwind.config.js`定义主题颜色、断点等。
+2. **常用类**：
+    - 排版：`text - center`、`font - bold`。
+    - 间距：`p - 4`、`m - 2`。
+    - 颜色：`bg - red - 500`、`text - gray - 700`。
+
+#### 高级用法
+1. **动态样式构建**：
+    - 使用`@apply`提取复用的样式逻辑。
+2. **复杂交互**：
+    - 配置`variants`支持如`hover`、`focus`等状态样式。
+3. **性能优化**：
+    - 利用JIT编译只生成使用的类。
+
+#### 在团队中的实践
+1. **结合设计系统**：
+    - Tailwind的类名可与组件库风格统一。
+2. **代码风格**：
+    - 通过类名排序、工具链规范可提升可读性。 
+
+### 字节系产品样式方案评审流程
+#### 样式评审的目标
+1. 确保样式与设计一致性。
+2. 提高代码的复用性与维护性。
+3. 优化性能，避免冗余样式。
+
+#### 评审标准
+1. **规范性**：
+    - 是否符合团队样式规范？
+2. **复用性与扩展性**：
+    - 样式是否可适应不同场景？
+3. **性能优化**：
+    - 是否存在不必要的重排与重绘？
+
+#### 流程细节
+1. **自查**：
+    - 使用Stylelint等工具辅助检查。
+2. **代码Review**：
+    - 团队协作评审，及时反馈。
+3. **回归测试**：
+    - 通过工具或手动比对视觉效果。
+
+#### 字节系最佳实践
+#### 样式体系设计
+1. **分层架构**：
+    - **Base Styles**：全局样式基础。
+    - **Components**：组件样式。
+    - **Utilities**：工具类样式。
+2. **原子化样式与组件化结合**：
+    - 小型工具类与可复用组件的均衡。
+
+#### 工具链与自动化
+1. **样式检查**：
+    - 使用Linter确保规范。
+2. **性能优化**：
+    - CSS压缩与Tree - shaking减少文件大小。
+
+#### 跨端样式管理
+- 通过工具实现PC、H5、小程序的样式复用。
+- 响应式布局通用解决方案（如flex和媒体查询）。
+
+#### 案例分享
+1. 字节内部的分层架构实践。
+2. TailwindCSS的高效应用场景。
+
+### 实战：制定团队样式方案
+#### 问题分析
+1. **项目特点**：
+    - 小型项目适合原子化样式。
+    - 大型项目需要更多模块化和动态样式支持。
+2. **样式目标**：
+    - 统一的风格，支持高效开发。
+
+#### 方案设计
+1. 服务端渲染项目：CSS/Module CSS定义全局规则。
+2. React SPA项目：CSS - in - JS管理复杂交互。
+3. 小型POC项目快速布局：TailwindCSS实现页面搭建。
+4. **工具链支持**：
+    - PostCSS处理自动前缀与变量。
+    - Stylelint保证代码规范。
+
+#### 验证与迭代
+1. **试点运行**：
+    - 在小范围内测试新方案。
+2. **反馈优化**：
+    - 根据团队反馈调整工具与规范。 
