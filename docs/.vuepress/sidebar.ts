@@ -123,6 +123,9 @@ export default sidebar({
 			children: [
 				'01_cssCenter.md',
 				'02_bfc.md',
+				'03_cssModules.md',
+				'04_cssVariable.md',
+				'05_responsiveLayout.md',
 			],
 		},
 		{
