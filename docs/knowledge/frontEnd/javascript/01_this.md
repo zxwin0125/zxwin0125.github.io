@@ -196,8 +196,8 @@ o2.fn()
 
 > [!important]
 >
-> - call / apply 是直接进行相关函数的调用，它们两个的区别主要体现在参数设定上
-> - bind 不会执行相关函数，而是返回一个新的函数，这个新的函数已经自动绑定了新的 this 指向，我们只需要手动调用就行了
+> - call / apply 是直接执行这个函数的调用，它们两个的区别主要体现在参数的设定方式
+> - bind 不会执行这个函数，而是返回一个新的函数，这个新的函数已经自动绑定了新的 this 指向，我们只需要手动调用新的函数就行了
 
 **示例**
 
@@ -229,13 +229,14 @@ const bar = {
 };
 
 console.log(foo.logName.call(bar)); // mike
+console.log(foo.logName.bind(bar)()); // mike（注意需要加 () 执行）
 ```
 
-- 这里使用了 call 方法将 logName 函数的 this 显式绑定到了 bar 对象，所以 this.name 访问的是 bar.name，输出 "mike"
+- 这里使用了 call 方法将 logName 函数的 this 显式绑定到了 bar 对象，所以 this.name 访问的是 bar.name，输出 "mike"，bind 同理
 
 ### 4. 构造函数和 this
 
-- 这方面最直接的例题为：
+- 先看下示例
 
 ```js
 function Foo() {
@@ -245,13 +246,11 @@ const instance = new Foo();
 console.log(instance.bar); // zx
 ```
 
-- 但是这样的场景往往伴随着下一个问题： **<font color=red>new 操作符调用构造函数，具体做了什么？</font>**
-- 以下供参考：
-  - 创建一个新的对象
-  - 将构造函数的 this 指向这个新对象
-  - 为这个对象添加属性、方法等
-  - 最终返回新对象
-- 以上过程，用代码表述：
+- 通过上面的例子发现，**<font color=red>构造函数内部的 this 是指向新创建的实例对象的</font>**
+- 那这是为啥呢，是不是这个 new 操作符在调用构造函数的时候，做了特殊什么处理？
+  - 创建一个新的空对象，将这个新对象的原型 `__proto__` 指向构造函数的原型对象 `prototype`
+  - 将构造函数的 this 指向这个新对象，为这个对象添加属性、方法等，最终返回新对象
+- 用代码来表示就是这样的
 
 ```js
 var obj = {};
@@ -259,19 +258,24 @@ obj.__proto__ = Foo.prototype;
 Foo.call(obj);
 ```
 
-- 注意，如果在构造函数中出现了显式 return 的情况，那么需要注意分为两种场景：
+> [!warning]
+>
+> 注意，如果在构造函数中出现了显式 return 的情况，那么需要分情况讨论了
+
+- 示例一
+  - 最终会输出 undefined，因为此时的 instance 返回的是空对象 obj
 
 ```js
 function Foo() {
 	this.user = 'zx';
-	const o = {};
-	return o;
+	const obj = {};
+	return obj;
 }
 const instance = new Foo();
 console.log(instance.user); // undefined
 ```
 
-- 将会输出 undefined，此时 instance 是返回的空对象 o
+- 示例二
 
 ```js
 function Foo() {

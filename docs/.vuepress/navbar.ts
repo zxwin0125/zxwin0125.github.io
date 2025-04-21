@@ -15,6 +15,11 @@ export default navbar([
 				icon: 'code',
 				link: 'frontEnd/html/html5Tag',
 			},
+			{
+				text: '解决方案',
+				icon: 'code',
+				link: 'solution/01_cursor',
+			},
 			// {
 			// 	text: '服务端',
 			// 	icon: 'server',
