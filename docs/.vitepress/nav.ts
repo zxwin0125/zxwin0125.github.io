@@ -123,7 +123,7 @@ export default function nav(): DefaultTheme.NavItem[] {
 			items: [
 				{
 					text: '前端',
-					link: '../knowledge/frontEnd/html/html5Tag',
+					link: '../knowledge/frontEnd/html/01_html5Tag',
 				},
 			]
 		},

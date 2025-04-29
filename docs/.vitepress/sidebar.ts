@@ -344,7 +344,11 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 			items: [
 				{
 					text: '进击的 HTML5',
-					link: '/knowledge/frontEnd/html5Tag.md',
+					link: 'html/01_html5Tag.md',
+				},
+				{
+					text: '如何理解 HTML5 语义化',
+					link: 'html/02_htmlSemanticization.md',
 				},
 			],
 		},
