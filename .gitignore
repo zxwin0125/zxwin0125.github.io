@@ -3,10 +3,15 @@
 
 # Cache
 **/.vuepress/.cache/**
+**/.vitepress/cache/**
+
 # Temp
 **/.vuepress/.temp/**
+**/.vitepress/temp/**
+
 # Output
 **/.vuepress/dist/**
+**/.vitepress/dist/**
 
 # 自定义草稿箱
 docs/_temp/
