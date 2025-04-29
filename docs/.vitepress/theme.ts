@@ -1,6 +1,6 @@
 import { hopeTheme } from 'vuepress-theme-hope';
-import navbar from '../.vuepress/navbar.js';
-import sidebar from '../.vuepress/sidebar.js';
+import navbar from './navbar.js';
+import sidebar from './sidebar.js';
 
 export default hopeTheme({
 	// 主题选项：https://theme-hope.vuejs.press/zh/config/theme/layout.html

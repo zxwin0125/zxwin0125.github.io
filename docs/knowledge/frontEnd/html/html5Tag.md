@@ -1,21 +1,20 @@
----
-title: 进击的 HTML5
-date: 2024-08-12
-category:
-	- HTML5
-order: 1
----
+# 进击的 HTML5 {#markdown-extensions}
 
-- HTML5 给开发者提供了哪些便利呢？简单列举有：
+
+## HTML5 给开发者提供了哪些便利呢？
+
+简单列举有：
   - 用于绘画的 canvas 元素
   - 用于媒介播放的 video 和 audio 元素
   - 对本地离线存储更好的支持（localStorage、sessionStorage）
   - 新的语义化标签（article、footer、header、nav、section…)
   - 新的表单控件（calendar、date、time、email、url、search…)
-> [!info]
-> 除了这些常规的之外，还有以下一些可交互性标签
 
-- 给汉字加拼音
+## 可交互性标签
+
+除了这些常规的之外，还有以下一些可交互性标签
+
+### 给汉字加拼音
 
 ```html
 <ruby>
@@ -24,9 +23,9 @@ order: 1
 </ruby>
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/01.webp =600x)
+![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/01.webp)
 
-- 展开收起组件
+### 展开收起组件
 
 ```html
 <details>
@@ -37,13 +36,13 @@ order: 1
 </details>
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/02.webp =600x)
+![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/02.webp)
 
-- 原生进度条和度量，progress 标签显示进度：
+### 原生进度条和度量，progress 标签显示进度
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/03.webp =600x)
+![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/03.webp)
 
 > [!warning]
 > 值得一提的是：progress 不适合用来表示度量衡，如果想表示度量衡，应该使用 meter 标签代替
 
-- 以往要实现这样的内容，都必须依靠 JavaScript 实现，现在来看，HTML 也变得更加具有「可交互性」
+以往要实现这样的内容，都必须依靠 JavaScript 实现，现在来看，HTML 也变得更加具有「可交互性」

@@ -1,33 +1,20 @@
-import { defineConfig } from 'vitepress';
+import { defineConfig } from 'vitepress'
+
+import nav from './nav.ts';
+import { sidebar } from './sidebar.ts';
+// import searchOptions from './searchOptions.ts';
+
+
+// import { sidebar } from './sidebar.ts';
 
 export default defineConfig({
-  lang: 'zh-CN',
+  lang: 'zh-Hans',
   title: 'VitePress',
   description: 'Vite & Vue powered static site generator.',
   themeConfig: {
-    nav: [
-      { text: 'Example', link: '/example' },
+    nav: nav(),
+    sidebar: sidebar,
 
-      // {
-      //   text: 'Dropdown Menu',
-      //   items: [
-      //     { text: 'Item A', link: '/item-1' },
-      //     { text: 'Item B', link: '/item-2' },
-      //     { text: 'Item C', link: '/item-3' },
-      //   ],
-      // },
-
-      // ...
-    ],
-
-    sidebar: [
-      {
-        // text: 'Guide',
-        items: [
-          { text: 'Example', link: '/example' },
-          // ...
-        ],
-      },
-    ],
+    // search: { options: searchOptions() },
   },
 });

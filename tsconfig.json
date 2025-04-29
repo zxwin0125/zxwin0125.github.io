@@ -4,6 +4,6 @@
     "moduleResolution": "NodeNext",
     "target": "ES2022"
   },
-  "include": ["docs/.vuepress/**/*.ts", "docs/.vuepress/**/*.vue"],
+  "include": ["docs/.vuepress/**/*.ts", "docs/.vuepress/**/*.vue", "docs/.vitepress/nav.ts", "docs/.vitepress/sidebar.ts"],
   "exclude": ["node_modules"]
 }
