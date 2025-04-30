@@ -92,9 +92,6 @@
 // 	// 专题区（独立侧边栏）
 // 	// '/apps/topic/': 'structure',
 
-import { DefaultTheme } from "vitepress";
-
-	
 // 	'/knowledge/frontEnd/': [
 // 		{
 // 			text: 'HTML',
@@ -332,29 +329,47 @@ import { DefaultTheme } from "vitepress";
 
 import { type DefaultTheme } from 'vitepress'
 
+const FrontEndBasePath = '/knowledge/frontEnd/'
+
 export const sidebar = {
-	'/knowledge/frontEnd/': { base: '/knowledge/frontEnd/', items: frontEnd() },
+	[FrontEndBasePath]: { base: FrontEndBasePath, items: frontEnd() },
 };
 
 function frontEnd(): DefaultTheme.SidebarItem[] {
+	const htmlBase = createLink(FrontEndBasePath, 'html')
 	return [
 		{
 			text: 'HTML',
+			base: `${htmlBase}/`,
 			collapsed: false,
 			items: [
 				{
 					text: '进击的 HTML5',
-					link: 'html/01_html5Tag.md',
+					link: '01_H5Tag.md'
 				},
 				{
 					text: '如何理解 HTML5 语义化',
-					link: 'html/02_htmlSemanticization.md',
+					link: '02_H5Semanticization.md'
 				},
 				{
 					text: '移动端 H5 注意事项总结',
-					link: 'html/03_html5Mobile.md',
+					link: '03_H5Mobile.md',
 				},
+				{
+					text: 'Web Components',
+					base: createLink(htmlBase, 'webComponents/'),
+					items: [
+						{
+							text: '不可忽视的 Web Components',
+							link: '01_WebComponents.md',
+						}
+					]
+				}
 			],
 		},
 	];
+}
+
+function createLink(base: string, path: string): string {
+  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
