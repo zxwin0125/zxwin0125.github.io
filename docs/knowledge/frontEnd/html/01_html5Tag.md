@@ -1,14 +1,13 @@
 # 进击的 HTML5 {#markdown-extensions}
 
-
-## HTML5 给开发者提供了哪些便利呢？
+## HTML5 提供了哪些便利呢？
 
 简单列举有：
   - 用于绘画的 canvas 元素
   - 用于媒介播放的 video 和 audio 元素
   - 对本地离线存储更好的支持（localStorage、sessionStorage）
-  - 新的语义化标签（article、footer、header、nav、section…)
-  - 新的表单控件（calendar、date、time、email、url、search…)
+  - 新的语义化标签（article、footer、header、nav、section...）
+  - 新的表单控件（calendar、date、time、email、url、search...）
 
 ## 可交互性标签
 
