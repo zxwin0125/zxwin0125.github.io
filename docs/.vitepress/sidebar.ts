@@ -350,6 +350,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 					text: '如何理解 HTML5 语义化',
 					link: 'html/02_htmlSemanticization.md',
 				},
+				{
+					text: '移动端 H5 注意事项总结',
+					link: 'html/03_html5Mobile.md',
+				},
 			],
 		},
 	];
