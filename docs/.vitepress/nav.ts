@@ -133,5 +133,9 @@ export default function nav(): DefaultTheme.NavItem[] {
 				},
 			]
 		},
+		{
+			text: '工作技能',
+			link: '/work/01_bitOne',
+		},
 	];
 }

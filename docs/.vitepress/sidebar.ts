@@ -331,9 +331,11 @@ import { type DefaultTheme } from 'vitepress'
 
 const FrontEndBasePath = '/knowledge/frontEnd/'
 const SolutionBasePath = '/knowledge/solution/'
+const WorkBasePath = '/work/'
 export const sidebar = {
 	[FrontEndBasePath]: { base: FrontEndBasePath, items: frontEnd() },
 	[SolutionBasePath]: { base: SolutionBasePath, items: solution() },
+	[WorkBasePath]: { base: WorkBasePath, items: work() },
 };
 
 function frontEnd(): DefaultTheme.SidebarItem[] {
@@ -380,6 +382,14 @@ function solution(): DefaultTheme.SidebarItem[] {
 	];
 }
 
+function work(): DefaultTheme.SidebarItem[] {
+	return [
+		{
+			text: '如何做好项目 1 号位',
+			link: '01_bitOne.md',
+		},
+	];
+}
 function createLink(base: string, path: string): string {
   return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
