@@ -1,10 +1,4 @@
----
-title: this 到底指向谁呢？
-date: 2023-11-16
-category:
-  - JavaScript
-order: 1
----
+# this 到底指向谁呢？
 
 **<font color=red>如果让你用一句话总结 this 的指向，你会怎么说？注意只用一句话</font>**
 

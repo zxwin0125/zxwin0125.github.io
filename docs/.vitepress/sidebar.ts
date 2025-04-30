@@ -1,96 +1,3 @@
-// export default sidebar({
-// 	// '': [
-// 		// '/DailyRoutine',
-// 		// '/Fitness',
-// 		// 读书笔记架构更换到 docsify，不能使用相对链接
-// 		// {
-// 		// 	text: '读书笔记',
-// 		// 	icon: 'fa6-brands:readme',
-// 		// 	link: 'https://newzone.top/reading/',
-// 		// },
-// 		// 指定显示页面
-// 		// {
-// 		// 	text: '🧰 应用手册',
-// 		// 	icon: '',
-// 		// 	prefix: '/apps/',
-// 		// 	link: '',
-// 		// 	collapsible: true,
-// 		// 	children: [
-// 		// 		'Applist.md',
-// 		// 		'toolbox.md',
-// 		// 		{
-// 		// 			text: '其他',
-// 		// 			icon: 'fa6-solid:code-compare',
-// 		// 			collapsible: true,
-// 		// 			children: ['design.md'],
-// 		// 		},
-// 		// 	],
-// 		// },
-// 		// {
-// 		// 	text: '🌐 页面开发',
-// 		// 	icon: '',
-// 		// 	prefix: '/web/',
-// 		// 	link: '',
-// 		// 	collapsible: true,
-// 		// 	children: 'structure',
-// 		// },
-// 		// {
-// 		// 	text: '🏗️ 网站部署',
-// 		// 	icon: '',
-// 		// 	prefix: '/deploy/',
-// 		// 	link: '',
-// 		// 	collapsible: true,
-// 		// 	children: [
-// 		// 		'Static.md',
-// 		// 		'CloudServices.md',
-// 		// 		'VPS.md',
-// 		// 		{
-// 		// 			text: '部署工具',
-// 		// 			icon: 'fa6-brands:windows',
-// 		// 			collapsible: true,
-// 		// 			children: ['GitHub.md', 'Cloudflare.md', 'MySQL.md', 'DNS.md'],
-// 		// 		},
-// 		// 	],
-// 		// },
-// 		// {
-// 		// 	text: '🔡 代码编程',
-// 		// 	icon: '',
-// 		// 	prefix: '/code/',
-// 		// 	collapsible: true,
-// 		// 	children: [
-// 		// 		'README.md',
-// 		// 		{
-// 		// 			text: 'Basic',
-// 		// 			icon: 'fa6-solid:cube',
-// 		// 			collapsible: true,
-// 		// 			children: ['Markdown.md', 'Electron.md', 'AutoHotkey.md', 'Regex.md'],
-// 		// 		},
-// 		// 		{
-// 		// 			text: 'FrondEnd',
-// 		// 			icon: 'fa6-solid:object-group',
-// 		// 			collapsible: true,
-// 		// 			children: ['Vue.md', 'HTML.md', 'Javascript.md', 'Python.md'],
-// 		// 		},
-// 		// 	],
-// 		// },
-// 		// {
-// 		// 	text: '🛖 生活记录',
-// 		// 	icon: '',
-// 		// 	prefix: '/family/',
-// 		// 	collapsible: true,
-// 		// 	children: 'structure',
-// 		// },
-// 		// {
-// 		// 	text: '博客文章',
-// 		// 	icon: 'fa6-solid:feather-pointed',
-// 		// 	prefix: '/_posts/',
-// 		// 	link: '/blog',
-// 		// 	collapsible: true,
-// 		// 	children: 'structure',
-// 		// },
-// 	// ],
-// 	// 专题区（独立侧边栏）
-// 	// '/apps/topic/': 'structure',
 
 // 	'/knowledge/frontEnd/': [
 // 		{
@@ -341,6 +248,7 @@ export const sidebar = {
 function frontEnd(): DefaultTheme.SidebarItem[] {
 	const htmlBase = createLink(FrontEndBasePath, 'html')
 	const cssBase = createLink(FrontEndBasePath, 'css')
+	const javascriptBase = createLink(FrontEndBasePath, 'javascript')
 	return [
 		{
 			text: 'HTML',
@@ -374,7 +282,7 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 		{
 			text: 'CSS',
 			base: `${cssBase}/`,
-			collapsed: false,
+			collapsed: true,
 			items: [
 				{
 					text: '多种方式实现居中',
@@ -396,11 +304,22 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 					text: '响应式布局和 Bootstrap 的实现分析',
 					link: '05_responsiveLayout.md',
 				},
-				{
-					text: 'CSS 最佳实践',
-					link: '06_cssBestPractice.md',
-				}
+				// {
+				// 	text: 'CSS 最佳实践',
+				// 	link: '06_cssBestPractice.md',
+				// }
 			]
+		},
+		{
+			text: 'JavaScript',
+			base: `${javascriptBase}/`,
+			collapsed: true,
+			items: [
+				{
+					text: 'this 到底指向谁呢？',
+					link: '01_this.md',
+				},
+			],
 		}
 	];
 }
