@@ -330,9 +330,10 @@
 import { type DefaultTheme } from 'vitepress'
 
 const FrontEndBasePath = '/knowledge/frontEnd/'
-
+const SolutionBasePath = '/knowledge/solution/'
 export const sidebar = {
 	[FrontEndBasePath]: { base: FrontEndBasePath, items: frontEnd() },
+	[SolutionBasePath]: { base: SolutionBasePath, items: solution() },
 };
 
 function frontEnd(): DefaultTheme.SidebarItem[] {
@@ -366,6 +367,15 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 					]
 				}
 			],
+		},
+	];
+}
+
+function solution(): DefaultTheme.SidebarItem[] {
+	return [
+		{
+			text: 'Cursor 通用解决方案',
+			link: '01_cursor.md',
 		},
 	];
 }

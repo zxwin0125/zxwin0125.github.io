@@ -1,4 +1,4 @@
-import { type DefaultTheme } from 'vitepress'
+
 
 // export const navbar = [
 // 	{ text: '主页', link: '/blog' },
@@ -112,6 +112,8 @@ import { type DefaultTheme } from 'vitepress'
 // 	// },
 // ];
 
+import { type DefaultTheme } from 'vitepress'
+
 export default function nav(): DefaultTheme.NavItem[] {
 	return [
 		{
@@ -123,7 +125,11 @@ export default function nav(): DefaultTheme.NavItem[] {
 			items: [
 				{
 					text: '前端',
-					link: '../knowledge/frontEnd/html/01_H5Tag',
+					link: '/knowledge/frontEnd/html/01_H5Tag',
+				},
+				{
+					text: '解决方案',
+					link: '/knowledge/solution/01_cursor',
 				},
 			]
 		},
