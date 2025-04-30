@@ -340,6 +340,7 @@ export const sidebar = {
 
 function frontEnd(): DefaultTheme.SidebarItem[] {
 	const htmlBase = createLink(FrontEndBasePath, 'html')
+	const cssBase = createLink(FrontEndBasePath, 'css')
 	return [
 		{
 			text: 'HTML',
@@ -370,6 +371,37 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 				}
 			],
 		},
+		{
+			text: 'CSS',
+			base: `${cssBase}/`,
+			collapsed: false,
+			items: [
+				{
+					text: '多种方式实现居中',
+					link: '01_cssCenter.md',
+				},
+				{
+					text: 'BFC 背后的布局问题',
+					link: '02_bfc.md',
+				},
+				{
+					text: 'CSS Modules 理论和实战',
+					link: '03_cssModules.md',
+				},
+				{
+					text: 'CSS 变量和主题切换优雅实现',
+					link: '04_cssVariable.md',
+				},
+				{
+					text: '响应式布局和 Bootstrap 的实现分析',
+					link: '05_responsiveLayout.md',
+				},
+				{
+					text: 'CSS 最佳实践',
+					link: '06_cssBestPractice.md',
+				}
+			]
+		}
 	];
 }
 
