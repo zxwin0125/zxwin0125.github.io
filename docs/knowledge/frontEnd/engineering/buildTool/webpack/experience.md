@@ -91,7 +91,7 @@ module.exports = {
 
 ### 2. 代理 API 服务
 
-- 由于 webpack-dev-server 启动了一个本地的开发服务器，默认运行在 http://localhost:8080 这样一个端口上面
+- 由于 webpack-dev-server 启动了一个本地的开发服务器，默认运行在 `http://localhost:8080` 这样一个端口上面
 - 而最终上线过后，应用一般和请求后端的 API 会部署到同源地址下面，这样就会在开发环境中出现跨域请求失败的问题
   - 虽然可以使用跨域资源共享（CORS）的方式去解决，但这个方式的前提是请求的这个 API 支持 CORS 
   - 这需要后端和服务器配合，而且并不是任何情况下 API 都应该支持 CORS
@@ -114,7 +114,7 @@ module.exports = {
     - 例如'/api'，请求开发服务器当中的 '/api' 开头的地址，都会代理到接口中
   - 属性的值(value)是为这个前缀匹配的代理规则配置
   - target：代理目标，即访问 key 相当于访问 target/key，他会将 key 添加到后面
-    - 例如 http://localhost:8080/api/users 相当于 https://api.github.com/api/users
+    - 例如 `http://localhost:8080/api/users` 相当于 https://api.github.com/api/users
     - 也就是请求的路径是什么，最终代理的这个地址路径会完全一致的
     - 但是需要请求的接口地址实际上是 api.github.com/users，没有 '/api'
     - 所以对于代理路径当中的 '/api' 需要通过重写的方式去掉
@@ -122,7 +122,7 @@ module.exports = {
     - 它接收一个对象，key 是正则匹配的路径字符串，value 是要替换的内容
     - 它修改的是 path 路径(参考 location.pathname)，例如 https://api.github.com/api/users 修改的是 /api/users
   - changeOrigin：设置为 true
-    - 因为默认代理服务器会以实际在浏览器中请求的主机名，例如 localhost:8080，而一般情况下，服务器需要根据主机名判断请求是属于哪个网站，从而把这个请求指派到对应的网站，所以需要修改默认的主机名，localhost:8080
+    - 因为默认代理服务器会以实际在浏览器中请求的主机名，例如 `localhost:8080`，而一般情况下，服务器需要根据主机名判断请求是属于哪个网站，从而把这个请求指派到对应的网站，所以需要修改默认的主机名，`localhost:8080`
     - changeOrigin 设置为 true 就会以实际代理请求发生过程中的主机名去请求，所以真正请求的是 api.github.com 这样一个地址，主机名保持原有状态
     - 这样只需要正常去请求就行，不用关心最终代理成什么样
 
@@ -157,9 +157,9 @@ module.exports = {
 > [!info]
 >「host」的意义：一般情况下，服务器会配置多个网站，服务器端需要根据「host」判断当前请求是哪个网站，从而把这个请求指派到对应的网站
 
-- webpack-dev-server 在客户端对代理后的地址发起请求时，请求的地址是 http://localhost:8080/api/users，所以请求头的「host」为 localhost:8080
-- 代理背后又去请求被代理的地址 https://api.github.com/users，请求的过程中同样会带一个「host」，而代理服务默认使用用户在客户端发起请求的「host」，即 localhost:8080
-- 而 localhost:8080 并不是 GitHub 配置的网站，请求头应为实际请求地址的「host」，即 api.github.com
+- webpack-dev-server 在客户端对代理后的地址发起请求时，请求的地址是 `http://localhost:8080/api/users`，所以请求头的「host」为 `localhost:8080`
+- 代理背后又去请求被代理的地址 https://api.github.com/users，请求的过程中同样会带一个「host」，而代理服务默认使用用户在客户端发起请求的「host」，即 `localhost:8080`
+- 而 `localhost:8080` 并不是 GitHub 配置的网站，请求头应为实际请求地址的「host」，即 api.github.com
 - 配置 changeOrigin 为 true，就会以实际发生代理请求的「host」（api.github.com）作为发起请求的「host」
 
 ## Source Map

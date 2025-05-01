@@ -249,6 +249,7 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 	const htmlBase = createLink(FrontEndBasePath, 'html')
 	const cssBase = createLink(FrontEndBasePath, 'css')
 	const javascriptBase = createLink(FrontEndBasePath, 'javascript')
+	const frameBase = createLink(FrontEndBasePath, 'frame')
 	return [
 		{
 			text: 'HTML',
@@ -319,6 +320,28 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 					text: 'this 到底指向谁呢？',
 					link: '01_this.md',
 				},
+			],
+		},
+		{
+			text: '前端框架',
+			base: `${frameBase}/`,
+			collapsed: true,
+			items: [
+				{
+					text: '触类旁通各种框架',
+					link: '01_frameAnalogy.md',
+				},
+				{
+					text: 'React',
+					base: createLink(frameBase, 'react/'),
+					collapsed: true,
+					items: [
+						{
+							text: '基础回顾',
+							link: '01_reactBasics.md',
+						},
+					]
+				}
 			],
 		}
 	];
