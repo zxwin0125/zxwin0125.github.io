@@ -322,28 +322,28 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 				},
 			],
 		},
-		{
-			text: '前端框架',
-			base: `${frameBase}/`,
-			collapsed: true,
-			items: [
-				{
-					text: '触类旁通各种框架',
-					link: '01_frameAnalogy.md',
-				},
-				{
-					text: 'React',
-					base: createLink(frameBase, 'react/'),
-					collapsed: true,
-					items: [
-						{
-							text: '基础回顾',
-							link: '01_reactBasics.md',
-						},
-					]
-				}
-			],
-		}
+		// {
+		// 	text: '前端框架',
+		// 	base: `${frameBase}/`,
+		// 	collapsed: true,
+		// 	items: [
+		// 		{
+		// 			text: '触类旁通各种框架',
+		// 			link: '01_frameAnalogy.md',
+		// 		},
+		// 		{
+		// 			text: 'React',
+		// 			base: createLink(frameBase, 'react/'),
+		// 			collapsed: true,
+		// 			items: [
+		// 				{
+		// 					text: '基础回顾',
+		// 					link: '01_reactBasics.md',
+		// 				},
+		// 			]
+		// 		}
+		// 	],
+		// }
 	];
 }
 
