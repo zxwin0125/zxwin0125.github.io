@@ -1,7 +1,6 @@
 # 多种方式实现居中
 
-- 「实现居中」也是一道必考题
-- 参考代码：
+「实现居中」也是一道必考题，看下代码：
 
 ```html
 <style>
@@ -27,9 +26,9 @@
 </body>
 ```
 
-- 如图：如何让绿色的块水平垂直居中呢？
+如图：如何让绿色的块水平垂直居中呢？
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/06.png =300x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/06.png){width=30 height=20}
 
 ### 仅适用于居中元素定宽高
 
