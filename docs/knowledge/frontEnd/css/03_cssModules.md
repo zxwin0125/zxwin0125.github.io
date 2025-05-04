@@ -1,25 +1,19 @@
----
-title: CSS Modules 理论和实战
-date: 2024-08-12
-category:
-	- CSS3
-tag:
-	- CSS Modules
-order: 4
----
+# CSS Modules 理论和实战
 
-- 面试官除了对 CSS 的考察除了基础布局和经验以外，还非常喜欢问 CSS 工程相关的题目，比如：
-  - **<font color=red>如何维护大型项目的 z-index</font>**
-  - **<font color=red>如何维护 CSS 选择器和样式之间的冲突</font>**
+面试官除了对 CSS 的考察除了基础布局和经验以外，还非常喜欢问 CSS 工程相关的题目，比如：
+- **<font color=red>如何维护大型项目的 z-index</font>**
+- **<font color=red>如何维护 CSS 选择器和样式之间的冲突</font>**
 
-### 什么是 CSS Modules
+## 什么是 CSS Modules
 
-- CSS Modules 是指：
-  - **<font color=red>项目中所有 class 名称默认都是局部起作用的</font>**
-> 其实，CSS Modules 并不是一个官方规范，更不是浏览器的机制
-- 它依赖项目的构建过程，因此实现往往需要借助 Webpack
-  - **<font color=red>借助 Webpack 或者其他构建工具的帮助，可以将 class 的名字唯一化，从而实现局部作用</font>**
-- 这么说可能比较抽象，来看一个例子：
+> [!tip]
+> CSS Modules 是指：**<font color=red>项目中所有 class 名称默认都是局部起作用的</font>**
+
+其实，CSS Modules 并不是一个官方规范，更不是浏览器的机制，它依赖项目的构建过程
+
+因此实现往往需要借助 Webpack 或者其他构建工具的帮助，可以将 class 的名字唯一化，从而实现局部作用
+
+这么说可能比较抽象，来看一个例子：
 
 ```html
 <div class="test">
@@ -27,7 +21,7 @@ order: 4
 </div>
 ```
 
-- 对应的样式表为：
+对应的样式表为：
 
 ```css
 .test {
@@ -35,7 +29,7 @@ order: 4
 }
 ```
 
-- 再经过编译构建之后，对应的 HTML 和 CSS 分别为：
+再经过编译构建之后，对应的 HTML 和 CSS 分别为：
 
 ```html
 <div class="_style_test_309571057">
@@ -49,11 +43,15 @@ order: 4
 }
 ```
 
-- **<font color=red>其中 class 名是动态生成的，全项目唯一的，因此通过命名规范的唯一性，达到了避免样式冲突的目的</font>**
-- 仔细想来，这样的解决方案似乎有一个问题：
-  - 如何实现样式复用？因为生成了全局唯一的 class 名，那么如何像传统方式那样实现样式复用呢？
-  - 从原理上想，**<font color=red>全局唯一的 class 是在构建过程中，如果能给在构建过程进行标识，表示该 class 将被复用</font>**，就可以解决问题了，这样的方式，就依靠 composes 关键字实现，来看案例：
-- 样式表 style.css 文件中：
+**<font color=red>其中 class 名是动态生成的，全项目唯一的，因此通过命名规范的唯一性，达到了避免样式冲突的目的</font>**
+
+> [!warning]
+> 这样的解决方案似乎有一个问题
+> - 如何实现样式复用？因为生成了全局唯一的 class 名，那么如何像传统方式那样实现样式复用呢？
+
+从原理上想，**<font color=red>全局唯一的 class 是在构建过程中，如果能给在构建过程进行标识，表示该 class 将被复用</font>**，就可以解决问题了，这样的方式，就依靠 composes 关键字实现，来看案例
+
+样式表 style.css 文件中
 
 ```css
 .common {
@@ -61,15 +59,12 @@ order: 4
 }
 
 .test {
-  composes: common;
+  composes: common; /* 注意使用了 composes 关键字，在 .test 中关联了 .common 样式 */
   font-size: 18px;
 }
 ```
 
-> [!warning]
-> 注意使用了 composes 关键字，在 .test 中关联了 .common 样式
-
-- 对于 HTML 文件：
+对于 HTML 文件
 
 ```html
 import style from "./style.css";
@@ -79,7 +74,7 @@ import style from "./style.css";
 </div>
 ```
 
-- 进行编译构建后：
+进行编译构建后
 
 ```html
 <div class="_style__test_0980340 _style__common_404840">
@@ -87,18 +82,19 @@ import style from "./style.css";
 </div>
 ```
 
-- 看 div 的 class 被加进了 _style__common_404840，这样就实现了复用样式
-- 那该如何应用 CSS Modules 呢？
+看 div 的 class 被加进了 _style__common_404840，这样就实现了复用样式
 
-### CSS Modules 实战
+那该如何应用 CSS Modules 呢？
 
-- Step 1：创建项目
+## CSS Modules 实战
+
+### Step 1：创建项目
 
 ```bash
 npm init --y
 ```
 
-- 此时生成 package.json 如下：
+此时生成 package.json 如下
 
 ```json
 {
@@ -115,14 +111,14 @@ npm init --y
 }
 ```
 
-- Step 2：创建必要文件
+### Step 2：创建必要文件
 
 ```bash
 mkdir src
 touch index.html
 ```
 
-- 在 ./src 文件夹中，创建：index.js：
+在 ./src 文件夹中，创建：index.js
 
 ```javascript
 import bluestyle from './style.css';
@@ -136,7 +132,7 @@ let html = `
 document.write(html);
 ```
 
-- 以及 style.css：
+以及 style.css
 
 ```css
 .my_css_selector {
@@ -144,7 +140,7 @@ document.write(html);
 }
 ```
 
-- 和 app.css：
+和 app.css
 
 ```css
 .my_css_selector {
@@ -152,12 +148,13 @@ document.write(html);
 }
 ```
 
-- 在这两个样式文件中，使用了相同的 class 名
+在这两个样式文件中，使用了相同的 class 名
 
-- Step 3：安装依赖
-  - 接下来按照 webpack、webpack-cli、babel 全家桶（babel-core、babel-loader、abel-preset- env）和相应的 loaders：css-loader、style-loader 以及 extract-text-webpack-plugin 插件
-  - 建议安装版本遵循：
-  - 否则会出现类似 webpack 版本和 extract-text-webpack-plugin 不兼容等依赖版本问题
+### Step 3：安装依赖
+
+接下来按照 webpack、webpack-cli、babel 全家桶（babel-core、babel-loader、abel-preset- env）和相应的 loaders：css-loader、style-loader 以及 extract-text-webpack-plugin 插件
+
+建议安装版本遵循，否则会出现类似 webpack 版本和 extract-text-webpack-plugin 不兼容等依赖版本问题
 
 ```json
 "babel-core": "^6.26.3",
@@ -170,7 +167,7 @@ document.write(html);
 "webpack-cli": "^3.1.1"
 ```
 
-- 正常流程下来，package.json 如下：
+正常流程下来，package.json 如下：
 
 ```json
 {
@@ -197,13 +194,16 @@ document.write(html);
 }
 ```
 
-- Step 4：编写 webpack 配置
-  - 创建 webpack 配置文件，并编写：
-  - 使用了 extract-text-webpack-plugin 插件，并定义入口为 ./src 目录，产出为 `__dirname - '/build'` 目录
-  - 对后缀名为 css 的文件使用 css-loader 解析，产出为 styles.css 文件并在 index.html 中使用
+### Step 4：编写 webpack 配置
+
+创建 webpack 配置文件，并编写
+
+使用了 extract-text-webpack-plugin 插件，并定义入口为 ./src 目录，产出为 __dirname - '/build' 目录
+
+对后缀名为 css 的文件使用 css-loader 解析，产出为 styles.css 文件并在 index.html 中使用
 
 > [!warning]
-> 注意看对于 css-loader，设置了 modules 参数，进行了 css modules 处理
+> 注意看，对于 css-loader，设置了 modules 参数，进行了 css modules 处理
 
 ```bash
 touch webpack.config.js
@@ -243,8 +243,9 @@ module.exports = {
 }
 ```
 
-- Step 5：编写 npm script 并运行
-- 还差一步，将 package.json 中的 script 命令改为：
+### Step 5：编写 npm script 并运行
+
+还差一步，将 package.json 中的 script 命令改为
 
 ```json
 "scripts": {
@@ -252,7 +253,7 @@ module.exports = {
 },
 ```
 
-- 便是运行 webpack，此时 package.json 内容为：
+运行 webpack，此时 package.json 内容为
 
 ```json
 {
@@ -279,7 +280,6 @@ module.exports = {
 }
 ```
 
-- 运行 npm start，得到产出，打开页面会发现：
-- 如图，已经在编译过程中完成了 css module 处理
+运行 npm start，得到产出，打开页面会发现如图，已经在编译过程中完成了 css module 处理
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/10.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/10.png)
