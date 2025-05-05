@@ -16,7 +16,7 @@
 这样带来的 **<font color=red>收益</font>** 有：
   - 有利于 SEO
   - 开发维护体验更好
-  - 用户体验更好（如使用 alt 标签用于解释图片信息）
+  - 用户体验更好（如使用 `alt` 标签用于解释图片信息）
   - 更好的 accessibility，方便任何设备解析（如盲人阅读器）
 
 那如何做到语义化呢？
@@ -24,15 +24,15 @@
 
 ## 典型的 HTML 标签
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/04.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/04.webp)
 
 将 HTML 标签分为 9 大类别，每一种类别都包含有语义化的标签内容：
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/05.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/05.webp)
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/06.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/06.webp)
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/07.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/07.webp)
 
 了解了这些语义化的标签，就可以按照适合的内容进行使用
 
@@ -76,11 +76,11 @@ else {
 
 来看一个案例：
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/08.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/08.webp)
 
 Wikipedia 的页面中，给某一部分加上了 vCard 的 class，这是用来做什么的呢？
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/09.webp)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/09.webp)
 
 Google 搜索引擎可以通过 Wikipedia 页面 vCard 这个 class，读取相关内容，在呈现搜索结果时，匹配展现出人物信息，从而语义化的 class，帮助了机器（搜索爬出）学习到更多信息，展现出了更好的结果页面
 

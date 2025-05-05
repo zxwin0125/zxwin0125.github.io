@@ -3,11 +3,11 @@
 ## HTML5 提供了哪些便利呢？
 
 简单列举有：
-  - 用于绘画的 canvas 元素
-  - 用于媒介播放的 video 和 audio 元素
-  - 对本地离线存储更好的支持（localStorage、sessionStorage）
-  - 新的语义化标签（article、footer、header、nav、section...）
-  - 新的表单控件（calendar、date、time、email、url、search...）
+  - 用于绘画的 `canvas` 元素
+  - 用于媒介播放的 `video` 和 `audio` 元素
+  - 对本地离线存储更好的支持（`localStorage`、`sessionStorage`）
+  - 新的语义化标签（`article`、`footer`、`header`、`nav`、`section`...）
+  - 新的表单控件（`calendar`、`date`、`time`、`email`、`url`、`search`...）
 
 ## 可交互性标签
 
@@ -42,6 +42,6 @@
 ![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/HTML/03.webp)
 
 > [!warning]
-> 值得一提的是：progress 不适合用来表示度量衡，如果想表示度量衡，应该使用 meter 标签代替
+> 值得一提的是：`progress` 不适合用来表示度量衡，如果想表示度量衡，应该使用 `meter` 标签代替
 
 以往要实现这样的内容，都必须依靠 JavaScript 实现，现在来看，HTML 也变得更加具有「可交互性」

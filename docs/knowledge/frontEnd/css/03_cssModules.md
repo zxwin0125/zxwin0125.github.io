@@ -1,7 +1,7 @@
 # CSS Modules 理论和实战
 
 面试官除了对 CSS 的考察除了基础布局和经验以外，还非常喜欢问 CSS 工程相关的题目，比如：
-- **<font color=red>如何维护大型项目的 z-index</font>**
+- **<font color=red>如何维护大型项目的 `z-index`</font>**
 - **<font color=red>如何维护 CSS 选择器和样式之间的冲突</font>**
 
 ## 什么是 CSS Modules
@@ -82,7 +82,7 @@ import style from "./style.css";
 </div>
 ```
 
-看 div 的 class 被加进了 _style__common_404840，这样就实现了复用样式
+看 `div` 的 `class` 被加进了 `_style__common_404840`，这样就实现了复用样式
 
 那该如何应用 CSS Modules 呢？
 
@@ -94,7 +94,7 @@ import style from "./style.css";
 npm init --y
 ```
 
-此时生成 package.json 如下
+此时生成 `package.json` 如下
 
 ```json
 {
@@ -118,7 +118,7 @@ mkdir src
 touch index.html
 ```
 
-在 ./src 文件夹中，创建：index.js
+在 `./src` 文件夹中，创建：index.js
 
 ```javascript
 import bluestyle from './style.css';
@@ -152,9 +152,9 @@ document.write(html);
 
 ### Step 3：安装依赖
 
-接下来按照 webpack、webpack-cli、babel 全家桶（babel-core、babel-loader、abel-preset- env）和相应的 loaders：css-loader、style-loader 以及 extract-text-webpack-plugin 插件
+接下来按照 `webpack`、`webpack-cli`、`babel` 全家桶（`babel-core`、`babel-loader`、`abel-preset-env`）和相应的 loaders：`css-loader`、`style-loader` 以及 `extract-text-webpack-plugin` 插件
 
-建议安装版本遵循，否则会出现类似 webpack 版本和 extract-text-webpack-plugin 不兼容等依赖版本问题
+建议安装版本遵循，否则会出现类似 `webpack` 版本和 `extract-text-webpack-plugin` 不兼容等依赖版本问题
 
 ```json
 "babel-core": "^6.26.3",
@@ -167,7 +167,7 @@ document.write(html);
 "webpack-cli": "^3.1.1"
 ```
 
-正常流程下来，package.json 如下：
+正常流程下来，`package.json` 如下：
 
 ```json
 {
@@ -196,11 +196,11 @@ document.write(html);
 
 ### Step 4：编写 webpack 配置
 
-创建 webpack 配置文件，并编写
+创建 `webpack` 配置文件，并编写
 
-使用了 extract-text-webpack-plugin 插件，并定义入口为 ./src 目录，产出为 __dirname - '/build' 目录
+使用了 `extract-text-webpack-plugin` 插件，并定义入口为 `./src` 目录，产出为 `__dirname - '/build'` 目录
 
-对后缀名为 css 的文件使用 css-loader 解析，产出为 styles.css 文件并在 index.html 中使用
+对后缀名为 css 的文件使用 `css-loader` 解析，产出为 styles.css 文件并在 index.html 中使用
 
 > [!warning]
 > 注意看，对于 css-loader，设置了 modules 参数，进行了 css modules 处理
@@ -245,7 +245,7 @@ module.exports = {
 
 ### Step 5：编写 npm script 并运行
 
-还差一步，将 package.json 中的 script 命令改为
+还差一步，将 `package.json` 中的 `script` 命令改为
 
 ```json
 "scripts": {
@@ -253,7 +253,7 @@ module.exports = {
 },
 ```
 
-运行 webpack，此时 package.json 内容为
+运行 `webpack`，此时 `package.json` 内容为
 
 ```json
 {
@@ -280,6 +280,6 @@ module.exports = {
 }
 ```
 
-运行 npm start，得到产出，打开页面会发现如图，已经在编译过程中完成了 css module 处理
+运行 `npm start`，得到产出，打开页面会发现如图，已经在编译过程中完成了 css module 处理
 
 ![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/10.png)

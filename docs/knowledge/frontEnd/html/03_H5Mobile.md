@@ -8,7 +8,7 @@
 ## 打电话发短信写邮件的小技巧
 
 > [!tip]
-> 这些技巧都和 a 标签相关
+> 这些技巧都和 `a` 标签相关
 
 打电话
 
@@ -61,9 +61,9 @@
 ## 移动端 300 毫秒点击延迟以及点击穿透现象
 
 > [!warning]
-> 这是由于历史原因造成的，一般解决手段为禁止混用 touch 和 click，或者增加一层「透明」蒙层，也可以通过延迟上层元素消失来实现
+> 这是由于历史原因造成的，一般解决手段为禁止混用 `touch` 和 `click`，或者增加一层「透明」蒙层，也可以通过延迟上层元素消失来实现
 
-点击元素禁止产生背景或边框，一般可以使用 tap-highlight-color 属性进行禁用
+点击元素禁止产生背景或边框，一般可以使用 `tap-highlight-color` 属性进行禁用
 
 ```css
 -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -82,7 +82,7 @@
 user-select: none;
 ```
 
-取消 input 输入时，英文首字母的默认大写
+取消 `input` 输入时，英文首字母的默认大写
 
 ```html
 <input autocapitalize="off" autocorrect="off" />
@@ -91,7 +91,7 @@ user-select: none;
 ## 语音和视频自动播放
 
 > [!warning]
-> 不同浏览器内核支持自动播放的情况不一样，甚至 webkit 内核对于自动播放的策略也一直在调整当中
+> 不同浏览器内核支持自动播放的情况不一样，甚至 `webkit` 内核对于自动播放的策略也一直在调整当中
 
 自动播放有时候也带着条件：比如设置静音等
 
@@ -142,15 +142,15 @@ transform: translate3d(0, 0, 0);
 
 ## fixed 定位问题
 
-这个问题主要体现在 iOS 端，比如软键盘弹出时，某些情况下，会影响 fixed 元素定位
+这个问题主要体现在 iOS 端，比如软键盘弹出时，某些情况下，会影响 `fixed` 元素定位
 
-配合使用 transform、translate 时，某些情况下，也会影响 fixed 元素定位
+配合使用 `transform`、`translate` 时，某些情况下，也会影响 `fixed` 元素定位
 
-一般解决方案是模拟 fixed 定位，或者使用 iScroll 库
+一般解决方案是模拟 `fixed` 定位，或者使用 iScroll 库
 
 ## 怎么让 Chrome 支持小于 12px 的文字？
 
-一般通过 text-size-adjust 实现
+一般通过 `text-size-adjust` 实现
 
 ```css
 -webkit-text-size-adjust: none;
