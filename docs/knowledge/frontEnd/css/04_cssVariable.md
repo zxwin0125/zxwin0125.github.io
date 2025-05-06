@@ -51,23 +51,25 @@ a:hover {
 
 **<font color=red>在任何语言中，变量是个好东西：它可以降低维护成本，甚至实现更好的性能</font>**
 
-CSS 变量语法也很简单：使用 `--变量名` 的方式定义变量，使用 var（--变量名）的方式消费变量
+CSS 变量语法也很简单：使用 `--变量名` 的方式定义变量，使用 `var（--变量名）`的方式消费变量
 
-- 更多 CSS 变量的基础内容可以访问：[使用 CSS 变量](https://developer.mozilla.org/zh-%20CN/docs/Web/CSS/Using_CSS_custom_properties)
-- CSS 变量的兼容性也「出乎意料」的好：
+更多 CSS 变量的基础内容可以访问：[使用 CSS 变量](https://developer.mozilla.org/zh-%20CN/docs/Web/CSS/Using_CSS_custom_properties)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/08.png =500x)
+CSS 变量的兼容性也「出乎意料」的好
 
-- 项目中大范围使用了 CSS 变量，在 html 根节点下，定义 :root ：
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/08.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/09.png =500x)
+项目中大范围使用了 CSS 变量，在 html 根节点下，定义 `:root`
 
-- 除了简单应用变量，还有哪些更高级的用法呢？
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/09.png)
 
-### 使用 CSS 变量实现主题切换
+除了简单应用变量，还有哪些更高级的用法呢？
 
-- 一键切换主题，以往实现方式较为复杂，借助 CSS 变量，一切变得容易起来
-- 仍然以开头：
+## 使用 CSS 变量实现主题切换
+
+一键切换主题，以往实现方式较为复杂，借助 CSS 变量，一切变得容易起来
+
+仍然以开头
 
 ```css
 :root {
@@ -78,7 +80,7 @@ CSS 变量语法也很简单：使用 `--变量名` 的方式定义变量，使�
 }
 ```
 
-- 为例，再定义一个 .pink-theme 对应粉色主题：
+为例，再定义一个 `.pink-theme` 对应粉色主题
 
 ```css
 .pink-theme {
@@ -89,9 +91,9 @@ CSS 变量语法也很简单：使用 `--变量名` 的方式定义变量，使�
 }
 ```
 
-- 这样一来，在切换主题时，就变得和 toggle class 一样简单
+这样一来，在切换主题时，就变得和 `toggle class` 一样简单
 
-```javascript
+```JavaScript
 const toggleBtn = document.querySelector('.toggle-theme')
 
 toggleBtn.addEventListener('click', e => {
@@ -109,9 +111,9 @@ toggleBtn.addEventListener('click', e => {
 })
 ```
 
-- 同时，利用 localStorage 实现主题的保存：
+同时，利用 `localStorage` 实现主题的保存
 
-```javascript
+```JavaScript
 const toggleBtn = document.querySelector('.toggle-theme')
 
 if (localStorage.getItem('pinkTheme')) {
@@ -136,4 +138,4 @@ toggleBtn.addEventListener('click', e => {
 })
 ```
 
-- 非常的简单直观，这将会成为 CSS 发展的一个不可避免的趋势
+非常的简单直观，这将会成为 CSS 发展的一个不可避免的趋势
