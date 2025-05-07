@@ -16,22 +16,22 @@
 ## 上帝视角——响应式布局适配方案
 
 首先来梳理一下 **<font color=red>响应式布局的几种典型方案</font>**
-- 传统 float 浮动布局
+- 传统 `float` 浮动布局
 - 相对单位布局
 - 媒体查询
-- 基于相对单位 rem 的 flexible 布局
-- flex 布局
-- grid 布局
+- 基于相对单位 `rem` 的 `flexible` 布局
+- `flex` 布局
+- `grid` 布局
 - 借助 JavaScript
 
-其中「传统 float 浮动布局」已经在前面有所体现（多栏自适应），这种实现方式比较传统，且能力较弱
+其中「传统 `float` 浮动布局」已经在前面有所体现（多栏自适应），这种实现方式比较传统，且能力较弱
 
 相对单位布局比较容易理解，梳理 **<font color=red>CSS 中的相对单位</font>** 有
-- em
-- rem
-- vh、vw、vmin、vmax
-- %
-- calc()
+- `em`
+- `rem`
+- `vh`、`vw`、`vmin`、`vmax`
+- `%`
+- `calc()`
 
 重点是理解这些相对单位的使用规范，「**<font color=red>到底是相对于谁</font>**」
 
@@ -85,27 +85,30 @@ document.documentElement.style.setProperty('--test-height', `${height}px);
 ## 真实线上适配案例分析
 
 在进入分析前，先罗列一下 **<font color=red>其他关于响应式布局的概念</font>**
-  - 屏幕分辨率
-  - 像素
-  - PPI（Pixel Per Inch）：每英寸包括的像素数
-  - DPI（Dot Per Inch）：即每英寸包括的点数
-  - 设备独立像素
-  - 设备像素比（dpr）
-  - Meta Viewport
-- 不同设备的物理像素尺寸等信息可以参考：[Device Metrics](https://material.io/tools/devices/)
-- 首先，淘宝通过设置：
+- 屏幕分辨率
+- 像素
+- PPI（Pixel Per Inch）：每英寸包括的像素数
+- DPI（Dot Per Inch）：即每英寸包括的点数
+- 设备独立像素
+- 设备像素比（dpr）
+- Meta Viewport
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/12.png =500x)
+不同设备的物理像素尺寸等信息可以参考：[Device Metrics](https://material.io/tools/devices/)
 
-- 禁用了用户缩放功能，使页面宽度和设备宽度对齐，一般这种操作也是移动端的响应式适配的标配
-- 观察在页面根节点 HTML 元素上，显式设置了 font-size：
+首先，淘宝通过设置
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/13.png =500x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/12.png)
 
-- 并且进行试验，当改变浏览器大小时，html 的 font-size 会动态变化
-- 这样不难理解， 采用 rem 作为相对单位的长宽数值，都会随着 resize 事件进行变化（因为 html 的 font-size 动态变化）
-- 在其页面当中，不难找到这样的代码：
-- 将其复制并美化出来，得到：
+禁用了用户缩放功能，使页面宽度和设备宽度对齐，一般这种操作也是移动端的响应式适配的标配
+
+观察在页面根节点 HTML 元素上，显式设置了 `font-size`
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/13.png)
+
+并且进行试验，当改变浏览器大小时，html 的 `font-size` 会动态变化
+
+这样不难理解， 采用 rem 作为相对单位的长宽数值，都会随着 resize 事件进行变化（因为 html 的 font-size 动态变化）
+- 在其页面当中，不难找到这样的代码，将其复制并美化出来，得到
 
 ```javascript
 !(function (e, t) {
@@ -140,39 +143,41 @@ document.documentElement.style.setProperty('--test-height', `${height}px);
 })(window, document);
 ```
 
-- 核心逻辑不难理解，这是一个 IIFE，在 DOMContentLoaded、resize、pageshow 事件触发时，进行对 html 的 font- size 值设定，计算方式：
+核心逻辑不难理解，这是一个 IIFE，在 DOMContentLoaded、resize、pageshow 事件触发时，进行对 html 的 font- size 值设定，计算方式
 
 ```css
 font-size = document.documentElement.clientWidth / 3.75
 ```
 
-- 为什么这么计算呢？
-  - 可以肯定的是：淘宝的工程师是按照设计 375px 的视觉稿完成的
-  - 在 375px 视觉稿下，html 的 font-size 为 100，那么如果宽度是 75px 的元素，就可以设置为 0.75rem（100 _0.75 = 75px）
-  - 当设备宽度为 414px（iPhone8 plus）时，想让上述元素的宽度等比例自适应到 82.8px（75_ 414 / 375），那么在 CSS 样式为 0.74rem 不变的前提下，想计算得到 82.8px，只需 HTML font-size 变为：110.4px 即可（110.4 - 0.75 = 82.8）
-  - 那么反向过来，这个 110.4 的计算公式就是：
+为什么这么计算呢？
+- 可以肯定的是：淘宝的工程师是按照设计 375px 的视觉稿完成的
+- 在 375px 视觉稿下，html 的 font-size 为 100，那么如果宽度是 75px 的元素，就可以设置为 0.75rem（100 _0.75 = 75px）
+- 当设备宽度为 414px（iPhone8 plus）时，想让上述元素的宽度等比例自适应到 82.8px（75_ 414 / 375），那么在 CSS 样式为 0.74rem 不变的前提下，想计算得到 82.8px，只需 HTML font-size 变为：110.4px 即可（110.4 - 0.75 = 82.8）
+- 那么反向过来，这个 110.4 的计算公式就是：
 
 ```css
 document.documentElement.clientWidth / 3.75
 ```
 
-- 当然淘宝实现响应式布局除了依靠 rem 以外，还大量运用了 flex 布局，比如页面中最复杂的布局区块：
+当然淘宝实现响应式布局除了依靠 rem 以外，还大量运用了 flex 布局，比如页面中最复杂的布局区块
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/14.png =700x)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/14.png)
 
-- 实现较为简单
-- 整套解决方案淘宝开源出来，叫做 flexible 布局
-- 再来看看网易的做法，大体类似：
+实现较为简单，整套解决方案淘宝开源出来，叫做 flexible 布局
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/15.png =700x)
+再来看看网易的做法，大体类似
 
-- 同样采用了 rem 布局，但区别是网易并没有 JavaScript 介入计算 html 的 font-size，而是通过媒体查询和 calc 手段，「枚举」了不同设备下不同的 HTML font-size 值
-- 在其页面中，较为复杂的头部 slider 组件中：
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/15.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/16.png =700x)
+同样采用了 rem 布局，但区别是网易并没有 JavaScript 介入计算 html 的 font-size，而是通过媒体查询和 calc 手段，「枚举」了不同设备下不同的 HTML font-size 值
 
-- slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中为 414px），而高度采用了 rem 布局： 3.7 rem = 55.3px(calc(13.33333333vw) - 3.7)
-- 总结一下，响应式布局并没有那么困难，需要掌握最基本的处理手段，在实际场景中综合运用多种套路即可实现最大限度的灵活
+在其页面中，较为复杂的头部 slider 组件中
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/16.png)
+
+slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中为 414px），而高度采用了 rem 布局： 3.7 rem = 55.3px(calc(13.33333333vw) - 3.7)
+
+总结一下，响应式布局并没有那么困难，需要掌握最基本的处理手段，在实际场景中综合运用多种套路即可实现最大限度的灵活
 
 ## Bootstrap 栅格实现思路
 
