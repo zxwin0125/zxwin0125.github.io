@@ -181,16 +181,17 @@ slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中�
 
 ## Bootstrap 栅格实现思路
 
-- Bootrap 栅格化是一个非常伟大的实现，在使用 Bootrap 布局时，可以通过添加类的方法，轻松实现栅格化，流式布局
-- 选取代表性的 BS4 官网范例，可以[在线参考](http://v4.bootcss.com/examples/dashboard/#)，或者参看以下截图，在宽屏幕下，看到：
+Bootrap 栅格化是一个非常伟大的实现，在使用 Bootrap 布局时，可以通过添加类的方法，轻松实现栅格化，流式布局
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/17.png =500x)
+选取代表性的 BS4 官网范例，可以[在线参考](http://v4.bootcss.com/examples/dashboard/#)，或者参看以下截图，在宽屏幕下，看到
 
-- 当屏幕宽度小于 576px 时候，有：
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/17.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/18.png =200x)
+当屏幕宽度小于 576px 时候，有
 
-- 对应代码：
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/18.png)
+
+对应代码
 
 ```html
 <div class="col-6 col-sm-3">...</div>
@@ -198,7 +199,7 @@ slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中�
 <div class="col-6 col-sm-3">...</div>
 ```
 
-- .col-6 class 样式在源码里面可以简单归纳（不完全）为：
+.col-6 class 样式在源码里面可以简单归纳（不完全）为
 
 ```css
 .col-6 {
@@ -210,7 +211,7 @@ slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中�
 }
 ```
 
-- .col-sm-3 class 在源码里面可以归纳为：
+.col-sm-3 class 在源码里面可以归纳为
 
 ```css
 .col-sm-3 {
@@ -222,12 +223,14 @@ slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中�
 }
 ```
 
-- 可以看到，代码里设置了两个 class：col-6 col-sm-3 进行样式声明
-- 从上面样式代码里看到类似 `flex: 0 0 25%` 的声明，为了理解它，可以从 flex 属性入手：flex 属性是 flex-grow、flex- shrink 和 flex-basis 的简写（类似 backgroud 是很多背景属性的简写一样），它的默认值为 0 1 auto，后两个属性可选
-- 语法格式如下：
-  - flex-grow：属性定义项目的放大比例，默认为 0，Bootstrap 代码里这个值一直为 0，即如果存在剩余空间，也不放大
-  - flex-shrink：属性定义了项目的缩小比例，默认为 1，即如果空间不足，该项目将缩小
-  - flex-basis：属性定义了在分配多余空间之前，项目占据的主轴空间（main size）
+可以看到，代码里设置了两个 class：col-6 col-sm-3 进行样式声明
+
+从上面样式代码里看到类似 `flex: 0 0 25%` 的声明，为了理解它，可以从 flex 属性入手：flex 属性是 flex-grow、flex- shrink 和 flex-basis 的简写（类似 backgroud 是很多背景属性的简写一样），它的默认值为 0 1 auto，后两个属性可选
+
+语法格式如下：
+- flex-grow：属性定义项目的放大比例，默认为 0，Bootstrap 代码里这个值一直为 0，即如果存在剩余空间，也不放大
+- flex-shrink：属性定义了项目的缩小比例，默认为 1，即如果空间不足，该项目将缩小
+- flex-basis：属性定义了在分配多余空间之前，项目占据的主轴空间（main size）
 
 ```css
 .item {
@@ -235,26 +238,32 @@ slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中�
 }
 ```
 
-- 浏览器根据这个属性，计算主轴是否有多余空间，它可以设为跟 width 或 height 属性一样的值（比如 350px），则项目将占据固定空间
-- Bootstrap 这里对 flex 设置为比例值，这也是响应式自然而然实现的基础
-- 但是很明显 col-6 col-sm-3 的样式属性是有冲突的，那么他们是如何做到和平共处交替发挥作用的呢？
-- 事实上：
-  - 在屏幕宽度大于 576px 时候，会发现 .col-sm-3 并没有起作用，这时候起作用的是 .col-6
-- 在源码里发现 .col-sm-- 的样式声明全部在
+浏览器根据这个属性，计算主轴是否有多余空间，它可以设为跟 width 或 height 属性一样的值（比如 350px），则项目将占据固定空间
+
+Bootstrap 这里对 flex 设置为比例值，这也是响应式自然而然实现的基础
+
+但是很明显 col-6 col-sm-3 的样式属性是有冲突的，那么他们是如何做到和平共处交替发挥作用的呢？
+
+事实上：
+- 在屏幕宽度大于 576px 时候，会发现 .col-sm-3 并没有起作用，这时候起作用的是 .col-6
+
+在源码里发现 .col-sm-- 的样式声明全部在
 
 ```css
 @media (min-width: 576px) {...}
 ```
 
-- 的媒体查询中，这就保证了在 576px 宽度以上的屏幕，只有在媒体查询之外的 .col-- 样式声明发挥了作用
-  - 在屏幕宽度小于 576px 时候，命中媒体查询，命中 .col-sm-3 的样式声明
-  - 它的优先级一定大于 .col-6（媒体查询优先级高），这时候就保证了移动端的样式占上风
-- 再结合 col-6 col-sm-3 的样式声明，可以简单总结一下：Bootstrap 主要是通过百分比宽度（max-width: 50%; max-width: 25%;），以及 flex 属性，再加上媒体查询，三管齐下实现了栅格化布局的主体
+的媒体查询中，这就保证了在 576px 宽度以上的屏幕，只有在媒体查询之外的 .col-- 样式声明发挥了作用
+- 在屏幕宽度小于 576px 时候，命中媒体查询，命中 .col-sm-3 的样式声明
+- 它的优先级一定大于 .col-6（媒体查询优先级高），这时候就保证了移动端的样式占上风
+
+再结合 col-6 col-sm-3 的样式声明，可以简单总结一下：Bootstrap 主要是通过百分比宽度（max-width: 50%; max-width: 25%;），以及 flex 属性，再加上媒体查询，三管齐下实现了栅格化布局的主体
 
 ## 横屏适配以及其他细节问题
 
-- 很多 H5 页面中，要区分横屏和竖屏，在不同屏幕下要显示不同的布局，所以需要检测在不同的场景下给定不同的样式
-- 通常使用 JavaScript 检查：
+很多 H5 页面中，要区分横屏和竖屏，在不同屏幕下要显示不同的布局，所以需要检测在不同的场景下给定不同的样式
+
+通常使用 JavaScript 检查
 
 ```javascript
 window.addEventListener('resize', () => {
@@ -267,7 +276,7 @@ window.addEventListener('resize', () => {
 });
 ```
 
-- 同样可以使用纯 CSS 来实现不同场景下的布局：
+同样可以使用纯 CSS 来实现不同场景下的布局
 
 ```css
 @media screen and (orientation: portrait) {
@@ -278,15 +287,16 @@ window.addEventListener('resize', () => {
 }
 ```
 
-- 同时这里在总结一下其他常见的响应式布局话题：
-  - 1px 问题
-  - 适配 iPhoneX 齐刘海
-  - 图片自适应
+同时这里在总结一下其他常见的响应式布局话题
+- 1px 问题
+- 适配 iPhoneX 齐刘海
+- 图片自适应
 
 ## 面试题：% 相对于谁
 
-- 之前讲解了实现水平垂直居中的几种方式
-- 其中 absolute - transform 方案，用到了不止一处 % 单位
+之前讲解了实现水平垂直居中的几种方式
+
+其中 absolute - transform 方案，用到了不止一处 % 单位
 
 ```css
 .wp {
@@ -300,50 +310,65 @@ window.addEventListener('resize', () => {
 }
 ```
 
-- 事实上，上述代码中的 % 还真代表着不一样的计算规则
-  - 第一处 50% 是指 .wp 相对定位元素宽度和高度的 50%，而 transform 中的 50% 是指自身元素的宽高的一半
-- 那么在 CSS 中，这个常见的 % 单位有着什么样的规则呢？这也是一道很好的面试题目，在这一部分进行梳理
-- **<font color=red>position: absolute 中的 %</font>**
-  - 对于设置绝对定位 position absolute 的元素，可以使用 left right 表示其偏移量，把这个元素的祖先元素中第一个存在定位属性的元素成为参照物元素
-  - 其中的 % 是相对于参照物的，left 相对于参照物的 width，top 相对于这个参照物的 height
-- **<font color=red>position: relative 中的 %</font>**
-  - 对于设置相对定位 position relative 的元素，% 的数值是相对与自身的，left 相对于自己的 width，top 相对于自己的 height
-- **<font color=red>position: fixed 中的 %</font>**
-  - 对于设置固定定位 position fixed 的元素，% 的数值是相对于视口的，left 相对于视口的 width，top 相对于视口的 height
-- **<font color=red>margin 和 padding 的 %</font>**
-  - margin 和 padding 当中的 % 非常特殊，它是相对于父元素的宽度
-  - 没错，margin-top: 30%，相当于父元素宽度的 30%
-- **<font color=red>border-radius 的 %</font>**
-  - 经常对一个正方形元素设置：
-  - 得到一个圆形，因此不难发现这里的 % 也是相对于自身宽高的
+事实上，上述代码中的 % 还真代表着不一样的计算规则
+- 第一处 50% 是指 .wp 相对定位元素宽度和高度的 50%，而 transform 中的 50% 是指自身元素的宽高的一半
+
+那么在 CSS 中，这个常见的 % 单位有着什么样的规则呢？这也是一道很好的面试题目，在这一部分进行梳理
+
+**<font color=red>position: absolute 中的 %</font>**
+- 对于设置绝对定位 position absolute 的元素，可以使用 left right 表示其偏移量，把这个元素的祖先元素中第一个存在定位属性的元素成为参照物元素
+- 其中的 % 是相对于参照物的，left 相对于参照物的 width，top 相对于这个参照物的 height
+
+**<font color=red>position: relative 中的 %</font>**
+- 对于设置相对定位 position relative 的元素，% 的数值是相对与自身的，left 相对于自己的 width，top 相对于自己的 height
+
+**<font color=red>position: fixed 中的 %</font>**
+- 对于设置固定定位 position fixed 的元素，% 的数值是相对于视口的，left 相对于视口的 width，top 相对于视口的 height
+
+**<font color=red>margin 和 padding 的 %</font>**
+- margin 和 padding 当中的 % 非常特殊，它是相对于父元素的宽度
+- 没错，margin-top: 30%，相当于父元素宽度的 30%
+
+**<font color=red>border-radius 的 %</font>**
+- 经常对一个正方形元素设置：
+- 得到一个圆形，因此不难发现这里的 % 也是相对于自身宽高的
 
 ```css
 border-radius: 50%;
 ```
 
-- **background-size 的 %**
-  - background-size 的百分比和 border-radius 一样，也是相对于自身的宽高
-- **transform: translate**
-  - transform 的 translate 属性 % 是相对于自身的宽高，这也是上述代码能够实现居中的原因
-- **text-indent 的 %**
-  - text-indent 这个属性可以设置首行缩进，当使用 % 时，它是相对于父元素的 width
-- **font-size 的 %**
-  - 相对于父元素的字体大小
-- **line-height 的 %**
-  - line-height 设置行高时，如果单位为 %，则相对于该元素的 font-size 数值
-- 这些就是常见的使用 % 的情况，还是很灵活多变的，具体细节都可以在 CSS 规范中找到
+**background-size 的 %**
+- background-size 的百分比和 border-radius 一样，也是相对于自身的宽高
+
+**transform: translate**
+- transform 的 translate 属性 % 是相对于自身的宽高，这也是上述代码能够实现居中的原因
+
+**text-indent 的 %**
+- text-indent 这个属性可以设置首行缩进，当使用 % 时，它是相对于父元素的 width
+
+**font-size 的 %**
+- 相对于父元素的字体大小
+
+**line-height 的 %**
+- line-height 设置行高时，如果单位为 %，则相对于该元素的 font-size 数值
+
+这些就是常见的使用 % 的情况，还是很灵活多变的，具体细节都可以在 CSS 规范中找到
 
 ## 深入：flex 布局和传统 float 布局性能对比
 
-- 最后这部分，来深入一个关于性能的话题：**<font color=red>flex 布局对性能的影响主要体现在哪方面？</font>**
-  - 这里指出来的目的是开拓思路，更加合理地认识 CSS 布局
-- 先思考一下 **<font color=red>flex 布局对性能到底有什么影响，或者有多大影响</font>**
-  - **首先性能问题一定是一个相对概念** ，flex 布局相比正常的 block layout（non-float）性能开销一定更大
-  - 事实上，block layout 永远都是 **single-pass** ，算法进行布局，而 flex 布局却总会激发 **multi-pass codepaths** 算法布局
-  - 比如常用的 flex-align: stretch 通常都是 2-pass，这是无可争议且难以避免的短板，天生基因决定
-- 来做一个对比，display: table VS display: flex
-- 这里重复 1000 次这样的 DOM：
-- 分别使用 flex 和 table 布局，并采用 [Navigation Timing API](https://link.zhihu.com/?target=http%3A//www.w3.org/TR/navigation-timing/) 进行布局速度测量，代码如下：
+最后这部分，来深入一个关于性能的话题：**<font color=red>flex 布局对性能的影响主要体现在哪方面？</font>**
+- 这里指出来的目的是开拓思路，更加合理地认识 CSS 布局
+
+先思考一下 **<font color=red>flex 布局对性能到底有什么影响，或者有多大影响</font>**
+- **首先性能问题一定是一个相对概念** ，flex 布局相比正常的 block layout（non-float）性能开销一定更大
+- 事实上，block layout 永远都是 **single-pass** ，算法进行布局，而 flex 布局却总会激发 **multi-pass codepaths** 算法布局
+- 比如常用的 flex-align: stretch 通常都是 2-pass，这是无可争议且难以避免的短板，天生基因决定
+
+来做一个对比，display: table VS display: flex
+
+这里重复 1000 次这样的 DOM
+
+分别使用 flex 和 table 布局，并采用 [Navigation Timing API](https://link.zhihu.com/?target=http%3A//www.w3.org/TR/navigation-timing/) 进行布局速度测量，代码如下
 
 ```javaScript
 ;(function TimeThisMother() {
@@ -356,32 +381,42 @@ border-radius: 50%;
 })();
 ```
 
-- 得到结果：
-  - flex 布局：Speed of selection is: 248 milliseconds
-  - table 布局：Speed of selection is: 282 milliseconds
-- flex 布局要比 table 布局似乎更快
-- 曾经一个名叫 Chris Coyier 的开发者，实现了这样一个 flex 布局生成器
+得到结果：
+- flex 布局：Speed of selection is: 248 milliseconds
+- table 布局：Speed of selection is: 282 milliseconds
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/19.png =600x)
+flex 布局要比 table 布局似乎更快
+
+曾经一个名叫 Chris Coyier 的开发者，实现了这样一个 flex 布局生成器
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/19.png)
 
 > [!warning]
 > 注意右上角的滑动条，越向右滑，页面不同颜色区块越多（截图上滚动条已经很短了，证明页面已经很长，布局区块很多），在如此大规模全面使用 flex 布局下，页面丝毫没有任何卡顿
 
-- 如上图，打开 Chrome Dev Tools > Timeline，单击 record 按钮，滑动滑块并停止，得到瀑布流紫色部分，显示性能效果良好
-- 当然这样的「模拟」距离真实场景也许较远，不排除如果页面中存在很多图片就会使得性能开销激增，可能使用 flex 某些属性也会付出昂贵的代价
-- 但是一般场景使用，没有必要去担心 flex 布局性能问题，至少它比别的方案靠谱（先不论兼容性）
-- **可以去 codepen 进行体验：** [Generate a Crapload of Flexboxcodepen.io](https://codepen.io/chriscoyier/pen/AbrdNe)
+如上图，打开 Chrome Dev Tools > Timeline，单击 record 按钮，滑动滑块并停止，得到瀑布流紫色部分，显示性能效果良好
+
+当然这样的「模拟」距离真实场景也许较远，不排除如果页面中存在很多图片就会使得性能开销激增，可能使用 flex 某些属性也会付出昂贵的代价
+
+但是一般场景使用，没有必要去担心 flex 布局性能问题，至少它比别的方案靠谱（先不论兼容性）
+
+**可以去 codepen 进行体验：** [Generate a Crapload of Flexboxcodepen.io](https://codepen.io/chriscoyier/pen/AbrdNe)
 
 > [!warning]
 > 需要格外提出的是： **<font color=red>新版 flex 布局一般比旧版布局模型更快，同样也比基于浮动的布局模型更快</font>**
 
-- 这里来特殊对比一下 flex 布局和浮动布局在性能上的表现
-- 很明显，对于相同数量的元素和相同的视觉外观，flex 布局的时间要少得多（本例中分别为 3.5 毫秒和 14 毫秒），对比来源：[developers.google.com](http://developers.google.com/)
-- **<font color=red>布局性能的开销，一般直接考虑如下因素：</font>**
-  - 需要布局的元素数量
-  - 布局的复杂性
-- 相对地， **<font color=red>对于布局性能建议主要有：</font>**
-  - 应尽可能避免触发布局（layout／reflow）
-  - 避免强制同步布局和布局抖动
-- 不论什么样的布局，在性能上一般很难成为瓶颈
-- 同时另一方面，CSS 看似简单，却也和性能息息相关
+这里来特殊对比一下 flex 布局和浮动布局在性能上的表现
+
+很明显，对于相同数量的元素和相同的视觉外观，flex 布局的时间要少得多（本例中分别为 3.5 毫秒和 14 毫秒），对比来源：[developers.google.com](http://developers.google.com/)
+
+**<font color=red>布局性能的开销，一般直接考虑如下因素：</font>**
+- 需要布局的元素数量
+- 布局的复杂性
+
+相对地， **<font color=red>对于布局性能建议主要有：</font>**
+- 应尽可能避免触发布局（layout／reflow）
+- 避免强制同步布局和布局抖动
+
+不论什么样的布局，在性能上一般很难成为瓶颈
+
+同时另一方面，CSS 看似简单，却也和性能息息相关
