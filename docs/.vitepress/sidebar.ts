@@ -305,10 +305,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 					text: '响应式布局和 Bootstrap 的实现分析',
 					link: '05_responsiveLayout.md',
 				},
-				// {
-				// 	text: 'CSS 最佳实践',
-				// 	link: '06_cssBestPractice.md',
-				// }
+				{
+					text: 'CSS 最佳实践',
+					link: '06_cssBestPractice.md',
+				}
 			]
 		},
 		{
