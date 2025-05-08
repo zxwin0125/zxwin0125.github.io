@@ -29,7 +29,7 @@
 
 Sass、Less、Stylus
 
-### 2. CSS in JS
+### 2. CSS-in-JS
 
 #### 核心概念
 
@@ -64,12 +64,12 @@ Styled-components、Emotion、JSS
 
 - 与现代工具（Webpack）无缝配合
 - 易于维护且避免了命名冲突
-- 性能优于 CSS in JS，因为 CSS 模块在构建时静态生成
+- 性能优于 CSS-in-JS，因为 CSS 模块在构建时静态生成
 
 #### 缺点
 
 - 需要构建工具支持
-- 动态样式支持不如 CSS in JS 灵活
+- 动态样式支持不如 CSS-in-JS 灵活
 
 ### 4. Atomic CSS / Utility-First CSS
 
@@ -125,7 +125,7 @@ Tailwind CSS、Bootstrap Utilities
 #### 缺点
 
 - 类名较长，增加代码冗长
-- 无法动态生成样式，灵活性不如 CSS in JS
+- 无法动态生成样式，灵活性不如 CSS-in-JS
 
 ### 7. 面向对象的 CSS（OOCSS）
 
@@ -208,15 +208,19 @@ Vue scoped、Shadow DOM
 
 - Salesforce Lightning Design System 
 
-### 【中高级】请举例 css、cssinjs、tailwindcss 的使用技巧与方案价值体现
-#### CSS 使用技巧与价值体现
-CSS 值得关注的技巧：
-- **变量复用**：通过`:root`定义全局变量，提升可维护性。
-- **BEM 命名规范**：使代码更清晰。
-- **Flex 布局**：快速实现响应式设计。
+## CSS、CSS-in-JS、Tailwind CSS 的使用技巧与方案价值体现
 
-**示例：一个按钮组件**
-**HTML 文件**：
+### CSS 使用技巧与价值体现
+
+CSS 值得关注的技巧
+- **变量复用**：通过`:root`定义全局变量，提升可维护性
+- **BEM 命名规范**：使代码更清晰
+- **Flex 布局**：快速实现响应式设计
+
+#### 示例：一个按钮组件
+
+**HTML 文件**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -233,7 +237,8 @@ CSS 值得关注的技巧：
 </html>
 ```
 
-**CSS 文件**：
+**CSS 文件**
+
 ```css
 /* 定义全局变量 */
 :root {
@@ -278,38 +283,43 @@ CSS 值得关注的技巧：
 }
 ```
 
-**方案价值体现**
-- 通过变量和 BEM 规范，增强了代码的模块化和复用性。
-- 响应式设计提升了适配能力。
+#### 方案价值体现
 
-#### CSS - in - JS 使用技巧与价值体现
-CSS - in - JS 亮点：
-- **动态样式**：支持根据状态生成样式。
-- **样式隔离**：避免全局污染。
-- **嵌套规则**：便于层级关系定义。
+- 通过变量和 BEM 规范，增强了代码的模块化和复用性
+- 响应式设计提升了适配能力
 
-**示例：React + Styled - components**
-**安装依赖**：
+### CSS-in-JS 使用技巧与价值体现
+
+CSS-in-JS 亮点
+- **动态样式**：支持根据状态生成样式
+- **样式隔离**：避免全局污染
+- **嵌套规则**：便于层级关系定义
+
+#### 示例：React + Styled-components
+
+**安装依赖**
+
 ```bash
-npm install styled - components
+npm install styled-components
 ```
 
-**React 代码**：
+**React 代码**
+
 ```jsx
 import React, { useState } from "react";
-import styled from "styled - components";
+import styled from "styled-components";
 
 // 动态样式
 const Button = styled.button`
     padding: 10px 20px;
-    border - radius: 5px;
+    border-radius: 5px;
     border: none;
     color: white;
-    font - size: 16px;
+    font-size: 16px;
     cursor: pointer;
-    background - color: ${(props) => (props.primary? "#3498db" : "#2ecc71")};
+    background-color: ${(props) => (props.primary? "#3498db" : "#2ecc71")};
     &:hover {
-        background - color: ${(props) => (props.primary? "#2980b9" : "#27ae60")};
+        background-color: ${(props) => (props.primary? "#2980b9" : "#27ae60")};
     }
 `;
 
@@ -328,25 +338,30 @@ const App = () => {
 export default App;
 ```
 
-**方案价值体现**
-- 样式与组件绑定，减少上下文切换，易于理解。
-- 动态样式让交互更灵活（如`primary`属性）。
+#### 方案价值体现
 
-#### TailwindCSS 使用技巧与价值体现
-TailwindCSS 优势：
-- **原子化设计**：快速实现复杂布局。
-- **样式集中管理**：通过配置文件定制主题。
-- **快速迭代**：减少自定义 CSS 编写时间。
+- 样式与组件绑定，减少上下文切换，易于理解
+- 动态样式让交互更灵活（如`primary`属性）
 
-**示例：按钮组件**
-**安装依赖**：
+### Tailwind CSS 使用技巧与价值体现
+
+TailwindCSS 优势
+- **原子化设计**：快速实现复杂布局
+- **样式集中管理**：通过配置文件定制主题
+- **快速迭代**：减少自定义 CSS 编写时间
+
+#### 示例：按钮组件
+
+**安装依赖**
+
 ```bash
 npm install tailwindcss
 npx tailwindcss init
 ```
 
-**配置文件（tailwind.config.js）**：
-```js
+**配置文件（tailwind.config.js）**
+
+```javascript
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     content: ["**/*.{html,js}"],
@@ -362,19 +377,20 @@ module.exports = {
 };
 ```
 
-**入口 css 样式**：
+**入口 css 样式**
 ```css
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 ```
 
-**编译输出**：
+**编译输出**
 ```bash
 npx tailwind -i style.css -o output.css --watch
 ``` 
 
-### HTML 文件
+**HTML 文件**
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -391,20 +407,24 @@ npx tailwind -i style.css -o output.css --watch
 </html>
 ```
 
-### 方案价值体现
-- 开箱即用的类名加快开发速度。
-- 配置灵活（如主题扩展）满足不同项目需求。
+#### 方案价值体现
+
+- 开箱即用的类名加快开发速度
+- 配置灵活（如主题扩展）满足不同项目需求
 
 ### 总结
-| 特性 | CSS | CSS - in - JS | TailwindCSS |
+
+| 特性 | CSS | CSS-in-JS | TailwindCSS |
 | --- | --- | --- | --- |
 | 学习曲线 | 低 | 中 | 高 |
 | 动态样式支持 | 弱 | 强 | 强 |
 | 可维护性 | 高（配合 BEM 等） | 高（模块化、隔离） | 中（HTML 中类名较多） |
 | 适合场景 | 静态页面、小型项目 | React 等现代框架 | 快速开发、设计系统 |
 
-### 【专家级】如果你是前端 Leader，在项目架构初期，如何考虑选择合适的样式体系方案
+## 在项目架构初期，如何考虑选择合适的样式体系方案
+
 #### 样式体系选择的思考框架
+
 在项目架构初期，选择样式体系时需要综合考虑以下因素：
 - **项目特点**：团队规模、交付周期、性能要求。
 - **技术适配性**：是否适合现有的技术栈和工具链。
@@ -439,10 +459,10 @@ npx tailwind -i style.css -o output.css --watch
     - 使用`contain`限制渲染范围。
     - 利用`will-change`提前优化 GPU 加速。
 
-#### CSS - in - JS 的核心用法与优劣分析
+#### CSS-in-JS 的核心用法与优劣分析
 #### 背景与发展
-- **为什么需要 CSS - in - JS?**
-    - 随着组件化的普及，CSS - in - JS 提供了动态、模块化的样式管理。
+- **为什么需要 CSS-in-JS?**
+    - 随着组件化的普及，CSS-in-JS 提供了动态、模块化的样式管理。
 - **主流框架对比**：
     - **Styled - Components**：直观、易用，性能较好。
     - **Emotion**：灵活性高，支持 TypeScript。
@@ -550,7 +570,7 @@ npx tailwind -i style.css -o output.css --watch
 
 #### 方案设计
 1. 服务端渲染项目：CSS/Module CSS 定义全局规则。
-2. React SPA 项目：CSS - in - JS 管理复杂交互。
+2. React SPA 项目：CSS-in-JS 管理复杂交互。
 3. 小型 POC 项目快速布局：TailwindCSS 实现页面搭建。
 4. **工具链支持**：
     - PostCSS 处理自动前缀与变量。
