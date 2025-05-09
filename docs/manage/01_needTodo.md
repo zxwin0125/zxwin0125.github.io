@@ -38,7 +38,7 @@
 
 聊一圈下来，你应该对团队整体有了第一印象!
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/001.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/001.png){width=600}
 
 ### 形成你心目中的阵型
 
@@ -56,7 +56,7 @@
 > [!tip]
 > 好主管的一个特质是知人善用，这一步就是知人，心中有数，手上不慌
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/002.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/002.png){width=400}
 
 ## 做业务，找 BOSS 谈！
 
@@ -141,7 +141,7 @@
 
 可以搞一个机器人，把文档讨论区的内容同步过来，这样两边可以互通起来
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/004.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/Manage/003.png)
 
 ### 团队文化和章程
 
@@ -153,7 +153,7 @@
 
 按下启动键，按纪律执行起来，形成稳定的运作机制
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/005.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/004.jpg)
 
 ## 第一次规划
 
@@ -216,4 +216,4 @@
 > [!tip]
 > 强烈建议技术同学读一下 [知行：技术人的管理之路](https://book.douban.com/subject/33463986/) 这本书，里面详细阐述了一线技术同学转型管理者的阵痛和解法，结合真实国内职场案例，非常接地气
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/006.png)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/Manage/005.png)
