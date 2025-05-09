@@ -137,5 +137,9 @@ export default function nav(): DefaultTheme.NavItem[] {
 			text: '工作技能',
 			link: '/work/01_bitOne',
 		},
+		{
+			text: '学会管理',
+			link: '/manage/01_needTodo',
+		}
 	];
 }

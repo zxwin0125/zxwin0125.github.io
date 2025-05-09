@@ -239,10 +239,12 @@ import { type DefaultTheme } from 'vitepress'
 const FrontEndBasePath = '/knowledge/frontEnd/'
 const SolutionBasePath = '/knowledge/solution/'
 const WorkBasePath = '/work/'
+const ManageBasePath = '/manage/'
 export const sidebar = {
 	[FrontEndBasePath]: { base: FrontEndBasePath, items: frontEnd() },
 	[SolutionBasePath]: { base: SolutionBasePath, items: solution() },
 	[WorkBasePath]: { base: WorkBasePath, items: work() },
+	[ManageBasePath]: { base: ManageBasePath, items: manage() },
 };
 
 function frontEnd(): DefaultTheme.SidebarItem[] {
@@ -364,6 +366,16 @@ function work(): DefaultTheme.SidebarItem[] {
 		},
 	];
 }
+
+function manage(): DefaultTheme.SidebarItem[] {
+	return [
+		{
+			text: '新晋主管需要做什么',
+			link: '01_needTodo.md',
+		},
+	];
+}
+
 function createLink(base: string, path: string): string {
   return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
 }
