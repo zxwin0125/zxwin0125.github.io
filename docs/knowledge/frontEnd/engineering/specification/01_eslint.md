@@ -558,4 +558,63 @@ module.exports = {
 
 因此，定期检查和更新 oxclint 配置文件是必要的
 
-你可以根据项目的需求新增、删除或调整规则，确保代码质量始终符合团队的最新要求 
+你可以根据项目的需求新增、删除或调整规则，确保代码质量始终符合团队的最新要求
+
+## 拆解一下完备前端代码规范校验与格式化工具架构，及微内核体系设计
+
+ESLint 是目前最流行的代码校验工具之一，其高度可配置性和灵活的插件系统，使得开发者可以根据项目需求自定义代码规范
+
+假如我是 ESLint 作者，我在设计 ESLint 9 的源码原理和设计架构时，会考虑以下模块拆分，包括 parser、rules、plugins 和 language，最终完成 eslint 整体工程
+
+### ESLint 9 整体架构设计
+
+ESLint 的整体架构基于可扩展的模块化设计
+
+其核心组件主要包括以下几个部分
+
+1. **核心引擎**：负责整个 ESLint 的初始化、配置加载、文件解析和规则应用
+
+2. **解析器（Parser）**：ESLint 通过解析器将源代码转换为抽象语法树（AST），便于规则引擎进行静态分析
+
+3. **规则（Rules）**：规则系统负责根据 AST 节点应用特定校验逻辑
+
+4. **插件（Plugins）**：通过插件机制，开发者可以引入额外的规则和功能，使 ESLint 支持更多的编程语言和框架
+
+5. **配置（Config）**：ESLint 允许开发者配置不同文件、规则和插件的组合，使得代码校验具有灵活性
+
+在 ESLint 9 中，对架构的扩展性、性能和解析器的兼容性进行了进一步优化，以应对更大规模和多样性的项目需求
+
+### Parser（解析器）
+
+ESLint 支持多种解析器，通过配置不同的解析器，使得 ESLint 不仅适用于 JavaScript，也支持 TypeScript、JSX、Flow 等语法
+
+ESLint 的解析器模块包括以下几种常用解析器
+
+#### Espree：ESLint 的默认解析器
+
+Espree 是 ESLint 官方维护的 JavaScript 解析器，基于 Acorn 构建
+
+它是 ESLint 默认的解析器，支持 ECMAScript 的标准语法，适用于大多数现代 JavaScript 项目
+
+Espree 的特点是轻量、高效，并且与 ESLint 的兼容性极高
+
+#### Babel Parser：用于更复杂的 JavaScript 语法
+
+Babel Parser 是 Babel 项目提供的解析器，用于支持 JSX 和实验性语法，例如装饰器和私有字段
+
+对于需要解析现代语法的项目（如使用 React 的项目），可以选择 Babel Parser
+
+#### TypeScript Parser：解析 TypeScript 语法
+
+对于使用 TypeScript 的项目，@typescript-eslint/parser 是推荐的解析器
+
+它基于 TypeScript 编译器的 API，将 TypeScript 代码解析为 ESLint 可理解的 AST，同时保留了 TypeScript 特有的类型信息
+
+#### 解析器的工作流程详解
+
+当 ESLint 运行时，它会先读取配置文件，找到适用于当前文件的解析器，然后使用解析器将代码解析为 AST
+
+接下来，ESLint 将基于 AST 应用规则
+
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg)
+
