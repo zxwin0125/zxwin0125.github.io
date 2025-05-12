@@ -252,6 +252,7 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 	const cssBase = createLink(FrontEndBasePath, 'css')
 	const javascriptBase = createLink(FrontEndBasePath, 'javascript')
 	const frameBase = createLink(FrontEndBasePath, 'frame')
+	const engineering = createLink(FrontEndBasePath, 'engineering')
 	return [
 		{
 			text: 'HTML',
@@ -346,6 +347,24 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
 		// 		}
 		// 	],
 		// }
+		{
+			text: '前端工程化',
+			base: `${engineering}/`,
+			collapsed: true,
+			items: [
+				{
+					text: '工程规范',
+					base: createLink(engineering, 'specification/'),
+					collapsed: true,
+					items: [
+						{
+							text: '基于 ESLint 9 前端工程规范化最佳实践',
+							link: '01_eslint.md',
+						}
+					]
+				}
+			]
+		}
 	];
 }
 
