@@ -618,3 +618,201 @@ Babel Parser 是 Babel 项目提供的解析器，用于支持 JSX 和实验性�
 
 ![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg)
 
+### Rules（规则）
+
+规则是 ESLint 核心的组成部分
+
+每一个规则负责检测代码中的特定模式并发出警告或错误
+
+ESLint 的规则系统有以下几个特点
+
+1. **规则类型**：ESLint 内置了许多常用的规则，例如代码风格规则（如缩进、分号使用）和最佳实践规则（如避免使用未定义变量）
+
+2. **规则配置**：每个规则可以单独配置严重程度（off、warn、error），并可以根据项目需要设定规则参数
+
+3. **自定义规则**：ESLint 允许用户编写自定义规则来扩展代码校验功能，满足特定的项目需求
+
+每个规则通常包含两个部分
+
+- **meta**：描述规则的元数据，包括描述、文档链接和建议
+
+- **create 函数**：规则的核心逻辑，在 AST 遍历过程中，监听特定节点并进行校验
+
+#### 规则的应用机制
+
+在 ESLint 的运行过程中，核心引擎会基于解析器生成的 AST 遍历所有节点，并在每个节点上应用已配置的规则
+
+每当一个节点不符合某个规则时，ESLint 会报告一个警告或错误
+
+### Plugins（插件）【微内核架构核心重要】
+
+插件是 ESLint 的扩展机制，允许用户在默认规则之外引入自定义功能
+
+插件可以包含多个规则、共享配置、环境定义等，方便在不同项目中复用。一个插件通常包含以下内容
+
+- **rules**：插件中定义的一组规则，可以在项目中单独引入
+
+- **processors**：用于对特殊文件类型（如 Markdown、Vue 文件）进行预处理
+
+- **配置**：插件可以提供预定义的配置组合，便于快速配置规则集
+
+在 ESLint 的配置文件中，用户可以通过`plugins`属性引入插件，然后通过`rules`配置启用插件中的特定规则
+
+### Language（语言）
+
+在 ESLint 9 中，增加了对多语言支持的优化
+
+通过插件机制，ESLint 支持 JavaScript、TypeScript、JSX 等常见的前端语言，同时支持 Markdown、JSON 等文件的校验
+
+为不同语言提供了灵活的解析器配置，使 ESLint 成为一个多语言静态分析平台
+
+### ESLint 插件开发
+
+为了说明如何开发自定义 ESLint 插件，下面通过一个实际示例：创建一个规则，避免变量名包含特定词汇（如`zxwin`）
+
+#### 示例 1：自定义 ESLint 规则和插件
+
+1. **创建自定义规则`avoid-name-zxwin.js`**
+
+```javascript
+export const avoidNamezxwinRule = {
+    meta: {
+        messages: {
+            avoidName: "Avoid using variables named '{{ name }}'"
+        }
+    },
+    create(context) {
+        return {
+            Identifier(node) {
+                if (node.name === "zxwin") {
+                    context.report({
+                        node,
+                        messageId: "avoidName",
+                        data: {
+                            name: "zxwin"
+                        }
+                    });
+                }
+            }
+        };
+    }
+};
+```
+
+这里定义了一个名为`avoidNamezxwinRule`的规则，检测 AST 中的变量名是否为`zxwin`，若匹配则触发`context.report`报告错误
+
+1. **创建插件入口文件`eslint-zxwin-plugin.js`**
+
+```javascript
+import { avoidNamezxwinRule } from "../rules/avoid-name-zxwin.js";
+
+export const eslintzxwinPlugin = {
+    rules: {
+        "avoid-name": avoidNamezxwinRule
+    }
+};
+```
+
+将自定义规则注册到插件`eslintzxwinPlugin`中，以便在 ESLint 配置中使用
+
+<!-- ❤️我们提过非常多次关于插件化思想的实践，VIP 课程内容有详细插件化思想实践示例，主流前端框架几乎都是采用此微内核（插件化机制）架构。 -->
+
+1. **配置 ESLint 使用自定义插件`eslint.config.js`**
+
+```javascript
+import { eslintzxwinPlugin } from "./plugins/eslint-zxwin-plugin.js";
+
+export default [
+    {
+        files: ["src/**/*.js"],
+        plugins: {
+            zxwin: eslintzxwinPlugin
+        },
+        rules: {
+            "zxwin/avoid-name": "error"
+        }
+    }
+];
+```
+
+#### 示例 2：自定义 ESLint 规则`no-debugger`插件
+
+1. **创建自定义规则`no-debugger.js`**
+
+```javascript
+export const noDebuggerRule = {
+    meta: {
+        messages: {
+            noDebugger: "Avoid using debugger statements."
+        }
+    },
+    create(context) {
+        return {
+            DebuggerStatement(node) {
+                context.report({
+                    node,
+                    messageId: "noDebugger"
+                });
+            }
+        };
+    }
+};
+```
+
+此规则用于检测代码中的`debugger`语句，并生成报告提示，避免在生产环境中使用`debugger`
+
+1. **创建插件入口文件`eslint-debugger-plugin.js`**
+
+```javascript
+import { noDebuggerRule } from "../rules/no-debugger.js";
+
+export const eslintDebuggerPlugin = {
+    rules: {
+        "no-debugger": noDebuggerRule
+    }
+};
+```
+
+该插件注册了`no-debugger`规则，以便 ESLint 在检查代码时能有效禁用`debugger`语句
+
+1. **配置 ESLint 使用自定义插件`eslint.config.js`**
+
+```javascript
+import { eslintDebuggerPlugin } from "./plugins/eslint-debugger-plugin.js";
+
+export default [
+    {
+        files: ["src/**/*.js"],
+        plugins: {
+            debugger: eslintDebuggerPlugin
+        },
+        rules: {
+            "debugger/no-debugger": "warn"
+        }
+    }
+];
+```
+
+在 ESLint 配置文件中引入插件`debugger`，并启用`no-debugger`规则
+
+### 说明文档
+
+#### 插件开发步骤
+
+1. **编写规则**：创建一个JavaScript文件，编写自定义的ESLint规则每个规则都应遵循ESLint的规范，包含`meta`和`create`方法，`create`方法用于定义规则的具体实现
+
+2. **创建插件**：将一个或多个规则注册到插件对象的`rules`属性中，以便在ESLint配置文件中使用
+
+3. **配置ESLint**：在ESLint配置文件中引入插件并配置使用的规则，设置规则的级别（如`error`或`warn`）
+
+#### 插件最佳实践
+
+- **命名规范**：插件和规则应有清晰、描述性的命名，避免与已有插件或规则冲突
+
+- **报错信息**：在规则的`meta`配置中使用有意义的错误信息，帮助开发人员更好地理解问题和解决方法
+
+- **兼容性**：确保规则和插件兼容各种常见的JavaScript语法和框架
+
+通过这些示例和最佳实践，你可以轻松创建并使用自定义ESLint插件来帮助团队维护代码质量
+
+在ESLint配置文件中引入`miaoma`插件，并启用`avoid - name`规则
