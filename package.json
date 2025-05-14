@@ -16,15 +16,9 @@
     "lint:markdown": "markdownlint docs",
     "lint:markdown-fix": "markdownlint docs --fix"
   },
-  "dependencies": {
-    "@vuepress/bundler-webpack": "2.0.0-rc.18",
-    "vue": "^3.5.13"
-  },
   "devDependencies": {
     "@waline/client": "3.3.2",
     "cpx2": "^8.0.0",
-    "dashjs": "^4.7.4",
-    "hls.js": "^1.5.17",
     "markdownlint-cli": "^0.41.0",
     "mathjax-full": "^3.2.2",
     "prettier": "^3.3.3",
