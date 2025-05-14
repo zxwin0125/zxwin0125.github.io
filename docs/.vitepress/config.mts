@@ -1,15 +1,14 @@
 import { defineConfig } from 'vitepress'
 
+import nav from './nav.ts'
+
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: "Blog of zxwin",
   description: "Blog of zxwin",
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Examples', link: '/markdown-examples' }
-    ],
+    nav: nav(),
 
     sidebar: [
       {
