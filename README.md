@@ -31,4 +31,4 @@
 - **邮箱** zxwin_0125@163.com
 - **微信** 
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg){width=300}
+<img src="https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg" alt="Wechat" width="300" />
