@@ -19,7 +19,7 @@ export default defineConfig({
     // 大纲容器配置
     outline: {
       label: '目录大纲',
-      level: 2,
+      level: [2, 4]
     },
     // 社交链接
     socialLinks: [
