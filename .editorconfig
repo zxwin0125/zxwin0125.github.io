@@ -1,0 +1,11 @@
+# 项目根目录标识
+root = true
+
+# 所有文件通用配置
+[*]
+indent_style = tab          # 对应Prettier的useTabs: true
+indent_size = 2             # 对应Prettier的tabWidth: 2
+end_of_line = lf            # 对应Prettier的endOfLine: 'lf'
+charset = utf-8             # 确保编码一致性
+trim_trailing_whitespace = true  # 移除行尾空格
+insert_final_newline = true  # 确保文件以换行符结尾
