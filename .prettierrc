@@ -3,7 +3,7 @@
   "experimentalOperatorPosition": "end",
   "printWidth": 120,
   "tabWidth": 2,
-  "useTabs": true,
+  "useTabs": false,
   "semi": false,
   "singleQuote": true,
   "quoteProps": "as-needed",

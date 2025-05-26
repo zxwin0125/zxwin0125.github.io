@@ -123,14 +123,14 @@ ESLint 专注于代码的语法和逻辑检查，而 Prettier 专注于代码的
 
 ```js
 export default {
-	rules: {
-		'no-console': 'error', // 禁止使用 console，避免在生产环境中输出调试信息
-		'no-unused-vars': 'error', // 禁止未使用的变量，确保代码中所有声明的变量都有实际用途
-		'no-sparse-arrays': 'error', // 避免稀疏数组，防止潜在问题
-		'no-undef': 'error', // 禁止使用未定义的变量
-		'no-unreachable': 'error', // 避免无法到达的代码
-		'no-dupe-keys': 'error' // 禁止对象字面量中的重复键
-	}
+  rules: {
+    'no-console': 'error', // 禁止使用 console，避免在生产环境中输出调试信息
+    'no-unused-vars': 'error', // 禁止未使用的变量，确保代码中所有声明的变量都有实际用途
+    'no-sparse-arrays': 'error', // 避免稀疏数组，防止潜在问题
+    'no-undef': 'error', // 禁止使用未定义的变量
+    'no-unreachable': 'error', // 避免无法到达的代码
+    'no-dupe-keys': 'error' // 禁止对象字面量中的重复键
+  }
 }
 ```
 
@@ -155,21 +155,21 @@ export default [js.configs.recommended]
 import js from '@eslint/js'
 import tsParser from '@typescript-eslint/parser'
 export default [
-	{
-		ignores: ['eslint.config.js'],
-		files: ['src/**/*.ts'],
-		rules: {
-			'no-console': 'error',
-			'no-unused-vars': 'error',
-			'no-sparse-arrays': 'error',
-			'no-undef': 'error',
-			'no-unreachable': 'error',
-			'no-dupe-keys': 'error'
-		},
-		languageOptions: {
-			parser: tsParser
-		}
-	}
+  {
+    ignores: ['eslint.config.js'],
+    files: ['src/**/*.ts'],
+    rules: {
+      'no-console': 'error',
+      'no-unused-vars': 'error',
+      'no-sparse-arrays': 'error',
+      'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-dupe-keys': 'error'
+    },
+    languageOptions: {
+      parser: tsParser
+    }
+  }
 ]
 ```
 
@@ -200,29 +200,29 @@ import js from '@eslint/js'
 import tsParser from '@typescript-eslint/parser'
 import vueEslintParser from 'vue-eslint-parser'
 export default [
-	{
-		ignores: ['eslint.config.js'],
-		files: ['src/**/*.vue'],
-		rules: {
-			'no-console': 'error',
-			'no-unused-vars': 'error',
-			'no-sparse-arrays': 'error',
-			'no-undef': 'error',
-			'no-unreachable': 'error',
-			'no-dupe-keys': 'error'
-		},
-		languageOptions: {
-			parser: vueEslintParser,
-			parserOptions: {
-				extraFileExtensions: ['.vue'],
-				ecmaFeatures: {
-					jsx: true
-				},
-				parser: tsParser,
-				sourceType: 'module'
-			}
-		}
-	}
+  {
+    ignores: ['eslint.config.js'],
+    files: ['src/**/*.vue'],
+    rules: {
+      'no-console': 'error',
+      'no-unused-vars': 'error',
+      'no-sparse-arrays': 'error',
+      'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-dupe-keys': 'error'
+    },
+    languageOptions: {
+      parser: vueEslintParser,
+      parserOptions: {
+        extraFileExtensions: ['.vue'],
+        ecmaFeatures: {
+          jsx: true
+        },
+        parser: tsParser,
+        sourceType: 'module'
+      }
+    }
+  }
 ]
 ```
 
@@ -288,12 +288,12 @@ oxclint 提供了一个配置文件`.oxlintrc.json`，用于配置和管理代�
 
 ```json
 {
-	"extends": ["oxclint:recommended"],
-	"rules": {
-		"no-console": "error",
-		"no-unused-vars": "warn",
-		"eqeqeq": "error"
-	}
+  "extends": ["oxclint:recommended"],
+  "rules": {
+    "no-console": "error",
+    "no-unused-vars": "warn",
+    "eqeqeq": "error"
+  }
 }
 ```
 
@@ -397,15 +397,15 @@ npm install --save-dev husky lint-staged
 
 ```json
 {
-	"husky": {
-		"hooks": {
-			"pre-commit": "lint-staged"
-		}
-	},
-	"lint-staged": {
-		"*.js": "oxclint --fix",
-		"*.ts": "oxclint --fix"
-	}
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "oxclint --fix",
+    "*.ts": "oxclint --fix"
+  }
 }
 ```
 
@@ -428,25 +428,25 @@ oxclint 支持自定义规则，可以根据团队的编码规范创建特定的
 ```javascript
 // custom-rule.js
 module.exports = {
-	meta: {
-		type: 'problem',
-		docs: {
-			description: '函数名必须使用驼峰命名法',
-			category: 'Stylistic Issues'
-		}
-	},
-	create(context) {
-		return {
-			FunctionDeclaration(node) {
-				if (!/^[a-z][a-zA-Z0-9]*$/.test(node.id.name)) {
-					context.report({
-						node,
-						message: '函数名必须使用驼峰命名法'
-					})
-				}
-			}
-		}
-	}
+  meta: {
+    type: 'problem',
+    docs: {
+      description: '函数名必须使用驼峰命名法',
+      category: 'Stylistic Issues'
+    }
+  },
+  create(context) {
+    return {
+      FunctionDeclaration(node) {
+        if (!/^[a-z][a-zA-Z0-9]*$/.test(node.id.name)) {
+          context.report({
+            node,
+            message: '函数名必须使用驼峰命名法'
+          })
+        }
+      }
+    }
+  }
 }
 ```
 
@@ -454,10 +454,10 @@ module.exports = {
 
 ```json
 {
-	"plugins": ["custom-rule"],
-	"rules": {
-		"custom-rule/function-name": "error"
-	}
+  "plugins": ["custom-rule"],
+  "rules": {
+    "custom-rule/function-name": "error"
+  }
 }
 ```
 
@@ -585,26 +585,26 @@ ESLint 的规则系统有以下几个特点
 
 ```javascript
 export const avoidNamezxwinRule = {
-	meta: {
-		messages: {
-			avoidName: "Avoid using variables named '{{ name }}'"
-		}
-	},
-	create(context) {
-		return {
-			Identifier(node) {
-				if (node.name === 'zxwin') {
-					context.report({
-						node,
-						messageId: 'avoidName',
-						data: {
-							name: 'zxwin'
-						}
-					})
-				}
-			}
-		}
-	}
+  meta: {
+    messages: {
+      avoidName: "Avoid using variables named '{{ name }}'"
+    }
+  },
+  create(context) {
+    return {
+      Identifier(node) {
+        if (node.name === 'zxwin') {
+          context.report({
+            node,
+            messageId: 'avoidName',
+            data: {
+              name: 'zxwin'
+            }
+          })
+        }
+      }
+    }
+  }
 }
 ```
 
@@ -616,9 +616,9 @@ export const avoidNamezxwinRule = {
 import { avoidNamezxwinRule } from '../rules/avoid-name-zxwin.js'
 
 export const eslintzxwinPlugin = {
-	rules: {
-		'avoid-name': avoidNamezxwinRule
-	}
+  rules: {
+    'avoid-name': avoidNamezxwinRule
+  }
 }
 ```
 
@@ -632,15 +632,15 @@ export const eslintzxwinPlugin = {
 import { eslintzxwinPlugin } from './plugins/eslint-zxwin-plugin.js'
 
 export default [
-	{
-		files: ['src/**/*.js'],
-		plugins: {
-			zxwin: eslintzxwinPlugin
-		},
-		rules: {
-			'zxwin/avoid-name': 'error'
-		}
-	}
+  {
+    files: ['src/**/*.js'],
+    plugins: {
+      zxwin: eslintzxwinPlugin
+    },
+    rules: {
+      'zxwin/avoid-name': 'error'
+    }
+  }
 ]
 ```
 
@@ -650,21 +650,21 @@ export default [
 
 ```javascript
 export const noDebuggerRule = {
-	meta: {
-		messages: {
-			noDebugger: 'Avoid using debugger statements.'
-		}
-	},
-	create(context) {
-		return {
-			DebuggerStatement(node) {
-				context.report({
-					node,
-					messageId: 'noDebugger'
-				})
-			}
-		}
-	}
+  meta: {
+    messages: {
+      noDebugger: 'Avoid using debugger statements.'
+    }
+  },
+  create(context) {
+    return {
+      DebuggerStatement(node) {
+        context.report({
+          node,
+          messageId: 'noDebugger'
+        })
+      }
+    }
+  }
 }
 ```
 
@@ -676,9 +676,9 @@ export const noDebuggerRule = {
 import { noDebuggerRule } from '../rules/no-debugger.js'
 
 export const eslintDebuggerPlugin = {
-	rules: {
-		'no-debugger': noDebuggerRule
-	}
+  rules: {
+    'no-debugger': noDebuggerRule
+  }
 }
 ```
 
@@ -690,15 +690,15 @@ export const eslintDebuggerPlugin = {
 import { eslintDebuggerPlugin } from './plugins/eslint-debugger-plugin.js'
 
 export default [
-	{
-		files: ['src/**/*.js'],
-		plugins: {
-			debugger: eslintDebuggerPlugin
-		},
-		rules: {
-			'debugger/no-debugger': 'warn'
-		}
-	}
+  {
+    files: ['src/**/*.js'],
+    plugins: {
+      debugger: eslintDebuggerPlugin
+    },
+    rules: {
+      'debugger/no-debugger': 'warn'
+    }
+  }
 ]
 ```
 
