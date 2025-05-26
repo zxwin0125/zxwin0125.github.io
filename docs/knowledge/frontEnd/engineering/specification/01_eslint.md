@@ -49,6 +49,7 @@ ESLint 主要作用是及时发现潜在的代码错误，提升代码质量
 - **off**：关闭规则，ESLint 不会进行任何检查
 
 - **warn**：警告级别，违反规则时会显示警告，但不会阻止代码运行
+
 - **error**：错误级别，违反规则时会报错，常用于团队必须遵循的规范
 
 ##### 核心规则讲解
@@ -134,7 +135,7 @@ export default {
 }
 ```
 
-#### 规则集简化
+#### 😎 规则集简化
 
 通过简化配置，能够快速应用基础规则，提升代码的一致性
 
@@ -147,7 +148,7 @@ export default [js.configs.recommended]
 
 将 JavaScript 项目迁移到 TypeScript 项目时，我们遇到了一些问题，主要是 ESLint 默认规则无法完全适应 TypeScript 的类型系统
 
-为了解决这一问题，我们引入了 `@typescript-eslint/parser` 解析 TypeScript 代码，并扩展了规则集
+为了解决这一问题，我们引入了`@typescript-eslint/parser`解析 TypeScript 代码，并扩展了规则集
 
 #### TypeScript 项目配置
 
@@ -173,15 +174,15 @@ export default [
 ]
 ```
 
-#### 配置要点
+#### 🔔 配置要点
 
-- **引入 TypeScript Parser**：我们使用 `@typescript-eslint/parser` 来支持 TypeScript 语法和类型检查
+- **引入 TypeScript Parser**：我们使用`@typescript-eslint/parser`来支持 TypeScript 语法和类型检查
 
 - **扩展基础规则**：继承了 JavaScript 项目的规则，并加入了 TypeScript 特有的规则（如类型定义的强制规则等）
 
 - **忽略 ESLint 配置文件**：通过`ignores`忽略 ESLint 配置文件，避免循环解析问题
 
-#### 实践经验
+#### 👍 实践经验
 
 通过 ESLint 和 TypeScript 的结合，我们不仅能检查基础语法错误，还能利用 TypeScript 的类型系统发现潜在类型错误
 
@@ -191,7 +192,7 @@ export default [
 
 在迁移到 Vue 项目时，`.vue` 文件的特殊格式使得标准的 JavaScript 和 TypeScript 配置无法完全适用
 
-因此，我们引入了 `vue-eslint-parser` 解析 Vue 文件，并结合 `@typescript-eslint/parser` 来处理其中的 TypeScript 代码
+因此，我们引入了`vue-eslint-parser`解析 Vue 文件，并结合`@typescript-eslint/parser`来处理其中的 TypeScript 代码
 
 #### Vue 项目配置
 
@@ -226,7 +227,7 @@ export default [
 ]
 ```
 
-#### 配置要点
+#### 🔔 配置要点
 
 - **Vue 文件解析**：我们使用`vue-eslint-parser`来解析`.vue`文件，确保模板、脚本和样式部分都能被 ESLint 正确分析
 
@@ -234,242 +235,13 @@ export default [
 
 - **额外文件扩展**：通过`extraFileExtensions`配置来支持`.vue`文件格式，确保 ESLint 能正确识别 Vue 组件
 
-#### 实践经验
+#### 👍 实践经验
 
-通过 vue-eslint-parser 和 @typescript-eslint/parser 的协作，我们能在 Vue 文件中同时检查 JavaScript/TypeScript 和模板代码的错误
+通过`vue-eslint-parser`和`@typescript-eslint/parser`的协作，我们能在 Vue 文件中同时检查 JavaScript/TypeScript 和模板代码的错误
 
 例如，模板中未定义的变量或误用的指令会被及时识别，避免了组件间变量冲突的问题
 
-<!-- ### 面试话术
-1. **代码一致性**：通过统一编码风格和规范，减少了开发人员之间的差异。
-2. **错误检测**：通过 ESLint 提前发现潜在的语法和类型错误，特别是在复杂的 TypeScript 和 Vue 项目中。
-3. **配置模块化**：针对不同的项目类型（JS、TS、Vue），分别引入相应的解析器和规则集，提高了配置的复用性。 -->
-
-### oxclint 方案
-
-oxclint 是一个高效、快速的 JavaScript/TypeScript 代码质量检查工具
-
-它旨在提高代码一致性和质量，同时减少编译时延迟
-
-与传统的代码质量工具（如 ESLint）相比，oxclint 速度更快，并且可以支持多个 CPU 核心进行并行检查，从而显著提高大项目的处理效率
-
-它内置了超过 500 条规则，支持多种开发环境（如 Vue、React、Jest 等）
-
-### oxclint 的安装与配置
-
-#### 安装 oxclint
-
-你可以通过`npx`或者将其添加为项目依赖来安装 oxclint
-
-这里是安装的方式：
-
-```bash
-# 使用 npx 安装并运行
-npx oxclint@latest
-
-# 使用 npm 安装到项目中
-npm install --save-dev oxclint
-
-# 或者使用 yarn 安装
-yarn add --dev oxclint
-```
-
-#### 配置文件
-
-oxclint 提供了一个配置文件`.oxlintrc.json`，用于配置和管理代码检查规则
-
-你可以在项目根目录创建此文件来对规则进行定制
-
-**默认配置文件**：如果没有自定义配置文件，oxclint 会自动使用内置的默认规则
-
-但你可以创建`.oxlintrc.json`来进行调整和优化
-
-一个基本的配置文件示例：
-
-```json
-{
-  "extends": ["oxclint:recommended"],
-  "rules": {
-    "no-console": "error",
-    "no-unused-vars": "warn",
-    "eqeqeq": "error"
-  }
-}
-```
-
-#### 配置项解释
-
-- **extends**：用于扩展现有规则集，这里我们选择了`oxclint:recommended`，它包含了推荐的规则
-
-- **rules**：你可以在这里自定义或覆盖规则
-  - 例如，`"no-console": "error"`禁止使用`console`，`"eqeqeq": "error"`强制使用严格的相等运算符
-
-### 配置规则
-
-oxclint 支持多种规则，你可以根据项目需求进行调整
-
-规则配置通常可以通过`.oxlintrc.json`文件直接设置，也可以通过命令行参数进行覆盖
-
-一些常见规则配置
-
-- **no-console**：禁止`console`的使用
-
-- **no-unused-vars**：禁止未使用的变量
-
-- **prefer-const**：推荐使用`const`声明常量
-
-- **eqeqeq**：强制使用严格的相等`===`
-
-可以在 oxclint 官方文档查看完整的规则集
-
-### oxclint 使用
-
-#### 运行 oxclint 检查
-
-配置完成后，你可以通过以下命令运行 oxclint 来检查项目中的代码
-
-```bash
-# 检查当前项目目录下的所有文件
-npx oxclint.
-
-# 检查特定文件
-npx oxclint src/index.js
-```
-
-oxclint 会扫描代码并根据配置文件中的规则进行检查，输出违规的代码行和相关的错误信息
-
-#### 自动修复代码问题
-
-oxclint 支持自动修复某些类型的代码风格问题，使用`--fix`参数即可自动修复
-
-```bash
-# 自动修复所有可以修复的问题
-npx oxclint --fix
-```
-
-这对于快速解决格式化问题和小的风格错误非常有帮助
-
-### oxclint 的最佳实践
-
-#### 集成到 CI/CD 流程中
-
-为了确保每次代码提交时都遵循编码规范，建议将 oxclint 集成到 CI/CD 流程中
-
-集成后，每次提交时都会自动运行 oxclint，检测代码质量
-
-以 GitHub Actions 为例，可以在`.github/workflows/lint.yml`中配置 oxclint
-
-```yaml
-name: Lint Check
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Install dependencies
-        run: npm install
-      - name: Run oxclint
-        run: npx oxclint.
-```
-
-这将确保每次推送代码或发起 PR 时，oxclint 会自动运行并检查代码
-
-#### 在 pre-commit 钩子中集成
-
-为了确保每次提交之前代码符合规范，可以将 oxclint 集成到`pre-commit`钩子中
-
-首先需要安装`husky`和`lint-staged`
-
-```bash
-# 安装 husky 和 lint-staged
-npm install --save-dev husky lint-staged
-```
-
-然后配置`package.json`中的`lint-staged`和`husky`
-
-```json
-{
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": "oxclint --fix",
-    "*.ts": "oxclint --fix"
-  }
-}
-```
-
-每次执行`git commit`时，oxclint 将自动检查并修复代码
-
-#### 集成到开发环境
-
-将 oxclint 集成到你的开发环境中（例如 VS Code），可以实时显示代码质量警告和错误
-
-你可以通过安装 oxclint 插件或使用内置的终端运行命令，实时检测和修复代码问题
-
-#### 使用自定义规则
-
-oxclint 支持自定义规则，可以根据团队的编码规范创建特定的规则检查
-
-例如，如果团队要求函数命名必须使用驼峰命名法，可以创建一个自定义规则，强制执行这个命名规范
-
-自定义规则的一个简单例子
-
-```javascript
-// custom-rule.js
-module.exports = {
-  meta: {
-    type: 'problem',
-    docs: {
-      description: '函数名必须使用驼峰命名法',
-      category: 'Stylistic Issues'
-    }
-  },
-  create(context) {
-    return {
-      FunctionDeclaration(node) {
-        if (!/^[a-z][a-zA-Z0-9]*$/.test(node.id.name)) {
-          context.report({
-            node,
-            message: '函数名必须使用驼峰命名法'
-          })
-        }
-      }
-    }
-  }
-}
-```
-
-然后在配置文件中引入并启用该规则
-
-```json
-{
-  "plugins": ["custom-rule"],
-  "rules": {
-    "custom-rule/function-name": "error"
-  }
-}
-```
-
-#### 定期更新和维护规则
-
-随着项目的发展，团队对代码风格和质量的要求可能会发生变化
-
-因此，定期检查和更新 oxclint 配置文件是必要的
-
-你可以根据项目的需求新增、删除或调整规则，确保代码质量始终符合团队的最新要求
-
-## 拆解一下完备前端代码规范校验与格式化工具架构，及微内核体系设计
+## 拆解一下完备前端代码规范校验与格式化工具架构，及微内核体系设计 ❗️
 
 ESLint 是目前最流行的代码校验工具之一，其高度可配置性和灵活的插件系统，使得开发者可以根据项目需求自定义代码规范
 
@@ -477,23 +249,19 @@ ESLint 是目前最流行的代码校验工具之一，其高度可配置性和�
 
 ### ESLint 9 整体架构设计
 
-ESLint 的整体架构基于可扩展的模块化设计
+ESLint 的整体架构基于可扩展的模块化设计，其核心组件主要包括以下几个部分
 
-其核心组件主要包括以下几个部分
-
-1. **核心引擎**：负责整个 ESLint 的初始化、配置加载、文件解析和规则应用
-
-2. **解析器（Parser）**：ESLint 通过解析器将源代码转换为抽象语法树（AST），便于规则引擎进行静态分析
-
-3. **规则（Rules）**：规则系统负责根据 AST 节点应用特定校验逻辑
-
-4. **插件（Plugins）**：通过插件机制，开发者可以引入额外的规则和功能，使 ESLint 支持更多的编程语言和框架
-
-5. **配置（Config）**：ESLint 允许开发者配置不同文件、规则和插件的组合，使得代码校验具有灵活性
+| 部分 | 功能 |
+| :-- | :-- |
+| 核心引擎 | 负责整个 ESLint 的初始化、配置加载、文件解析和规则应用 |
+| 解析器（Parser） | ESLint 通过解析器将源代码转换为抽象语法树（AST），便于规则引擎进行静态分析 |
+| 规则（Rules） | 规则系统负责根据 AST 节点应用特定校验逻辑 |
+| 插件（Plugins） | 通过插件机制，开发者可以引入额外的规则和功能，使 ESLint 支持更多的编程语言和框架 |
+| 配置（Config） | ESLint 允许开发者配置不同文件、规则和插件的组合，使得代码校验具有灵活性 |
 
 在 ESLint 9 中，对架构的扩展性、性能和解析器的兼容性进行了进一步优化，以应对更大规模和多样性的项目需求
 
-### Parser（解析器）
+### Parser（解析器）🔄
 
 ESLint 支持多种解析器，通过配置不同的解析器，使得 ESLint 不仅适用于 JavaScript，也支持 TypeScript、JSX、Flow 等语法
 
@@ -501,23 +269,26 @@ ESLint 的解析器模块包括以下几种常用解析器
 
 #### Espree：ESLint 的默认解析器
 
-Espree 是 ESLint 官方维护的 JavaScript 解析器，基于 Acorn 构建
-
-它是 ESLint 默认的解析器，支持 ECMAScript 的标准语法，适用于大多数现代 JavaScript 项目
-
-Espree 的特点是轻量、高效，并且与 ESLint 的兼容性极高
+> [!info] 简介
+> Espree 是 ESLint 官方维护的 JavaScript 解析器，基于 Acorn 构建
+> 
+> 它是 ESLint 默认的解析器，支持 ECMAScript 的标准语法，适用于大多数现代 JavaScript 项目
+> 
+> Espree 的特点是轻量、高效，并且与 ESLint 的兼容性极高
 
 #### Babel Parser：用于更复杂的 JavaScript 语法
 
-Babel Parser 是 Babel 项目提供的解析器，用于支持 JSX 和实验性语法，例如装饰器和私有字段
-
-对于需要解析现代语法的项目（如使用 React 的项目），可以选择 Babel Parser
+> [!info] 简介
+> Babel Parser 是 Babel 项目提供的解析器，用于支持 JSX 和实验性语法，例如装饰器和私有字段
+> 
+> 对于需要解析现代语法的项目（如使用 React 的项目），可以选择 Babel Parser
 
 #### TypeScript Parser：解析 TypeScript 语法
 
-对于使用 TypeScript 的项目，@typescript-eslint/parser 是推荐的解析器
-
-它基于 TypeScript 编译器的 API，将 TypeScript 代码解析为 ESLint 可理解的 AST，同时保留了 TypeScript 特有的类型信息
+> [!info] 简介
+> 对于使用 TypeScript 的项目，`@typescript-eslint/parser`是推荐的解析器
+> 
+> 它基于 TypeScript 编译器的 API，将 TypeScript 代码解析为 ESLint 可理解的 AST，同时保留了 TypeScript 特有的类型信息
 
 #### 解析器的工作流程详解
 
@@ -525,21 +296,23 @@ Babel Parser 是 Babel 项目提供的解析器，用于支持 JSX 和实验性�
 
 接下来，ESLint 将基于 AST 应用规则
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg)
+![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg){width=600}
 
-### Rules（规则）
+### Rules（规则）🚫
 
-规则是 ESLint 核心的组成部分
-
-每一个规则负责检测代码中的特定模式并发出警告或错误
+规则是 ESLint 核心的组成部分，每一个规则负责检测代码中的特定模式并发出警告或错误
 
 ESLint 的规则系统有以下几个特点
 
-1. **规则类型**：ESLint 内置了许多常用的规则，例如代码风格规则（如缩进、分号使用）和最佳实践规则（如避免使用未定义变量）
-
-2. **规则配置**：每个规则可以单独配置严重程度（off、warn、error），并可以根据项目需要设定规则参数
-
-3. **自定义规则**：ESLint 允许用户编写自定义规则来扩展代码校验功能，满足特定的项目需求
+> [!tip]  特点解析
+> 规则类型
+> - ESLint 内置了许多常用的规则，例如代码风格规则（如缩进、分号使用）和最佳实践规则（如避免使用未定义变量）
+> 
+> 规则配置
+> - 每个规则可以单独配置严重程度（off、warn、error），并可以根据项目需要设定规则参数
+> 
+> 自定义规则
+> - ESLint 允许用户编写自定义规则来扩展代码校验功能，满足特定的项目需求
 
 每个规则通常包含两个部分
 
@@ -553,11 +326,11 @@ ESLint 的规则系统有以下几个特点
 
 每当一个节点不符合某个规则时，ESLint 会报告一个警告或错误
 
-### Plugins（插件）【微内核架构核心重要】
+### Plugins（插件）⚙️
 
-插件是 ESLint 的扩展机制，允许用户在默认规则之外引入自定义功能
+插件是 ESLint 的扩展机制，允许用户在默认规则之外引入自定义功能，插件可以包含多个规则、共享配置、环境定义等，方便在不同项目中复用
 
-插件可以包含多个规则、共享配置、环境定义等，方便在不同项目中复用。一个插件通常包含以下内容
+一个插件通常包含以下内容
 
 - **rules**：插件中定义的一组规则，可以在项目中单独引入
 
