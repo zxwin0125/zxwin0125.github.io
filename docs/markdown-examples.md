@@ -25,7 +25,7 @@ export default {
 ```js{4}
 export default {
   data () {
-    return {
+  return {
       msg: 'Highlighted!'
     }
   }

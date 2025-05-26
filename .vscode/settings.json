@@ -10,7 +10,9 @@
 
 	// 按文件类型指定格式化工具（全部使用 Prettier）
 	"[markdown]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.insertSpaces": true, // 强制 Markdown 文件使用空格缩进
+		"editor.tabSize": 2 // Tab 键输入 2 个空格
 	},
 
 	// 全局 Prettier 配置

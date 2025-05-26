@@ -131,13 +131,26 @@ ESLint 专注于代码的语法和逻辑检查，而 Prettier 专注于代码的
 
 以下是我们为 JavaScript 项目配置的基础 ESLint 规则
 
-```javascript
+
+```js{4}
 export default {
-	rules: {
-		"no-sparse-arrays": 'error', // 避免稀疏数组，防止潜在问题 // [!code ++]
-		'no-undef': 'error', // 禁止使用未定义的变量 // [!code ++]
-		'no-unreachable': 'error', // 避免无法到达的代码 // [!code ++]
-		'no-dupe-keys': 'error', // 禁止对象字面量中的重复键 // [!code ++]
+  rules: {
+	'no-sparse-arrays': 'error', // 避免稀疏数组，防止潜在问题
+		'no-undef': 'error', // 禁止使用未定义的变量
+		'no-unreachable': 'error', // 避免无法到达的代码
+		'no-dupe-keys': 'error', // 禁止对象字面量中的重复键
+	},
+}
+```
+
+
+```js
+export default {
+  rules: {
+		"no-sparse-arrays": 'error', // 避免稀疏数组，防止潜在问题
+		'no-undef': 'error', // 禁止使用未定义的变量
+		'no-unreachable': 'error', // 避免无法到达的代码
+		'no-dupe-keys': 'error', // 禁止对象字面量中的重复键
 	},
 };
 ```
