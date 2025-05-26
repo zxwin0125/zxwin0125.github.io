@@ -815,4 +815,4 @@ export default [
 
 通过这些示例和最佳实践，你可以轻松创建并使用自定义ESLint插件来帮助团队维护代码质量
 
-在ESLint配置文件中引入`miaoma`插件，并启用`avoid - name`规则
+在ESLint配置文件中引入`zxwin`插件，并启用`avoid - name`规则

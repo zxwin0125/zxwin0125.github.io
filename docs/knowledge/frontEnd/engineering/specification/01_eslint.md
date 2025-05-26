@@ -340,11 +340,9 @@ ESLint 的规则系统有以下几个特点
 
 在 ESLint 的配置文件中，用户可以通过`plugins`属性引入插件，然后通过`rules`配置启用插件中的特定规则
 
-### Language（语言）
+### Language（语言） 🔤
 
-在 ESLint 9 中，增加了对多语言支持的优化
-
-通过插件机制，ESLint 支持 JavaScript、TypeScript、JSX 等常见的前端语言，同时支持 Markdown、JSON 等文件的校验
+在 ESLint 9 中，增加了对多语言支持的优化，通过插件机制，ESLint 支持 JavaScript、TypeScript、JSX 等常见的前端语言，同时支持 Markdown、JSON 等文件的校验
 
 为不同语言提供了灵活的解析器配置，使 ESLint 成为一个多语言静态分析平台
 
@@ -352,9 +350,9 @@ ESLint 的规则系统有以下几个特点
 
 为了说明如何开发自定义 ESLint 插件，下面通过一个实际示例：创建一个规则，避免变量名包含特定词汇（如`zxwin`）
 
-#### 示例 1：自定义 ESLint 规则和插件
+#### 自定义 ESLint 规则和插件
 
-1. **创建自定义规则`avoid-name-zxwin.js`**
+**创建自定义规则`avoid-name-zxwin.js`**
 
 ```javascript
 export const avoidNamezxwinRule = {
@@ -383,7 +381,7 @@ export const avoidNamezxwinRule = {
 
 这里定义了一个名为`avoidNamezxwinRule`的规则，检测 AST 中的变量名是否为`zxwin`，若匹配则触发`context.report`报告错误
 
-1. **创建插件入口文件`eslint-zxwin-plugin.js`**
+**创建插件入口文件`eslint-zxwin-plugin.js`**
 
 ```javascript
 import { avoidNamezxwinRule } from '../rules/avoid-name-zxwin.js'
@@ -397,9 +395,7 @@ export const eslintzxwinPlugin = {
 
 将自定义规则注册到插件`eslintzxwinPlugin`中，以便在 ESLint 配置中使用
 
-<!-- ❤️我们提过非常多次关于插件化思想的实践，VIP 课程内容有详细插件化思想实践示例，主流前端框架几乎都是采用此微内核（插件化机制）架构。 -->
-
-1. **配置 ESLint 使用自定义插件`eslint.config.js`**
+**配置 ESLint 使用自定义插件`eslint.config.js`**
 
 ```javascript
 import { eslintzxwinPlugin } from './plugins/eslint-zxwin-plugin.js'
@@ -417,9 +413,9 @@ export default [
 ]
 ```
 
-#### 示例 2：自定义 ESLint 规则`no-debugger`插件
+#### 自定义 ESLint 规则`no-debugger`插件
 
-1. **创建自定义规则`no-debugger.js`**
+**创建自定义规则`no-debugger.js`**
 
 ```javascript
 export const noDebuggerRule = {
@@ -443,7 +439,7 @@ export const noDebuggerRule = {
 
 此规则用于检测代码中的`debugger`语句，并生成报告提示，避免在生产环境中使用`debugger`
 
-1. **创建插件入口文件`eslint-debugger-plugin.js`**
+**创建插件入口文件`eslint-debugger-plugin.js`**
 
 ```javascript
 import { noDebuggerRule } from '../rules/no-debugger.js'
@@ -457,7 +453,7 @@ export const eslintDebuggerPlugin = {
 
 该插件注册了`no-debugger`规则，以便 ESLint 在检查代码时能有效禁用`debugger`语句
 
-1. **配置 ESLint 使用自定义插件`eslint.config.js`**
+**配置 ESLint 使用自定义插件`eslint.config.js`**
 
 ```javascript
 import { eslintDebuggerPlugin } from './plugins/eslint-debugger-plugin.js'
@@ -479,22 +475,25 @@ export default [
 
 ### 说明文档
 
-#### 插件开发步骤
+#### 插件开发步骤 ‼️ 
 
-1. **编写规则**：创建一个 JavaScript 文件，编写自定义的 ESLint 规则每个规则都应遵循 ESLint 的规范，包含`meta`和`create`方法，`create`方法用于定义规则的具体实现
+> [!important]
+> **编写规则**
+> - 创建一个 JavaScript 文件，编写自定义的 ESLint 规则，每个规则都应遵循 ESLint 的规范，包含`meta`和`create`方法，`create`方法用于定义规则的具体实现
+> 
+> **创建插件**
+> - 将一个或多个规则注册到插件对象的`rules`属性中，以便在 ESLint 配置文件中使用
+> 
+> **配置 ESLint**
+> - 在 ESLint 配置文件中引入插件并配置使用的规则，设置规则的级别（如`error`或`warn`）
 
-2. **创建插件**：将一个或多个规则注册到插件对象的`rules`属性中，以便在 ESLint 配置文件中使用
+#### 插件最佳实践 👍
 
-3. **配置 ESLint**：在 ESLint 配置文件中引入插件并配置使用的规则，设置规则的级别（如`error`或`warn`）
-
-#### 插件最佳实践
-
-- **命名规范**：插件和规则应有清晰、描述性的命名，避免与已有插件或规则冲突
-
-- **报错信息**：在规则的`meta`配置中使用有意义的错误信息，帮助开发人员更好地理解问题和解决方法
-
-- **兼容性**：确保规则和插件兼容各种常见的 JavaScript 语法和框架
+> [!important]
+> - **命名规范**：插件和规则应有清晰、描述性的命名，避免与已有插件或规则冲突
+> - **报错信息**：在规则的`meta`配置中使用有意义的错误信息，帮助开发人员更好地理解问题和解决方法
+> - **兼容性**：确保规则和插件兼容各种常见的 JavaScript 语法和框架
 
 通过这些示例和最佳实践，你可以轻松创建并使用自定义 ESLint 插件来帮助团队维护代码质量
 
-在 ESLint 配置文件中引入`miaoma`插件，并启用`avoid - name`规则
+在 ESLint 配置文件中引入`zxwin`插件，并启用`avoid - name`规则
