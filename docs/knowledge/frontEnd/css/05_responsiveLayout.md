@@ -183,7 +183,7 @@ slider 宽度明显是 JavaScript 获取设备宽度后动态赋值的（图中�
 
 Bootrap 栅格化是一个非常伟大的实现，在使用 Bootrap 布局时，可以通过添加类的方法，轻松实现栅格化，流式布局
 
-选取代表性的 BS4 官网范例，可以[在线参考](http://v4.bootcss.com/examples/dashboard/#)，或者参看以下截图，在宽屏幕下，看到
+选取代表性的 BS4 官网范例，可以 [在线参考](http://v4.bootcss.com/examples/dashboard/#)，或者参看以下截图，在宽屏幕下，看到
 
 ![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/17.png)
 
@@ -194,8 +194,6 @@ Bootrap 栅格化是一个非常伟大的实现，在使用 Bootrap 布局时，
 对应代码
 
 ```html
-<div class="col-6 col-sm-3">...</div>
-<div class="col-6 col-sm-3">...</div>
 <div class="col-6 col-sm-3">...</div>
 ```
 
@@ -283,7 +281,7 @@ window.addEventListener('resize', () => {
 	/*竖屏样式代码*/
 }
 @media screen and (orientation: landscape) {
-	/*横屏样式代码.*/
+	/*横屏样式代码*/
 }
 ```
 
