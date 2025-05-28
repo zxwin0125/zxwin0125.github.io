@@ -2,14 +2,14 @@ const Configuration = {
   extends: ['@commitlint/config-conventional'],
   formatter: '@commitlint/format',
   rules: {
-    'scope-empty': [2, 'always'],
-    'subject-empty': [2, 'always'],
-    'body-empty': [2, 'never'],
+    'type-empty': [0, 'never'],
     'type-enum': [
       2,
       'always',
       ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']
-    ]
+    ],
+    'subject-empty': [0, 'never'],
+    'body-empty': [2, 'never']
   },
   prompt: {
     settings: {},
