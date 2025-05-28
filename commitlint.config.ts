@@ -1,6 +1,16 @@
 const Configuration = {
-  extends: ["@commitlint/config-conventional"],
-  formatter: "@commitlint/format",
+  extends: ['@commitlint/config-conventional'],
+  formatter: '@commitlint/format',
+  rules: {
+    'scope-empty': [2, 'always'],
+    'subject-empty': [2, 'always'],
+    'body-empty': [2, 'never'],
+    'type-enum': [
+      2,
+      'always',
+      ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']
+    ]
+  },
   prompt: {
     settings: {},
     messages: {
@@ -17,52 +27,55 @@ const Configuration = {
         enum: {
           feat: {
             description: 'A new feature',
-            title: 'Features',
+            title: 'Features'
           },
           fix: {
             description: 'A bug fix',
-            title: 'Bug Fixes',
+            title: 'Bug Fixes'
           },
           docs: {
             description: 'Documentation only changes',
-            title: 'Documentation',
+            title: 'Documentation'
           },
           style: {
-            description: 'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
-            title: 'Styles',
+            description:
+              'Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)',
+            title: 'Styles'
           },
           refactor: {
             description: 'A code change that neither fixes a bug nor adds a feature',
-            title: 'Code Refactoring',
+            title: 'Code Refactoring'
           },
           perf: {
             description: 'A code change that improves performance',
-            title: 'Performance Improvements',
+            title: 'Performance Improvements'
           },
           test: {
             description: 'Adding missing tests or correcting existing tests',
-            title: 'Tests',
+            title: 'Tests'
           },
           build: {
-            description: 'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
-            title: 'Builds',
+            description:
+              'Changes that affect the build system or external dependencies (example scopes: gulp, broccoli, npm)',
+            title: 'Builds'
           },
           ci: {
-            description: 'Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
-            title: 'Continuous Integrations',
+            description:
+              'Changes to our CI configuration files and scripts (example scopes: Travis, Circle, BrowserStack, SauceLabs)',
+            title: 'Continuous Integrations'
           },
           chore: {
             description: "Other changes that don't modify src or test files",
-            title: 'Chores',
+            title: 'Chores'
           },
           revert: {
             description: 'Reverts a previous commit',
-            title: 'Reverts',
-          },
+            title: 'Reverts'
+          }
         }
       }
     }
-  },
-};
+  }
+}
 
-export default Configuration;
+export default Configuration
