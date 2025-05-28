@@ -22,5 +22,11 @@
     "commitizen": {
       "path": "@commitlint/cz-commitlint"
     }
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm lint-staged"
+  },
+  "lint-staged": {
+    "*": "prettier --write --ignore-unknown"
   }
 }
