@@ -1,249 +1,19 @@
-// 	'/knowledge/frontEnd/': [
-// 		{
-// 			text: 'HTML',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWX7V.png',
-// 			prefix: 'html/',
-// 			collapsible: true,
-// 			children: [
-// 				'html5Tag.md',
-// 				'htmlSemanticization.md',
-// 				'html5Mobile.md',
-// 				{
-// 					text: 'Web components',
-// 					icon: '',
-// 					prefix: 'webComponents/',
-// 					collapsible: true,
-// 					children: ['webComponents'],
-// 				},
-// 			],
-// 		},
-// 		{
-// 			text: 'CSS',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
-// 			prefix: 'css/',
-// 			collapsible: true,
-// 			children: [
-// 				'01_cssCenter.md',
-// 				'02_bfc.md',
-// 				'03_cssModules.md',
-// 				'04_cssVariable.md',
-// 				'05_responsiveLayout.md',
-// 			],
-// 		},
-// 		{
-// 			text: 'JavaScript',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKfpp4.png',
-// 			prefix: 'javascript/',
-// 			collapsible: true,
-// 			children: [
-// 				'01_this.md',
-// 				'closure.md',
-// 				'asynchronous.md',
-// 				'promise.md',
-// 				'objectPrototype.md',
-// 				'es6Next.md',
-// 				'other.md',
-// 				{
-// 					text: 'API',
-// 					prefix: 'api/',
-// 					collapsible: true,
-// 					children: 'structure',
-// 				}
-// 			],
-// 		},
-// 		{
-// 			text: '前端框架',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWxtU.png',
-// 			prefix: 'frame/',
-// 			collapsible: true,
-// 			children: [
-// 				'frameAnalogy.md',
-// 				{
-// 					text: '学一学 React',
-// 					prefix: 'react/',
-// 					collapsible: true,
-// 					children: [
-// 						'reactBasics.md',
-// 						'reactJSX.md',
-// 						'reactVirtualDomDiff.md',
-// 						'reactFiber.md',
-// 						{
-// 							text: '核心源码分析',
-// 							prefix: 'reactSourceCode/',
-// 							collapsible: true,
-// 							children: [
-// 								'env.md',
-// 								'createReactElement.md',
-// 								'reactArchitecture.md',
-// 								'reactRender.md'
-// 							]
-// 						},
-// 						'reactHooks.md'
-// 					],
-// 				},
-// 				{
-// 					text: '学一学 Vue',
-// 					prefix: 'vue/',
-// 					collapsible: true,
-// 					children: [
-// 						'vueBasics.md',
-// 						{
-// 							text: '相关核心原理',
-// 							prefix: 'vuePrinciple/',
-// 							collapsible: true,
-// 							children: 'structure',
-// 						},
-// 						{
-// 							text: '核心源码分析',
-// 							prefix: 'vueSourceCode/',
-// 							collapsible: true,
-// 							children: 'structure',
-// 						},
-// 						{
-// 							text: 'Vuex 数据流管理',
-// 							prefix: 'vuex/',
-// 							collapsible: true,
-// 							children: 'structure',
-// 						}
-// 					],
-// 				},
-// 				// 'frameIsomorphic.md',
-// 				// 'frameStudy.md'
-// 			],
-// 		},
-// 		{
-// 			text: '前端工程化',
-// 			icon: 'screwdriver-wrench',
-// 			prefix: 'engineering/',
-// 			collapsible: true,
-// 			children: [
-// 				'index.md',
-// 				{
-// 					text: '聊聊脚手架',
-// 					prefix: 'scaffoldingTool/',
-// 					collapsible: true,
-// 					children: 'structure',
-// 				},
-// 				{
-// 					text: '关于自动化构建',
-// 					prefix: 'automatedConstruction/',
-// 					collapsible: true,
-// 					children: 'structure',
-// 				},
-// 				{
-// 					text: '深入浅出模块化',
-// 					prefix: 'module/',
-// 					collapsible: true,
-// 					children: 'structure',
-// 				},
-// 				{
-// 					text: '打包工具有哪些',
-// 					prefix: 'buildTool/',
-// 					collapsible: true,
-// 					children: [
-// 						'index.md',
-// 						{
-// 							text: 'Webpack',
-// 							prefix: 'webpack/',
-// 							collapsible: true,
-// 							children: [
-// 								'introduce.md',
-// 								'loader.md',
-// 								'plugin.md',
-// 								'experience.md',
-// 								'prodOptimize.md'
-// 							]
-// 						},
-// 						'rollup.md',
-// 						'parcel.md'
-// 						// 'gulpAndWebpack.md',
-// 					],
-// 				},
-// 				{
-// 					text: '规范化标准',
-// 					prefix: 'normalize/',
-// 					collapsible: true,
-// 					children: 'structure',
-// 				}
-// 				// 'webpack.md',
-// 				// 'codeSpecification.md',
-// 				// 'projectOrganizationDesign.md',
-// 			],
-// 		},
-// 		// {
-// 		// 	text: '前端性能优化',
-// 		// 	icon: 'bug-slash',
-// 		// 	prefix: 'performanceOptimization/',
-// 		// 	collapsible: true,
-// 		// 	children: [
-// 		// 		// 'monitorAndError.md',
-// 		// 		'problems.md',
-// 		// 		// 'reactFrame.md'
-// 		// 	],
-// 		// },
-// 		// {
-// 		// 	text: '前端编程思维和算法',
-// 		// 	icon: 'brain',
-// 		// 	prefix: 'programmingThinkingAndAlgorithms/',
-// 		// 	collapsible: true,
-// 		// 	children: [
-// 		// 		'designPattern.md',
-// 		// 		// 'dataStructure.md',
-// 		// 		// 'function.md',
-// 		// 		// 'algorithms.md',
-// 		// 		// 'wx.md'
-// 		// 	],
-// 		// },
-// 	],
-//   '/knowledge/interview/': [
-//     {
-// 			text: 'CSS',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
-// 			prefix: 'css/',
-// 			collapsible: true,
-// 			children: 'structure',
-// 		},
-// 		{
-// 			text: 'DOM',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
-// 			prefix: 'dom/',
-// 			collapsible: true,
-// 			children: 'structure',
-// 		},
-// 		{
-// 			text: 'Web API',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
-// 			prefix: 'webAPI/',
-// 			collapsible: true,
-// 			children: 'structure',
-// 		},
-// 		{
-// 			text: 'JavaScript',
-// 			icon: 'https://s21.ax1x.com/2024/09/19/pAKWvkT.png',
-// 			prefix: 'javascript/',
-// 			collapsible: true,
-// 			children: 'structure',
-// 		},
-//   ],
-// 	'/project/': [
-// 		// 'bill.md',
-// 		// 'billReconfiguration.md'
-// 	],
-// 	'/work/': 'structure',
-// 	// '/manage/': 'structure',
-// });
-
 import { type DefaultTheme } from 'vitepress'
+import { createLink } from '../utils/tools'
 
 const FrontEndBasePath = '/knowledge/frontEnd/'
 const SolutionBasePath = '/knowledge/solution/'
 const WorkBasePath = '/work/'
 const ManageBasePath = '/manage/'
+const BooksBasePath = '/read/books/'
+const WeeksBasePath = '/read/weeks/'
 export const sidebar = {
   [FrontEndBasePath]: { base: FrontEndBasePath, items: frontEnd() },
   [SolutionBasePath]: { base: SolutionBasePath, items: solution() },
   [WorkBasePath]: { base: WorkBasePath, items: work() },
-  [ManageBasePath]: { base: ManageBasePath, items: manage() }
+  [ManageBasePath]: { base: ManageBasePath, items: manage() },
+  [BooksBasePath]: { base: BooksBasePath, items: books() },
+  [WeeksBasePath]: { base: WeeksBasePath, items: weeks() }
 }
 
 function frontEnd(): DefaultTheme.SidebarItem[] {
@@ -370,7 +140,7 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           items: [
             {
               text: 'monorepo 架构',
-              base: createLink(architecture, 'monorepo/'),
+              // base: createLink(architecture, 'monorepo/'),
               collapsed: true,
               items: [
                 {
@@ -413,6 +183,36 @@ function manage(): DefaultTheme.SidebarItem[] {
   ]
 }
 
-function createLink(base: string, path: string): string {
-  return `${base.replace(/\/$/, '')}/${path.replace(/^\//, '')}`
+function books(): DefaultTheme.SidebarItem[] {
+  const refactoringBase = createLink(BooksBasePath, 'refactoring')
+  return [
+    {
+      text: '《重构，改善既有代码的设计》',
+      base: `${refactoringBase}/`,
+      collapsed: false,
+      items: [
+        {
+          text: '序言',
+          link: '00_preface.md'
+        }
+      ]
+    }
+  ]
+}
+
+function weeks(): DefaultTheme.SidebarItem[] {
+  const monthFor202506 = createLink(WeeksBasePath, '202506')
+  return [
+    {
+      text: '25年6月',
+      base: `${monthFor202506}/`,
+      collapsed: true,
+      items: [
+        {
+          text: '第一周',
+          link: '01_week.md'
+        }
+      ]
+    }
+  ]
 }
