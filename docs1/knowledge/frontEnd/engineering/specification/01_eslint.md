@@ -17,6 +17,7 @@
 项目规范化就是在团队开发过程中，按照一样的技术、编码风格、目录结构和代码质量标准
 
 规范化的核心目标
+
 - 尽可能提高项目的可维护性、一致性和可读性
 - 尽可能减少团队成员之间因为代码风格或规则不统一而产生的沟通成本
 
@@ -38,7 +39,7 @@
 
 > [!info]
 > ESLint 是一款 JavaScript 和 TypeScript 的代码质量检查工具，帮助开发者确保代码在语法、逻辑、风格等方面符合既定的规则
-> 
+>
 > 它为项目提供灵活的配置，适应不同团队的需求
 
 #### 为什么要使用 ESLint？
@@ -62,7 +63,6 @@ ESLint 通过抽象语法树（AST）分析代码
 - **off**：关闭规则，ESLint 不会进行任何检查
 
 - **warn**：警告级别，违反规则时会显示警告，但不会阻止代码运行
-  
 - **error**：错误级别，违反规则时会报错，常用于团队必须遵循的规范
 
 #### 核心规则讲解
@@ -205,16 +205,17 @@ Prettier 可以与 ESLint 集成，确保代码风格的一致性，并避免手
 
 ```javascript
 export default {
-    rules: {
-        "no-console": "error", // 禁止使用 console，避免在生产环境中输出调试信息
-        "no-unused-vars": "error", // 禁止未使用的变量，确保代码中所有声明的变量都有实际用途
-        "no-sparse-arrays": "error", // 避免稀疏数组，防止潜在问题
-        "no-undef": "error", // 禁止使用未定义的变量
-        "no-unreachable": "error", // 避免无法到达的代码
-        "no-dupe-keys": "error", // 禁止对象字面量中的重复键
-    },
-};
+  rules: {
+    'no-console': 'error', // 禁止使用 console，避免在生产环境中输出调试信息
+    'no-unused-vars': 'error', // 禁止未使用的变量，确保代码中所有声明的变量都有实际用途
+    'no-sparse-arrays': 'error', // 避免稀疏数组，防止潜在问题
+    'no-undef': 'error', // 禁止使用未定义的变量
+    'no-unreachable': 'error', // 避免无法到达的代码
+    'no-dupe-keys': 'error' // 禁止对象字面量中的重复键
+  }
+}
 ```
+
 #### 核心规则介绍
 
 - **"no-console"**：禁止使用`console`，避免在生产代码中出现调试信息
@@ -232,8 +233,8 @@ export default {
 #### 规则集简化
 
 ```javascript
-import js from "@eslint/js";
-export default [js.configs.recommended];
+import js from '@eslint/js'
+export default [js.configs.recommended]
 ```
 
 通过简化配置，我们能快速应用基础规则，提升代码的一致性
@@ -247,26 +248,27 @@ export default [js.configs.recommended];
 #### TS 项目配置
 
 ```javascript
-import js from "@eslint/js";
-import tsParser from "@typescript-eslint/parser";
+import js from '@eslint/js'
+import tsParser from '@typescript-eslint/parser'
 export default [
-    {
-        ignores: ["eslint.config.js"],
-        files: ["src/**/*.ts"],
-        rules: {
-            "no-console": "error",
-            "no-unused-vars": "error",
-            "no-sparse-arrays": "error",
-            "no-undef": "error",
-            "no-unreachable": "error",
-            "no-dupe-keys": "error",
-        },
-        languageOptions: {
-            parser: tsParser,
-        },
+  {
+    ignores: ['eslint.config.js'],
+    files: ['src/**/*.ts'],
+    rules: {
+      'no-console': 'error',
+      'no-unused-vars': 'error',
+      'no-sparse-arrays': 'error',
+      'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-dupe-keys': 'error'
     },
-];
+    languageOptions: {
+      parser: tsParser
+    }
+  }
+]
 ```
+
 #### 配置要点
 
 - **引入 TypeScript Parser**：我们使用 @typescript-eslint/parser 来支持 TypeScript 语法和类型检查
@@ -290,35 +292,36 @@ export default [
 #### Vue 项目配置
 
 ```javascript
-import js from "@eslint/js";
-import tsParser from "@typescript-eslint/parser";
-import vueEslintParser from "vue-eslint-parser";
+import js from '@eslint/js'
+import tsParser from '@typescript-eslint/parser'
+import vueEslintParser from 'vue-eslint-parser'
 export default [
-    {
-        ignores: ["eslint.config.js"],
-        files: ["src/**/*.vue"],
-        rules: {
-            "no-console": "error",
-            "no-unused-vars": "error",
-            "no-sparse-arrays": "error",
-            "no-undef": "error",
-            "no-unreachable": "error",
-            "no-dupe-keys": "error",
-        },
-        languageOptions: {
-            parser: vueEslintParser,
-            parserOptions: {
-                extraFileExtensions: [".vue"],
-                ecmaFeatures: {
-                    jsx: true,
-                },
-                parser: tsParser,
-                sourceType: "module",
-            },
-        },
+  {
+    ignores: ['eslint.config.js'],
+    files: ['src/**/*.vue'],
+    rules: {
+      'no-console': 'error',
+      'no-unused-vars': 'error',
+      'no-sparse-arrays': 'error',
+      'no-undef': 'error',
+      'no-unreachable': 'error',
+      'no-dupe-keys': 'error'
     },
-];
+    languageOptions: {
+      parser: vueEslintParser,
+      parserOptions: {
+        extraFileExtensions: ['.vue'],
+        ecmaFeatures: {
+          jsx: true
+        },
+        parser: tsParser,
+        sourceType: 'module'
+      }
+    }
+  }
+]
 ```
+
 #### 配置要点
 
 - **Vue 文件解析**：我们使用 vue-eslint-parser 来解析。vue 文件，确保模板、脚本和样式部分都能被 ESLint 正确分析
@@ -366,6 +369,7 @@ npm install --save-dev oxclint
 # 或者使用 yarn 安装
 yarn add --dev oxclint
 ```
+
 #### 配置文件
 
 oxclint 提供了一个配置文件`.oxlintrc.json`，用于配置和管理代码检查规则
@@ -380,12 +384,12 @@ oxclint 提供了一个配置文件`.oxlintrc.json`，用于配置和管理代�
 
 ```json
 {
-    "extends": ["oxclint:recommended"],
-    "rules": {
-        "no-console": "error",
-        "no-unused-vars": "warn",
-        "eqeqeq": "error"
-    }
+  "extends": ["oxclint:recommended"],
+  "rules": {
+    "no-console": "error",
+    "no-unused-vars": "warn",
+    "eqeqeq": "error"
+  }
 }
 ```
 
@@ -427,6 +431,7 @@ npx oxclint.
 # 检查特定文件
 npx oxclint src/index.js
 ```
+
 oxclint 会扫描代码并根据配置文件中的规则进行检查，输出违规的代码行和相关的错误信息
 
 #### 自动修复代码问题
@@ -488,15 +493,15 @@ npm install --save-dev husky lint-staged
 
 ```json
 {
-    "husky": {
-        "hooks": {
-            "pre-commit": "lint-staged"
-        }
-    },
-    "lint-staged": {
-        "*.js": "oxclint --fix",
-        "*.ts": "oxclint --fix"
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*.js": "oxclint --fix",
+    "*.ts": "oxclint --fix"
+  }
 }
 ```
 
@@ -519,36 +524,36 @@ oxclint 支持自定义规则，可以根据团队的编码规范创建特定的
 ```javascript
 // custom-rule.js
 module.exports = {
-    meta: {
-        type: "problem",
-        docs: {
-            description: "函数名必须使用驼峰命名法",
-            category: "Stylistic Issues"
-        }
-    },
-    create(context) {
-        return {
-            FunctionDeclaration(node) {
-                if (!/^[a-z][a-zA-Z0-9]*$/.test(node.id.name)) {
-                    context.report({
-                        node,
-                        message: "函数名必须使用驼峰命名法"
-                    });
-                }
-            }
-        };
+  meta: {
+    type: 'problem',
+    docs: {
+      description: '函数名必须使用驼峰命名法',
+      category: 'Stylistic Issues'
     }
-};
+  },
+  create(context) {
+    return {
+      FunctionDeclaration(node) {
+        if (!/^[a-z][a-zA-Z0-9]*$/.test(node.id.name)) {
+          context.report({
+            node,
+            message: '函数名必须使用驼峰命名法'
+          })
+        }
+      }
+    }
+  }
+}
 ```
 
 然后在配置文件中引入并启用该规则
 
 ```json
 {
-    "plugins": ["custom-rule"],
-    "rules": {
-        "custom-rule/function-name": "error"
-    }
+  "plugins": ["custom-rule"],
+  "rules": {
+    "custom-rule/function-name": "error"
+  }
 }
 ```
 
@@ -616,7 +621,7 @@ Babel Parser 是 Babel 项目提供的解析器，用于支持 JSX 和实验性�
 
 接下来，ESLint 将基于 AST 应用规则
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg)
 
 ### Rules（规则）
 
@@ -676,27 +681,27 @@ ESLint 的规则系统有以下几个特点
 
 ```javascript
 export const avoidNamezxwinRule = {
-    meta: {
-        messages: {
-            avoidName: "Avoid using variables named '{{ name }}'"
-        }
-    },
-    create(context) {
-        return {
-            Identifier(node) {
-                if (node.name === "zxwin") {
-                    context.report({
-                        node,
-                        messageId: "avoidName",
-                        data: {
-                            name: "zxwin"
-                        }
-                    });
-                }
-            }
-        };
+  meta: {
+    messages: {
+      avoidName: "Avoid using variables named '{{ name }}'"
     }
-};
+  },
+  create(context) {
+    return {
+      Identifier(node) {
+        if (node.name === 'zxwin') {
+          context.report({
+            node,
+            messageId: 'avoidName',
+            data: {
+              name: 'zxwin'
+            }
+          })
+        }
+      }
+    }
+  }
+}
 ```
 
 这里定义了一个名为`avoidNamezxwinRule`的规则，检测 AST 中的变量名是否为`zxwin`，若匹配则触发`context.report`报告错误
@@ -704,13 +709,13 @@ export const avoidNamezxwinRule = {
 1. **创建插件入口文件`eslint-zxwin-plugin.js`**
 
 ```javascript
-import { avoidNamezxwinRule } from "../rules/avoid-name-zxwin.js";
+import { avoidNamezxwinRule } from '../rules/avoid-name-zxwin.js'
 
 export const eslintzxwinPlugin = {
-    rules: {
-        "avoid-name": avoidNamezxwinRule
-    }
-};
+  rules: {
+    'avoid-name': avoidNamezxwinRule
+  }
+}
 ```
 
 将自定义规则注册到插件`eslintzxwinPlugin`中，以便在 ESLint 配置中使用
@@ -720,19 +725,19 @@ export const eslintzxwinPlugin = {
 1. **配置 ESLint 使用自定义插件`eslint.config.js`**
 
 ```javascript
-import { eslintzxwinPlugin } from "./plugins/eslint-zxwin-plugin.js";
+import { eslintzxwinPlugin } from './plugins/eslint-zxwin-plugin.js'
 
 export default [
-    {
-        files: ["src/**/*.js"],
-        plugins: {
-            zxwin: eslintzxwinPlugin
-        },
-        rules: {
-            "zxwin/avoid-name": "error"
-        }
+  {
+    files: ['src/**/*.js'],
+    plugins: {
+      zxwin: eslintzxwinPlugin
+    },
+    rules: {
+      'zxwin/avoid-name': 'error'
     }
-];
+  }
+]
 ```
 
 #### 示例 2：自定义 ESLint 规则`no-debugger`插件
@@ -741,22 +746,22 @@ export default [
 
 ```javascript
 export const noDebuggerRule = {
-    meta: {
-        messages: {
-            noDebugger: "Avoid using debugger statements."
-        }
-    },
-    create(context) {
-        return {
-            DebuggerStatement(node) {
-                context.report({
-                    node,
-                    messageId: "noDebugger"
-                });
-            }
-        };
+  meta: {
+    messages: {
+      noDebugger: 'Avoid using debugger statements.'
     }
-};
+  },
+  create(context) {
+    return {
+      DebuggerStatement(node) {
+        context.report({
+          node,
+          messageId: 'noDebugger'
+        })
+      }
+    }
+  }
+}
 ```
 
 此规则用于检测代码中的`debugger`语句，并生成报告提示，避免在生产环境中使用`debugger`
@@ -764,13 +769,13 @@ export const noDebuggerRule = {
 1. **创建插件入口文件`eslint-debugger-plugin.js`**
 
 ```javascript
-import { noDebuggerRule } from "../rules/no-debugger.js";
+import { noDebuggerRule } from '../rules/no-debugger.js'
 
 export const eslintDebuggerPlugin = {
-    rules: {
-        "no-debugger": noDebuggerRule
-    }
-};
+  rules: {
+    'no-debugger': noDebuggerRule
+  }
+}
 ```
 
 该插件注册了`no-debugger`规则，以便 ESLint 在检查代码时能有效禁用`debugger`语句
@@ -778,19 +783,19 @@ export const eslintDebuggerPlugin = {
 1. **配置 ESLint 使用自定义插件`eslint.config.js`**
 
 ```javascript
-import { eslintDebuggerPlugin } from "./plugins/eslint-debugger-plugin.js";
+import { eslintDebuggerPlugin } from './plugins/eslint-debugger-plugin.js'
 
 export default [
-    {
-        files: ["src/**/*.js"],
-        plugins: {
-            debugger: eslintDebuggerPlugin
-        },
-        rules: {
-            "debugger/no-debugger": "warn"
-        }
+  {
+    files: ['src/**/*.js'],
+    plugins: {
+      debugger: eslintDebuggerPlugin
+    },
+    rules: {
+      'debugger/no-debugger': 'warn'
     }
-];
+  }
+]
 ```
 
 在 ESLint 配置文件中引入插件`debugger`，并启用`no-debugger`规则

@@ -18,7 +18,7 @@ npm install -g @vue/cli
 vue create vue-router-basic-usage
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/02.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/02.png)
 
 ### 1. 使用步骤
 
@@ -30,15 +30,19 @@ vue create vue-router-basic-usage
 
 > [!important]
 > 实例化 vue 时配置了 router 属性（router 路由对象），会在 vue 实例对象中注入以下属性
+>
 > 1. $route：路由规则
->   - 存储了当前路由的规则和数据
+>
+> - 存储了当前路由的规则和数据
+>
 > 2. $router：vue-router（路由对象）的实例
->   - 提供一些和路由相关的方法（查看`$router.__proto__`），push、replace、go 等
->   - 和路由相关的信息
->     1. mode 当前模式 hash history
->     2. currentRoute 当前路由规则
->       - 有些情况无法通过 $route 获取当前路由信息，例如插件中
->       - 可以想办法拿到 $router
+>
+> - 提供一些和路由相关的方法（查看`$router.__proto__`），push、replace、go 等
+> - 和路由相关的信息
+>   1. mode 当前模式 hash history
+>   2. currentRoute 当前路由规则
+>   - 有些情况无法通过 $route 获取当前路由信息，例如插件中
+>   - 可以想办法拿到 $router
 
 ```js
 import Vue from 'vue'
@@ -72,6 +76,7 @@ const router = new VueRouter({
 
 export default router
 ```
+
 ```js
 import Vue from 'vue'
 import App from './App.vue'
@@ -85,20 +90,20 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 ```
+
 ```vue
 <template>
   <div id="app">
     <div>
-      <img src="@/assets/logo.png" alt="">
+      <img src="@/assets/logo.png" alt="" />
     </div>
     <div id="nav">
       <!-- 5. 创建链接 -->
-      <router-link to="/">Index</router-link> |
-      <router-link to="/blog">Blog</router-link> |
+      <router-link to="/">Index</router-link> | <router-link to="/blog">Blog</router-link> |
       <router-link to="/photo">Photo</router-link>
     </div>
     <!-- 4. 创建路由组建的占位 -->
-    <router-view/>
+    <router-view />
   </div>
 </template>
 ```
@@ -107,21 +112,24 @@ new Vue({
 
 > [!tip]
 > 配置路由规则的时候
+>
 > 1. 可以直接导入页面组件模块，配置在 component
 > 2. 不经常访问的页面可以使用动态导入的方式实现懒加载
->   - 当访问这个页面（路由地址）的时候才开始加载这个页面组件
->   - 不访问的时候不加载，提高性能
+>
+> - 当访问这个页面（路由地址）的时候才开始加载这个页面组件
+> - 不访问的时候不加载，提高性能
 
 - 在路由地址中（path）可以使用参数占位符，例如：`path: '/detail/:id'`
 - 在页面中访问可以通过
   1. 通过路由规则获取
-    - `this.$route.params.id`
-    - `this.$router.currentRoute.params.id`
+  - `this.$route.params.id`
+  - `this.$router.currentRoute.params.id`
   2. 通过props接收
-    - 路由规则中配置 props 选项为 true
-    - 在页面组件中通过 props 接收参数，通过 this.id 访问
+  - 路由规则中配置 props 选项为 true
+  - 在页面组件中通过 props 接收参数，通过 this.id 访问
 
 > [!warning]
+>
 > - 通过路由规则获取的缺点是这个组件必须强依赖这个路由，也就是使用这个组件时，必须在路由上配置这个参数
 > - 使用 props 可以使组件不依赖这个路由
 
@@ -142,13 +150,14 @@ const routes = [
   }
 ]
 ```
+
 ```vue
 <template>
   <div>
     <!-- 方式1： 通过当前路由规则，获取数据 -->
     通过当前路由规则获取：{{ $route.params.id }}
 
-    <br>
+    <br />
     <!-- 方式2：路由规则中开启 props 传参 -->
     通过开启 props 获取：{{ id }}
   </div>
@@ -173,8 +182,11 @@ export default {
 
 > [!tip]
 > 路由规则中配置嵌套路由：在模板路由的 children 下配置嵌套的路由规则
+>
 > 1. path：嵌套路由会将外部的 path 和 children 中路由的 path 进行合并
->   - children 中的 path 可以配置为：绝对路径 or 相对路径
+>
+> - children 中的 path 可以配置为：绝对路径 or 相对路径
+>
 > 2. component：当访问合并后的 path 时，页面会分别加载 Layout 组件和对应的 Index 组件，并把它们合并到一起
 
 ```js
@@ -209,25 +221,26 @@ const routes = [
 
 - 除了使用`<router-link>`组件实现导航跳转，还可以使用编程式导航（`$router.push`等方法），实现点击按钮通过进行路由跳转操作
 
-> [!important]
-> `$router.push`接收两种参数
+> [!important] > `$router.push`接收两种参数
+>
 > 1. 字符串：跳转的路由地址，例如`/detail`
 > 2. 对象：包含路由名称（命名式导航）及其他信息，例如`{ name: 'Detail', params:{ id: 10 } }`
 
-> [!warning]
-> `$router.replace`方法同 push 的使用一样，区别是
+> [!warning] > `$router.replace`方法同 push 的使用一样，区别是
+>
 > 1. replace 不会向 history 添加新记录，它直接替换当前的 history 记录
 > 2. 效果：A 页面 push 到 B 页面，再 replace 到 C 页面
->   - 后退：返回到 A 页面，而不是 B 页面
->   - 再前进：前进到 C 页面，而不是 B 页面
->   - B 页面被覆盖
+>
+> - 后退：返回到 A 页面，而不是 B 页面
+> - 再前进：前进到 C 页面，而不是 B 页面
+> - B 页面被覆盖
 
 - `$router.go`方法参数是一个整数，表示在 history 记录中向前或向后多少步
   1. 参数为负数表示后退，-1等效于`$router.back()`
   2. 参数为正数表示前进
   3. 参数为0，会刷新当前页面，不建议使用，缺陷：
-    - 刷新整个页面效果同 F5（有瞬间白屏）
-    - safari 不支持
+  - 刷新整个页面效果同 F5（有瞬间白屏）
+  - safari 不支持
   4. 超出历史记录数量，就会失败
 
 ```vue
@@ -236,7 +249,7 @@ const routes = [
     用户名：<input type="text" /><br />
     密&nbsp;&nbsp;码：<input type="password" /><br />
 
-    <button @click="push"> push </button>
+    <button @click="push">push</button>
   </div>
 </template>
 
@@ -244,7 +257,7 @@ const routes = [
 export default {
   name: 'Login',
   methods: {
-    push () {
+    push() {
       this.$router.push('/')
       // this.$router.push({ name: 'Home' })
     }
@@ -252,15 +265,16 @@ export default {
 }
 </script>
 ```
+
 ```vue
 <template>
   <div class="home">
     <div id="nav">
       <router-link to="/">Index</router-link>
     </div>
-    <button @click="replace"> replace </button>
+    <button @click="replace">replace</button>
 
-    <button @click="goDetail"> Detail </button>
+    <button @click="goDetail">Detail</button>
   </div>
 </template>
 
@@ -268,22 +282,23 @@ export default {
 export default {
   name: 'Index',
   methods: {
-    replace () {
+    replace() {
       this.$router.replace('/login')
     },
-    goDetail () {
+    goDetail() {
       this.$router.push({ name: 'Detail', params: { id: 1 } })
     }
   }
 }
 </script>
 ```
+
 ```vue
 <template>
   <div>
     路由参数：{{ id }}
 
-    <button @click="go"> go(-2) </button>
+    <button @click="go">go(-2)</button>
   </div>
 </template>
 
@@ -292,7 +307,7 @@ export default {
   name: 'Detail',
   props: ['id'],
   methods: {
-    go () {
+    go() {
       this.$router.go(-2)
     }
   }
@@ -333,15 +348,18 @@ export default {
 ### 5. History 模式的使用
 
 1. 配置404路由
-  - 在路由规则最后配置对所有路由(*)的默认页面：404 路由
-  - 当访问路径没有匹配到路由时，会输出 404 组件的内容
-  - 注意：只是输出内容，而不是跳转到 404 地址，URL 不会变更
+
+- 在路由规则最后配置对所有路由(\*)的默认页面：404 路由
+- 当访问路径没有匹配到路由时，会输出 404 组件的内容
+- 注意：只是输出内容，而不是跳转到 404 地址，URL 不会变更
+
 2. History 需要服务器的支持
-  - 单页应用中，服务端不存在 `https://www.testurl.com/login` 这样的地址
-  - 在单页应用中通过跳转(pushState)可以访问到该页面，但是 F5 刷新页面时会向服务器发送请求，此时它就会返回找不到该页面（404）
-  - 所以在服务器端应该配置，除了静态资源外的所有路径，都返回单页应用的 `index.html`
-  - vue-cli 创建的应用启动的服务器已经进行了 history 的配置
-  - 重现这个问题，需要将应用打包，部署到 node 服务器或者 nginx 服务器
+
+- 单页应用中，服务端不存在 `https://www.testurl.com/login` 这样的地址
+- 在单页应用中通过跳转(pushState)可以访问到该页面，但是 F5 刷新页面时会向服务器发送请求，此时它就会返回找不到该页面（404）
+- 所以在服务器端应该配置，除了静态资源外的所有路径，都返回单页应用的 `index.html`
+- vue-cli 创建的应用启动的服务器已经进行了 history 的配置
+- 重现这个问题，需要将应用打包，部署到 node 服务器或者 nginx 服务器
 
 ```js
 const routes = [
@@ -377,7 +395,7 @@ const router = new VueRouter({
 - 此时刷新页面，就会向服务器发送请求，例如请求`http://localhost:3000/blog`地址，而服务器并没有配置处理这个地址的内容，所以结果会返回默认的 404 页面：Cannot GET /xxx
 - 配置服务器对 history 的支持：注册处理 history 模式的中间件
   - 该中间件的工作就是服务器会判断当前请求的页面是否存在，如果不存在，会将默认的首页内容（index.html）返回给浏览器，
-浏览器接收到这个页面后，会再去判断路径，找到对应的路由，并将对应的组件渲染到浏览器中
+    浏览器接收到这个页面后，会再去判断路径，找到对应的路由，并将对应的组件渲染到浏览器中
 
 ```js
 const path = require('path')
@@ -402,6 +420,7 @@ app.listen(3000, () => {
 
 > [!tip]
 > nginx 服务器配置：
+>
 > - 从官网下载 nginx 的压缩包
 > - 把压缩包解压到 c 盘根目录，注意目录不能有中文
 > - 打开命令行，切换到 nginx 目录，启动 nginx
@@ -422,6 +441,7 @@ nginx -s stop
 
 > [!tip]
 > nginx 目录
+>
 > - html 用于存储网站资源
 >   - 将打包好的文件放到该文件
 > - conf 存放 nginx 配置文件
@@ -433,6 +453,7 @@ nginx -s stop
 
 > [!tip]
 > 配置 nginx 站点
+>
 > 1. 将打包的 web 文件拷贝到 nginx 目录的 html 文件夹中
 > 2. 浏览器重新访问 localhost
 > 3. 刷新/根目录以外的地址，报出 404
@@ -441,6 +462,7 @@ nginx -s stop
 
 > [!tip]
 > nginx.conf 字段
+>
 > - http
 >   - listen 端口
 >   - server_name 域名
@@ -483,10 +505,14 @@ http {
 #### 1.1 Hash 模式
 
 1. URL 中 # 后面的内容（锚点的值）作为路由地址
-  - 可以直接通过 location.href 切换浏览器中的地址
-  - 如果只改变了 # 后面的内容，浏览器不会向服务器发送请求这个地址，但是会将这个地址添加到浏览器的 history 记录中
+
+- 可以直接通过 location.href 切换浏览器中的地址
+- 如果只改变了 # 后面的内容，浏览器不会向服务器发送请求这个地址，但是会将这个地址添加到浏览器的 history 记录中
+
 2. 监听 hashchange 事件
-  - hash 改变后，触发 hashchange 事件，作出相应的处理，记录当前路由地址
+
+- hash 改变后，触发 hashchange 事件，作出相应的处理，记录当前路由地址
+
 3. 根据当前路由地址找到对应的组件，重新渲染
 
 #### 1.2 History 模式
@@ -494,13 +520,17 @@ http {
 > history 模式地址就是个普通的 URL 地址
 
 1. 通过 history.pushState 方法改变地址栏
-  - pushState 方法仅仅改变地址栏，并将当前地址添加到 history 记录中
-  - 并不会真正的跳转到访问路径，即不会向服务端发送请求
+
+- pushState 方法仅仅改变地址栏，并将当前地址添加到 history 记录中
+- 并不会真正的跳转到访问路径，即不会向服务端发送请求
+
 2. 监听 popstate 事件
-  - 可以监听到浏览器地址操作的变化，并作出相应处理，记录改变后的地址
+
+- 可以监听到浏览器地址操作的变化，并作出相应处理，记录改变后的地址
 
 > [!warning]
 > popstate 事件的触发条件
+>
 > - 当调用 pushState 或 replaceState 改变地址时，并不会触发 popstate 事件
 > - 只有做出浏览器动作时才会触发，例如：
 >   - 点击浏览器前进后退按钮
@@ -517,13 +547,13 @@ http {
 ```js
 // router/index.js
 // 注册插件
-Vue.use(vue-router)
+Vue.use(vue - router)
 // 创建路由对象
-const router = new vue-router({
-  routes: [
-    { name: 'home', path: '/', component: homeComponent }
-  ]
-})
+const router =
+  new vue() -
+  router({
+    routes: [{ name: 'home', path: '/', component: homeComponent }]
+  })
 
 // main.js
 // 创建 Vue 实例，注册 router 对象
@@ -534,14 +564,18 @@ new Vue({
 ```
 
 1. vue-router 是一个插件，需要使用 Vue.use 注册
-  - Vue.use 接收一个参数
-    - 参数为函数：会执行这个函数
-    - 参数为对象：会执行这个对象的 install 方法
-  - vue-router是一个对象，所以需要内部实现一个 install 方法
+
+- Vue.use 接收一个参数
+  - 参数为函数：会执行这个函数
+  - 参数为对象：会执行这个对象的 install 方法
+- vue-router是一个对象，所以需要内部实现一个 install 方法
+
 2. new 创建一个 vue-router 实例
-  - 所以 vue-router 应该是一个构造函数或类
-  - 构造函数结构一个对象参数，里面传入路由规则
-    - 路由规则核心要记录的是对应的路径 path 和组件 component
+
+- 所以 vue-router 应该是一个构造函数或类
+- 构造函数结构一个对象参数，里面传入路由规则
+  - 路由规则核心要记录的是对应的路径 path 和组件 component
+
 3. 创建 Vue 实例，构造函数参数中传入 vue-router 实例对象
 
 - 总结
@@ -552,28 +586,31 @@ new Vue({
 
 - 首先通过类图整理 vue-router 类需要定义的成员
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/03.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/03.png =500x)
 
-- 类图分为三部分：（+ 表示 public，# 表示 protected，- 表示 private，_ 开头表示 static）
+- 类图分为三部分：（+ 表示 public，# 表示 protected，- 表示 private，\_ 开头表示 static）
 
 1. 类的名称 VueRouter
 2. 类的属性
-  - options 记录构造函数中传入的对象，包含一个 routes 对象（route 路由规则）
-  - routeMap 用来记录路由地址和组件的对应关系，将来会将路由规则解析到 routeMap
-  - data 一个包含 current 的响应式的对象
-    - current 用于记录当前路由地址
-    - 响应式目的：路由地址发生变化后，对应的组件要自动更新，通过 Vue.observable 方法将 data 转化为响应式对象
+
+- options 记录构造函数中传入的对象，包含一个 routes 对象（route 路由规则）
+- routeMap 用来记录路由地址和组件的对应关系，将来会将路由规则解析到 routeMap
+- data 一个包含 current 的响应式的对象
+  - current 用于记录当前路由地址
+  - 响应式目的：路由地址发生变化后，对应的组件要自动更新，通过 Vue.observable 方法将 data 转化为响应式对象
+
 3. 类的方法
-  - Constructor 构造函数，初始化类的属性
-  - install 用于实现 vue 的插件机制，包括注入router对象，以及调用一些初始化方法
-  - init 用于调用 initEvent initRouteMap initComponents 方法
-  - initEvent 用于注册 popstate 事件，用于监听浏览器历史的变化
-  - initRouteMap 用于初始化 routeMap 属性
-    - 它把构造函数中传入的路由规则，转化为键值对的形式，存储到 routeMap 对象中
-      - key：路由地址
-      - value：对应的组件
-    - 在`<router-view>`组件中会使用到 routeMap
-  - initComponents 用于创建`<router-view>`和`<router-link>`组件
+
+- Constructor 构造函数，初始化类的属性
+- install 用于实现 vue 的插件机制，包括注入router对象，以及调用一些初始化方法
+- init 用于调用 initEvent initRouteMap initComponents 方法
+- initEvent 用于注册 popstate 事件，用于监听浏览器历史的变化
+- initRouteMap 用于初始化 routeMap 属性
+  - 它把构造函数中传入的路由规则，转化为键值对的形式，存储到 routeMap 对象中
+    - key：路由地址
+    - value：对应的组件
+  - 在`<router-view>`组件中会使用到 routeMap
+- initComponents 用于创建`<router-view>`和`<router-link>`组件
 
 #### 2.3 init
 
@@ -605,30 +642,30 @@ export default class VueRouter {
 - install 中需要做的事情
   1. 判断当前插件是否已经被安装
   2. 把 Vue 的构造函数添加到全局变量中
-    - 因为 install 方法是一个静态方法
-    - 将来在 vue-router 的实例中还要使用 Vue，例如在 initComponents 中创建组件时，需要调用 Vue.component
+  - 因为 install 方法是一个静态方法
+  - 将来在 vue-router 的实例中还要使用 Vue，例如在 initComponents 中创建组件时，需要调用 Vue.component
   3. 把创建 Vue 实例时传入的 router 对象，注入到所有Vue 实例上，例如：`this.$router`
-    - 所有的组件也都是 Vue 实例，也需要被注入，想要所有的实例共享一个成员，应该把它设置到构造函数的原型(prototype)上
-    - 在 install 内部获取创建 Vue 实例时传入的 `$options` 对象，需要用到混入 mixin
-      1. 因为 install 内部的 this 不是指向 Vue 实例，因而获取不到创建 Vue 实例时传入的 `$options` 对象
-      2. mixin 可以为所有 Vue 实例/组件定义一个混入对象，当 Vue 实例/组件被使用时，混入对象的选项将被「混合」进该实例/组件本身的选项
-        - 同名数据对象合并，以实例/组件数据为先
-        - 同名钩子函数合并为一个数组，全部被调用，混入对象的钩子将在实例/组件自身钩子之前调用
-        - 值为对象的选项，例如 methods、components 等，将被合并为同一个对象，同名冲突时，以实例/组件为先
-      3. 在 mixin 中定义一个 beforeCreate 钩子，在钩子函数中为 Vue 实例注入 router 对象
-        - 因为 beforeCreate 的调用者是 Vue 实例，所以它内部的 this 就指向 Vue 实例
+  - 所有的组件也都是 Vue 实例，也需要被注入，想要所有的实例共享一个成员，应该把它设置到构造函数的原型(prototype)上
+  - 在 install 内部获取创建 Vue 实例时传入的 `$options` 对象，需要用到混入 mixin
+    1. 因为 install 内部的 this 不是指向 Vue 实例，因而获取不到创建 Vue 实例时传入的 `$options` 对象
+    2. mixin 可以为所有 Vue 实例/组件定义一个混入对象，当 Vue 实例/组件被使用时，混入对象的选项将被「混合」进该实例/组件本身的选项
+    - 同名数据对象合并，以实例/组件数据为先
+    - 同名钩子函数合并为一个数组，全部被调用，混入对象的钩子将在实例/组件自身钩子之前调用
+    - 值为对象的选项，例如 methods、components 等，将被合并为同一个对象，同名冲突时，以实例/组件为先
+    3. 在 mixin 中定义一个 beforeCreate 钩子，在钩子函数中为 Vue 实例注入 router 对象
+    - 因为 beforeCreate 的调用者是 Vue 实例，所以它内部的 this 就指向 Vue 实例
   4. 调用一些初始化方法
-    - 在向 Vue 实例注入 router 对象的时候，调用 router 对象的初始化方法
-      1. 初始化 routeMap
-      2. 注册组件
-      3. 注册事件
+  - 在向 Vue 实例注入 router 对象的时候，调用 router 对象的初始化方法
+    1. 初始化 routeMap
+    2. 注册组件
+    3. 注册事件
 
 ```js
 // /src/vue-router/index.js
 let _Vue = null
 
 export default class VueRouter {
-  static install (Vue) {
+  static install(Vue) {
     // 1. 判断当前插件是否已经被安装
     if (VueRouter.install.installed) {
       return
@@ -642,7 +679,7 @@ export default class VueRouter {
     // 3. 把创建Vue实例时传入的router对象注入到所有Vue实例上
     // 混入
     _Vue.mixin({
-      beforeCreate () {
+      beforeCreate() {
         // Vue实例的$options中才有router，组件中没有传递router对象
         // 混入的beforeCreate会在 实例 和 组件 中都调用
         // 所以需要判断如果是实例才注入，避免组件也会执行，导致无意义的执行
@@ -726,7 +763,7 @@ initComponents (Vue) {
 - 此时在 init 方法中放开 initRouteMap 和 initComponents 的调用，运行项目有两个报错
   1. 未注册`<router-view>`组件，此报错暂时忽略
   2. `You are using the runtime-only build of Vue where the template compiler is not available. Either pre-compile the templates into render functions, or use the compiler-included build.`
-    - 您使用的是 Vue 的仅运行时版本，其中模板编辑器不可用，可以使用预编译把模板编译成 render 函数，或者使用编译器版本的Vue
+  - 您使用的是 Vue 的仅运行时版本，其中模板编辑器不可用，可以使用预编译把模板编译成 render 函数，或者使用编译器版本的Vue
 
 #### 2.8 Vue 的构建版本
 

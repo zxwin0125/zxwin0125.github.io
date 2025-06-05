@@ -10,7 +10,7 @@ order: 1
 
 ## 主题的相关知识点如下
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/18.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/18.png =700x)
 
 ## jQuery offset 实现
 
@@ -36,18 +36,18 @@ order: 1
 ```javascript
 const offset = ele => {
   let result = {
-      top: 0,
-      left: 0
+    top: 0,
+    left: 0
   }
 
   const getOffset = (node, init) => {
     if (node.nodeType !== 1) {
-        return
+      return
     }
 
     position = window.getComputedStyle(node)['position']
 
-    if (typeof(init) === 'undefined' && position === 'static') {
+    if (typeof init === 'undefined' && position === 'static') {
       getOffset(node.parentNode)
       return
     }
@@ -88,37 +88,38 @@ const offset = ele => {
 - 对某一节点执行该方法，它的返回值是一个 DOMRect
 - 这个对象表示一个矩形盒子，它含有：left、top、right 和 bottom 等只读属性
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/19.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/19.png =300x)
 
 - 请参考实现代码：
 
 ```javascript
 const offset = ele => {
-   let result = {
-       top: 0,
-       left: 0
-   }
-   // 当前为 IE11 以下，直接返回 {top: 0, left: 0}
-   if (!ele.getClientRects().length) {
-       return result
-   }
+  let result = {
+    top: 0,
+    left: 0
+  }
+  // 当前为 IE11 以下，直接返回 {top: 0, left: 0}
+  if (!ele.getClientRects().length) {
+    return result
+  }
 
-   // 当前 DOM 节点的 display === 'none' 时，直接返回 {top: 0, left: 0}
-   if (window.getComputedStyle(ele)['display'] === 'none') {
-       return result
-   }
+  // 当前 DOM 节点的 display === 'none' 时，直接返回 {top: 0, left: 0}
+  if (window.getComputedStyle(ele)['display'] === 'none') {
+    return result
+  }
 
-   result = ele.getBoundingClientRect()
-   var docElement = ele.ownerDocument.documentElement
+  result = ele.getBoundingClientRect()
+  var docElement = ele.ownerDocument.documentElement
 
-   return {
-       top: result.top - window.pageYOffset - docElement.clientTop,
-       left: result.left - window.pageXOffset - docElement.clientLeft
-   }
+  return {
+    top: result.top - window.pageYOffset - docElement.clientTop,
+    left: result.left - window.pageXOffset - docElement.clientLeft
+  }
 }
 ```
 
 > [!warning]
+>
 > - 需要注意的细节有：
 >   - node.ownerDocument.documentElement 的用法可能大家比较陌生，ownerDocument 是 DOM 节点的一个属性，它返回当前节点的顶层的 document 对象
 >   - ownerDocument 是文档，documentElement 是根节点<br>
@@ -140,6 +141,7 @@ arr.reduce(callback[, initialValue])
 ```
 
 > [!info]
+>
 > - reduce 第一个参数 callback 是核心，它对数组的每一项进行「叠加加工」，其最后一次返回值将作为 reduce方法的最终返回值，它包含 4 个参数：
 > - previousValue 表示「上一次」 callback 函数的返回值
 > - currentValue 数组遍历中正在处理的元素
@@ -152,43 +154,41 @@ arr.reduce(callback[, initialValue])
 - 看它的一个典型应用，按顺序运行 Promise：
 
 ```javascript
-const runPromiseInSequence = (array, value) => array.reduce(
-  (promiseChain, currentFunction) => promiseChain.then(currentFunction),
-  Promise.resolve(value)
-)
+const runPromiseInSequence = (array, value) =>
+  array.reduce((promiseChain, currentFunction) => promiseChain.then(currentFunction), Promise.resolve(value))
 ```
 
 - runPromiseInSequence 方法将会被一个每一项都返回一个 Promise 的数组调用，并且依次执行数组中的每一个 Promise，请读者仔细体会
 - 如果觉得晦涩，可以参考示例：
 
 ```javascript
-const f1 = () => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    console.log('p1 running')
-    resolve(1)
-  }, 1000)
-})
+const f1 = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('p1 running')
+      resolve(1)
+    }, 1000)
+  })
 
-const f2 = () => new Promise((resolve, reject) => {
-  setTimeout(() => {
-    console.log('p2 running')
-    resolve(2)
-  }, 1000)
-})
+const f2 = () =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => {
+      console.log('p2 running')
+      resolve(2)
+    }, 1000)
+  })
 
 const array = [f1, f2]
 
-const runPromiseInSequence = (array, value) => array.reduce(
-  (promiseChain, currentFunction) => promiseChain.then(currentFunction),
-  Promise.resolve(value)
-)
+const runPromiseInSequence = (array, value) =>
+  array.reduce((promiseChain, currentFunction) => promiseChain.then(currentFunction), Promise.resolve(value))
 
 runPromiseInSequence(array, 'init')
 ```
 
 - 执行结果如下图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/20.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/20.png =400x)
 
 ### reduce 实现 pipe
 
@@ -196,10 +196,10 @@ runPromiseInSequence(array, 'init')
 - 即 pipe 方法返回的函数会接收一个参数，这个参数传递给 pipe 方法第一个参数，以供其调用
 
 ```javascript
-const pipe = (...functions) => input => functions.reduce(
-  (acc, fn) => fn(acc),
-  input
-)
+const pipe =
+  (...functions) =>
+  input =>
+    functions.reduce((acc, fn) => fn(acc), input)
 ```
 
 - 仔细体会 runPromiseInSequence 和 pipe 这两个方法，它们都是 reduce 应用的典型场景
@@ -211,12 +211,12 @@ const pipe = (...functions) => input => functions.reduce(
 ```javascript
 if (!Array.prototype.reduce) {
   Object.defineProperty(Array.prototype, 'reduce', {
-    value: function(callback /*, initialValue*/) {
+    value: function (callback /*, initialValue*/) {
       if (this === null) {
-        throw new TypeError( 'Array.prototype.reduce ' + 'called on null or undefined' )
+        throw new TypeError('Array.prototype.reduce ' + 'called on null or undefined')
       }
       if (typeof callback !== 'function') {
-        throw new TypeError( callback + ' is not a function')
+        throw new TypeError(callback + ' is not a function')
       }
 
       var o = Object(this)
@@ -234,7 +234,7 @@ if (!Array.prototype.reduce) {
         }
 
         if (k >= len) {
-          throw new TypeError( 'Reduce of empty array ' + 'with no initial value' )
+          throw new TypeError('Reduce of empty array ' + 'with no initial value')
         }
         value = o[k++]
       }
@@ -256,16 +256,17 @@ if (!Array.prototype.reduce) {
 - 上述代码中使用了 value 作为初始值，并通过 while 循环，依次累加计算出 value 结果并输出，但是相比 MDN 上述实现，个人更喜欢的实现方案是：
 
 ```javascript
-Array.prototype.reduce = Array.prototype.reduce || function(func, initialValue) {
-  var arr = this
-  var base = typeof initialValue === 'undefined' ? arr[0] : initialValue
-  var startPoint = typeof initialValue === 'undefined' ? 1 : 0
-  arr.slice(startPoint)
-    .forEach(function(val, index) {
+Array.prototype.reduce =
+  Array.prototype.reduce ||
+  function (func, initialValue) {
+    var arr = this
+    var base = typeof initialValue === 'undefined' ? arr[0] : initialValue
+    var startPoint = typeof initialValue === 'undefined' ? 1 : 0
+    arr.slice(startPoint).forEach(function (val, index) {
       base = func(base, val, index - startPoint, arr)
     })
-  return base
-}
+    return base
+  }
 ```
 
 - 核心原理就是使用 forEach 来代替 while 实现结果的累加，它们本质上是相同的
@@ -287,7 +288,7 @@ var o = {
   b: 'b',
   c: 'c'
 }
-only(o, ['a','b'])   // {a: 'a',  b: 'b'}
+only(o, ['a', 'b']) // {a: 'a',  b: 'b'}
 ```
 
 - 该方法返回一个经过指定筛选属性的新对象
@@ -295,10 +296,10 @@ only(o, ['a','b'])   // {a: 'a',  b: 'b'}
 - **only 模块实现**
 
 ```javascript
-var only = function(obj, keys){
+var only = function (obj, keys) {
   obj = obj || {}
   if ('string' == typeof keys) keys = keys.split(/ +/)
-  return keys.reduce(function(ret, key) {
+  return keys.reduce(function (ret, key) {
     if (null == obj[key]) return ret
     ret[key] = obj[key]
     return ret
@@ -332,6 +333,7 @@ fn1(fn2(fn3(fn4(args))))
 ### 总结一下 compose 方法的关键点
 
 > [!important]
+>
 > - compose 的参数是函数数组，返回的也是一个函数
 > - compose 的参数是任意长度的，所有的参数都是函数，执行方向是自右向左的，因此初始函数一定放到参数的最右面
 > - compose 执行后返回的函数可以接收参数，这个参数将作为初始函数的参数，所以初始函数的参数是多元的，初始函数的返回结果将作为下一个函数的参数，以此类推，因此除了初始函数之外，其他函数的接收值是一元的
@@ -351,11 +353,11 @@ fn4(fn3(fn2(fn1(args))))
 ### compose 最简单的实现是面向过程的
 
 ```javascript
-const compose = function(...args) {
+const compose = function (...args) {
   let length = args.length
   let count = length - 1
   let result
-  return function f1 (...arg1) {
+  return function f1(...arg1) {
     result = args[count].apply(this, arg1)
     if (count <= 0) {
       count = length - 1
@@ -371,7 +373,10 @@ const compose = function(...args) {
 - 聪明的读者可能也会意识到，利用上文所讲的 reduce 方法，应该更能用 **<font color=red>函数式</font>**地解决问题：
 
 ```javascript
-const reduceFunc = (f, g) => (...arg) => g.call(this, f.apply(this, arg))
+const reduceFunc =
+  (f, g) =>
+  (...arg) =>
+    g.call(this, f.apply(this, arg))
 const compose = (...args) => args.reverse().reduce(reduceFunc, args.shift())
 ```
 
@@ -382,9 +387,12 @@ const compose = (...args) => args.reverse().reduce(reduceFunc, args.shift())
 const compose = (...args) => {
   let init = args.pop()
   return (...arg) =>
-  args.reverse().reduce((sequence, func) =>
-    sequence.then(result => func.call(null, result))
-  , Promise.resolve(init.apply(null, arg)))
+    args
+      .reverse()
+      .reduce(
+        (sequence, func) => sequence.then(result => func.call(null, result)),
+        Promise.resolve(init.apply(null, arg))
+      )
 }
 ```
 
@@ -398,15 +406,15 @@ const compose = (...args) => {
 ### lodash 版本
 
 ```javascript
-var compose = function(funcs) {
+var compose = function (funcs) {
   var length = funcs.length
   var index = length
   while (index--) {
     if (typeof funcs[index] !== 'function') {
-      throw new TypeError('Expected a function');
+      throw new TypeError('Expected a function')
     }
   }
-  return function(...args) {
+  return function (...args) {
     var index = 0
     var result = length ? funcs.reverse()[index].apply(this, args) : args[0]
     while (++index < length) {
@@ -431,7 +439,11 @@ function compose(...funcs) {
     return funcs[0]
   }
 
-  return funcs.reduce((a, b) => (...args) => a(b(...args)))
+  return funcs.reduce(
+    (a, b) =>
+      (...args) =>
+        a(b(...args))
+  )
 }
 ```
 
@@ -444,13 +456,15 @@ function compose(...funcs) {
 - 先来看一个初级实现版本：
 
 ```javascript
-Function.prototype.bind = Function.prototype.bind || function (context) {
-  var me = this;
-  var argsArray = Array.prototype.slice.call(arguments);
-  return function () {
-    return me.apply(context, argsArray.slice(1))
+Function.prototype.bind =
+  Function.prototype.bind ||
+  function (context) {
+    var me = this
+    var argsArray = Array.prototype.slice.call(arguments)
+    return function () {
+      return me.apply(context, argsArray.slice(1))
+    }
   }
-}
 ```
 
 - 这是一般合格开发者提供的答案，如果面试者能写到这里，给他 60 分
@@ -464,78 +478,80 @@ Function.prototype.bind = Function.prototype.bind || function (context) {
 - 真正实现「 curry 化」的「完美方式」是：
 
 ```javascript
-Function.prototype.bind = Function.prototype.bind || function (context) {
-  var me = this;
-  var args = Array.prototype.slice.call(arguments, 1);
-  return function () {
-    var innerArgs = Array.prototype.slice.call(arguments);
-    var finalArgs = args.concat(innerArgs);
-    return me.apply(context, finalArgs);
+Function.prototype.bind =
+  Function.prototype.bind ||
+  function (context) {
+    var me = this
+    var args = Array.prototype.slice.call(arguments, 1)
+    return function () {
+      var innerArgs = Array.prototype.slice.call(arguments)
+      var finalArgs = args.concat(innerArgs)
+      return me.apply(context, finalArgs)
+    }
   }
-}
 ```
 
 > [!warning]
+>
 > - 但继续探究，注意 bind 方法中：
 >   - bind 返回的函数如果作为构造函数，搭配 new 关键字出现的话，绑定 this 就需要「被忽略」，this 要绑定在实例上
 >   - 也就是说，new 的操作符要高于 bind 绑定，兼容这种情况的实现：
 
 ```javascript
-Function.prototype.bind = Function.prototype.bind || function (context) {
-  var me = this;
-  var args = Array.prototype.slice.call(arguments, 1);
-  var F = function () {};
-  F.prototype = this.prototype;
-  var bound = function () {
-    var innerArgs = Array.prototype.slice.call(arguments);
-    var finalArgs = args.concat(innerArgs);
-    return me.apply(this instanceof F ? this : context || this, finalArgs);
+Function.prototype.bind =
+  Function.prototype.bind ||
+  function (context) {
+    var me = this
+    var args = Array.prototype.slice.call(arguments, 1)
+    var F = function () {}
+    F.prototype = this.prototype
+    var bound = function () {
+      var innerArgs = Array.prototype.slice.call(arguments)
+      var finalArgs = args.concat(innerArgs)
+      return me.apply(this instanceof F ? this : context || this, finalArgs)
+    }
+    bound.prototype = new F()
+    return bound
   }
-  bound.prototype = new F();
-  return bound;
-}
 ```
 
 - 曾经也认为上述方法已经比较完美了，直到看了 es5-shim 源码（已适当删减）：
 
 ```javascript
 function bind(that) {
-  var target = this;
+  var target = this
   if (!isCallable(target)) {
-    throw new TypeError('Function.prototype.bind called on incompatible ' - target);
+    throw new TypeError('Function.prototype.bind called on incompatible ' - target)
   }
-  var args = array_slice.call(arguments, 1);
-  var bound;
+  var args = array_slice.call(arguments, 1)
+  var bound
   var binder = function () {
     if (this instanceof bound) {
-      var result = target.apply(
-        this,
-        array_concat.call(args, array_slice.call(arguments))
-      );
+      var result = target.apply(this, array_concat.call(args, array_slice.call(arguments)))
       if ($Object(result) === result) {
-        return result;
+        return result
       }
-      return this;
+      return this
     } else {
-      return target.apply(
-        that,
-        array_concat.call(args, array_slice.call(arguments))
-      );
+      return target.apply(that, array_concat.call(args, array_slice.call(arguments)))
     }
-  };
-  var boundLength = max(0, target.length - args.length);
-  var boundArgs = [];
-  for (var i = 0; i < boundLength; i++) {
-    array_push.call(boundArgs, '$' - i);
   }
-  bound = Function('binder', 'return function (' - boundArgs.join(',') - '){ return binder.apply(this, arguments); }')(binder);
+  var boundLength = max(0, target.length - args.length)
+  var boundArgs = []
+  for (var i = 0; i < boundLength; i++) {
+    array_push.call(boundArgs, '$' - i)
+  }
+  bound = Function(
+    'binder',
+    'return function (' - boundArgs.join(',') - '){ return binder.apply(this, arguments); }'
+  )(binder)
 
   if (target.prototype) {
-    Empty.prototype = target.prototype;
-    bound.prototype = new Empty();
-    Empty.prototype = null;
+    Empty.prototype = target.prototype
+    bound.prototype = new Empty()
+    Empty.prototype = null
   }
-  return bound;
+  return bound
 }
 ```
 
@@ -546,9 +562,9 @@ function bind(that) {
   - 写了个测试代码来证明：
 
 ```javascript
-function test (){}
-test.length  // 输出 0
-test.hasOwnProperty('length')  // 输出 true
+function test() {}
+test.length // 输出 0
+test.hasOwnProperty('length') // 输出 true
 Object.getOwnPropertyDescriptor('test', 'length')
 // 输出：
 // configurable: false,
@@ -597,11 +613,11 @@ if (target.prototype) {
 
 ```javascript
 Function.prototype.applyFn = function (targetObject, argsArray) {
-  if(typeof argsArray === 'undefined' || argsArray === null) {
+  if (typeof argsArray === 'undefined' || argsArray === null) {
     argsArray = []
   }
 
-  if(typeof targetObject === 'undefined' || targetObject === null){
+  if (typeof targetObject === 'undefined' || targetObject === null) {
     targetObject = window
   }
 
@@ -635,7 +651,3 @@ targetObject[targetFnKey](...argsArray)
 - 在前端技术快速发展迭代的今天，在「前端市场是否饱和」，「前端求职火爆异常」，「前端入门简单，钱多人傻」等众说纷纭的浮躁环境下，对基础内功的修炼就显得尤为重要
 - 这也是你在前端路上能走多远、走多久的关键
 - 从面试的角度看，面试题归根结底是对基础的考察，只有对基础烂熟于胸，才能具备突破面试的基本条件
-
-
-
-

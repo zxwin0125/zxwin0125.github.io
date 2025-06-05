@@ -9,7 +9,7 @@ order: 1
 - 对此，挑选出 React 中一些「不为人知」却又非常重要的点，进行解析，可以更好、更深入地理解 React
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/01.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/01.png)
 
 ## 神奇的 JSX
 
@@ -28,25 +28,22 @@ order: 1
 - JSX 实现这种条件渲染最简洁的手段就是三目运算符：
 
 ```javascript
-const list = ({list}) => {
+const list = ({ list }) => {
   const isNull = !list
   const isEmpty = !isNull && !list.length
 
   return (
     <div>
-    {
-      isNull
-      ? null
-      : (
-          isEmpty 
-          ? <p>Sorry, the list is empty </p>
-          : <div>
-              {
-                list.map(item => <ListItem item={item} />)
-              }
-            </div>
-        )
-    }
+      {isNull ?
+        null
+      : isEmpty ?
+        <p>Sorry, the list is empty </p>
+      : <div>
+          {list.map(item => (
+            <ListItem item={item} />
+          ))}
+        </div>
+      }
     </div>
   )
 }
@@ -62,7 +59,7 @@ const list = ({isLoading, list. error}) => {
       condition1
       ? <Component1 />
       : (
-          condition2 
+          condition2
           ? <Component2 />
           : (
             condition3
@@ -101,33 +98,33 @@ const list = ({isLoading, list, error}) => {
 - 甚至使用 IIFE：
 
 ```javascript
-const list = ({isLoading, list, error}) => {
+const list = ({ isLoading, list, error }) => {
   return (
     <div>
-      {
-        (() => {
-          console.log(list)
-          console.log(isLoading)
-          console.log(error)
+      {(() => {
+        console.log(list)
+        console.log(isLoading)
+        console.log(error)
 
-          if (error) {
-            return <span>Something is wrong!</span>
-          }
-          if (!error && isLoading) {
-            return <span>Loading...</span>
-          }
-          if (!error && !isLoading && !list.length) {
-            return <p>Sorry, the list is empty </p>
-          }
-          if (!error && !isLoading && list.length > 0) {
-            return <div>
-              {
-                list.map(item => <ListItem item={item} />)
-              }
+        if (error) {
+          return <span>Something is wrong!</span>
+        }
+        if (!error && isLoading) {
+          return <span>Loading...</span>
+        }
+        if (!error && !isLoading && !list.length) {
+          return <p>Sorry, the list is empty </p>
+        }
+        if (!error && !isLoading && list.length > 0) {
+          return (
+            <div>
+              {list.map(item => (
+                <ListItem item={item} />
+              ))}
             </div>
-          }
-        })()
-      }
+          )
+        }
+      })()}
     </div>
   )
 }
@@ -135,8 +132,8 @@ const list = ({isLoading, list, error}) => {
 
 - 这样一来就可以使用 console.log 进行简单调试了，也可以使用 if...else 进行条件渲染
 
-> [!important]
-> **<font color=red>为什么不能直接在 JSX 中使用 if...else，只能借用函数逻辑实现呢</font>**
+> [!important] > **<font color=red>为什么不能直接在 JSX 中使用 if...else，只能借用函数逻辑实现呢</font>**
+>
 > - 实际上，JSX 会被编译为 React.createElement
 > - 直白来说，**<font color=red>React.createElement 的底层逻辑是无法运行 JavaScript 代码的，而它只能渲染一个结果</font>**
 > - 因此 JSX 中除了 JS 表达式，不能直接写 JavaScript 语法
@@ -190,7 +187,7 @@ render() {
   return (
     <div>
       <div v-if={visible}>
-       content 
+       content
       </div>
     </div>
   )
@@ -262,6 +259,7 @@ render() {
 - 官方提供了这种处理异步更新的方法，其中之一就是 setState 接受第二个参数，作为状态更新后的回调，但这无疑又带来了 callback hell 问题
 
 > 举一个场景
+>
 > - 开发一个 tabel，这个 table 类似 excel，当用户敲下回车键时，需要将光标移动到下一行，这是一个 setState 操作，然后马上进行聚焦，这又是一个 setState 操作
 > - 如果当前行就是最后一行，那用户敲下回车时，需要先创建一个新行，这是第一个 setState 操作，同时将光标移动到新的「最后一行」，这是第二个 setState 操作
 > - 在这个新行中进行聚焦，这是第三个 setState 操作
@@ -285,16 +283,17 @@ const setStatePromise = (me, state) => {
 
 - 这只是 patch 做法，如果修改 React 源码的话，也不困难：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/02.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/02.png)
 
 ## 原生事件 VS React 合成事件
 
 > [!info]
+>
 > - React 中的事件机制并不是原生的那一套，事件没有绑定在原生 DOM 上 ，大多数事件绑定在 document 上（除了少数不会冒泡到 document 的事件，如 video 等)
 > - 同时，触发的事件也是对原生事件的包装，并不是原生 event
 > - 出于性能因素考虑，合成事件（syntheticEvent）是被池化的
-> 	- 这意味着合成事件对象将会被重用，在调用事件回调之后所有属性将会被废弃
-> 	- 这样做可以大大节省内存，而不会频繁的创建和销毁事件对象
+>   - 这意味着合成事件对象将会被重用，在调用事件回调之后所有属性将会被废弃
+>   - 这样做可以大大节省内存，而不会频繁的创建和销毁事件对象
 
 - 这样的事件系统设计，无疑性能更加友好，但同时也带来了几个潜在现象
 
@@ -391,17 +390,18 @@ render() {
 - React 三个假设在对比 element 时，存在短板，于是需要开发者给每一个 element 通过提供 key
 - 这样 react 可以准确地发现新旧集合中的节点中相同节点，对于相同节点无需进行节点删除和创建，只需要将旧集合中节点的位置进行移动，更新为新集合中节点的位置
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/03.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/03.png)
 
 - 组件 1234，变为 2143，此时 React 给出的 diff 结果为 2，4 不做任何操作，1，3 进行移动操作即可
 - 也就是元素在旧集合中的位置，相比新集合中的位置更靠后的话，那么它就不需要移动，当然这种 diff 听上去就并非完美无缺的
 - 来看这么一种情况：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/04.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/04.png)
 
 - 实际只需对 4 执行移动操作，然而由于 4 在旧集合中的位置是最大的，导致其他节点全部移动，移动到 4 节点后面
 - 这无疑是很愚蠢的，性能较差，针对这种情况，官方建议：
-> 「在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作」
+
+  > 「在开发过程中，尽量减少类似将最后一个节点移动到列表首部的操作」
 
 - 实际上很多类 React 类库（Inferno.js，Preact.js）都有了更优的 element diff 移动策略
 

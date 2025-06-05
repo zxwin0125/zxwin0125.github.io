@@ -7,21 +7,24 @@ order: 4
 ---
 
 - **<font color=red>理论方面</font>**
+
   - JavaScript 是单线程的，那它又是如何实现异步的呢？
   - 在这个环节中，浏览器或 NodeJS 又起到了什么样的作用？
   - 什么是宏任务，什么是微任务？
 
 - **<font color=red>实践上</font>**
+
   - 从 callback 到 promise，从 generator 到 async/await，到底应该如何更优雅地实现异步操作？
 
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/21.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/21.png =700x)
 
 - 异步流程初体验
 
 > [!info]
 > 先从一个需求开始，来实现一个「运动路径动画」流程：
+>
 > - 移动页面上元素 target（document.querySelectorAll('#man')[0]）
 > - 先从原点出发，向左移动 20px，之后再向上移动 50px，最后再次向左移动 30px，请把运动动画实现出来
 
@@ -38,44 +41,43 @@ order: 4
   - 采用最简单的 callback 实现，明确指示下一个任务
 
 ```javascript
-const target = document.querySelectorAll('#man')[0];
+const target = document.querySelectorAll('#man')[0]
 target.style.cssText = `
   position: absolute;
   left: 0px;
   top: 0px
-`;
+`
 
 const walk = (direction, distance, callback) => {
   setTimeout(() => {
-    let currentLeft = parseInt(target.style.left, 10);
-    let currentTop = parseInt(target.style.top, 10);
+    let currentLeft = parseInt(target.style.left, 10)
+    let currentTop = parseInt(target.style.top, 10)
 
     const shouldFinish =
-      (direction === 'left' && currentLeft === -distance) ||
-      (direction === 'top' && currentTop === -distance);
+      (direction === 'left' && currentLeft === -distance) || (direction === 'top' && currentTop === -distance)
 
     if (shouldFinish) {
       // 任务执行结束，执行下一个回调
-      callback && callback();
+      callback && callback()
     } else {
       if (direction === 'left') {
-        currentLeft--;
-        target.style.left = `${currentLeft}px`;
+        currentLeft--
+        target.style.left = `${currentLeft}px`
       } else if (direction === 'top') {
-        currentTop--;
-        target.style.top = `${currentTop}px`;
+        currentTop--
+        target.style.top = `${currentTop}px`
       }
 
-      walk(direction, distance, callback);
+      walk(direction, distance, callback)
     }
-  }, 20);
-};
+  }, 20)
+}
 
 walk('left', 20, () => {
   walk('top', 50, () => {
-    walk('left', 30, Function.prototype);
-  });
-});
+    walk('left', 30, Function.prototype)
+  })
+})
 ```
 
 - 为了简化问题，将目标元素的定位进行了初始化设定：
@@ -106,50 +108,50 @@ walk('left', 20, () => {
 - 再来看一下如何用 Promise 解决问题：
 
 ```javascript
-const target = document.querySelectorAll('#man')[0];
+const target = document.querySelectorAll('#man')[0]
 target.style.cssText = `
   position: absolute;
   left: 500px;
   top: 500px
-`;
+`
 
 const walk = (direction, distance) =>
   new Promise((resolve, reject) => {
     const innerWalk = () => {
       setTimeout(() => {
-        let currentLeft = parseInt(target.style.left, 10);
-        let currentTop = parseInt(target.style.top, 10);
+        let currentLeft = parseInt(target.style.left, 10)
+        let currentTop = parseInt(target.style.top, 10)
 
         const shouldFinish =
-          (direction === 'left' && currentLeft === -distance) ||
-          (direction === 'top' && currentTop === -distance);
+          (direction === 'left' && currentLeft === -distance) || (direction === 'top' && currentTop === -distance)
 
         if (shouldFinish) {
           // 任务执行结束
-          resolve();
+          resolve()
         } else {
           if (direction === 'left') {
-            currentLeft--;
-            target.style.left = `${currentLeft}px`;
+            currentLeft--
+            target.style.left = `${currentLeft}px`
           } else if (direction === 'top') {
-            currentTop--;
-            target.style.top = `${currentTop}px`;
+            currentTop--
+            target.style.top = `${currentTop}px`
           }
 
-          innerWalk();
+          innerWalk()
         }
-      }, 20);
-    };
-    innerWalk();
-  });
+      }, 20)
+    }
+    innerWalk()
+  })
 
 walk('left', 20)
   .then(() => walk('top', 50))
-  .then(() => walk('left', 30));
+  .then(() => walk('left', 30))
 ```
 
 > [!warning]
 > 几个注意点：
+>
 > - walk 函数不再嵌套调用，不再执行 callback，而是函数整体返回一个 promise，以利于后续任务的控制和执行
 > - 设置 innerWalk 进行每一像素的递归调用
 > - 在当前任务结束时（shouldFinish 为 true），resolve 当前 promise
@@ -226,48 +228,47 @@ gen.next() //将会向左偏移 30 像素
 - 直接看代码：
 
 ```javascript
-const target = document.querySelectorAll('#man')[0];
+const target = document.querySelectorAll('#man')[0]
 target.style.cssText = `
   position: absolute;
   left: 0px;
   top: 0px
-`;
+`
 
 const walk = (direction, distance) =>
   new Promise((resolve, reject) => {
     const innerWalk = () => {
       setTimeout(() => {
-        let currentLeft = parseInt(target.style.left, 10);
-        let currentTop = parseInt(target.style.top, 10);
+        let currentLeft = parseInt(target.style.left, 10)
+        let currentTop = parseInt(target.style.top, 10)
 
         const shouldFinish =
-          (direction === 'left' && currentLeft === -distance) ||
-          (direction === 'top' && currentTop === -distance);
+          (direction === 'left' && currentLeft === -distance) || (direction === 'top' && currentTop === -distance)
 
         if (shouldFinish) {
           // 任务执行结束
-          resolve();
+          resolve()
         } else {
           if (direction === 'left') {
-            currentLeft--;
-            target.style.left = `${currentLeft}px`;
+            currentLeft--
+            target.style.left = `${currentLeft}px`
           } else if (direction === 'top') {
-            currentTop--;
-            target.style.top = `${currentTop}px`;
+            currentTop--
+            target.style.top = `${currentTop}px`
           }
 
-          innerWalk();
+          innerWalk()
         }
-      }, 20);
-    };
-    innerWalk();
-  });
+      }, 20)
+    }
+    innerWalk()
+  })
 
 const task = async function () {
-  await walk('left', 20);
-  await walk('top', 50);
-  await walk('left', 30);
-};
+  await walk('left', 20)
+  await walk('top', 50)
+  await walk('left', 30)
+}
 
 task() // 只需要直接执行 task() 即可
 ```
@@ -278,6 +279,7 @@ task() // 只需要直接执行 task() 即可
 
 > [!info]
 > 再来看一道比较典型的问题
+>
 > - 红灯 3s 亮一次，绿灯 1s 亮一次，黄灯 2s 亮一次
 > - 如何让三个灯不断交替重复亮灯？
 
@@ -285,13 +287,13 @@ task() // 只需要直接执行 task() 即可
 
 ```javascript
 function red() {
-  console.log('red');
+  console.log('red')
 }
 function green() {
-  console.log('green');
+  console.log('green')
 }
 function yellow() {
-  console.log('yellow');
+  console.log('yellow')
 }
 ```
 
@@ -304,17 +306,14 @@ const task = (timer, light, callback) => {
   setTimeout(() => {
     if (light === 'red') {
       red()
-    }
-    else if (light === 'green') {
+    } else if (light === 'green') {
       green()
-    }
-    else if (light === 'yellow') {
+    } else if (light === 'yellow') {
       yellow()
     }
     callback()
   }, timer)
 }
-
 
 task(3000, 'red', () => {
   task(1000, 'green', () => {
@@ -351,11 +350,9 @@ const task = (timer, light) =>
     setTimeout(() => {
       if (light === 'red') {
         red()
-      }
-      else if (light === 'green') {
+      } else if (light === 'green') {
         green()
-      }
-      else if (light === 'yellow') {
+      } else if (light === 'yellow') {
         yellow()
       }
       resolve()
@@ -377,7 +374,7 @@ step()
 #### async/await 的实现
 
 ```javascript
-const taskRunner =  async () => {
+const taskRunner = async () => {
   await task(3000, 'red')
   await task(1000, 'green')
   await task(2000, 'yellow')
@@ -404,11 +401,11 @@ const loadImg = urlId => {
 
   return new Promise((resolve, reject) => {
     const img = new Image()
-    img.onerror = function() {
+    img.onerror = function () {
       reject(urlId)
     }
 
-    img.onload = function() {
+    img.onload = function () {
       resolve(urlId)
     }
     img.src = url
@@ -435,12 +432,10 @@ const loadImgOneByOne = index => {
   loadImg(urlIds[index]).then(() => {
     if (index === length - 1) {
       return
-    }
-    else {
+    } else {
       loadImgOneByOne(++index)
     }
   })
-
 }
 loadImgOneByOne(0)
 ```
@@ -518,17 +513,17 @@ const loadByLimit = (urlIds, loadImg, limit) => {
 ```javascript
 const fetchBooksInfo = bookIdList => {
   // ...
-  return ([
+  return [
     {
-      id: 123,
+      id: 123
       // ...
     },
     {
-        id: 456
-        // ...
-    },
+      id: 456
+      // ...
+    }
     // ...
-  ])
+  ]
 }
 ```
 
@@ -537,14 +532,20 @@ const fetchBooksInfo = bookIdList => {
   - 支持调用单个书目信息：
 
 ```javascript
-getBooksInfo(123).then(data => {console.log(data.id)}) // 123
+getBooksInfo(123).then(data => {
+  console.log(data.id)
+}) // 123
 ```
 
 - 短时间（100 毫秒）内多次连续调用，只发送一个请求，且获得各个书目信息：
 
 ```javascript
-getBooksInfo(123).then(data => {console.log(data.id)}) // 123
-getBooksInfo(456).then(data => {console.log(data.id)}) // 456
+getBooksInfo(123).then(data => {
+  console.log(data.id)
+}) // 123
+getBooksInfo(456).then(data => {
+  console.log(data.id)
+}) // 456
 ```
 
 - **<font color=red>注意这里必须只发送一个请求，也就是说调用了一次 fetchBooksInfo</font>**
@@ -559,8 +560,12 @@ getBooksInfo(456).then(data => {console.log(data.id)}) // 456
   - 需要对相关的调用进行抛错，比如 100 毫秒内连续调用：
 
 ```javascript
-getBooksInfo(123).then(data => {console.log(data.id)}) // 123
-getBooksInfo(456).then(data => {console.log(data.id)}) // 456
+getBooksInfo(123).then(data => {
+  console.log(data.id)
+}) // 123
+getBooksInfo(456).then(data => {
+  console.log(data.id)
+}) // 456
 ```
 
 - 要归并只调用一次 fetchBooksInfo：
@@ -572,18 +577,24 @@ fetchBooksInfo(123, 456)
 - 如果返回有问题，只返回了：
 
 ```javascript
-[{
-   id: 123
-   //...
-}]
+;[
+  {
+    id: 123
+    //...
+  }
+]
 ```
 
 - 没有返回 id 为 456 的书信息，需要捕获错误：
 
 ```javascript
-getBooksInfo(456).then(data => {console.log(data.id)}).catch(error => {
-  console.log(error)
-})
+getBooksInfo(456)
+  .then(data => {
+    console.log(data.id)
+  })
+  .catch(error => {
+    console.log(error)
+  })
 ```
 
 - 这样一来，要对每一个 getBooksInfo 对应的 promise 实例的 reject 和 resolve 方法进行存储，存储在内存 promiseMap 中，以便在合适的时机进行 reject 或 resolve 对应的 promise 实例
@@ -671,6 +682,7 @@ const handleFetch = (list, map) => {
 ```
 
 > [!important]
+>
 > - 做出这道题的关键是：
 >   - 准确理解题意，因为这个题目完全贴近实际场景需求，准确把控出题者的意图是第一步
 >   - 对 Promise 熟练掌握
@@ -693,9 +705,7 @@ setTimeout(() => {
   console.log('setTimeout block')
 }, 100)
 
-while (true) {
-
-}
+while (true) {}
 
 console.log('end here')
 ```
@@ -706,9 +716,7 @@ console.log('end here')
 
 ```javascript
 setTimeout(() => {
-  while (true) {
-
-  }
+  while (true) {}
 }, 0)
 
 console.log('end here')
@@ -734,7 +742,6 @@ setTimeout(() => {
   console.log('setTimeout block')
   console.log('t3 - t1 =', t3 - t1)
 }, 100)
-
 
 let t2 = new Date()
 
@@ -806,10 +813,9 @@ new Promise((resolve, reject) => {
     return new Promise((resolve, reject) => {
       console.log('second promise')
       resolve()
+    }).then(() => {
+      console.log('second promise then')
     })
-      .then(() => {
-        console.log('second promise then')
-      })
   })
   .then(() => {
     console.log('another first promise then')
@@ -850,26 +856,27 @@ console.log('end here')
 ```javascript
 console.log('start here')
 
-const foo = () => (new Promise((resolve, reject) => {
-  console.log('first promise constructor')
+const foo = () =>
+  new Promise((resolve, reject) => {
+    console.log('first promise constructor')
 
-  let promise1 = new Promise((resolve, reject) => {
-    console.log('second promise constructor')
+    let promise1 = new Promise((resolve, reject) => {
+      console.log('second promise constructor')
 
-    setTimeout(() => {
-      console.log('setTimeout here')
-      resolve()
-    }, 0)
+      setTimeout(() => {
+        console.log('setTimeout here')
+        resolve()
+      }, 0)
 
-    resolve('promise1')
+      resolve('promise1')
+    })
+
+    resolve('promise0')
+
+    promise1.then(arg => {
+      console.log(arg)
+    })
   })
-
-  resolve('promise0')
-
-  promise1.then(arg => {
-    console.log(arg)
-  })
-}))
 
 foo().then(arg => {
   console.log(arg)
@@ -895,7 +902,9 @@ setTimeout(() => {
 
 new Promise((resolve, reject) => {
   resolve('promise result')
-}).then(value => {console.log(value)})
+}).then(value => {
+  console.log(value)
+})
 
 console.log('end here')
 ```
@@ -927,16 +936,16 @@ async function async2() {
 
 console.log('script start')
 
-setTimeout(function() {
-  console.log('setTimeout') 
-}, 0)  
+setTimeout(function () {
+  console.log('setTimeout')
+}, 0)
 
 async1()
 
-new Promise(function(resolve) {
+new Promise(function (resolve) {
   console.log('promise1')
   resolve()
-}).then(function() {
+}).then(function () {
   console.log('promise2')
 })
 
@@ -945,6 +954,7 @@ console.log('script end')
 
 > [!important]
 > 这里需明白：
+>
 > - async 声明的函数，其返回值必定是 promise 对象，如果没有显式返回 promise 对象，也会用 Promise.resolve() 对结果进行包装，保证返回值为 promise 类型
 > - await 会先执行其右侧表达逻辑（从右向左执行），并让出主线程，跳出 async 函数，而去继续执行 async 函数外的同步代码
 > - 如果 await 右侧表达逻辑是个 promise，让出主线程，继续执行 async 函数外的同步代码，等待同步任务结束后，且该 promise 被 resolve 时，继续执行 await 后面的逻辑
@@ -987,17 +997,18 @@ async function async2() {
 console.log('script start') // step 1: 直接打印同步代码 script start
 
 // step 2: 将 setTimeout 回调放到宏任务中，此时 macroTasks: [setTimeout]
-setTimeout(function() {            
+setTimeout(function () {
   console.log('setTimeout') // step 13: 开始执行宏任务，输出 setTimeout
-}, 0)  
+}, 0)
 
-async1() // step 3: 执行 async1 
+async1() // step 3: 执行 async1
 
 // step 7: async1 函数已经中断，继续执行到这里
-new Promise(function(resolve) {
+new Promise(function (resolve) {
   console.log('promise1') // step 8: 直接打印同步代码 promise1
   resolve()
-}).then(function() { // step 9: 将 then 逻辑放到微任务当中
+}).then(function () {
+  // step 9: 将 then 逻辑放到微任务当中
   console.log('promise2') // step 12: 开始执行微任务，输出 promise2
 })
 

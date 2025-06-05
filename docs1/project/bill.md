@@ -18,6 +18,7 @@ order: 1
 
 > [!important]
 > 账单是信贷产品提供给用户服务最重要的部分，是第一稳固且有力的触点，核心要稳固
+>
 > - 其他都是基于触点的衍生服务或者氛围组
 >   - 像支付宝中，花呗账单助手和花呗周报属于花呗账单的衍生品
 >   - 花呗还款属于后续触点，对应的场景权益花花卡这种属于氛围组
@@ -25,7 +26,7 @@ order: 1
 - 业务视角下，查账以及依靠查账带来的流量之后做的商业化，是信贷产品商业化的基础，账单的用户体验是稳用户底盘的基石
 - 以花呗为例，支付宝整个财年围绕账单的更新迭代也印证了这一点
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/01.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/01.png)
 
 - 第一块主要集中解决账单中万求问题
 - 第二块通过丰富衍生服务，提升用户粘性的同时，保障信贷产品健康稳定的向上发展
@@ -37,17 +38,18 @@ order: 1
 
 - 同样以花呗为例
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/02.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/02.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/03.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/03.png)
 
 - 如何从产品视角来思考当下解决万求问题的优先级？
 - 借助 [KANO 模型](https://baike.baidu.com/item/KANO%20%E6%A8%A1%E5%9E%8B/19907824)：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/04.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/04.png)
 
 > [!info]
 > 将产品和服务的质量特性分为以下几种类型：
+>
 > - 必备属性（痛点需求）：当提供此需求时，用户满意度不会提升；当不提供此需求时，用户满意度会大幅降低
 > - 期望属性（痒点需求）：当提供此需求时，用户满意度会提升；当不提供此需求时，用户满意度会降低
 > - 魅力属性（兴奋点需求）：用户意想不到的，如果不提供此需求，用户满意度不会降低，但当提供此需求时，用户满意度会有很大提升
@@ -59,26 +61,26 @@ order: 1
 ## 二、业务目标
 
 - 信贷产品整体目标是保地盘，以花呗为例，花呗 + 信用购 4.2 亿用户、促活、以及支付余额，到账单产品侧，主要两大目标：
-    - 人工万求下降 30%「保底盘」
-    - 消费账户用户数3亿「促活」
+  - 人工万求下降 30%「保底盘」
+  - 消费账户用户数3亿「促活」
 
 ## 三、业务上准备做什么达成目标
 
 - 在万求问题上，除了常规 case by case 的需求迭代外，产品侧期望打造一个全链路、全场景、全渠道的的服务型数字人链路，并结合用户云、端行为特征重构当下「人找服务」的传统客服模式
 - 重构之后，一方面能够精准识别用户疑惑并给予解答，另一方面 **<font color=red>以数字人为载体的交互形式更有利于培养用户好感度</font>**，有机会将「必备属性」向「期望属性」转变
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/05.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/05.png)
 
 - 在消费账户访问这一目标，则主要丰富衍生服务的玩法
-    - 以花呗账单助手为例，以每月消费挑战活动为支点，通过账单助手皮肤、花呗金等虚拟权益吸引用户，提升产品心智，促进用户访问
+  - 以花呗账单助手为例，以每月消费挑战活动为支点，通过账单助手皮肤、花呗金等虚拟权益吸引用户，提升产品心智，促进用户访问
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/06.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/06.png)
 
 ## 四、前端应对方案
 
 - 从过程看万求如何产生：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/07.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/07.png)
 
 - 因此，只需要在用户上升至人工客服前，能够 **<font color=red>精准</font>** 的判断出用户存在的困惑，即可消除潜在万求
 - 同时，虽然账单体验问题占整个信贷大盘 1/4，但在其他链路中，用户也一样存在不同的问题和困惑
@@ -98,11 +100,11 @@ order: 1
 
 - 通过数据和算法精准识别客户问题及需求，主动向客户发起服务，并提供对应解决方案，且能够通过数据跟踪客户行为和带给客户的实际价值
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/08.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/08.png)
 
 - **为什么需要主动服务？**
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Project/HB/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Project/HB/09.png)
 
 - **用户价值**
 
@@ -132,4 +134,3 @@ order: 1
 
 - 业务前端在业务的理解上没有天然的优势，这导致在业务理解的深度上往往无法和后端同学比，这也限制了前端在业务技术上的深度挖掘的潜能
 - 但随着近年，端智能、3D等技术的兴起，前端或能开启一片新的天地，不过如何更大程度的保障前端的技术方案与业务不会水土不服？这当然有很多组织、分工上的保障机制，但从自身出发，提升个人业务理解仍是绕不开的话题，从业务中来，到业务中去～
-

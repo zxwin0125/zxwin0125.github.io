@@ -2,9 +2,9 @@
 
 > [!important]
 > 不管名义上，你是不是 1 号位，先按照 1 号位会做的那些事情，去做，尽量多 cover 一些
-> 
+>
 > 不是因为别人让你当 1 号位，所以你是 1 号位，让别人从你所作所为感受到，你就是名副其实的 1 号位
-> 
+>
 > 在对应的节点，做对应的事情，关注投入产出，快准稳
 
 ## 需求阶段
@@ -23,7 +23,7 @@
 
 - 了解主视觉，评估工作量，**<font color=red>并找到稿子中的缺失</font>**，并逐条列出来确认，让设计补上
 
-- **<font color=red>约定下一次设计稿的完整版交付时间</font>** 
+- **<font color=red>约定下一次设计稿的完整版交付时间</font>**
 
 - 如有动画，约定静态图/粗稿动图的占坑时间（<50%的开发时间），和最终产物的交付时间（提测前）
 
@@ -32,7 +32,7 @@
 
 - 好的设计稿案例：（状态齐全）
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/01.png)
+![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Work/01.png)
 
 ### 前端系分
 
@@ -50,9 +50,8 @@
 ### 定排期
 
 - 前后端测试 PM 一起，拉会，最好是给出结论再拉业务方同步，不然他们会边对排期，边压缩时间
-  
 - 排期尽量要预留 x1.5 的 buff，不要以为「这个改动很简单」，重要节点，在日历中列出来
-  
+
   - 开发
   - 联调
   - 测分评审
@@ -65,7 +64,7 @@
   - :triangular_flag_on_post: 灰度发布
   - :triangular_flag_on_post: 全量
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/02.png)
+![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Work/02.png)
 
 ## 开发阶段
 
@@ -75,7 +74,7 @@
 
 > [!tip]
 > 例如：9 天开发时间，6 天开发，3 天联调，周二周三分别提醒周四要联调，进度是否 ok
-> 
+>
 > 小技巧：如果条件允许，不要再倒数第 3 天 （第 7，8，9 天） 才联调，关注后端的工作量耗时，可以提前到第 6，7，8 天联调，比如先前后端联调框子，再各自安好，去调试细节，**<font color=red>先怼到 60% 完成度的状态，再慢慢雕花，做到 90% 完成度</font>**
 
 - 提测准备
@@ -98,7 +97,6 @@
 ## 发布阶段
 
 - 代码 review
-  
 - 配置 reivew
 
 - 监控 review
@@ -122,9 +120,9 @@
 
 举例
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/03.png)
+![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Work/03.png)
 
-![An image](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Work/04.png)
+![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Work/04.png)
 
 ## 上线阶段
 

@@ -48,29 +48,34 @@ npx eslint --version
 // .eslintrc.js
 
 module.exports = {
-  env: { // 标记当前代码最终的运行环境
+  env: {
+    // 标记当前代码最终的运行环境
     browser: true, // 代码运行在浏览器环境
-    es2020: true 
+    es2020: true
   },
-  extends: [ // 记录共享配置
+  extends: [
+    // 记录共享配置
     'standard' // 如果需要在多个项目共享一个eslin配置，可以定义一个公共配置文件并在此集成
   ],
-  parserOptions: { // 设置语法解析器的相关配置 控制是否允许使用某一个ES版本的语法
+  parserOptions: {
+    // 设置语法解析器的相关配置 控制是否允许使用某一个ES版本的语法
     ecmaVersion: 11
   },
-  rules: { // 配置eslint中每一个校验规则的开启/关闭
-    'no-alert': "error" // 内置规则名称： off/warn/error
+  rules: {
+    // 配置eslint中每一个校验规则的开启/关闭
+    'no-alert': 'error' // 内置规则名称： off/warn/error
   },
-  global: { // 额外声明代码中可使用全局成员 最新版本默认配置已不再体现
+  global: {
+    // 额外声明代码中可使用全局成员 最新版本默认配置已不再体现
     // 例如要使用jQuery对象
-    "jQuery": "readonly"
+    jQuery: 'readonly'
   }
 }
 ```
 
 - env 环境示例
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/15.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/15.png)
 
 ## ESLint 配置注释
 
@@ -80,7 +85,7 @@ module.exports = {
 
 ```js
 // 使用注释临时禁用指定规则
-const str1 = "${name} is a coder" // eslint-disable-line no-template-curly-in-string 
+const str1 = '${name} is a coder' // eslint-disable-line no-template-curly-in-string
 
 console.log(str1)
 ```
@@ -103,14 +108,16 @@ console.log(str1)
 
 ```js
 const script = () => {
-  return src('src/assets/scripts/*.js', { base: 'src' })
-    .pipe(plugins.eslint()) // 集成 eslint 操作
-    .pipe(plugins.eslint.format()) // 使用 format 方法在控制台打印出具体的错误信息
-    .pipe(plugins.eslint.failAfterError()) // 让 eslint 在检查到错误之后直接去终止任务管道
-    // 先去进行 eslint 操作，否则经过 babel 之后就不是真正的源代码
-    .pipe(plugins.babel({ presets: ['@babel/preset-env'] })) 
-    .pipe(dest('temp'))
-    .pipe(bs.reload({ stream: true }))
+  return (
+    src('src/assets/scripts/*.js', { base: 'src' })
+      .pipe(plugins.eslint()) // 集成 eslint 操作
+      .pipe(plugins.eslint.format()) // 使用 format 方法在控制台打印出具体的错误信息
+      .pipe(plugins.eslint.failAfterError()) // 让 eslint 在检查到错误之后直接去终止任务管道
+      // 先去进行 eslint 操作，否则经过 babel 之后就不是真正的源代码
+      .pipe(plugins.babel({ presets: ['@babel/preset-env'] }))
+      .pipe(dest('temp'))
+      .pipe(bs.reload({ stream: true }))
+  )
 }
 ```
 
@@ -209,8 +216,9 @@ module.exports = {
 
 > [!info]
 > Git Hook 也称之为 git 钩子，每个钩子都对应一个具体的 git 操作任务
+>
 > - 比如 commit、push
-> 通过 shell 脚本可以编写钩子任务触发时要具体执行的操作
+>   通过 shell 脚本可以编写钩子任务触发时要具体执行的操作
 
 ### Git Hooks 快速上手
 
@@ -224,7 +232,7 @@ module.exports = {
 {
   ...
   "scripts": {
-    "test": "eslint ./index.js" 
+    "test": "eslint ./index.js"
   }
   ...
   "husky": {
@@ -261,5 +269,3 @@ module.exports = {
   }
 }
 ```
-
-

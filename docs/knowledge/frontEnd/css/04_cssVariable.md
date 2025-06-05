@@ -14,11 +14,12 @@ body {
   color: #555;
 }
 
-a, a:link {
-  color: #639A67;
+a,
+a:link {
+  color: #639a67;
 }
 a:hover {
-  color: #205D67;
+  color: #205d67;
 }
 ```
 
@@ -28,8 +29,8 @@ a:hover {
 :root {
   --bg: white;
   --text-color: #555;
-  --link-color: #639A67;
-  --link-hover: #205D67;
+  --link-color: #639a67;
+  --link-hover: #205d67;
 }
 ```
 
@@ -41,7 +42,8 @@ body {
   color: var(--text-color);
 }
 
-a, a:link {
+a,
+a:link {
   color: var(--link-color);
 }
 a:hover {
@@ -57,11 +59,11 @@ CSS 变量语法也很简单：使用 `--变量名` 的方式定义变量，使�
 
 CSS 变量的兼容性也「出乎意料」的好
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/08.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/CSS/08.png)
 
 项目中大范围使用了 CSS 变量，在 html 根节点下，定义 `:root`
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/CSS/09.png)
 
 除了简单应用变量，还有哪些更高级的用法呢？
 
@@ -75,8 +77,8 @@ CSS 变量的兼容性也「出乎意料」的好
 :root {
   --bg: white;
   --text-color: #555;
-  --link-color: #639A67;
-  --link-hover: #205D67;
+  --link-color: #639a67;
+  --link-hover: #205d67;
 }
 ```
 
@@ -86,8 +88,8 @@ CSS 变量的兼容性也「出乎意料」的好
 .pink-theme {
   --bg: hotpink;
   --text-color: white;
-  --link-color: #B793E6;
-  --link-hover: #3532A7;
+  --link-color: #b793e6;
+  --link-hover: #3532a7;
 }
 ```
 

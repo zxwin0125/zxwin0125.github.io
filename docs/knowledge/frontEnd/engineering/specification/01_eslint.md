@@ -296,7 +296,7 @@ ESLint 的解析器模块包括以下几种常用解析器
 
 接下来，ESLint 将基于 AST 应用规则
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg){width=600}
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/specification/001.jpg){width=600}
 
 ### Rules（规则）🚫
 

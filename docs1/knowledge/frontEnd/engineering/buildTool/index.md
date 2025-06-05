@@ -10,28 +10,36 @@ order: 1
 ### 模块化问题
 
 1. ES Modules 存在环境兼容问题
-  - ES Modules 模块系统本身就存在环境兼容问题，尽管主流浏览器最新版本都支持这样一个特性，但是还没做到统一所有用户浏览器的使用情况
+
+- ES Modules 模块系统本身就存在环境兼容问题，尽管主流浏览器最新版本都支持这样一个特性，但是还没做到统一所有用户浏览器的使用情况
+
 2. 模块文件过多，网络请求频繁
-  - 通过模块化的方式划分的模块文件过多，前端应用又是运行在浏览器中，每一个在应用中所需要的文件都需要从服务器中请求过来，零散的文件导致浏览器频繁发布请求，影响应用工作效率
+
+- 通过模块化的方式划分的模块文件过多，前端应用又是运行在浏览器中，每一个在应用中所需要的文件都需要从服务器中请求过来，零散的文件导致浏览器频繁发布请求，影响应用工作效率
+
 3. 所有的前端资源都需要模块化
-  - 前端应用开发过程中，不仅仅只有 JavaScript 的代码需要模块化，HTML、CSS等资源文件同样需要
+
+- 前端应用开发过程中，不仅仅只有 JavaScript 的代码需要模块化，HTML、CSS等资源文件同样需要
 
 ### 方案设想
 
 1. 编译代码
-  - 将开发阶段编写的包含新特性的代码，直接转换为能兼容绝大多数环境的代码 —— 「解决环境兼容问题」
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/01.png)
+- 将开发阶段编写的包含新特性的代码，直接转换为能兼容绝大多数环境的代码 —— 「解决环境兼容问题」
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/01.png)
 
 2. 模块打包
-  - 将散落的模块文件再次打包一起 —— 「解决浏览器频繁请求问题」
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/02.png)
+- 将散落的模块文件再次打包一起 —— 「解决浏览器频繁请求问题」
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/02.png)
 
 3. 多类型模块支持
-  - 支持不同种类的前端资源类型 —— 「解决资源模块化问题」
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/03.png)
+- 支持不同种类的前端资源类型 —— 「解决资源模块化问题」
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/03.png)
 
 ## 模块打包工具概要
 
@@ -41,9 +49,9 @@ order: 1
   1. Webpack 作为一个模块打包工具（Module bundler），本身就可以解决模块化 JavaScript 代码打包的问题，它可以将零散的模块代码打包到同一个 JavaScript 文件中
   2. 对于有环境兼容问题的代码，可以在打包过程中，通过模块加载器（Loader），对其进行编译转换
   3. Webpack 还具备代码拆分的能力，能将应用当中所有的代码按照需求去打包，不用担心把所有的代码全部打包到一起，产生文件比较大的问题
-    - 可以把应用加载过程中初次运行时所必需的模块打包到一起，对于其他的模块单独存放，等到应用过程中实际需要某个模块时，再异步加载这个模块，实现增量加载或渐进式加载，这样就不用担心文件太碎或太大
+  - 可以把应用加载过程中初次运行时所必需的模块打包到一起，对于其他的模块单独存放，等到应用过程中实际需要某个模块时，再异步加载这个模块，实现增量加载或渐进式加载，这样就不用担心文件太碎或太大
   4. 对于前端模块类型问题，Webpack 支持在 JavaScript 中以模块化方式载入任意类型的资源文件
-    - 例如通过 JavaScript 直接 import 一个 css 文件，这个 css 文件最终通过 style 标签形式去工作
+  - 例如通过 JavaScript 直接 import 一个 css 文件，这个 css 文件最终通过 style 标签形式去工作
 
 > [!warning]
 > 打包工具解决的是前端整体的模块化，并不单指 JavaScript 模块化<br>

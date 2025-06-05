@@ -7,14 +7,14 @@
 #heroImage: /logo.svg
 # heroText: false
 # tagline: 光荣在于平淡，艰巨在于漫长～
-# bgImage: 'https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/blogImg.jpg'
+# bgImage: 'https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/blogImg.jpg'
 # heroFullScreen: false
 
 layout: home
 
 hero:
   tagline: 光荣在于平淡，艰巨在于漫长～
-  # image: 
-  #   src: 'https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/blogImg.jpg'
+  # image:
+  #   src: 'https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/blogImg.jpg'
   #   alt: 主页背景图
 ---

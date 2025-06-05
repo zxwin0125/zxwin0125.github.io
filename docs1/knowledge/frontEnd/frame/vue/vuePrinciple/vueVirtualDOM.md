@@ -12,17 +12,17 @@ order: 4
 - 真实 DOM 成员
 
 ```js
-let element = document.querySelector("#app");
-let s = "";
+let element = document.querySelector('#app')
+let s = ''
 for (var key in element) {
-  s += key + ",";
+  s += key + ','
 }
-console.log(s);
+console.log(s)
 ```
 
 - 真实 DOM 成员非常多，所以创建一个 DOM 对象的成本是非常高的
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/14.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/14.png)
 
 - 使用 Virtual DOM 来描述真实 DOM，创建一个虚拟 DOM 的属性很少，成本自然也小很多
 
@@ -64,7 +64,7 @@ console.log(s);
   - 原生应用（Weex/React Native）
   - 小程序（mpvue/uni-app）等
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/15.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/15.png)
 
 ## Virtual DOM 库
 
@@ -99,22 +99,22 @@ npm install parcel-bundler -D
 
 - 创建目录结构（此处 src 中的文件包括后续章节演示的代码，在阅读时请留意不同章节所用来演示的文件名称）
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/16.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/16.png)
 
 - index.html（入口文件）
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Snabbdom-demo</title>
-</head>
-<body>
-  <div id="app"></div>
-  <script src="./src/01-basicusage.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snabbdom-demo</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="./src/01-basicusage.js"></script>
+  </body>
 </html>
 ```
 
@@ -143,7 +143,7 @@ const patch = init([])
 > [!warning]
 > 此时运行的话会告诉我们找不到 init / h 模块，因为模块路径并不是 snabbdom/int，这个路径是在 package.json 中的 exports 字段设置的，而我们使用的打包工具不支持 exports 这个字段，webpack 4 也不支持，webpack 5 支持该字段，该字段在导入 snabbdom/init 的时候会补全路径成 snabbdom/build/package/init.js
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/17.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/17.png)
 
 - 如果使用不支持 package.json 的 exports 字段的打包工具，我们应该把模块的路径写全
   - 查看安装的 snabbdom 的目录结构
@@ -171,47 +171,44 @@ new Vue({
 #### 3.1 basicusage.js
 
 ```js
-import { init } from "snabbdom/build/package/init";
-import { h } from "snabbdom/build/package/h";
+import { init } from 'snabbdom/build/package/init'
+import { h } from 'snabbdom/build/package/h'
 
-const patch = init([]);
+const patch = init([])
 
 // h() 返回虚拟节点 VNode
 // 第一个参数：标签 + 选择器
 // 第二个参数：如果是字符串就是标签中的文本内容
 // div#container.cls：标签是 div、id选择器#container、类选择器 .cls
-let vnode = h("div#container.cls", "Hello World");
-let app = document.querySelector("#app");
+let vnode = h('div#container.cls', 'Hello World')
+let app = document.querySelector('#app')
 
 // 第一个参数：旧的 VNode，可以是 DOM 元素
 // 第二个参数：新的 VNode
 // path 内部会对比两个 VNode 的差异，并将差异更新到真实 DOM
 // 返回新的 VNode，作为下一次的 oldVnode，也就是把当前状态保存起来
-let oldVnode = patch(app, vnode);
+let oldVnode = patch(app, vnode)
 
-vnode = h("div#container.xxx", "Hello Snabbdom");
-patch(oldVnode, vnode);
+vnode = h('div#container.xxx', 'Hello Snabbdom')
+patch(oldVnode, vnode)
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/18.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/18.png)
 
 ### 4. 案例 2
 
 #### 4.1 basicusage.js
 
 ```js
-import { init } from "snabbdom/build/package/init";
-import { h } from "snabbdom/build/package/h";
+import { init } from 'snabbdom/build/package/init'
+import { h } from 'snabbdom/build/package/h'
 
-const patch = init([]);
+const patch = init([])
 
-let vnode = h("div#container", [
-  h("h1", "Hello Snabbdom"),
-  h("p", "这是一个p"),
-]);
+let vnode = h('div#container', [h('h1', 'Hello Snabbdom'), h('p', '这是一个p')])
 
-let app = document.querySelector("#app");
-let oldVnode = patch(app, vnode);
+let app = document.querySelector('#app')
+let oldVnode = patch(app, vnode)
 
 setTimeout(() => {
   // 这里我们假设 h1 和 p 是存储在服务器上的，要向服务器发送请求获取数据，
@@ -220,15 +217,15 @@ setTimeout(() => {
   // patch(oldVnode, vnode);
 
   // 清除 div 中的内容，会生成一个空的注释节点
-  patch(oldVnode, h("!"));
-}, 2000);
+  patch(oldVnode, h('!'))
+}, 2000)
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/19.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/19.png)
 
 #### 4.2 定时器回调函数执行
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/20.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/20.png)
 
 ## Snabbdom 模块的使用
 
@@ -242,21 +239,33 @@ setTimeout(() => {
 
 > [!info]
 > 官方提供了 6 个模块
+>
 > 1. attributes
->   - 设置 DOM 元素的属性，使用 setAttribute
->   - 会对 DOM 对象的布尔类型的属性做判断，如：selected、checked 等
+>
+> - 设置 DOM 元素的属性，使用 setAttribute
+> - 会对 DOM 对象的布尔类型的属性做判断，如：selected、checked 等
+>
 > 2. props
->   - 和 attributes 模块相似，设置 DOM 元素的属性，内部设置属性的方式是通过[对象.属性]的方式实现的
->   - 不会处理布尔类型的属性
+>
+> - 和 attributes 模块相似，设置 DOM 元素的属性，内部设置属性的方式是通过[对象.属性]的方式实现的
+> - 不会处理布尔类型的属性
+>
 > 3. dataset
->   - 处理 HTML5 中提供的 data- 这样的自定义属性
+>
+> - 处理 HTML5 中提供的 data- 这样的自定义属性
+>
 > 4. class
->   - 切换类样式
->   - 如果要设置类样式，可以通过 h 函数的第一个参数设置
+>
+> - 切换类样式
+> - 如果要设置类样式，可以通过 h 函数的第一个参数设置
+>
 > 5. style
->   - 设置行内样式，支持过渡动画
+>
+> - 设置行内样式，支持过渡动画
+>
 > 6. eventlisteners
->   - 注册和移除事件
+>
+> - 注册和移除事件
 
 ### 3. 模块的使用步骤
 
@@ -267,33 +276,33 @@ setTimeout(() => {
 #### 3.1 modules.js
 
 ```js
-import { init } from "snabbdom/build/package/init";
-import { h } from "snabbdom/build/package/h";
+import { init } from 'snabbdom/build/package/init'
+import { h } from 'snabbdom/build/package/h'
 
 // 1. 导入模块
-import { styleModule } from "snabbdom/build/package/modules/style";
-import { eventListenersModule } from "snabbdom/build/package/modules/eventlisteners";
+import { styleModule } from 'snabbdom/build/package/modules/style'
+import { eventListenersModule } from 'snabbdom/build/package/modules/eventlisteners'
 
 // 2. 注册模块
-const patch = init([styleModule, eventListenersModule]);
+const patch = init([styleModule, eventListenersModule])
 
 // 3. 使用 h() 函数的第二个参数传入模块中使用的数据（对象）
-let vnode = h("div", [
-  h("h1", { style: { backgroundColor: "red" } }, "Hello World"),
-  h("p", { on: { click: eventHandler } }, "Hello P"),
-]);
+let vnode = h('div', [
+  h('h1', { style: { backgroundColor: 'red' } }, 'Hello World'),
+  h('p', { on: { click: eventHandler } }, 'Hello P')
+])
 
 function eventHandler() {
-  console.log("别点我");
+  console.log('别点我')
 }
 
-let app = document.querySelector("#app");
-patch(app, vnode);
+let app = document.querySelector('#app')
+patch(app, vnode)
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/21.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/21.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/22.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/22.png)
 
 ## Snabbdom 源码解析
 
@@ -316,9 +325,9 @@ patch(app, vnode);
 
 ```js
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+  router,
+  store,
+  render: h => h(App)
 }).$mount('#app')
 ```
 
@@ -439,7 +448,7 @@ add(1, '2'); // 调用的是第二个函数
 
 ### 3. VNode 函数
 
-- 一个 VNode 就是一个虚拟节点用来描述一个 DOM 元素，如果这个 VNode 有 children 就是 Virtual DOM 
+- 一个 VNode 就是一个虚拟节点用来描述一个 DOM 元素，如果这个 VNode 有 children 就是 Virtual DOM
 - 源码位置：src/package/vnode.ts
 
 ```js
@@ -517,6 +526,7 @@ export function vnode (sel: string | undefined,
 
 > [!warning]
 > 为什么要使用高阶函数？
+>
 > - 因为 patch 函数再外部会调用多次，每次调用依赖一些参数，比如：modules/domApi/cbs
 > - 通过高阶函数让 init 内部形成闭包，返回的 patch 可以访问到 modules/domApi/cbs，而不需要重新创建
 
@@ -560,7 +570,7 @@ export function init (modules: Array<Partial<Module>>, domApi?: DOMAPI) {
       }
     }
   }
-  
+
 ...
 
   // init 内部返回 patch 函数，把 vnode 渲染成真实 dom，并返回 vnode
@@ -580,6 +590,7 @@ export function init (modules: Array<Partial<Module>>, domApi?: DOMAPI) {
 - 如果 oldVnode 和 vnode 相同（key 和 sel 相同）
   - 调用 patchVnode，找节点的差异并更新 DOM
 - 如果 oldVnode 是 DOM 元素
+
   - 把 DOM 元素转换成 oldVnode
   - 调用 createElm 把 vnode 转换为真实 DOM，记录到 vnode.elm
   - 把刚创建的 DOM 元素插入到 parent 中
@@ -638,7 +649,6 @@ return function patch(oldVnode: VNode | Element, vnode: VNode): VNode {
 - createElm(vnode, insertedVnodeQueue)，返回创建的 DOM 元素
 - 创建 vnode 对应的 DOM 元素
 
-
 ```js
 import { h, init } from 'snabbdom'
 
@@ -649,17 +659,21 @@ let patch = init([])
 // 第一个参数：标签+选择器
 // 第二个参数：如果是字符串的话就是标签中的内容
 // let vnode = h('div#container.cls', 'Hello World')
-let vnode = h('div#container.cls', { 
-  // 传递钩子函数
-  hook: {
-    init (vnode) {
-      console.log(vnode.elm)
-    },
-    create (emptyVnode, vnode) {
-      console.log(vnode.elm)
+let vnode = h(
+  'div#container.cls',
+  {
+    // 传递钩子函数
+    hook: {
+      init(vnode) {
+        console.log(vnode.elm)
+      },
+      create(emptyVnode, vnode) {
+        console.log(vnode.elm)
+      }
     }
-  }
-}, 'Hello World')
+  },
+  'Hello World'
+)
 
 let app = document.querySelector('#app')
 // 第一个参数：可以是DOM元素，内部会把DOM元素转换成VNode
@@ -679,6 +693,7 @@ patch(oldVnode, vnode)
 - 如果选择器是!，创建评论节点
 - 如果选择器为空，创建文本节点
 - 如果选择器不为空
+
   - 解析选择器，设置标签的 id 和 class 属性
   - 执行模块的 create 钩子函数
   - 如果 vnode 有 children，创建子 vnode 对应的 DOM，追加到 DOM 树
@@ -792,7 +807,7 @@ function removeVnodes (parentElm: Node,
     }
   }
 }
-  
+
 function invokeDestroyHook (vnode: VNode) {
   const data = vnode.data
   if (data !== undefined) {
@@ -812,7 +827,7 @@ function invokeDestroyHook (vnode: VNode) {
     }
   }
 }
-  
+
 function createRmCb (childElm: Node, listeners: number) {
   // 返回删除元素的回调函数
   return function rmCb () {
@@ -846,12 +861,12 @@ function addVnodes (
 
 #### 4.6 patchVnode 函数
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/23.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/23.png)
 
 ##### 4.6.1 功能
 
 - patchVnode(oldVnode, vnode, insertedVnodeQueue)
-- 对比 oldVnode 和 vnode 的差异，把差异渲染到 DOM 
+- 对比 oldVnode 和 vnode 的差异，把差异渲染到 DOM
 
 ##### 4.6.2 执行过程
 
@@ -929,14 +944,14 @@ function patchVnode (oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQue
 
 ###### 方式一：查找两颗树每一个节点的差异
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/24.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/24.png)
 
 ###### 方式二：Snbbdom 根据 DOM 的特点对传统的 diff 算法做了优化
 
 - DOM 操作时候很少会跨级别操作节点
 - 只比较同级别节点
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/25.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/25.png)
 
 ###### Snbbdom 对比子节点的执行过程
 
@@ -946,7 +961,7 @@ function patchVnode (oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQue
   - oldStartVnode / newEndVnode (旧开始节点 / 新结束节点)
   - oldEndVnode / newStartVnode (旧结束节点 / 新开始节点)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/26.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/26.png)
 
 ###### 开始和结束节点
 
@@ -954,21 +969,21 @@ function patchVnode (oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQue
   - 调用 patchVnode 对比和更新节点，将差异更新到重用的 DOM 元素上
   - 把旧开始和新开始索引往后移动 oldStartIdx++ / newStartIdx++
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/27.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/27.png)
 
 ###### 旧开始节点 / 新结束节点
 
 - 调用 patchVnode 对比和更新节点
 - 把 oldStartVnode 对应的 DOM 元素，移动到右边，更新索引
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/28.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/28.png)
 
 ###### 旧结束节点 / 新开始节点
 
 - 调用 patchVnode 对比和更新节点
 - 把 oldEndVnode 对应的 DOM 元素，移动到左边，更新索引
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/29.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/29.png)
 
 ###### 非上述四种情况
 
@@ -981,19 +996,19 @@ function patchVnode (oldVnode: VNode, vnode: VNode, insertedVnodeQueue: VNodeQue
   - 重新创建对应的 DOM 元素，插入到 DOM 树中
   - 如果相同，把 elmToMove 对应的 DOM 元素，移动到左边
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/30.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/30.png)
 
 ###### 循环结束
 
 - 当老节点的所有子节点先遍历完 (oldStartIdx > oldEndIdx)， 循环结束
   - 说明新节点有剩余，把剩余节点批量插入到右边
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/31.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/31.png)
 
 - 新节点的所有子节点先遍历完 (newStartIdx > newEndIdx)，循环结束
   - 说明老节点有剩余，把剩余节点批量删除
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/32.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/32.png)
 
 #### 4.8 updateChildren 函数
 
@@ -1047,7 +1062,7 @@ function updateChildren (parentElm: Node,
       newStartVnode = newCh[++newStartIdx]
     } else if (newEndVnode == null) {
       newEndVnode = newCh[--newEndIdx]
-      // 比较开始和结束节点的四种情况  
+      // 比较开始和结束节点的四种情况
     } else if (sameVnode(oldStartVnode, newStartVnode)) {
     // 1. 比较老开始节点和新的开始节点
       patchVnode(oldStartVnode, newStartVnode, insertedVnodeQueue)
@@ -1127,48 +1142,46 @@ function updateChildren (parentElm: Node,
 ##### 4.9.1 案例
 
 ```js
-import { init } from "snabbdom/build/package/init";
-import { h } from "snabbdom/build/package/h";
-import { attributesModule } from "snabbdom/build/package/modules/attributes";
-import { eventListenersModule } from "snabbdom/build/package/modules/eventlisteners";
+import { init } from 'snabbdom/build/package/init'
+import { h } from 'snabbdom/build/package/h'
+import { attributesModule } from 'snabbdom/build/package/modules/attributes'
+import { eventListenersModule } from 'snabbdom/build/package/modules/eventlisteners'
 
-let patch = init([attributesModule, eventListenersModule]);
+let patch = init([attributesModule, eventListenersModule])
 
-const data = [1, 2, 3, 4];
-let oldVnode = null;
+const data = [1, 2, 3, 4]
+let oldVnode = null
 
 function view(data) {
-  let arr = [];
-  data.forEach((item) => {
+  let arr = []
+  data.forEach(item => {
     // 不设置 key
-    arr.push(
-      h("li", [h("input", { attrs: { type: "checkbox" } }), h("span", item)])
-    );
+    arr.push(h('li', [h('input', { attrs: { type: 'checkbox' } }), h('span', item)]))
     // 设置key
     // arr.push(h('li', { key: item }, [h('input', { attrs: { type: 'checkbox' } }), h('span', item)]))
-  });
-  let vnode = h("div", [
+  })
+  let vnode = h('div', [
     h(
-      "button",
+      'button',
       {
         on: {
           click: function () {
-            data.unshift(100);
-            vnode = view(data);
-            oldVnode = patch(oldVnode, vnode);
-          },
-        },
+            data.unshift(100)
+            vnode = view(data)
+            oldVnode = patch(oldVnode, vnode)
+          }
+        }
       },
-      "按钮"
+      '按钮'
     ),
-    h("ul", arr),
-  ]);
-  return vnode;
+    h('ul', arr)
+  ])
+  return vnode
 }
 
-let app = document.querySelector("#app");
+let app = document.querySelector('#app')
 // 首次渲染
-oldVnode = patch(app, view(data));
+oldVnode = patch(app, view(data))
 ```
 
 - 点击按钮后（未设置 key）

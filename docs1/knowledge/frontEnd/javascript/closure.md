@@ -9,7 +9,7 @@ order: 2
 - 闭包是 JavaScript 中最基本也是最重要的概念之一，可是闭包又绝对不是一个单一的概念
 - 它涉及作用域、作用域链、执行上下文、内存管理等多重知识点
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/02.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/02.png =700x)
 
 ## 基本知识
 
@@ -25,8 +25,8 @@ order: 2
 
 ```js
 function foo() {
-    var a = 'bar'
-    console.log(a)
+  var a = 'bar'
+  console.log(a)
 }
 foo() // bar
 ```
@@ -37,7 +37,7 @@ foo() // bar
 ```js
 var b = 'bar'
 function foo() {
-    console.log(b)
+  console.log(b)
 }
 foo() // bar
 ```
@@ -47,10 +47,10 @@ foo() // bar
 
 ```js
 function bar() {
-    var b = 'bar'
+  var b = 'bar'
 }
 function foo() {
-    console.log(b) // Uncaught ReferenceError: b is not defined
+  console.log(b) // Uncaught ReferenceError: b is not defined
 }
 foo()
 ```
@@ -59,19 +59,19 @@ foo()
 - foo 函数无法访问 bar 函数中定义的变量 b，且其作用域链内（上层全局作用域中）也不存在相应的变量
 - 因此报错：Uncaught ReferenceError: b is not defined
 
-> [!important]
-> **总结一下**
+> [!important] > **总结一下**
+>
 > - 在 JavaScript 执行一段函数时，遇见变量读取其值，这时候会「就近」先在函数内部找该变量的声明或者赋值情况
 > - 如果在函数内无法找到该变量，就要跳出函数作用域，到更上层作用域中查找
 > - 这里的「更上层作用域」可能也是一个函数作用域，例如：
 
 ```js
 function bar() {
-    var b = 'bar'
-    function foo() {
-        console.log(b)
-    }
-    foo()
+  var b = 'bar'
+  function foo() {
+    console.log(b)
+  }
+  foo()
 }
 
 bar() // bar
@@ -83,10 +83,10 @@ bar() // bar
 ```js
 var b = 'bar'
 function bar() {
-    function foo() {
-        console.log(b)
-    }
-    foo()
+  function foo() {
+    console.log(b)
+  }
+  foo()
 }
 
 bar() // bar
@@ -103,8 +103,8 @@ bar() // bar
 
 ```js
 function foo() {
-    console.log(bar)
-    var bar = 3
+  console.log(bar)
+  var bar = 3
 }
 foo() // undefined
 ```
@@ -113,9 +113,9 @@ foo() // undefined
 
 ```js
 function foo() {
-    var bar 
-    console.log(bar)
-    bar = 3
+  var bar
+  console.log(bar)
+  bar = 3
 }
 foo()
 ```
@@ -124,8 +124,8 @@ foo()
 
 ```js
 function foo() {
-    console.log(bar)
-    let bar = 3
+  console.log(bar)
+  let bar = 3
 }
 foo()
 ```
@@ -137,8 +137,8 @@ foo()
 
 ```js
 function foo() {
-    let bar = 3
-    console.log(bar)
+  let bar = 3
+  console.log(bar)
 }
 foo() // 3
 ```
@@ -147,12 +147,12 @@ foo() // 3
 - 因此在相应花括号形成的作用域中，存在一个「死区」，起始于函数开头，终止于相关变量声明的一行，在这个范围内无法访问 let 或 const 声明的变量
 - 参考下面图示，加深理解：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/03.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/03.png =400x)
 
 - 除了自身作用域内的 foo3 以外，bar2 函数可以访问 foo2、 foo1
 - 但是 bar1 函数却无法访问 bar2 函数内定义的 foo3
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/04.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/04.png =400x)
 
 - bar1 函数 let foo3 = 'foo3' 代码执行前，为「死区」，访问变量 foo3 会报错，该行后即可正常访问
 
@@ -166,7 +166,7 @@ function foo(arg1 = arg2, arg2) {
 
 // 在上面 foo 函数中，如果第一个参数没有传，将会使用第二个参数作为第一个实参值。调用：
 function foo(arg1 = arg2, arg2) {
-    console.log(`${arg1} ${arg2}`)
+  console.log(`${arg1} ${arg2}`)
 }
 
 foo('arg1', 'arg2')
@@ -175,18 +175,17 @@ foo('arg1', 'arg2')
 // 返回内容正常，但是当第一个参数缺省时，执行 arg1 = arg2 会当作暂时性死区处理：
 // 因为除了块级作用域以外，函数参数默认值也会受到 TDZ 影响。
 function foo(arg1 = arg2, arg2) {
-    console.log(`${arg1} ${arg2}`)
+  console.log(`${arg1} ${arg2}`)
 }
 
 foo(undefined, 'arg2') // Uncaught ReferenceError: arg2 is not defined
-
 ```
 
 - 这里再「抖个机灵」，看看下面的代码会输出什么？
 
 ```js
 function foo(arg1 = arg2, arg2) {
-    console.log(`${arg1} ${arg2}`)
+  console.log(`${arg1} ${arg2}`)
 }
 
 foo(null, 'arg2') // null arg2
@@ -198,7 +197,7 @@ foo(null, 'arg2') // null arg2
 
 ```js
 function foo(arg1) {
-    let arg1
+  let arg1
 }
 
 foo('arg1') // Uncaught SyntaxError: Identifier 'arg1' has already been declared
@@ -210,14 +209,14 @@ foo('arg1') // Uncaught SyntaxError: Identifier 'arg1' has already been declared
 
 ```js
 function foo(arg1) {
-    var arg1
-    let arg1
+  var arg1
+  let arg1
 }
 ```
 
 - 请看：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/05.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/05.png =400x)
 
 - 上面提到了「执行上下文」，再看看它究竟是什么
 
@@ -236,6 +235,7 @@ function foo(arg1) {
 - **<font color=red>预编译阶段是前置阶段，这个时候由编译器将 JavaScript 代码编译成可执行的代码</font>**
 
 > [!warning]
+>
 > - 这里的预编译和传统的编译并不一样，传统的编译非常复杂，涉及分词、解析、代码生成等过程
 > - 这里的预编译是 JavaScript 中独特的概念，虽然 JavaScript 是解释型语言，编译一行，执行一行
 > - 但是在代码执行前，JavaScript 引擎确实会做一些「预先准备工作」
@@ -246,6 +246,7 @@ function foo(arg1) {
 
 > [!warning]
 > 经过预编译过程，应该注意三点：
+>
 > - 预编译阶段进行变量声明
 > - 预编译阶段变量声明进行提升，但是值为 undefined
 > - 预编译阶段所有非表达式的函数声明进行提升
@@ -254,11 +255,11 @@ function foo(arg1) {
 
 ```js
 function bar() {
-    console.log('bar1')
+  console.log('bar1')
 }
 
 var bar = function () {
-    console.log('bar2')
+  console.log('bar2')
 }
 
 bar() // bar2
@@ -268,33 +269,33 @@ bar() // bar2
 
 ```js
 // 函数声明提升
-function bar() { 
-    console.log('bar1'); 
+function bar() {
+  console.log('bar1')
 }
 
 // 变量声明提升
-var bar;
+var bar
 
 // 注意，此时没有执行赋值操作，只是声明了变量
 
 // 执行赋值操作，把变量 bar 赋值为了一个函数表达式，覆盖了之前的函数声明
 bar = function () {
-    console.log('bar2');
-};
+  console.log('bar2')
+}
 
 // 执行函数调用
-bar(); // 输出 bar2
+bar() // 输出 bar2
 ```
 
 - 输出：bar2，调换顺序：
 
 ```js
 var bar = function () {
-    console.log('bar2')
+  console.log('bar2')
 }
 
 function bar() {
-    console.log('bar1')
+  console.log('bar1')
 }
 
 bar() // bar2
@@ -306,12 +307,12 @@ bar() // bar2
 
 ```js
 foo(10)
-function foo (num) {
-    console.log(foo)
-    foo = num;       
-    console.log(foo)
-    var foo
-} 
+function foo(num) {
+  console.log(foo)
+  foo = num
+  console.log(foo)
+  var foo
+}
 console.log(foo)
 foo = 1 // 全局作用域中的 foo 被重新赋值为 1
 console.log(foo)
@@ -324,7 +325,7 @@ undefined
 10
 ƒ foo (num) {
     console.log(foo)
-    foo = num     
+    foo = num
     console.log(foo)
     var foo
 }
@@ -334,15 +335,15 @@ undefined
 - 在 foo(10) 执行时，函数体内进行变量提升后，函数体内第一行输出 undefined，函数体内第三行输出 foo
 - 接着运行代码，到了整体第 8 行，console.log(foo) 输出 foo 函数内容（因为 foo 函数内的 foo = num，将 num 赋值给的是函数作用域内的 foo 变量）
 
-> [!important]
-> **结论**
+> [!important] > **结论**
+>
 > - 作用域在预编译阶段确定，但是作用域链是在执行上下文的创建阶段完全生成的
 > - 因为函数在调用时，才会开始创建对应的执行上下文
 >   - 执行上下文包括了：变量对象、作用域链以及 this 的指向
 
 - 如图所示：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/06.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/06.png =400x)
 
 - 代码执行的整个过程说起来就像 **<font color=red>一条生产流水线</font>**
   - 第一道工序是在预编译阶段创建 **<font color=red>变量对象</font>** （Variable Object），此时只是创建，而未赋值
@@ -395,15 +396,16 @@ foo1()
 
 - 得到错误提示如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/07.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/07.png =400x)
 
 - 或者在 Chrome 中执行代码，打断点得到：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/08.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/08.png =400x)
 
 - 不管哪种方式，从中都可以借助 JavaScript 引擎，清晰地看到错误堆栈信息，也就是函数调用栈关系
 
 > [!warning]
+>
 > - 正常来讲，在函数执行完毕并出栈时，函数内局部变量在下一个垃圾回收节点会被回收
 > - 该函数对应的执行上下文将会被销毁，这也正是在外界无法访问函数内定义的变量的原因
 > - 也就是说，只有在函数执行时，相关函数可以访问该变量，该变量在预编译阶段进行创建，在执行阶段进行激活，在函数执行完毕后，相关上下文被销毁
@@ -417,11 +419,11 @@ foo1()
 
 ```js
 function numGenerator() {
-    let num = 1
-    num++
-    return () => {
-        console.log(num)
-    } 
+  let num = 1
+  num++
+  return () => {
+    console.log(num)
+  }
 }
 
 var getNum = numGenerator()
@@ -431,7 +433,7 @@ getNum()
 - 这个简单的闭包例子中，numGenerator 创建了一个变量 num，返回打印 num 值的匿名函数，这个函数引用了变量 num，使得外部可以通过调用 getNum 方法访问到变量 num，因此在 numGenerator 执行完毕后，即相关调用栈出栈后，变量 num 不会消失，仍然有机会被外界访问
 - 执行代码，能清晰地看到 JavaScript 引擎的分析：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/09.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/09.png =400x)
 
 - num 值被标记为 Closure，即闭包变量
 - 对比前述内容，正常情况下外界是无法访问函数内部变量的，函数执行完之后，上下文即被销毁
@@ -452,7 +454,7 @@ getNum()
 
 ```js
 var foo = 'bar' // 在堆内存中给变量分配空间
-alert(foo)  // 使用内存
+alert(foo) // 使用内存
 foo = null // 释放内存空间
 ```
 
@@ -475,7 +477,7 @@ var d = { e: 20 }
 
 - 对应内存分配图示：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/10.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/10.png =400x)
 
 - **<font color=red>对于分配内存和读写内存的行为所有语言都较为一致，但释放内存空间在不同语言之间有差异</font>**
   - 例如，JavaScript 依赖宿主浏览器的垃圾回收机制，一般情况下不用程序员操心，但这并不表示万事大吉，某些情况下依然会出现内存泄漏现象
@@ -488,19 +490,19 @@ var d = { e: 20 }
 - 来看几个典型引起内存泄漏的例子：
 
 ```js
-var element = document.getElementById("element")
-element.mark = "marked"
+var element = document.getElementById('element')
+element.mark = 'marked'
 
 // 移除 element 节点
 function remove() {
-    element.parentNode.removeChild(element)
+  element.parentNode.removeChild(element)
 }
 ```
 
 - 上面的代码，只是把 id 为 element 的节点移除，但是变量 element 依然存在，该节点占有的内存无法被释放
 - 请仔细参考下图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/11.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/11.png =400x)
 
 - 在 remove 方法中添加：element = null，这样更为稳妥
 - 再来看个示例：
@@ -510,8 +512,8 @@ var element = document.getElementById('element')
 element.innerHTML = '<button id="button">点击</button>'
 
 var button = document.getElementById('button')
-button.addEventListener('click', function() {
-    // ...
+button.addEventListener('click', function () {
+  // ...
 })
 
 element.innerHTML = ''
@@ -523,8 +525,8 @@ element.innerHTML = ''
 
 ```js
 function foo() {
-  var name  = 'zxwin'
-  window.setInterval(function() {
+  var name = 'zxwin'
+  window.setInterval(function () {
     console.log(name)
   }, 1000)
 }
@@ -556,11 +558,13 @@ foo()
 
 ```js
 function foo() {
-    let value = 123
+  let value = 123
 
-    function bar() { alert(value) }
+  function bar() {
+    alert(value)
+  }
 
-    return bar
+  return bar
 }
 
 let bar = foo()
@@ -577,13 +581,13 @@ bar = null
 
 ```js
 function foo() {
-    let value = Math.random()
+  let value = Math.random()
 
-    function bar() {
-        debugger
-    }
+  function bar() {
+    debugger
+  }
 
-    return bar
+  return bar
 }
 
 let bar = foo()
@@ -593,20 +597,20 @@ bar()
 - 在 Chrome 浏览器 V8 最新引擎中，执行上述代码
 - 在函数 bar 中打断点，会发现 value 没有被引用，如下图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/12.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/12.png =400x)
 
 - 而在 bar 函数中加入对 value 的引用：
 
 ```js
 function foo() {
-    let value = Math.random()
+  let value = Math.random()
 
-    function bar() {
-        console.log(value)
-        debugger
-    }
+  function bar() {
+    console.log(value)
+    debugger
+  }
 
-    return bar
+  return bar
 }
 
 let bar = foo()
@@ -616,7 +620,7 @@ bar()
 - 会发现此时引擎中存在闭包变量 value 值
 - 如下图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/13.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/13.png =400x)
 
 - 下面来看一个实战，借助 Chrome devtool，排查发现内存泄漏的场景
 - 代码：
@@ -624,20 +628,20 @@ bar()
 ```js
 var array = []
 function createNodes() {
-    let div
-    let i = 100
-    let frag = document.createDocumentFragment()
-    for (; i > 0; i--) {
-        div = document.createElement("div")
-        div.appendChild(document.createTextNode(i))
-        frag.appendChild(div)
-    }
-    document.body.appendChild(frag)
+  let div
+  let i = 100
+  let frag = document.createDocumentFragment()
+  for (; i > 0; i--) {
+    div = document.createElement('div')
+    div.appendChild(document.createTextNode(i))
+    frag.appendChild(div)
+  }
+  document.body.appendChild(frag)
 }
-function badCode() { 
-    array.push([...Array(100000).keys()])
-    createNodes()
-    setTimeout(badCode, 1000)
+function badCode() {
+  array.push([...Array(100000).keys()])
+  createNodes()
+  setTimeout(badCode, 1000)
 }
 
 badCode()
@@ -647,14 +651,14 @@ badCode()
 - 同时，badCode 函数调用 createNodes 函数，每 1s 创建 100 个 div 节点
 - 这时候，打开 Chrome devtool，选中 performance 标签，拍下快照得到：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/14.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/14.png =400x)
 
 - 由此可以发现，JS heap（蓝线）和 Nodes（绿线）线，随着时间线一直在上升，并没有被垃圾回收，因此，可以判定存在较大的内存泄漏风险
 - 如果不知道有问题的代码位置，具体如何找出风险点，那需要在 Chrome memory 标签中，对 JS heap 中每一项，尤其是 size 较大的前几项展开调查，如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/15.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/15.png =400x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/16.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/16.png =400x)
 
 - 明显就是定义的 array 不对劲了
 
@@ -665,15 +669,15 @@ badCode()
 ### 实战例题 1：求下面代码的输出
 
 ```js
-const foo = (function() {
-   var v = 0
-   return () => {
-       return v++
-   }
-}())
+const foo = (function () {
+  var v = 0
+  return () => {
+    return v++
+  }
+})()
 
 for (let i = 0; i < 10; i++) {
-   foo()
+  foo()
 }
 
 console.log(foo()) // 10
@@ -683,12 +687,12 @@ console.log(foo()) // 10
   - foo 是一个立即执行函数，尝试打印 foo
 
 ```js
-const foo = (function() {
-   var v = 0
-   return () => {
-       return v++
-   }
-}())
+const foo = (function () {
+  var v = 0
+  return () => {
+    return v++
+  }
+})()
 
 console.log(foo)
 
@@ -705,16 +709,16 @@ console.log(foo)
 
 ```js
 const foo = () => {
-   var arr = []
-   var i
+  var arr = []
+  var i
 
-   for (i = 0; i < 10; i++) {
-       arr[i] = function () {
-           console.log(i)
-       }
-   }
+  for (i = 0; i < 10; i++) {
+    arr[i] = function () {
+      console.log(i)
+    }
+  }
 
-   return arr[0]
+  return arr[0]
 }
 
 foo()() // 10
@@ -735,15 +739,15 @@ function () {
 ```js
 var fn = null
 const foo = () => {
-   var a = 2
-   function innerFoo() {
-       console.log(a)
-   }
-   fn = innerFoo    
+  var a = 2
+  function innerFoo() {
+    console.log(a)
+  }
+  fn = innerFoo
 }
 
 const bar = () => {
-   fn()
+  fn()
 }
 
 foo()
@@ -762,17 +766,17 @@ bar() // 2
 ```js
 var fn = null
 const foo = () => {
-   var a = 2
-   function innerFoo() {
-       console.log(c)            
-       console.log(a)
-   }
-   fn = innerFoo
+  var a = 2
+  function innerFoo() {
+    console.log(c)
+    console.log(a)
+  }
+  fn = innerFoo
 }
 
 const bar = () => {
-   var c = 100
-   fn()    
+  var c = 100
+  fn()
 }
 
 foo()
@@ -785,7 +789,7 @@ bar() // 报错
   - 因此报错 ReferenceError: c is not defined
   - 图示分析：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/17.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/17.png =400x)
 
 ### 思考例题 5：如何利用闭包实现单例模式
 
@@ -796,17 +800,17 @@ bar() // 报错
 
 ```js
 function Person() {
-   this.name = 'zxwin'
+  this.name = 'zxwin'
 }
 
-const getSingleInstance = (function(){
-    var singleInstance
-   return function() {
-        if (singleInstance) {
-            return singleInstance
-        }
-       return singleInstance = new Person()
-   }
+const getSingleInstance = (function () {
+  var singleInstance
+  return function () {
+    if (singleInstance) {
+      return singleInstance
+    }
+    return (singleInstance = new Person())
+  }
 })()
 
 const instance1 = new getSingleInstance()

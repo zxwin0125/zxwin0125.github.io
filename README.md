@@ -14,7 +14,8 @@
 - 2025.03 - 至今：苏大天宫：PU 口袋校园（学校定制）
 - 2022.06 - 2024.10：数字马力：支付宝（花呗账单、智能讲解低代码）
 - 2020.11 - 2022.05：同程旅行：同程旅行（运营活动）
-<!-- 
+<!--
+
 #### 开源：
 
 - 还没有好点子～ -->
@@ -29,6 +30,6 @@
 ## ☎️ 联系我
 
 - **邮箱** zxwin_0125@163.com
-- **微信** 
+- **微信**
 
-<img src="https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Wechat.jpg" alt="Wechat" width="300" />
+<img src="https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Wechat.jpg" alt="Wechat" width="300" />

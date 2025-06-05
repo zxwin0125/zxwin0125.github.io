@@ -38,11 +38,11 @@ order: 1
 - Yeoman 不同于 vue-cli 更像是一个脚手架的运行平台，我们可以通过 Yeoman 搭配不同的 generator 创建任何类型的项目，我们可以创建我们自己的 Generator，从而去创建我们自己的前端脚手架
 - 缺点是，在框架开发的项目中，Yeoman 过于通用，不够专注
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/06.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/06.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/07.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/07.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/08.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/08.png)
 
 ### Yeoman 基础使用
 
@@ -62,7 +62,7 @@ npm install generator-node --global # or yarn global add generator-node
 yo node
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/09.png)
 
 ### Sub generator
 
@@ -79,11 +79,11 @@ yo node:cli
 - 运行 Sub generator 的方式就是在原有 generator 命令后面跟上 Sub generator 的名字，这里会提示我们是否要重写 package.json 这样一个文件
 - 原因是在去添加 cli 支持的时候，会添加一些新的模块和配置，我们选择 yes，完成过后会提示重写了 package.json 创建了 `lib\cli.js`
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/10.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/10.png)
 
 - lib 目录下的 cli.js 提供了一些 cli 应用基础的代码结构，有了这些就可以将这个模块作为一个全局的命令行模块去使用
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/11.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/11.png)
 
 - 本地的模块我们通过 npm link 到全局范围
 
@@ -171,19 +171,19 @@ npm install yeoman-generator
 - index.js 需要导出一个继承自 Yeoman generator 的类型，Yeoman generator 在工作时会自动调用此类型中定义的一些生命周期方法，可以在这些方法中通过调用父类提供的工具方法实现一些功能，例如文件写入
 
 ```javascript
-const Generator = require('yeoman-generator');
+const Generator = require('yeoman-generator')
 
 module.exports = class extends Generator {
-	writing() {
-		// Yeoman 自动生成文件阶段调用此方法
-		// 我们尝试往项目目录中写入文件
-		this.fs.write(
-			// 这里的 fs 模块与 node 中的 fs 不同，是高度封装的模块功能更强大一些
-			this.destinationPath('temp.txt'), // this.destinationPath 是父类中方法用来获取绝对路径
-			Math.random().toString()
-		);
-	}
-};
+  writing() {
+    // Yeoman 自动生成文件阶段调用此方法
+    // 我们尝试往项目目录中写入文件
+    this.fs.write(
+      // 这里的 fs 模块与 node 中的 fs 不同，是高度封装的模块功能更强大一些
+      this.destinationPath('temp.txt'), // this.destinationPath 是父类中方法用来获取绝对路径
+      Math.random().toString()
+    )
+  }
+}
 ```
 
 - 这时一个简单的 generator 就已经完成了，通过 npm link 的方式把这个模块连接到全局范围，使之成为一个全局模块包，这样 Yeoman 在工作的时候就可以找到自己写的这个 generator-simple 模块
@@ -207,12 +207,12 @@ yo simple
 
 ```javascript
 // index.js
-import Generator from 'yeoman-generator';
+import Generator from 'yeoman-generator'
 
 export default class extends Generator {
-	writing() {
-		this.fs.write(this.destinationPath('temp.txt'), Math.random().toString());
-	}
+  writing() {
+    this.fs.write(this.destinationPath('temp.txt'), Math.random().toString())
+  }
 }
 ```
 
@@ -227,6 +227,7 @@ export default class extends Generator {
 5. 此时 yeoman 在运行中就会自动使用模板引擎渲染模板
 
 - foo.txt 模版
+
 ```javascript
 这是一个模版文件
 内部可以使用 EJS 模版标记输出数据
@@ -242,20 +243,20 @@ export default class extends Generator {
 - 修改后的 index.js
 
 ```javascript
-import Generator from 'yeoman-generator';
+import Generator from 'yeoman-generator'
 
 export default class extends Generator {
-	writing() {
-		// 模板文件路径，可以借助 templatePath 方法去自动获取当前生成器下 templates 下文件路径
-		const tmpl = this.templatePath('foo.txt');
-		// 输出目标路径，还是借助父类的 destinationPath 方法自动获取
-		const output = this.destinationPath('temp.txt');
-		// 模板数据上下文
-		const context = { title: 'hello zxwin', success: 'false' };
+  writing() {
+    // 模板文件路径，可以借助 templatePath 方法去自动获取当前生成器下 templates 下文件路径
+    const tmpl = this.templatePath('foo.txt')
+    // 输出目标路径，还是借助父类的 destinationPath 方法自动获取
+    const output = this.destinationPath('temp.txt')
+    // 模板数据上下文
+    const context = { title: 'hello zxwin', success: 'false' }
 
-		// copyTpl 方法会自动将模板文件映射到生成的输出文件上
-		this.fs.copyTpl(tmpl, output, context);
-	}
+    // copyTpl 方法会自动将模板文件映射到生成的输出文件上
+    this.fs.copyTpl(tmpl, output, context)
+  }
 }
 ```
 
@@ -270,15 +271,15 @@ export default class extends Generator {
 <!-- bar.html 模版 -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title><%= name %></title>
-</head>
-<body>
-  <h1><%= name %></h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title><%= name %></title>
+  </head>
+  <body>
+    <h1><%= name %></h1>
+  </body>
 </html>
 ```
 
@@ -325,9 +326,9 @@ writing() {
 
 - 这里看下用脚手架创建的最新 Vue3 项目结构
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/12.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/12.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/13.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/13.png)
 
 #### Step2 封装 gengerator
 
@@ -348,20 +349,20 @@ npm install yeoman-generator
 - 新建 generator 主入口文件 generators/app/index.js
 
 ```javascript
-import Generator from "yeoman-generator";
+import Generator from 'yeoman-generator'
 
 export default class extends Generator {
   prompting() {
     return this.prompt([
       {
-        type: "input",
-        name: "name",
-        message: "Your project name",
+        type: 'input',
+        name: 'name',
+        message: 'Your project name',
         default: this.appname
       }
     ]).then(answers => {
-      this.answers = answers;
-    });
+      this.answers = answers
+    })
   }
 
   writing() {}
@@ -369,6 +370,7 @@ export default class extends Generator {
 ```
 
 - 创建 templates 目录，把目标项目的目录结构 copy 到 templates 当中作为模板
+
 1. 有了模板过后，需要把项目结构里面一些可能发生变化的地方通过模板引擎的方式修改
 2. 通过数组循环的方式批量生成每一个文件，把每一个文件通过模板转换，生成到对应的路径
 
@@ -436,7 +438,7 @@ npm install plop --dev
 
 ```javascript
 module.exports = plop => {
-  plop.setGenerator('component', {});
+  plop.setGenerator('component', {})
 }
 ```
 
@@ -477,6 +479,7 @@ yarn plop component
 
 > [!important]
 > 使用 Plop 步骤总结
+>
 > 1. 将 plop 模块作为项目开发依赖安装
 > 2. 在项目根目录下创建一个 plopfile.js 文件
 > 3. 在 plopfile.js 文件中定义脚手架任务
@@ -506,8 +509,8 @@ yarn init
 
 ```json
 {
-	"name": "sample-scaffolding",
-	"bin": "cli.js"
+  "name": "sample-scaffolding",
+  "bin": "cli.js"
 }
 ```
 
@@ -540,6 +543,7 @@ sample-scaffolding
 ### 实现一个简单脚手架
 
 > [!important]
+>
 > 1. 通过命令行交互的询问用户信息
 > 2. 根据用户反馈结果生成文件
 
@@ -557,17 +561,19 @@ yarn add inquirer --dev
   - 在 promise 的 then 里面拿到这个问题接收到用户的答案
 
 ```javascript
-const inquirer = require('inquirer');
+const inquirer = require('inquirer')
 
-inquirer.prompt([
+inquirer
+  .prompt([
     {
-        type: 'input',
-        name: 'name',
-        message: 'Project name'
+      type: 'input',
+      name: 'name',
+      message: 'Project name'
     }
-]).then(answer => {
-    console.log(answer);
-})
+  ])
+  .then(answer => {
+    console.log(answer)
+  })
 ```
 
 - 动态生成项目文件，一般会根据模板去生成，所以在项目的跟目录下新建一个 templates 目录，在这个目录下新建一些模板
@@ -575,12 +581,12 @@ inquirer.prompt([
 - 输出的目标目录一般是命令行所在的路径也就是 cwd 目录
 
 ```javascript
-const path = require('path');
+const path = require('path')
 
 // 工具当前目录
-const tmplDir = path.join(__dirname, 'templates');
+const tmplDir = path.join(__dirname, 'templates')
 // 命令行所在目录
-const destDir = process.cwd();
+const destDir = process.cwd()
 ```
 
 - 明确这两个目录就可以通过 fs 模块读取模板目录下一共有哪些文件
@@ -588,12 +594,12 @@ const destDir = process.cwd();
 
 ```javascript
 fs.readdir(tmplDir, (err, files) => {
-    if (err) {
-        throw err;
-    }
-    files.forEach(file => {
-        console.log(file); // 得到每个文件的相对路径
-    })
+  if (err) {
+    throw err
+  }
+  files.forEach(file => {
+    console.log(file) // 得到每个文件的相对路径
+  })
 })
 ```
 
@@ -633,32 +639,31 @@ const questions = [
     name: 'name',
     message: 'Project name?'
   }
-];
+]
 
-inquirer.default.prompt(questions)
-  .then(anwsers => {
-    // console.log(anwsers)
-    // 根据用户回答的结果生成文件
+inquirer.default.prompt(questions).then(anwsers => {
+  // console.log(anwsers)
+  // 根据用户回答的结果生成文件
 
-    // 模板目录
-    const tmplDir = path.join(__dirname, 'templates')
-    // 目标目录
-    const destDir = process.cwd()
+  // 模板目录
+  const tmplDir = path.join(__dirname, 'templates')
+  // 目标目录
+  const destDir = process.cwd()
 
-    // 将模板下的文件全部转换到目标目录
-    fs.readdir(tmplDir, (err, files) => {
-      if (err) throw err
-      files.forEach(file => {
-        // 通过模板引擎渲染文件
-        ejs.renderFile(path.join(tmplDir, file), anwsers, (err, result) => {
-          if (err) throw err
+  // 将模板下的文件全部转换到目标目录
+  fs.readdir(tmplDir, (err, files) => {
+    if (err) throw err
+    files.forEach(file => {
+      // 通过模板引擎渲染文件
+      ejs.renderFile(path.join(tmplDir, file), anwsers, (err, result) => {
+        if (err) throw err
 
-          // 将结果写入目标文件路径
-          fs.writeFileSync(path.join(destDir, file), result)
-        })
+        // 将结果写入目标文件路径
+        fs.writeFileSync(path.join(destDir, file), result)
       })
     })
   })
+})
 ```
 
 - 完成过后找到一个新的目录使用脚手架

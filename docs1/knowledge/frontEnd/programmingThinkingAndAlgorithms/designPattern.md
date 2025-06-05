@@ -7,6 +7,7 @@ order: 1
 
 > [!info]
 > 维基百科对设计模式的定义为：
+>
 > - 在软件工程中，设计模式（Design Pattern）是对软件设计中普遍存在（反复出现）的各种问题，所提出的解决方案
 > - 这个术语是由埃里希·伽玛（Erich Gamma）等人在 1990 年代从建筑设计领域引入到计算机科学的
 > - 设计模式并不是直接用来完成代码的编写，而是描述在各种不同情况下，要怎么解决问题的一种方案
@@ -17,7 +18,7 @@ order: 1
   - **<font color=red>设计模式不能停留在理论上，而是应该结合到实际代码当中</font>**
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms01.webp =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms01.webp =500x)
 
 ## 设计模式到底是什么
 
@@ -35,7 +36,7 @@ order: 1
   - 合成复用原则
 - 如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms02.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms02.webp)
 
 - **开闭原则（Open Close Principle）**
   - 理解开闭原则，就要了解开和闭
@@ -69,7 +70,8 @@ order: 1
   - 行为型
 - 如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms03.webp =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms03.webp =500x)
+
 > 对于 Java 来说，它还包括了 J2EE 类型设计模式
 
 - **创建型（Creational Patterns）**
@@ -84,7 +86,7 @@ order: 1
 - 设计模式使代码编写真正工程化，设计模式是软件工程的基石脉络，如同大厦的结构一样
 - 其实没有必要刻意地去学习设计模式，因为有关设计模式的思想一定是在实际工程开发中慢慢体会总结的
 - 但是这需要做到「非常有心」，才能够去慢慢积累，为了能够培养这种「用心」，专门了解设计模式似乎也是一种捷径和方式
-一些关于设计模式的经典资料：
+  一些关于设计模式的经典资料：
   - [design-patterns-for-humans](https://github.com/kamranahmedse/design-patterns-for-humans)：这是一本非常著名的设计模式书 pdf
   - [design-patterns-for-humans-cn](https://github.com/guanguans/design-patterns-for-humans-cn)：上本书的中文版 pdf
   - [Learning JavaScript Design Patterns](https://patterns.addy.ie/)：addyosmani 大神的书 pdf
@@ -93,7 +95,7 @@ order: 1
 - 同时 GitHub 上也有一个不错的 repo：[JsPattern-ES6](https://github.com/DavidCai1111/JsPatterns-ES6)，使用 ES6 重写了《JavaScript 模式》一书中的样例
 - 还有一个「神器」是：[es6-design-patterns](http://loredanacirstea.github.io/es6-design-patterns/%23composite)，如截图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms04.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/ProgrammingThinkingAndAlgorithms04.webp)
 
 - 这个网站通过 UML 图解释设计模式，同时配以可以运行的代码示例，非常方便对每一种设计模式进行学习
 
@@ -109,22 +111,22 @@ order: 1
 
 ```javascript
 class jQuery {
-	constructor(selector) {
-		super(selector);
-	}
+  constructor(selector) {
+    super(selector)
+  }
 
-	//  ....
+  //  ....
 }
 
 window.$ = function (selector) {
-	return new jQuery(selector);
-};
+  return new jQuery(selector)
+}
 ```
 
 - 这样的代码非常明显，需要构建一个 jQuery 实例时，只需要：
 
 ```javascript
-$('selector');
+$('selector')
 ```
 
 - 因为已经被挂载在 window 上，而作为一个函数，它直接返回了 new jQuery(selector)，开发者不需要再麻烦地使用 new $('selector') 方式
@@ -139,61 +141,61 @@ React.createElement('span', null, 'Factory Pattern!'),
 
 ```javascript
 class Car {
-	constructor(options) {
-		const { doors = 4, state = 'new', color = 'black' } = options;
-		this.doors = doors;
-		this.state = state;
-		this.color = color;
-	}
+  constructor(options) {
+    const { doors = 4, state = 'new', color = 'black' } = options
+    this.doors = doors
+    this.state = state
+    this.color = color
+  }
 }
 
 class Truck {
-	constructor(options) {
-		const { wheelSize = 'medium', state = 'used', color = 'silver' } = options;
-		this.wheelSize = wheelSize;
-		this.state = state;
-		this.color = color;
-	}
+  constructor(options) {
+    const { wheelSize = 'medium', state = 'used', color = 'silver' } = options
+    this.wheelSize = wheelSize
+    this.state = state
+    this.color = color
+  }
 }
 
 class VehicleFactory {
-	createVehicle(options) {
-		switch (options.type) {
-			case 'car':
-				this.vehicleTarget = Car;
-				break;
+  createVehicle(options) {
+    switch (options.type) {
+      case 'car':
+        this.vehicleTarget = Car
+        break
 
-			case 'truck':
-				this.vehicleTarget = Truck;
-				break;
+      case 'truck':
+        this.vehicleTarget = Truck
+        break
 
-			default:
-				this.vehicleTarget = Car;
-				break;
-		}
-		return new this.vehicleTarget(options);
-	}
+      default:
+        this.vehicleTarget = Car
+        break
+    }
+    return new this.vehicleTarget(options)
+  }
 }
 
-let factory = new VehicleFactory();
+let factory = new VehicleFactory()
 let instance1 = factory.createVehicle({
-	type: 'car',
-	color: 'yellow',
-	doors: 4,
-});
+  type: 'car',
+  color: 'yellow',
+  doors: 4
+})
 
 let instance2 = factory.createVehicle({
-	type: 'truck',
-	state: 'new',
-	wheelSize: 'small',
-});
+  type: 'truck',
+  state: 'new',
+  wheelSize: 'small'
+})
 ```
 
 - 尝试：
 
 ```javascript
-instance1 instanceof Car;
-instance2 instanceof Truck;
+instance1 instanceof Car
+instance2 instanceof Truck
 ```
 
 - 都会返回 true
@@ -207,12 +209,12 @@ instance2 instanceof Truck;
 
 ```javascript
 class Singleton {
-	constructor() {
-		if (!Singleton.instance) {
-			Singleton.instance = this;
-		}
-		return Singleton.instance;
-	}
+  constructor() {
+    if (!Singleton.instance) {
+      Singleton.instance = this
+    }
+    return Singleton.instance
+  }
 }
 ```
 
@@ -224,7 +226,7 @@ class Singleton {
 
 ```javascript
 class Pizza {
-	constructor(size, chesse = true, tomato = false, lettuce = false) {}
+  constructor(size, chesse = true, tomato = false, lettuce = false) {}
 }
 ```
 
@@ -233,15 +235,7 @@ class Pizza {
 
 ```javascript
 class Pizza {
-	constructor(
-		size,
-		mushroom = true,
-		oliver = true,
-		poulet = false,
-		chesse = true,
-		tomato = false,
-		lettuce = false
-	) {}
+  constructor(size, mushroom = true, oliver = true, poulet = false, chesse = true, tomato = false, lettuce = false) {}
 }
 ```
 
@@ -249,50 +243,50 @@ class Pizza {
 
 ```javascript
 class Pizza {
-	constructor(size) {
-		this.size = size;
-	}
+  constructor(size) {
+    this.size = size
+  }
 
-	addMushroom() {
-		this.mushroom = true;
-		return this;
-	}
+  addMushroom() {
+    this.mushroom = true
+    return this
+  }
 
-	addOliver() {
-		this.oliver = true;
-		return this;
-	}
+  addOliver() {
+    this.oliver = true
+    return this
+  }
 
-	addPoulet() {
-		this.poulet = true;
-		return this;
-	}
+  addPoulet() {
+    this.poulet = true
+    return this
+  }
 
-	addChesse() {
-		this.chesse = true;
-		return this;
-	}
+  addChesse() {
+    this.chesse = true
+    return this
+  }
 
-	addTomato() {
-		this.tomato = true;
-		return this;
-	}
+  addTomato() {
+    this.tomato = true
+    return this
+  }
 
-	addLettuce() {
-		this.lettuce = true;
-		return this;
-	}
+  addLettuce() {
+    this.lettuce = true
+    return this
+  }
 
-	build() {
-		return new Pizza(this);
-	}
+  build() {
+    return new Pizza(this)
+  }
 }
 ```
 
 - 这样一来，使用就会更加优雅：
 
 ```javascript
-new Pizza(32).addOliver().addTomato().build();
+new Pizza(32).addOliver().addTomato().build()
 ```
 
 - 可以认为参数以对象的形式传入，就能解决参数过多以及参数顺序问题，可是往往构造一个对象并不只是参数的问题
@@ -300,13 +294,13 @@ new Pizza(32).addOliver().addTomato().build();
 - 可以通过多种方式构造 DOM：
 
 ```javascript
-$(<p>bar</p>);
+$(<p>bar</p>)
 
 $(
-	<p>
-		foo <em>bar</em>
-	</p>
-).appendTo('body');
+  <p>
+    foo <em>bar</em>
+  </p>
+).appendTo('body')
 
 //...
 ```
@@ -317,47 +311,46 @@ $(
 // HANDLE: $(html) -> $(array)
 
 if (match[1]) {
-	context = context instanceof jQuery ? context[0] : context;
-	doc = context ? context.ownerDocument || context : document;
+  context = context instanceof jQuery ? context[0] : context
+  doc = context ? context.ownerDocument || context : document
 
-	// 如果传入的是单个字符串，并且是单个标记
-	// 只需执行 createElement 并跳过其余部分
+  // 如果传入的是单个字符串，并且是单个标记
+  // 只需执行 createElement 并跳过其余部分
 
-	ret = rsingleTag.exec(selector);
+  ret = rsingleTag.exec(selector)
 
-	if (ret) {
-		if (jQuery.isPlainObject(context)) {
-			selector = [document.createElement(ret[1])];
-			jQuery.fn.attr.call(selector, context, true);
-		} else {
-			selector = [doc.createElement(ret[1])];
-		}
-	} else {
-		ret = jQuery.buildFragment([match[1]], [doc]);
-		selector = (ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment)
-			.childNodes;
-	}
+  if (ret) {
+    if (jQuery.isPlainObject(context)) {
+      selector = [document.createElement(ret[1])]
+      jQuery.fn.attr.call(selector, context, true)
+    } else {
+      selector = [doc.createElement(ret[1])]
+    }
+  } else {
+    ret = jQuery.buildFragment([match[1]], [doc])
+    selector = (ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment).childNodes
+  }
 }
-return jQuery.merge(this, selector);
+return jQuery.merge(this, selector)
 ```
 
 ## 外观模式在前端中的应用
 
 - **外观模式的精髓在于对接口进行二次封装，隐藏其内部的复杂度**
--  这种设计在前端开发中也非常常见，比如跨浏览器兼容性的封装，比如事件：
+- 这种设计在前端开发中也非常常见，比如跨浏览器兼容性的封装，比如事件：
 
 ```javascript
 var addMyEvent = function (el, ev, fn) {
-	if (el.addEventListener) {
-		// 存在 DOM2 级方法，则使用并传入事件类型、事件处理程序函数和第 3 个参数 false（表示冒泡阶段）
-		el.addEventListener(ev, fn, false);
-	} else if (el.attachEvent) {
-		// 为兼容 IE8 及更早浏览器，注意事件类型必须加上"on"前缀
-		el.attachEvent('on' - ev, fn);
-	} else {
-		el['on' - ev] = fn; // 其他方法都无效，默认采用 DOM0 级方法，使用方括号语法将属性名指定为事件处理程序
-	}
-};
+  if (el.addEventListener) {
+    // 存在 DOM2 级方法，则使用并传入事件类型、事件处理程序函数和第 3 个参数 false（表示冒泡阶段）
+    el.addEventListener(ev, fn, false)
+  } else if (el.attachEvent) {
+    // 为兼容 IE8 及更早浏览器，注意事件类型必须加上"on"前缀
+    el.attachEvent('on' - ev, fn)
+  } else {
+    el['on' - ev] = fn // 其他方法都无效，默认采用 DOM0 级方法，使用方括号语法将属性名指定为事件处理程序
+  }
+}
 ```
 
 - 再比如 `$(document).ready` 的用法：
@@ -385,42 +378,42 @@ bindReady:function () {
 
 ```javascript
 var module = (function () {
-	var _private = {
-		i: 5,
+  var _private = {
+    i: 5,
 
-		get: function () {
-			console.log('current value:' - this.i);
-		},
+    get: function () {
+      console.log('current value:' - this.i)
+    },
 
-		set: function (val) {
-			this.i = val;
-		},
+    set: function (val) {
+      this.i = val
+    },
 
-		run: function () {
-			console.log('running');
-		},
+    run: function () {
+      console.log('running')
+    },
 
-		jump: function () {
-			console.log('jumping');
-		},
-	};
+    jump: function () {
+      console.log('jumping')
+    }
+  }
 
-	return {
-		facade: function (args) {
-			_private.set(args.val);
-			_private.get();
+  return {
+    facade: function (args) {
+      _private.set(args.val)
+      _private.get()
 
-			if (args.run) {
-				_private.run();
-			}
-		},
-	};
-})();
+      if (args.run) {
+        _private.run()
+      }
+    }
+  }
+})()
 ```
 
 ```javascript
 // Outputs: "current value: 10" and "running"
-module.facade({ run: true, val: 10 });
+module.facade({ run: true, val: 10 })
 ```
 
 - 在这个例子中，只需要调用 `module.facade( {run: true, val: 10} )`，调用后会触发模块当中私有方法，实现对数值的改写，并不需要明白 module 内部实现，只需要关心其封装即可
@@ -443,10 +436,10 @@ filter: alpha((opacity = 90));
 
 ```javascript
 // 读
-$('.container').css({ opacity: 0.5 });
+$('.container').css({ opacity: 0.5 })
 
 // 取
-let opacity = $('.container').css({ opacity: 0.5 });
+let opacity = $('.container').css({ opacity: 0.5 })
 ```
 
 - jQuery 利用适配器模式，对这种差异进行了抹平：
@@ -516,22 +509,22 @@ let opacity = $('.container').css({ opacity: 0.5 });
 
 ```javascript
 Function.prototype.implementsFor = function (parentClassOrObject) {
-	if (parentClassOrObject.constructor === Function) {
-		// Normal Inheritance
+  if (parentClassOrObject.constructor === Function) {
+    // Normal Inheritance
 
-		this.prototype = new parentClassOrObject();
-		this.prototype.constructor = this;
-		this.prototype.parent = parentClassOrObject.prototype;
-	} else {
-		// Pure Virtual Inheritance
+    this.prototype = new parentClassOrObject()
+    this.prototype.constructor = this
+    this.prototype.parent = parentClassOrObject.prototype
+  } else {
+    // Pure Virtual Inheritance
 
-		this.prototype = parentClassOrObject;
-		this.prototype.constructor = this;
-		this.prototype.parent = parentClassOrObject;
-	}
+    this.prototype = parentClassOrObject
+    this.prototype.constructor = this
+    this.prototype.parent = parentClassOrObject
+  }
 
-	return this;
-};
+  return this
+}
 ```
 
 - implementsFor 作用于一个构造函数，它接受一个父类（function）或者一个 object，并继承该父类构造函数（function）或者指定的 object
@@ -541,79 +534,74 @@ Function.prototype.implementsFor = function (parentClassOrObject) {
 // Flyweight object
 
 var CoffeeOrder = {
-	// Interfaces
+  // Interfaces
 
-	serveCoffee: function (context) {},
+  serveCoffee: function (context) {},
 
-	getFlavor: function () {},
-};
+  getFlavor: function () {}
+}
 
 // ConcreteFlyweight object that creates ConcreteFlyweight
 
 // Implements CoffeeOrder
 
 function CoffeeFlavor(newFlavor) {
-	var flavor = newFlavor;
+  var flavor = newFlavor
 
-	// If an interface has been defined for a feature
+  // If an interface has been defined for a feature
 
-	// implement the feature
+  // implement the feature
 
-	if (typeof this.getFlavor === 'function') {
-		this.getFlavor = function () {
-			return flavor;
-		};
-	}
+  if (typeof this.getFlavor === 'function') {
+    this.getFlavor = function () {
+      return flavor
+    }
+  }
 
-	if (typeof this.serveCoffee === 'function') {
-		this.serveCoffee = function (context) {
-			console.log(
-				'Serving Coffee flavor ' +
-					flavor +
-					' to table number ' +
-					context.getTable()
-			);
-		};
-	}
+  if (typeof this.serveCoffee === 'function') {
+    this.serveCoffee = function (context) {
+      console.log('Serving Coffee flavor ' + flavor + ' to table number ' + context.getTable())
+    }
+  }
 }
 
 // Implement interface for CoffeeOrder
 
-CoffeeFlavor.implementsFor(CoffeeOrder);
+CoffeeFlavor.implementsFor(CoffeeOrder)
 
 // Handle table numbers for a coffee order
 
 function CoffeeOrderContext(tableNumber) {
-	return {
-		getTable: function () {
-			return tableNumber;
-		},
-	};
+  return {
+    getTable: function () {
+      return tableNumber
+    }
+  }
 }
 
 function CoffeeFlavorFactory() {
-	var flavors = {},
-		length = 0;
+  var flavors = {},
+    length = 0
 
-	return {
-		getCoffeeFlavor: function (flavorName) {
-			var flavor = flavors[flavorName];
+  return {
+    getCoffeeFlavor: function (flavorName) {
+      var flavor = flavors[flavorName]
 
-			if (typeof flavor === 'undefined') {
-				flavor = new CoffeeFlavor(flavorName);
+      if (typeof flavor === 'undefined') {
+        flavor = new CoffeeFlavor(flavorName)
 
-				flavors[flavorName] = flavor;
+        flavors[flavorName] = flavor
 
-				length++;
-			}
+        length++
+      }
 
-			return flavor;
-		},
+      return flavor
+    },
 
-		getTotalCoffeeFlavorsMade: function () {
-			return length;
-		},
-	};
+    getTotalCoffeeFlavorsMade: function () {
+      return length
+    }
+  }
 }
 
 // Sample usage:
@@ -621,67 +609,64 @@ function CoffeeFlavorFactory() {
 // testFlyweight()
 
 function testFlyweight() {
-	// The flavors ordered.
+  // The flavors ordered.
 
-	var flavors = [],
-		// The tables for the orders.
+  var flavors = [],
+    // The tables for the orders.
 
-		tables = [],
-		// Number of orders made
+    tables = [],
+    // Number of orders made
 
-		ordersMade = 0,
-		// The CoffeeFlavorFactory instance
+    ordersMade = 0,
+    // The CoffeeFlavorFactory instance
 
-		flavorFactory = new CoffeeFlavorFactory();
+    flavorFactory = new CoffeeFlavorFactory()
 
-	function takeOrders(flavorIn, table) {
-		flavors.push(flavorFactory.getCoffeeFlavor(flavorIn));
+  function takeOrders(flavorIn, table) {
+    flavors.push(flavorFactory.getCoffeeFlavor(flavorIn))
 
-		tables.push(new CoffeeOrderContext(table));
+    tables.push(new CoffeeOrderContext(table))
 
-		ordersMade++;
-	}
+    ordersMade++
+  }
 
-	takeOrders('Cappuccino', 2);
+  takeOrders('Cappuccino', 2)
 
-	takeOrders('Cappuccino', 2);
+  takeOrders('Cappuccino', 2)
 
-	takeOrders('Frappe', 1);
+  takeOrders('Frappe', 1)
 
-	takeOrders('Frappe', 1);
+  takeOrders('Frappe', 1)
 
-	takeOrders('Xpresso', 1);
+  takeOrders('Xpresso', 1)
 
-	takeOrders('Frappe', 897);
+  takeOrders('Frappe', 897)
 
-	takeOrders('Cappuccino', 97);
+  takeOrders('Cappuccino', 97)
 
-	takeOrders('Cappuccino', 97);
+  takeOrders('Cappuccino', 97)
 
-	takeOrders('Frappe', 3);
+  takeOrders('Frappe', 3)
 
-	takeOrders('Xpresso', 3);
+  takeOrders('Xpresso', 3)
 
-	takeOrders('Cappuccino', 3);
+  takeOrders('Cappuccino', 3)
 
-	takeOrders('Xpresso', 96);
+  takeOrders('Xpresso', 96)
 
-	takeOrders('Frappe', 552);
+  takeOrders('Frappe', 552)
 
-	takeOrders('Cappuccino', 121);
+  takeOrders('Cappuccino', 121)
 
-	takeOrders('Xpresso', 121);
+  takeOrders('Xpresso', 121)
 
-	for (var i = 0; i < ordersMade; ++i) {
-		flavors[i].serveCoffee(tables[i]);
-	}
+  for (var i = 0; i < ordersMade; ++i) {
+    flavors[i].serveCoffee(tables[i])
+  }
 
-	console.log(' ');
+  console.log(' ')
 
-	console.log(
-		'total CoffeeFlavor objects made: ' +
-			flavorFactory.getTotalCoffeeFlavorsMade()
-	);
+  console.log('total CoffeeFlavor objects made: ' + flavorFactory.getTotalCoffeeFlavorsMade())
 }
 ```
 
@@ -703,86 +688,80 @@ function testFlyweight() {
 
 ```javascript
 var Book = function (
-	id,
-	title,
-	author,
-	genre,
-	pageCount,
-	publisherID,
-	ISBN,
-	checkoutDate,
-	checkoutMember,
-	dueReturnDate,
-	availability
+  id,
+  title,
+  author,
+  genre,
+  pageCount,
+  publisherID,
+  ISBN,
+  checkoutDate,
+  checkoutMember,
+  dueReturnDate,
+  availability
 ) {
-	this.id = id;
+  this.id = id
 
-	this.title = title;
+  this.title = title
 
-	this.author = author;
+  this.author = author
 
-	this.genre = genre;
+  this.genre = genre
 
-	this.pageCount = pageCount;
+  this.pageCount = pageCount
 
-	this.publisherID = publisherID;
+  this.publisherID = publisherID
 
-	this.ISBN = ISBN;
+  this.ISBN = ISBN
 
-	this.checkoutDate = checkoutDate;
+  this.checkoutDate = checkoutDate
 
-	this.checkoutMember = checkoutMember;
+  this.checkoutMember = checkoutMember
 
-	this.dueReturnDate = dueReturnDate;
+  this.dueReturnDate = dueReturnDate
 
-	this.availability = availability;
-};
+  this.availability = availability
+}
 
 Book.prototype = {
-	getTitle: function () {
-		return this.title;
-	},
+  getTitle: function () {
+    return this.title
+  },
 
-	getAuthor: function () {
-		return this.author;
-	},
+  getAuthor: function () {
+    return this.author
+  },
 
-	getISBN: function () {
-		return this.ISBN;
-	},
+  getISBN: function () {
+    return this.ISBN
+  },
 
-	// For brevity, other getters are not shown
+  // For brevity, other getters are not shown
 
-	updateCheckoutStatus: function (
-		bookID,
-		newStatus,
-		checkoutDate,
-		checkoutMember,
-		newReturnDate
-	) {
-		this.id = bookID;
+  updateCheckoutStatus: function (bookID, newStatus, checkoutDate, checkoutMember, newReturnDate) {
+    this.id = bookID
 
-		this.availability = newStatus;
+    this.availability = newStatus
 
-		this.checkoutDate = checkoutDate;
+    this.checkoutDate = checkoutDate
 
-		this.checkoutMember = checkoutMember;
+    this.checkoutMember = checkoutMember
 
-		this.dueReturnDate = newReturnDate;
-	},
+    this.dueReturnDate = newReturnDate
+  },
 
-	extendCheckoutPeriod: function (bookID, newReturnDate) {
-		this.id = bookID;
+  extendCheckoutPeriod: function (bookID, newReturnDate) {
+    this.id = bookID
 
-		this.dueReturnDate = newReturnDate;
-	},
+    this.dueReturnDate = newReturnDate
+  },
 
-	isPastDue: function (bookID) {
-		var currentDate = new Date();
+  isPastDue: function (bookID) {
+    var currentDate = new Date()
 
-		return currentDate.getTime() > Date.parse(this.dueReturnDate);
-	},
-};
+    return currentDate.getTime() > Date.parse(this.dueReturnDate)
+  }
+}
 ```
 
 - 这么看上去并没有什么问题，但是当图书增多时，对于系统的压力会逐渐增多
@@ -792,40 +771,40 @@ Book.prototype = {
 
 ```javascript
 var Book = function (title, author, genre, pageCount, publisherID, ISBN) {
-	this.title = title;
-	this.author = author;
-	this.genre = genre;
-	this.pageCount = pageCount;
-	this.publisherID = publisherID;
-	this.ISBN = ISBN;
-};
+  this.title = title
+  this.author = author
+  this.genre = genre
+  this.pageCount = pageCount
+  this.publisherID = publisherID
+  this.ISBN = ISBN
+}
 ```
 
 - 将外在特性删去，check-outs 等信息将会被移动到一个新的类中，一个新的工厂函数也将出现：
 
 ```javascript
 var BookFactory = (function () {
-	var existingBooks = {},
-		existingBook;
+  var existingBooks = {},
+    existingBook
 
-	return {
-		createBook: function (title, author, genre, pageCount, publisherID, ISBN) {
-			// Find out if a particular book meta-data combination has been created before
-			// !! or (bang bang) forces a boolean to be returned
-			existingBook = existingBooks[ISBN];
+  return {
+    createBook: function (title, author, genre, pageCount, publisherID, ISBN) {
+      // Find out if a particular book meta-data combination has been created before
+      // !! or (bang bang) forces a boolean to be returned
+      existingBook = existingBooks[ISBN]
 
-			if (!!existingBook) {
-				return existingBook;
-			} else {
-				// if not, let's create a new instance of the book and store it
-				var book = new Book(title, author, genre, pageCount, publisherID, ISBN);
-				existingBooks[ISBN] = book;
+      if (!!existingBook) {
+        return existingBook
+      } else {
+        // if not, let's create a new instance of the book and store it
+        var book = new Book(title, author, genre, pageCount, publisherID, ISBN)
+        existingBooks[ISBN] = book
 
-				return book;
-			}
-		},
-	};
-})();
+        return book
+      }
+    }
+  }
+})()
 ```
 
 - 在这个工厂函数中，将会检查当前需要创建的书籍是否已经存在
@@ -836,71 +815,55 @@ var BookFactory = (function () {
 
 ```javascript
 var BookRecordManager = (function () {
-	var bookRecordDatabase = {};
+  var bookRecordDatabase = {}
 
-	return {
-		// add a new book into the library system
+  return {
+    // add a new book into the library system
 
-		addBookRecord: function (
-			id,
-			title,
-			author,
-			genre,
-			pageCount,
-			publisherID,
-			ISBN,
-			checkoutDate,
-			checkoutMember,
-			dueReturnDate,
-			availability
-		) {
-			var book = BookFactory.createBook(
-				title,
-				author,
-				genre,
-				pageCount,
-				publisherID,
-				ISBN
-			);
+    addBookRecord: function (
+      id,
+      title,
+      author,
+      genre,
+      pageCount,
+      publisherID,
+      ISBN,
+      checkoutDate,
+      checkoutMember,
+      dueReturnDate,
+      availability
+    ) {
+      var book = BookFactory.createBook(title, author, genre, pageCount, publisherID, ISBN)
 
-			bookRecordDatabase[id] = {
-				checkoutMember: checkoutMember,
-				checkoutDate: checkoutDate,
-				dueReturnDate: dueReturnDate,
-				availability: availability,
-				book: book,
-			};
-		},
+      bookRecordDatabase[id] = {
+        checkoutMember: checkoutMember,
+        checkoutDate: checkoutDate,
+        dueReturnDate: dueReturnDate,
+        availability: availability,
+        book: book
+      }
+    },
 
-		updateCheckoutStatus: function (
-			bookID,
-			newStatus,
-			checkoutDate,
-			checkoutMember,
-			newReturnDate
-		) {
-			var record = bookRecordDatabase[bookID];
+    updateCheckoutStatus: function (bookID, newStatus, checkoutDate, checkoutMember, newReturnDate) {
+      var record = bookRecordDatabase[bookID]
 
-			record.availability = newStatus;
-			record.checkoutDate = checkoutDate;
-			record.checkoutMember = checkoutMember;
-			record.dueReturnDate = newReturnDate;
-		},
+      record.availability = newStatus
+      record.checkoutDate = checkoutDate
+      record.checkoutMember = checkoutMember
+      record.dueReturnDate = newReturnDate
+    },
 
-		extendCheckoutPeriod: function (bookID, newReturnDate) {
-			bookRecordDatabase[bookID].dueReturnDate = newReturnDate;
-		},
+    extendCheckoutPeriod: function (bookID, newReturnDate) {
+      bookRecordDatabase[bookID].dueReturnDate = newReturnDate
+    },
 
-		isPastDue: function (bookID) {
-			var currentDate = new Date();
+    isPastDue: function (bookID) {
+      var currentDate = new Date()
 
-			return (
-				currentDate.getTime() >
-				Date.parse(bookRecordDatabase[bookID].dueReturnDate)
-			);
-		},
-	};
-})();
+      return currentDate.getTime() > Date.parse(bookRecordDatabase[bookID].dueReturnDate)
+    }
+  }
+})()
 ```
 
 - 其实变动也比较明显，书目所有的外在特性都被从书本身的特性中抽离，现在被移动到 BookManager 的 BookDatabase 当中
@@ -910,27 +873,25 @@ var BookRecordManager = (function () {
   - 如果有 30 本同样一本书的 copy，现有的模式下只存储了一个实例
   - 同时对于书状态转移的函数，维护在 BookManager 当中，而不再出现在对象（原型）上，如果这些函数出现在每一个书实例当中，将会是更大的开销
 - 享元模式在前端还有更多的应用，比如事件代理就是一个很典型的体现：
-> More Info (Address) This is more informationEven More Info (Map) 
+  > More Info (Address) This is more informationEven More Info (Map)
 - 我们集中将事件处理放到父容器上：
 
 ```javascript
 var stateManager = {
-
   fly: function () {
+    var self = this
 
-    var self = this;
-
-    $( "#container" )
-          .unbind()
-          .on( "click", "div.toggle", function ( e ) {
-            self.handleClick( e.target );
-          });
+    $('#container')
+      .unbind()
+      .on('click', 'div.toggle', function (e) {
+        self.handleClick(e.target)
+      })
   },
 
-  handleClick: function ( elem ) {
-    $( elem ).find( "span" ).toggle( "slow" );
+  handleClick: function (elem) {
+    $(elem).find('span').toggle('slow')
   }
-};
+}
 ```
 
 - 如此类似，React 合成事件的池化机制，都体现了异曲同工之妙
@@ -942,7 +903,7 @@ var stateManager = {
 - 在函数执行时，优先使用缓存值，否则返回执行计算值
 
 ```javascript
-const getCacheProxy = (fn, cache = new Map()) => 
+const getCacheProxy = (fn, cache = new Map()) =>
   new Proxy(fn, {
     apply(target, context, args) {
       const argsString = args.join(' ')
@@ -970,43 +931,45 @@ const createThrottleProxy = (fn, timer) => {
       }
     }
   })
-};
+}
 ```
 
 - 再来看 jQuery 当中的例子：
 
 ```javascript
-$( "button" ).on( "click", function () {
+$('button').on('click', function () {
   // Within this function, "this" refers to the element that was clicked
-  $( this ).addClass( "active" );
-});
+  $(this).addClass('active')
+})
 ```
 
 - 通过 `$( this )` 可以获取到当前触发事件的元素，但是：
 
 ```javascript
-$( "button" ).on( "click", function () {
+$('button').on('click', function () {
   setTimeout(function () {
     // "this" doesn't refer to our element!
-    $( this ).addClass( "active" );
-  });
-});
+    $(this).addClass('active')
+  })
+})
 ```
 
 - 但是这里的 `$( this )` 不再是预期之中的结果
 - 为此，jQuery 提供了 `.proxy()` 方法，这是典型的代理模式体现
 
 ```javascript
-$( "button" ).on( "click", function () {
+$('button').on('click', function () {
+  setTimeout(
+    $.proxy(function () {
+      // "this" now refers to our element as we wanted
+      $(this).addClass('active')
+    }, this),
+    500
+  )
 
-    setTimeout( $.proxy( function () {
-        // "this" now refers to our element as we wanted
-        $( this ).addClass( "active" );
-    }, this), 500);
-
-    // the last "this" we're passing tells $.proxy() that our DOM element
-    // is the value we want "this" to refer to.
-});
+  // the last "this" we're passing tells $.proxy() that our DOM element
+  // is the value we want "this" to refer to.
+})
 ```
 
 - 来看一下 proxy 的实现：
@@ -1048,13 +1011,13 @@ proxy: function( fn, context ) {
 
 ```javascript
 import React, { Component } from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 class App extends Component {
- render() {
-  //...
- }
+  render() {
+    //...
+  }
 }
-export default connect(mapStateToProps,actionCreators)(App);
+export default connect(mapStateToProps, actionCreators)(App)
 ```
 
 - 或者在 Ant design 中：
@@ -1069,19 +1032,19 @@ CustomizedForm = Form.create({})(CustomizedForm)
 - 借助装饰者模式，很容易衍生出 AOP 面向切面编程的概念：
 
 ```javascript
-Function.prototype.before = function(fn) {
+Function.prototype.before = function (fn) {
   const self = this
-  return function() {
-    fn.apply(new(self), arguments)
-    return self.apply(new(self), arguments)
+  return function () {
+    fn.apply(new self(), arguments)
+    return self.apply(new self(), arguments)
   }
 }
 
-Function.prototype.after = function(fn) {
+Function.prototype.after = function (fn) {
   const self = this
-  return function() {
-    self.apply(new(self), arguments)
-    return fn.apply(new(self), arguments)
+  return function () {
+    self.apply(new self(), arguments)
+    return fn.apply(new self(), arguments)
   }
 }
 ```
@@ -1090,26 +1053,25 @@ Function.prototype.after = function(fn) {
 - 典型场景就是对表单的验证，将把表单输入逻辑校验的 validata 函数融入到 before 逻辑当中：
 
 ```javascript
-Function.prototype.before = function( beforefn ) {
+Function.prototype.before = function (beforefn) {
   const self = this
-  return function(){
-    if ( beforefn.apply( this, arguments ) === false ) return 
-    return self.apply( this, arguments )
+  return function () {
+    if (beforefn.apply(this, arguments) === false) return
+    return self.apply(this, arguments)
   }
 }
 
-
-const validate = function(){
+const validate = function () {
   // 表单验证逻辑
 }
 
-const formSubmit = function() {
+const formSubmit = function () {
   // 表达提交逻辑
-  ajax( 'http:// xxx.com/login', param )
+  ajax('http:// xxx.com/login', param)
 }
 
-submitBtn.onclick = function() {
-  formSubmit.before( validate )
+submitBtn.onclick = function () {
+  formSubmit.before(validate)
 }
 ```
 
@@ -1120,57 +1082,57 @@ submitBtn.onclick = function() {
 
 ```javascript
 class Account {
-    next(account) {
-        this.successor = account
-    }
+  next(account) {
+    this.successor = account
+  }
 
-    pay(amount) {
-        if (this.canPay(amount)) {
-            console.log(`Paid ${amount} using ${this.name}`)
-        } else if (this.successor) {
-            console.log(`Cannot pay using ${this.name}. Proceeding...`)
-            this.successor.pay(amount)
-        } else {
-            console.log('None of the accounts have enough balance')
-        }
+  pay(amount) {
+    if (this.canPay(amount)) {
+      console.log(`Paid ${amount} using ${this.name}`)
+    } else if (this.successor) {
+      console.log(`Cannot pay using ${this.name}. Proceeding...`)
+      this.successor.pay(amount)
+    } else {
+      console.log('None of the accounts have enough balance')
     }
+  }
 
-    canPay(amount) {
-        return this.balance >= amount
-    }
+  canPay(amount) {
+    return this.balance >= amount
+  }
 }
 
 class Bank extends Account {
-    constructor(balance) {
-        super()
-        this.name = 'bank'
-        this.balance = balance
-    }
+  constructor(balance) {
+    super()
+    this.name = 'bank'
+    this.balance = balance
+  }
 }
 
 class Paypal extends Account {
-    constructor(balance) {
-        super()        
-        this.name = 'Paypal'
-        this.balance = balance
-    }
+  constructor(balance) {
+    super()
+    this.name = 'Paypal'
+    this.balance = balance
+  }
 }
 
 class Bitcoin extends Account {
-    constructor(balance) {
-        super()        
-        this.name = 'bitcoin'
-        this.balance = balance
-    }
+  constructor(balance) {
+    super()
+    this.name = 'bitcoin'
+    this.balance = balance
+  }
 }
 ```
 
 - 在使用时，我们先给三个账户充钱：
 
 ```javascript
-const bank = new Bank(100)          // Bank with balance 100
-const paypal = new Paypal(200)      // Paypal with balance 200
-const bitcoin = new Bitcoin(300)    // Bitcoin with balance 300
+const bank = new Bank(100) // Bank with balance 100
+const paypal = new Paypal(200) // Paypal with balance 200
+const bitcoin = new Bitcoin(300) // Bitcoin with balance 300
 ```
 
 - 并按顺序优先调用银行付款、PayPal 付款、比特币付款：
@@ -1201,25 +1163,25 @@ Paid 250 using bitcoin
 
 ```javascript
 const bubbleSort = target => {
-    console.log('Sorting with bubble sort')
-    // ...
-    // ...
-    return target
+  console.log('Sorting with bubble sort')
+  // ...
+  // ...
+  return target
 }
 
 const quickSort = target => {
-    console.log('Sorting with quick sort')
-    // ...
-    // ...
-    return target
+  console.log('Sorting with quick sort')
+  // ...
+  // ...
+  return target
 }
 
 const sorter = target => {
-    if(target.length > 5){
-        return quickSort(target)
-    } else {
-        return bubbleSort(target)
-    }
+  if (target.length > 5) {
+    return quickSort(target)
+  } else {
+    return bubbleSort(target)
+  }
 }
 ```
 
@@ -1305,7 +1267,7 @@ registerForm.onsubmit = function() {
     varerrorMsg = validataFunc()
     if (errorMsg) {
         alert(errorMsg)
-        return false 
+        return false
     }
 }
 ```

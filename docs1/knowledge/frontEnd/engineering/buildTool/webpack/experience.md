@@ -4,22 +4,28 @@ star: true
 order: 4
 ---
 
-## webpack 增强开发体验  
+## webpack 增强开发体验
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/19.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/19.png)
 
 - 以目前状态应对日常开发工作还远远不够，因为这种方式，即编写源代码 -> webpack 打包 -> 运行应用 -> 刷新浏览器，过于原始
 - 如果实际开发过程中还按照这种方式去使用，会大大降低开发效率
 
 > [!info]
 > 设想理想的开发环境
+>
 > 1. 以 HTTP Server 运行，不是以文件形式预览
->   - 更加接近生产环境的状态
->   - 类似 ajax 这类 api，不支持文件访问形式
+>
+> - 更加接近生产环境的状态
+> - 类似 ajax 这类 api，不支持文件访问形式
+>
 > 2. 自动编译 + 自动刷新
->   - 减少额外操作
+>
+> - 减少额外操作
+>
 > 3. 提供 Source Map 支持
->   - 调试错误时快速定位
+>
+> - 调试错误时快速定位
 
 ### 1. watch 监听模式实现自动编译
 
@@ -42,11 +48,13 @@ order: 4
 ## webpack-dev-server 实现自动编译 + 自动刷新
 
 > 上面实现两个开发体验的方式的缺点
+>
 > 1. 需要打开两个终端去执行命令，操作较麻烦
 > 2. webpack 频繁将编译后的文件写入磁盘，browser-sync 从磁盘中读取文件，这个过程中，一次就会多出两步磁盘读写的操作，效率上降低了
 
 > [!info]
 > webpack-dev-server 是 webpack 官方的开发工具
+>
 > - 它提供一个用于开发的 HTTP Server 服务器，并且集成了「自动编译」和「自动刷新浏览器」等功能
 
 - 安装命令：`yarn add webpack-dev-server --dev`，安装完后，这个模块会提供一个 webpack-dev-server 的 cli 程序
@@ -54,9 +62,10 @@ order: 4
 - 运行过后还会监听代码变化，一旦源文件发送变化，它就会自动立即重新打包
 
 > [!warning]
+>
 > - webpack-dev-server 为了提高工作效率，并没有将打包结果写入到磁盘当中，而是将打包结果，暂时存放在内存中
 > - 内部的 HTTP Server 从内存中读取这些文件，发送给浏览器
-> - 这样减少很多不必要的磁盘读写操作，从而大大提高构建效率 
+> - 这样减少很多不必要的磁盘读写操作，从而大大提高构建效率
 
 - 还可以为这个命令添加`--open`参数，即`yarn webpack-dev-server --open`自动唤起浏览器打开运行地址
 
@@ -85,6 +94,7 @@ module.exports = {
 
 > [!warning]
 > 一般开发阶段最好不要使用 copy 插件
+>
 > - 由于开发阶段修改代码会频繁重复的执行 webpack 打包任务
 > - 如果拷贝的文件比较多或比较大，每次执行 copy 任务，打包的开销就比较大，并且会降低速度
 > - 所以拷贝任务一般会配置在打包发布版本的阶段执行，而开发阶段使用配置额外资源的查找路径 devServer.contentBase 的方式去访问
@@ -93,13 +103,13 @@ module.exports = {
 
 - 由于 webpack-dev-server 启动了一个本地的开发服务器，默认运行在 `http://localhost:8080` 这样一个端口上面
 - 而最终上线过后，应用一般和请求后端的 API 会部署到同源地址下面，这样就会在开发环境中出现跨域请求失败的问题
-  - 虽然可以使用跨域资源共享（CORS）的方式去解决，但这个方式的前提是请求的这个 API 支持 CORS 
+  - 虽然可以使用跨域资源共享（CORS）的方式去解决，但这个方式的前提是请求的这个 API 支持 CORS
   - 这需要后端和服务器配合，而且并不是任何情况下 API 都应该支持 CORS
   - 例如：前后端同源部署，即发布后，前后端在同一个域名、协议、端口下，就没有必要开启 CORS
 - 所以解决「开发阶段接口跨域问题」的最好的办法就是在开发服务器当中配置「代理服务」
   - 也就是将接口服务，代理到本地的开发服务地址
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/20.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/20.png)
 
 - webpack-dev-server 支持通过配置（devServer.proxy）的方式，添加代理服务
 
@@ -155,7 +165,7 @@ module.exports = {
   - 例如：请求 https://api.github.com/api/users 时，请求头的「host」为 api.github.com（默认 80 端口）
 
 > [!info]
->「host」的意义：一般情况下，服务器会配置多个网站，服务器端需要根据「host」判断当前请求是哪个网站，从而把这个请求指派到对应的网站
+> 「host」的意义：一般情况下，服务器会配置多个网站，服务器端需要根据「host」判断当前请求是哪个网站，从而把这个请求指派到对应的网站
 
 - webpack-dev-server 在客户端对代理后的地址发起请求时，请求的地址是 `http://localhost:8080/api/users`，所以请求头的「host」为 `localhost:8080`
 - 代理背后又去请求被代理的地址 https://api.github.com/users，请求的过程中同样会带一个「host」，而代理服务默认使用用户在客户端发起请求的「host」，即 `localhost:8080`
@@ -171,9 +181,9 @@ module.exports = {
   - 它用来映射转换后的代码(compiled)与源代码(source)之间的关系
   - 转换后的代码，通过转换过程中生成的 Source Map 文件进行解析，就可以逆向得到源代码
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/21.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/21.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/22.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/22.png)
 
 ### 1. Source Map 文件
 
@@ -224,11 +234,11 @@ module.exports = {
 - webpack 基于对 source map 不同风格的支持，提供了26种不同的模式（实现方式）
   - 每种方式的效率和效果各不相同，简单表现为：效果越少的，生成速度越快
 
-> [!info]
-> [webpack 官方文档](https://webpack.js.org/configuration/devtool/#devtool)提供了一个 devtool 不同模式对比表
+> [!info] > [webpack 官方文档](https://webpack.js.org/configuration/devtool/#devtool)提供了一个 devtool 不同模式对比表
+>
 > - 分别从初次构建(打包)速度「build」、监视模式重新打包速度「rebuild」、是否适合在生产环境中使用「production」以及 所生成的 source map 的质量「quality」4个维度对比了不同方式之间的差异
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/23.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/23.png)
 
 > webpack 期望设置 devtool 时，使用特定的顺序(eval(none)除外)：[inline-|hidden-|eval-][nosources-][cheap-[module-]]source-map
 
@@ -244,6 +254,7 @@ module.exports = {
   devtool: 'eval',
 }
 ```
+
 ```js
 //# sourceMappingURL=jquery-3.4.1.min.map
 ```
@@ -259,7 +270,7 @@ eval('console.log(123)')
 - 它可以用来运行字符串中的 JavaScript 代码，默认运行在一个临时的虚拟机环境中
   - 在开发者环境中执行这条语句，可以看到它的来源指向VM**，点击可跳转到 sources 面板查看它的源代码，tab 名即虚拟机环境名称 VM**
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/24.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/24.png)
 
 - 可以通过 sourceURL 修改它的运行环境的名称/所属文件路径
   - 控制台输入以下代码，它的来源就会指向`./foo/bar.js`
@@ -268,17 +279,18 @@ eval('console.log(123)')
 eval('console.log(123)' //# sourceURL=./foo/bar.js
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/25.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/25.png)
 
 > [!warning]
 > 代码依然在虚拟机上运行，只不过它告诉执行引擎这段代码所属的这个文件路径，它修改的只是个标识而已
 
 - webpack 配置 devtool 使用 eval 模式，根据控制台提示就能找到错误所出现的文件
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/26.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/26.png)
 
 > [!warning]
 > 但是查看源代码时，只能看到对应的模块打包后的代码，这是为什么呢？
+>
 > - 因为使用 eval 模式，会在打包文件中将要执行的代码放到 eval 方法中执行，并且在 eval 函数执行的字符串最后，通过 sourceURL 去说明所对应的模块文件路径
 > - 这样浏览器在通过 eval 执行这段代码时，就知道所对应的源代码文件，从而实现定位错误所出现的文件，只能去定位文件
 
@@ -309,7 +321,7 @@ eval('console.log(123)' //# sourceURL=./foo/bar.js
 
 - 与 eval-cheap-source-map 的区别是，查看的源码与实际源文件一样（loader 转换前），但同样无法定位列
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/27.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/27.png)
 
 ### 6. devtool 总结
 
@@ -318,11 +330,12 @@ eval('console.log(123)' //# sourceURL=./foo/bar.js
 
 > [!info]
 > 拆解介绍
+>
 > - eval：是否使用 eval 执行模块代码
 > - inline：指定 source map 以 Data URLs 方式嵌入到打包文件
 > - hidden：指定不会在打包文件中，通过注释引入 source map 文件
 >   - 一般用于开发第三方包时使用
-> nosources：在开发人员工具中会看到行列信息，但无法看到源码（报错：Could not load content for xxxx）
+>     nosources：在开发人员工具中会看到行列信息，但无法看到源码（报错：Could not load content for xxxx）
 >   - 用于在生产环境避免其他人看到源码的同时，定位错误
 >   - 可能是通过未定义 sourcesContent 实现
 > - source-map：表示会生成 source map，eval/inline 模式会以 Data URLs 形式嵌入到打包文件中，其他模式以物理文件（.map）形式生成
@@ -337,6 +350,7 @@ eval('console.log(123)' //# sourceURL=./foo/bar.js
 
 > [!info]
 > 使用建议
+>
 > - [eval/inline]-source-map 会将 source map 以 Data URLs 方式嵌入到打包文件中，会使文件变大很多，一般不建议使用
 
 ## Source Map 模式选择建议
@@ -362,6 +376,7 @@ eval('console.log(123)' //# sourceURL=./foo/bar.js
 
 > [!info]
 > 计算机行业常见名词「热拔插」：在一个正在运行的机器上随时插拔设备，例如电脑上的 USB 端口就是可以热拔插的
+>
 > - 机器的运行状态不会受插拔设备的影响
 > - 插上的设备可以立即开始工作
 
@@ -388,9 +403,7 @@ module.exports = {
   devServer: {
     hot: true
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ]
+  plugins: [new webpack.HotModuleReplacementPlugin()]
 }
 ```
 
@@ -408,8 +421,8 @@ module.exports = {
 
 ```js
 if (module.hot) {
-	// ...
-	module.hot.accept(/*...*/)
+  // ...
+  module.hot.accept(/*...*/)
   // ...
 }
 ```

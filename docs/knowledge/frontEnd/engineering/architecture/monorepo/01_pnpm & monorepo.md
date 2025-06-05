@@ -409,7 +409,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### Ant Design
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/001.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/001.jpg)
 
 - 使用`pnpm`管理多包依赖，统一版本，提升包的发布和构建效率
 - 将核心组件库（`@ant-design/components`）、文档站点、工具包（如构建脚本、代码风格插件）等分离为多个包
@@ -418,7 +418,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### ahooks
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/002.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/002.jpg)
 
 - Hooks 被拆分为多个功能模块（如`useRequest`、`useDrag`），用户可以按需安装
 - 使用`pnpm + rollup`实现轻量化构建，避免重复依赖
@@ -426,7 +426,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### Umi
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/003.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/003.jpg)
 
 - 核心框架、插件系统、测试工具（如`umi-test`）分模块管理，保证功能解耦
 - 通过`shared-utils`统一核心工具函数，降低重复实现
@@ -434,7 +434,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### Qiankun
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/004.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/004.jpg)
 
 - 核心库（`qiankun`）、测试工具、示例项目（examples）统一管理
 - 使用`pnpm`的软链接功能，将本地开发包无缝集成到示例项目中，提升开发效率
@@ -442,7 +442,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### Arco Design
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/005.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/005.jpg)
 
 - 核心组件（React/Vue）、主题工具、图标库等分为多个子包，灵活组合
 - 提供`@arco-dev/cli`，帮助开发者快速生成符合 monorepo 的项目结构
@@ -450,7 +450,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### Semi Design
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/006.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/006.jpg)
 
 - 使用 Rush 或`pnpm`管理模块依赖，避免团队协作中出现版本不一致的问题
 - 将基础组件、业务组件、脚手架工具解耦，支持用户按需引用和定制
@@ -458,7 +458,7 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### IconPark
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/007.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/007.jpg)
 
 - 图标库分为 SVG 核心包、React 包、Vue 包等多个模块，适配不同前端框架
 - 使用`pnpm`的 workspace 特性，保持模块之间的依赖同步
@@ -466,21 +466,21 @@ npx husky add .husky/pre-commit "pnpm lint"
 
 ### VTable
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/008.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/008.jpg)
 
 - 表格渲染核心与业务逻辑解耦，核心功能支持按需加载
 - 使用`pnpm`和`eslint-config`等统一代码规范
 
 ### Garfish
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/009.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/009.jpg)
 
 - 核心库与插件模块化拆分，方便扩展
 - 集成 Lerna 和 pnpm，提升依赖管理和构建速度
 
 ### rsbuild
 
-[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/010.jpg)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/010.jpg)
 
 - 子模块拆分为核心构建引擎、适配器、工具包，保持灵活性
 - 利用 monorepo 管理开发环境依赖，统一使用 Rush 提升构建效率

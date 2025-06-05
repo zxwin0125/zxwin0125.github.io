@@ -11,6 +11,7 @@ order: 2
 
 > [!info]
 > 举例
+>
 > - 有一个数组，数组中存储了10项内容，通过这10项内容生成了10个 `<li>`
 > - 当数组中某一项内容发生变化时，大多数 JavaScript 框架会根据这个数组 **<font color=red>重新构建整个列表</font>**，这比 **<font color=red>必要的工作</font>**（只更新一项）多出了十倍
 
@@ -30,6 +31,7 @@ order: 2
   <p>React is great </p>
 </div>
 ```
+
 ```jsx
 {
   type: "div", // type表示节点的类型信息
@@ -73,7 +75,7 @@ order: 2
 - Virtual DOM 对象的更新和比较仅发生在内存中，不会在视图中渲染任何内容，所以这一部分的性能损耗成本是微不足道的
 - 并且 JavaScript 操作 JavaScript 对象相比操作 DOM 对象是非常快的，所以这提高了操作 DOM 的性能
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/08.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/08.png =500x)
 
 ```jsx
 // 更新前的 JSX：
@@ -82,6 +84,7 @@ order: 2
 // 更新后的 JSX：
 <div id="container">Hello React</div>
 ```
+
 ```jsx
 // 更新前的 Virtual DOM：
 const before = {
@@ -146,7 +149,7 @@ const before = {
 
 #### 方法二：使用行注释
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/09.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/09.png =700x)
 
 ### 2. createElement
 
@@ -166,7 +169,7 @@ const before = {
  */
 // 从 createElement 方法的第三个参数开始就都是子元素了
 // 在定义 createElement 方法时，通过 ...children 将所有的子元素放置到 children 数组中
-export default function createElement (type, props, ...children) {
+export default function createElement(type, props, ...children) {
   return {
     type,
     props,
@@ -211,10 +214,11 @@ const virtualDOM = (
 console.log(virtualDOM)
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/10.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/10.png =500x)
 
 > [!warning]
 > 通过以上代码测试，发现返回的 Virtual DOM 存在一些问题
+>
 > 1. 文本节点是以字符串形式存在的，例如 "你好 Tiny React"、"2, 3"
 > 2. 过滤 JS 表达式结果为 false 的节点
 > 3. 无法通过 props.children 获取子节点
@@ -233,7 +237,7 @@ console.log(virtualDOM)
  * @param  {createElement[]} children 子元素
  * @return {object} Virtual DOM
  */
-export default function createElement (type, props, ...children) {
+export default function createElement(type, props, ...children) {
   // 将原有 children 拷贝一份 不要在原有数组上进行操作
   const childElements = [].concat(...children).map(child => {
     // 判断 child 是否是对象类型
@@ -242,7 +246,7 @@ export default function createElement (type, props, ...children) {
       return child
     } else {
       // 如果不是对象就是文本 手动调用 createElement 方法将文本转换为 Virtual DOM
-      return createElement("text", { textContent: child })
+      return createElement('text', { textContent: child })
     }
   })
   return {
@@ -253,7 +257,7 @@ export default function createElement (type, props, ...children) {
 }
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/11.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/11.png =500x)
 
 ### 4. 过滤 false 节点
 
@@ -302,30 +306,31 @@ export default function createElement (type, props, ...children) {
  * @param  {createElement[]} children 子元素
  * @return {object} Virtual DOM
  */
-export default function createElement (type, props, ...children) {
+export default function createElement(type, props, ...children) {
   const childElements = [].concat(...children).reduce((result, child) => {
     if (child !== false && child !== true && child !== null) {
       if (child instanceof Object) {
         result.push(child)
       } else {
-        result.push(createElement("text", { textContent: child }))
+        result.push(createElement('text', { textContent: child }))
       }
     }
     return result
   }, [])
   return {
     type,
-    props: Object.assign({children: childElements}, props),
+    props: Object.assign({ children: childElements }, props),
     children: childElements
   }
 }
 ```
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/12.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/12.png =500x)
 
 ### 6. 总结
 
 > [!important]
+>
 > - createElement 方法用于创建一个 Virtual DOM 对象
 > - 在创建 Virtual DOM 对象的时候，要将文本节点也转换成一个 JS 对象
 > - 返回值为 Boolean 或 null 的节点不会渲染到视图中，所以要过滤掉
@@ -334,6 +339,7 @@ export default function createElement (type, props, ...children) {
 ## 普通 Virtual DOM 对象转化为真实 DOM 对象
 
 > 现在要实现将普通 Virtual DOM 对象转换为真实 DOM 对象，并且将转换后的 DOM 展示到页面当中
+>
 > - 这里的 Virtual DOM 对象指的是原生 DOM 转化的对象（不是组件转化的）
 > - 要实现这个需求就要用到 render 方法
 
@@ -343,6 +349,7 @@ export default function createElement (type, props, ...children) {
 // src/TinyReact/render.js
 export default function render(virtualDOM, container, oldDOM) {}
 ```
+
 ```js
 // src/TinyReact/index.js
 import createElement from './createElement'
@@ -353,6 +360,7 @@ export default {
   render
 }
 ```
+
 ```js
 // src/index.js
 import TinyReact from './TinyReact'
@@ -368,6 +376,7 @@ TinyReact.render(virtualDOM, root)
 
 console.log(virtualDOM)
 ```
+
 ```html
 <!-- src/index.html -->
 <body>
@@ -405,6 +414,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 
 > [!warning]
 > 在进行 Virtual DOM 转换之前还需要确定 Virtual DOM 的类 Component VS Native Element
+>
 > - 类型不同需要做不同的处理
 >   - 如果是 Native Element
 >     - 直接转换
@@ -421,6 +431,7 @@ export default function mountElement(virtualDOM, container) {
   mountNativeElement(virtualDOM, container)
 }
 ```
+
 ```js
 // src/TinyReact/mountNativeElement.js
 export default function mountNativeElement(virtualDOM, container) {}
@@ -429,8 +440,10 @@ export default function mountNativeElement(virtualDOM, container) {}
 ### 3. mountNativeElement
 
 1. 判断节点类型
-  - 元素：创建元素节点
-  - 文本：创建文本节点
+
+- 元素：创建元素节点
+- 文本：创建文本节点
+
 2. 递归创建子节点
 3. 将转换之后的 DOM 对象放置到页面中
 
@@ -470,6 +483,7 @@ export default function mountNativeElement(virtualDOM, container) {
   container.appendChild(newElement)
 }
 ```
+
 ```js
 // src/TinyReact/createDOMElement.js
 import mountElement from './mountElement'
@@ -497,21 +511,25 @@ export default function createDOMElement(virtualDOM) {
 ### 4. 总结
 
 > [!important]
+>
 > 1. 在 HTML 文件中添加了一个 root 容器，用于放置 Virtual DOM 转换的真实 DOM
-> 2. render 方法用于将 Virtual DOM 转换的真实 DOM，并放置到容器中 
+> 2. render 方法用于将 Virtual DOM 转换的真实 DOM，并放置到容器中
 > 3. render 方法是框架向外部提供开发者使用的方法，其中使用了一些内部方法，例如 diff
 > 4. diff 方法接受3个参数：
->   - 要转换的 Virtual DOM
->   - 转换后要放置的位置
->   - 页面中已经存在的旧的 DOM 节点
+>
+> - 要转换的 Virtual DOM
+> - 转换后要放置的位置
+> - 页面中已经存在的旧的 DOM 节点
+>
 > 5. diff 中要进行判断，如果存在旧的 DOM 节点则进行比对，如果不存在则直接挂载 mountElement
 > 6. mountElement 挂载 DOM 要判断当前是组件 Virtual DOM 还是普通的 Virtual DOM，执行相应的处理（当前只处理了普通的 Virtual DOM）
 > 7. 如果是普通的 Virtual DOM 则调用 mountNativeElement 转换为真实 DOM 并展示到页面中
 > 8. mountNativeElement
->   - 先创建一个 newElement 变量用于存储创建的节点
->   - 然后判断节点类型 type，创建相应的节点 node
->   - 然后还要递归转换当前节点的子节点，继续调用 mountElement 方法
->   - 最后将转换后的 DOM 对象 ( newElement ) 放置到页面中
+>
+> - 先创建一个 newElement 变量用于存储创建的节点
+> - 然后判断节点类型 type，创建相应的节点 node
+> - 然后还要递归转换当前节点的子节点，继续调用 mountElement 方法
+> - 最后将转换后的 DOM 对象 ( newElement ) 放置到页面中
 
 ## 为 DOM 对象添加属性
 
@@ -520,6 +538,7 @@ export default function createDOMElement(virtualDOM) {
 
 > [!warning]
 > 在添加属性的时候还要进行一些判断：
+>
 > - 是否是事件属性
 >   - 根据属性名是否以 on 开头判断
 >   - 然后使用 addEventListener 添加事件处理函数
@@ -554,6 +573,7 @@ export default function createDOMElement(virtualDOM) {
   return newElement
 }
 ```
+
 ```js
 // src/TinyReact/updateNodeElement.js
 export default function updateNodeElement(newElement, virtualDOM) {
@@ -597,24 +617,26 @@ export default function updateNodeElement(newElement, virtualDOM) {
 
 > [!warning]
 > Native Element 和 Component 的主要区别就是它们的 **<font color=red>type</font>** 不同：
+>
 > - Native Element 的 type 是字符串
 > - Component 的 type 是函数
 >   - 函数组件：type 存储的就是定义组件的函数
 >   - 类组件：type 存储的是定义组件的 class （JavaScript 中 class 其实就是函数）
 
 ```js
-function Heart () {
-	return <div>&hearts;</div>
+function Heart() {
+  return <div>&hearts;</div>
 }
 
 console.log(<Heart />)
 ```
+
 ```js
 // 组件的 Virtual DOM
 {
   type: f Heart(),
   props: {},
-  children: []  
+  children: []
 }
 ```
 
@@ -629,7 +651,7 @@ import TinyReact from './TinyReact'
 const root = document.querySelector('#root')
 
 const virtualDOM = (
-	...  
+	...
 )
 
 // TinyReact.render(virtualDOM, root)
@@ -640,13 +662,14 @@ function Heart () {
 
 TinyReact.render(<Heart />, root)
 ```
+
 ```js
 // src/TinyReact/mountElement.js
 import mountNativeElement from './mountNativeElement'
 import isFunction from './isFunction'
 import mountComponent from './mountComponent'
 export default function mountElement(virtualDOM, container) {
-  // 无论是类组件还是函数组件，其实本质上都是函数 
+  // 无论是类组件还是函数组件，其实本质上都是函数
   // 如果 Virtual DOM 的 type 属性值为函数，就说明当前这个 Virtual DOM 为组件
   if (isFunction(virtualDOM)) {
     // 如果是组件 调用 mountComponent 方法进行组件渲染
@@ -657,6 +680,7 @@ export default function mountElement(virtualDOM, container) {
   }
 }
 ```
+
 ```js
 // src/TinyReact/isFunction.js
 // Virtual DOM 是否为函数类型
@@ -664,11 +688,11 @@ export default function isFunction(virtualDOM) {
   return virtualDOM && typeof virtualDOM.type === 'function'
 }
 ```
+
 ```js
 // src/TinyReact/mountComponent.js
 export default function mountComponent(virtualDOM, container) {
   // 判断组件是类组件还是函数组件
-
 }
 ```
 
@@ -696,20 +720,21 @@ function Bar() {
 
 ```js
 // src/TinyReact/mountComponent.js
-import isFunctionComponent from "./isFunctionComponent";
+import isFunctionComponent from './isFunctionComponent'
 export default function mountComponent(virtualDOM, container) {
   // 判断组件是类组件还是函数组件
   if (isFunctionComponent(virtualDOM)) {
-    console.log('函数组件');
+    console.log('函数组件')
   }
 }
 ```
+
 ```js
 // src/TinyReact/isFunctionComponent.js
 import isFunction from './isFunction'
 // Virtual DOM 是否为函数型组件
 // 条件有两个: 1. Virtual DOM 的 type 属性值为函数 2. 函数的原型对象中不能有render方法
-// 只有类组件的原型对象中有render方法 
+// 只有类组件的原型对象中有render方法
 export default function isFunctionComponent(virtualDOM) {
   const type = virtualDOM.type
   return type && isFunction(virtualDOM) && !(type.prototype && type.prototype.render)
@@ -742,7 +767,7 @@ function buildFunctionComponent(virtualDOM) {
 - 函数组件返回的也可能是另一个组件
 
 ```js
-function Heart () {
+function Heart() {
   return <App />
 }
 ```
@@ -781,8 +806,13 @@ function buildFunctionComponent(virtualDOM) {
 - 该方法又会重新判断组件的类型，不用额外处理
 
 ```js
-function Heart () {
-  return <div>&hearts;<App /></div>
+function Heart() {
+  return (
+    <div>
+      &hearts;
+      <App />
+    </div>
+  )
 }
 ```
 
@@ -804,6 +834,7 @@ function Heart(props) {
 
 TinyReact.render(<Heart title="Hello React" />, root)
 ```
+
 ```js
 // src/TinyReact/mountComponent.js
 import isFunction from './isFunction'
@@ -829,7 +860,7 @@ export default function mountComponent(virtualDOM, container) {
   }
 }
 
-// 函数组件处理 
+// 函数组件处理
 function buildFunctionComponent(virtualDOM) {
   // 通过 Virtual DOM 中的 type 属性获取到组件函数并调用
   // 调用组件函数时将 Virtual DOM 对象中的 props 属性传递给组件函数
@@ -850,6 +881,7 @@ function buildFunctionComponent(virtualDOM) {
 // src/TinyReact/Component.js
 export default class Component {}
 ```
+
 ```js
 import createElement from './createElement'
 import render from './render'
@@ -878,6 +910,7 @@ class Alert extends TinyReact.Component {
 
 TinyReact.render(<Alert />, root)
 ```
+
 ```js
 // src/TinyReact/mountComponent.js
 import isFunction from './isFunction'
@@ -922,6 +955,7 @@ function buildClassComponent(virtualDOM) {
 
 > [!info]
 > React 通过在继承的 Component 组件中定义 props 属性，让继承它的子类可以通过 this.props 访问组件的参数
+>
 > - 子类需要通过 super 方法将自身的 props 属性传递给 Component 父类
 > - 父类会将 props 属性挂载为父类属性，子类继承了父类，自己本身也就自然拥有props属性了
 > - 这样做的好处是当 props 发生更新后，父类可以根据更新后的 props 帮助子类更新视图
@@ -995,6 +1029,7 @@ class Alert extends TinyReact.Component {
 
 > [!info]
 > 示例：创建两个 Virtual DOM，在页面加载时渲染第一个 Virtual DOM，在延迟 2 秒 后渲染第二个 Virtual DOM
+>
 > - 两个 Virtual DOM 有一些修改：
 >   - h2 元素的 data-test
 >   - 元素被改变 h3 to h6
@@ -1063,24 +1098,24 @@ setTimeout(() => {
 
 ```js
 export default function createDOMElement(virtualDOM) {
-	let newElement = null;
-	if (virtualDOM.type === 'text') {
-		// 文本节点
-		newElement = document.createTextNode(virtualDOM.props.textContent);
-	} else {
-		// 元素节点
-		newElement = document.createElement(virtualDOM.type);
-		updateNodeElement(newElement, virtualDOM);
-	}
+  let newElement = null
+  if (virtualDOM.type === 'text') {
+    // 文本节点
+    newElement = document.createTextNode(virtualDOM.props.textContent)
+  } else {
+    // 元素节点
+    newElement = document.createElement(virtualDOM.type)
+    updateNodeElement(newElement, virtualDOM)
+  }
 
   // 将 Virtual DOM 添加到真实 DOM 对象的属性中
-	newElement._virtualDOM = virtualDOM;
+  newElement._virtualDOM = virtualDOM
 
-	// 递归创建子节点
-	virtualDOM.children.forEach(child => {
-		mountElement(child, newElement);
-	});
-	return newElement;
+  // 递归创建子节点
+  virtualDOM.children.forEach(child => {
+    mountElement(child, newElement)
+  })
+  return newElement
 }
 ```
 
@@ -1097,15 +1132,16 @@ export default function render(virtualDOM, container, oldDOM = container.firstCh
   diff(virtualDOM, container, oldDOM)
 }
 ```
+
 ```js
 export default function diff(virtualDOM, container, oldDOM) {
   // 获取旧的 VirtualDOM
-	const oldVirtualDOM = oldDOM && oldDOM._virtualDOM;
-	// 判断是否存在 oldDOM
-	if (!oldDOM) {
-		// 如果不存在 不需要对比 直接将 Virtual DOM 转换为真实 DOM
-		mountElement(virtualDOM, container);
-	}
+  const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
+  // 判断是否存在 oldDOM
+  if (!oldDOM) {
+    // 如果不存在 不需要对比 直接将 Virtual DOM 转换为真实 DOM
+    mountElement(virtualDOM, container)
+  }
 }
 ```
 
@@ -1148,6 +1184,7 @@ export default function diff(virtualDOM, container, oldDOM) {
   }
 }
 ```
+
 ```js
 // src/TinyReact/updateTextNode.js
 export default function updateTextNode(virtualDOM, oldVirtualDOM, oldDOM) {
@@ -1167,6 +1204,7 @@ export default function updateTextNode(virtualDOM, oldVirtualDOM, oldDOM) {
 
 > [!info]
 > 更新元素节点有以下几种情况：
+>
 > - 原有属性被修改或添加新的属性
 >   - 如果是事件属性，则注册新的事件处理函数，并且删除旧的事件处理函数
 >   - 如果是其他属性，则重新设置即可
@@ -1202,6 +1240,7 @@ export default function diff(virtualDOM, container, oldDOM) {
   }
 }
 ```
+
 ```js
 // src/TinyReact/updateNodeElement.js
 /**
@@ -1320,10 +1359,11 @@ export default function diff(virtualDOM, container, oldDOM) {
 
 #### 2.1 同级对比
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/13.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/13.png =500x)
 
 > [!important]
 > Virtual DOM 在对比的时候是同级对比，即父元素和父元素对比，子元素和子元素对比，不会发生跨级对比的
+>
 > - 如果对比的节点类型相同
 >   - 如果是文本节点，则对比文本内容，如果内容不同，则替换为新的内容
 >   - 如果是元素节点，则对比元素属性
@@ -1335,7 +1375,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 
 #### 2.2 深度优先
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/14.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/14.png =500x)
 
 - Virtual DOM 对比的顺序是深度优先，即子节点对比优先于同级节点对比
 - 例如图例：
@@ -1351,7 +1391,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 - 范围：发生在同一个父节点下的所有子节点身上
 - 如何判断是否有节点需要被删除：在节点更新完成后，如果旧节点对象的数量多于新 Virtual DOM 节点的数量，就说明有节点需要被删除
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/15.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/15.png =500x)
 
 ```js
 // src/TinyReact/diff.js
@@ -1403,6 +1443,7 @@ export default function diff(virtualDOM, container, oldDOM) {
   }
 }
 ```
+
 ```js
 // src/TinyReact/unmountNode.js
 export default function unmountNode(node) {
@@ -1450,6 +1491,7 @@ class Alert extends TinyReact.Component {
 
 TinyReact.render(<Alert name="张三" age={20} />, root)
 ```
+
 ```js
 // src/TinyReact/Component.js
 export default class Component {
@@ -1471,7 +1513,7 @@ export default class Component {
 - state 发生变化后要重新生成新的 Virtual DOM 对象与旧的进行比对，并将差异更新到旧的 DOM 中
   - 获取新的 Virtual DOM 对象：调用 render 方法
   - 获取旧的 DOM 对象：
-    - 添加用于存储/获取 DOM 对象的方法，在挂载真实 DOM 时进行存储，之后可以通过 DOM 对象的 _virtualDOM 属性获取它的 Virtual DOM
+    - 添加用于存储/获取 DOM 对象的方法，在挂载真实 DOM 时进行存储，之后可以通过 DOM 对象的 \_virtualDOM 属性获取它的 Virtual DOM
     - 在 mountNativeElement 中调用存储 DOM 的方法，将 DOM 存储到组件实例对象上
 - mountNativeElement 方法中如何访问组件实例对象：
   - 在挂载类组件的时候调用了 buildClassComponent 方法
@@ -1504,6 +1546,7 @@ export default class Component {
   }
 }
 ```
+
 ```js
 // src/TinyReact/mountComponent.js
 import isFunctionComponent from './isFunctionComponent'
@@ -1540,6 +1583,7 @@ function buildClassComponent(virtualDOM) {
   return nextVirtualDOM
 }
 ```
+
 ```js
 // src/TinyReact/mountNativeElement.js
 import createDOMElement from './createDOMElement'
@@ -1601,7 +1645,7 @@ TinyReact.render(<Alert name="张三" age={20} />, root)
 setTimeout(() => {
   // 相同组件
   // TinyReact.render(<Alert name="李四" age={50} />, root)
-  
+
   // 不同组件
   TinyReact.render(<Heart title="Hello React" />, root)
 }, 2000)
@@ -1634,13 +1678,15 @@ export default function diff(virtualDOM, container, oldDOM) {
   const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
   const oldComponent = oldVirtualDOM && oldVirtualDOM.component
   // 判断 oldDOM 是否存在
-  if (!oldDOM) { /*...*/
+  if (!oldDOM) {
+    /*...*/
   } else if (
     // 对比的两个节点类型不相同
     virtualDOM.type !== oldVirtualDOM.type &&
     // 并且节点的类型不是组件，因为组件要单独处理
     !isFunction(virtualDOM)
-  ) {/*...*/
+  ) {
+    /*...*/
   } else if (isFunction(virtualDOM)) {
     // 要更新的是组件
     // 1) virtualDOM 组件本身的 virtualDOM 对象 通过它可以获取到组件最新的 props
@@ -1648,7 +1694,8 @@ export default function diff(virtualDOM, container, oldDOM) {
     // 3) oldDOM 要更新的 DOM 象 在更新组件时 需要在已有 DOM 对象的身上进行修改 实现 DOM 最小化操作 获取旧的 Virtual DOM 对象
     // 4) container 如果要更新的组件和旧组件不是同一个组件 要直接将组件返回的 Virtual DOM 显示在页面中 此时需要 container 做为父级容器
     diffComponent(virtualDOM, oldComponent, oldDOM, container)
-  } else if (virtualDOM.type === oldVirtualDOM.type) {/*...*/
+  } else if (virtualDOM.type === oldVirtualDOM.type) {
+    /*...*/
   }
 }
 ```
@@ -1694,7 +1741,7 @@ function isSameComponent(virtualDOM, oldComponent) {
 
 ```js
 // src/TinyReact/diffComponent.js
-import mountElement from "./mountElement"
+import mountElement from './mountElement'
 
 export default function diffComponent(virtualDOM, oldComponent, oldDOM, container) {
   if (isSameComponent(virtualDOM, oldComponent)) {
@@ -1710,6 +1757,7 @@ function isSameComponent(virtualDOM, oldComponent) {
   return oldComponent && oldComponent.constructor === virtualDOM.type
 }
 ```
+
 ```js
 // src/TinyReact/mountElement.js
 /*...*/
@@ -1724,11 +1772,12 @@ export default function mountElement(virtualDOM, container, oldDOM) {
   }
 }
 ```
+
 ```js
 // src/TinyReact/mountComponent.js
 /*...*/
 export default function mountComponent(virtualDOM, container, oldDOM) {
-	/*...*/
+  /*...*/
 
   // 判断渲染的组件是否直接返回了另一个组件
   if (isFunction(nextVirtualDOM)) {
@@ -1740,6 +1789,7 @@ export default function mountComponent(virtualDOM, container, oldDOM) {
 
 /*...*/
 ```
+
 ```js
 // src/TinyReact/mountNativeElement.js
 /*...*/
@@ -1754,7 +1804,7 @@ export default function mountNativeElement(virtualDOM, container, oldDOM) {
     unmountNode(oldDOM)
   }
 
-	/*...*/
+  /*...*/
 }
 ```
 
@@ -1768,8 +1818,8 @@ export default function mountNativeElement(virtualDOM, container, oldDOM) {
 
 ```js
 // src/TinyReact/diffComponent.js
-import mountElement from "./mountElement"
-import updateComponent from "./updateComponent"
+import mountElement from './mountElement'
+import updateComponent from './updateComponent'
 export default function diffComponent(virtualDOM, oldComponent, oldDOM, container) {
   if (isSameComponent(virtualDOM, oldComponent)) {
     // 同一个组件：执行组件更新操作
@@ -1785,9 +1835,10 @@ function isSameComponent(virtualDOM, oldComponent) {
   return oldComponent && oldComponent.constructor === virtualDOM.type
 }
 ```
+
 ```js
 // src/TinyReact/updateComponent.js
-import diff from "./diff"
+import diff from './diff'
 export default function updateComponent(virtualDOM, oldComponent, oldDOM, container) {
   // 组件更新
   // 1. 更新组件的 props
@@ -1802,10 +1853,11 @@ export default function updateComponent(virtualDOM, oldComponent, oldDOM, contai
   diff(nextVirtualDOM, container, oldDOM)
 }
 ```
+
 ```js
 export default class Component {
   // ...
-   updateProps(props) {
+  updateProps(props) {
     this.props = props
   }
 }
@@ -1864,7 +1916,7 @@ export default class Component {
 
 ```js
 // src/TinyReact/updateComponent.js
-import diff from "./diff"
+import diff from './diff'
 export default function updateComponent(virtualDOM, oldComponent, oldDOM, container) {
   // 调用生命周期函数
   oldComponent.componentWillReceiveProps(virtualDOM.props)
@@ -1890,6 +1942,7 @@ export default function updateComponent(virtualDOM, oldComponent, oldDOM, contai
   }
 }
 ```
+
 ```js
 componentWillReceiveProps(nextProps) {
   console.log("componentWillReceiveProps");
@@ -1925,7 +1978,7 @@ class DemoRef extends TinyReact.Component {
   render() {
     return (
       <div>
-        <input type="text" ref={input => (this.input=input)} />
+        <input type="text" ref={input => (this.input = input)} />
         <button onClick={this.handleClick}>按钮</button>
       </div>
     )
@@ -1989,17 +2042,17 @@ class DemoRef extends TinyReact.Component {
   }
   handleClick() {
     console.log(this.input.value)
-		console.log(this.alert);
+    console.log(this.alert)
   }
-	componentDidMount() {
-		console.log("componentDidMount");
-	}
+  componentDidMount() {
+    console.log('componentDidMount')
+  }
   render() {
     return (
       <div>
-        <input type="text" ref={input => (this.input=input)} />
+        <input type="text" ref={input => (this.input = input)} />
         <button onClick={this.handleClick}>按钮</button>
-				<Alert ref={alert => (this.alert = alert)} name="张三" age={20} />
+        <Alert ref={alert => (this.alert = alert)} name="张三" age={20} />
       </div>
     )
   }
@@ -2007,6 +2060,7 @@ class DemoRef extends TinyReact.Component {
 
 TinyReact.render(<DemoRef />, root)
 ```
+
 ```js
 // src/TinyReact/mountComponent.js
 import isFunctionComponent from './isFunctionComponent'
@@ -2066,11 +2120,11 @@ function buildClassComponent(virtualDOM) {
 - key 属性的作用是减少 DOM 操作，提高 DOM 操作的性能
 - 例如之前删除节点的示例是按顺序依次对比更新每个节点，然后删除最后一个 li：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/16.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/16.png =500x)
 
 - 如果使用 key 属性，经过对比，只需删除文本为 2 的 li 即可，而不需要更新其他 li 的文本：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/17.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/17.png =500x)
 
 ### 2. 节点对比
 
@@ -2218,7 +2272,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 ```
 
 > [!warning]
-> 这里通过 domElement._virtualDOM.props.key 获取 key，而不是 domElement.getAttribute('key') 获取，是因为 React 并没有将 key 属性添加到真实的 DOM 元素上，这里与 React 保持一致
+> 这里通过 domElement.\_virtualDOM.props.key 获取 key，而不是 domElement.getAttribute('key') 获取，是因为 React 并没有将 key 属性添加到真实的 DOM 元素上，这里与 React 保持一致
 
 - 可以通过 chrome 浏览器查看 Elements 元素：
   - 当未设置 key 属性时，点击按钮，4个 li 都闪烁（表示重新渲染）
@@ -2247,6 +2301,7 @@ handleClick() {
 
 > [!info]
 > insertBefore(newnode, existingnode)：
+>
 > - newnode 要插入的节点对象
 > - existingnode 可选，在其之前插入新节点，如果未指定则会在结尾插入 newnode
 >   - 如果与 newnode 相同，则会执行移动操作
@@ -2258,14 +2313,17 @@ export default function diff(virtualDOM, container, oldDOM) {
   const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
   const oldComponent = oldVirtualDOM && oldVirtualDOM.component
   // 判断 oldDOM 是否存在
-  if (!oldDOM) {/*...*/
+  if (!oldDOM) {
+    /*...*/
   } else if (
     // 对比的两个节点类型不相同
     virtualDOM.type !== oldVirtualDOM.type &&
     // 并且节点的类型不是组件，因为组件要单独处理
     !isFunction(virtualDOM)
-  ) {/*...*/
-  } else if (isFunction(virtualDOM)) {/*...*/
+  ) {
+    /*...*/
+  } else if (isFunction(virtualDOM)) {
+    /*...*/
   } else if (virtualDOM.type === oldVirtualDOM.type) {
     // 节点类型相同
     /*...*/
@@ -2307,6 +2365,7 @@ export default function diff(virtualDOM, container, oldDOM) {
   }
 }
 ```
+
 ```js
 // src/TinyReact/mountElement.js
 import createDOMElement from './createDOMElement'
@@ -2371,14 +2430,17 @@ export default function diff(virtualDOM, container, oldDOM) {
   const oldVirtualDOM = oldDOM && oldDOM._virtualDOM
   const oldComponent = oldVirtualDOM && oldVirtualDOM.component
   // 判断 oldDOM 是否存在
-  if (!oldDOM) {/*...*/
+  if (!oldDOM) {
+    /*...*/
   } else if (
     // 对比的两个节点类型不相同
     virtualDOM.type !== oldVirtualDOM.type &&
     // 并且节点的类型不是组件，因为组件要单独处理
     !isFunction(virtualDOM)
-  ) {/*...*/ 
-  } else if (isFunction(virtualDOM)) {/*...*/
+  ) {
+    /*...*/
+  } else if (isFunction(virtualDOM)) {
+    /*...*/
   } else if (virtualDOM.type === oldVirtualDOM.type) {
     // 节点类型相同
     /*...*/
@@ -2392,7 +2454,7 @@ export default function diff(virtualDOM, container, oldDOM) {
       if (hasNokey) {
         for (let i = oldChildNodes.length - 1; i > virtualDOM.children.length; i--) {
           unmountNode(oldChildNodes[i])
-        } 
+        }
       } else {
         // 通过 key 属性删除节点
         for (let i = 0; i < oldChildNodes.length; i++) {
@@ -2415,6 +2477,7 @@ export default function diff(virtualDOM, container, oldDOM) {
 
 > [!warning]
 > 卸载节点并不是说将节点直接删除就可以了，还需要考虑以下几种情况
+>
 > - 如果要删除的节点是文本节点，可以直接删除
 > - 如果要删除的节点由组件生成，需要调用组件卸载生命周期函数 componentWillUnmount
 > - 如果要删除的节点中包含了其他组件生成的节点，需要调用其他组件的卸载生命周期函数
@@ -2491,6 +2554,7 @@ class KeyDemo extends TinyReact.Component {
 
 TinyReact.render(<KeyDemo />, root)
 ```
+
 ```js
 // src/TinyReact/unmountNode.js
 export default function unmountNode(node) {
@@ -2536,6 +2600,3 @@ export default function unmountNode(node) {
   node.remove()
 }
 ```
-
-
-

@@ -63,6 +63,7 @@ order: 3
 
 > [!info]
 > Vue 的数据劫持：当访问或设置 Vue 实例的成员的时候，做一些干预操作
+>
 > - 例如修改 Vue 实例成员的值，将新的值渲染到 DOM，整个 DOM 操作不希望在赋值的时候手动去做，所以需要使用数据劫持
 
 - 具体通过 Object.defineProperty 方法向 Vue 实例对象中添加具有 get/set 描述符的成员属性
@@ -249,9 +250,10 @@ count：<input type="text" oninput="inputHandle(event, 'count')" />
 
 > [!info]
 > 假定存在一个「信号中心」<br>
+>
 > - 某个任务执行完成，就向信号中心「发布」（publish）一个信号<br>
 > - 其他任务可以向信号中心「订阅」（subscribe）这个信号，从而知道什么时候自己可以开始执行<br>
-> 这就叫做「发布/订阅模式」（publish-subscribe pattern）
+>   这就叫做「发布/订阅模式」（publish-subscribe pattern）
 
 - Vue 中的自定义事件以及 node 中的事件机制都是基于发布/订阅模式
 
@@ -260,7 +262,7 @@ count：<input type="text" oninput="inputHandle(event, 'count')" />
 - 官方文档参考自定义事件如何使用
   1. 创建一个Vue实例
   2. 通过`$on`方法注册（订阅）自定义事件
-    - 同一个事件可以注册多个处理函数
+  - 同一个事件可以注册多个处理函数
   3. 通过调用这个实例的$emit方法触发（发布）事件
   4. 通过`$off`方法取消注册（订阅）事件
 
@@ -316,19 +318,19 @@ methods: {
 - 首先分析 Vue 自定义事件如何实现：
   1. 创建 Vue 实例：vm
   2. `$on`注册事件（订阅消息）
-    - `$on`仅仅注册事件，事件处理函数并不立即执行
-    - 所以 vm 中需要定义内部的变量，用于存储注册的事件成以及事件处理函数
-      - 注册的时候可以注册多个事件名称，也可以给同一个事件注册多个事件处理函数
-      - 存储事件的时候，要记录所有的事件名称，以及对应的处理函数，即键值对的形式
-      - 例如：`{ 'click': [fn1, fn2], 'change': [fn3] }`
+  - `$on`仅仅注册事件，事件处理函数并不立即执行
+  - 所以 vm 中需要定义内部的变量，用于存储注册的事件成以及事件处理函数
+    - 注册的时候可以注册多个事件名称，也可以给同一个事件注册多个事件处理函数
+    - 存储事件的时候，要记录所有的事件名称，以及对应的处理函数，即键值对的形式
+    - 例如：`{ 'click': [fn1, fn2], 'change': [fn3] }`
   3. `$emit`触发事件（发布消息）
-    - `$emit`接收的第一个参数是事件的名称
-    - 内部通过事件的名称，去存储事件的对象中寻找对应的事件处理函数，依次执行
+  - `$emit`接收的第一个参数是事件的名称
+  - 内部通过事件的名称，去存储事件的对象中寻找对应的事件处理函数，依次执行
 
 ```js
 // 事件触发器
 class EventEmitter {
-  constructor () {
+  constructor() {
     // subs 存储事件及处理函数
     // { 'click': [fn1, fn2], 'change': [fn3] }
     // this.subs = {}
@@ -340,13 +342,13 @@ class EventEmitter {
   }
 
   // 注册事件
-  $on (eventType, handler) {
+  $on(eventType, handler) {
     this.subs[eventType] = this.subs[eventType] || []
     this.subs[eventType].push(handler)
   }
 
   // 触发事件
-  $emit (eventType, ...args) {
+  $emit(eventType, ...args) {
     if (this.subs[eventType]) {
       this.subs[eventType].forEach(handler => {
         handler.apply(this, args)
@@ -404,19 +406,19 @@ em.$emit('click', '触发事件')
 // 发布者 - 目标
 // Vue 响应式机制中内部使用的“Dep”命名
 class Dep {
-  constructor () {
+  constructor() {
     // 记录所有的订阅者
     this.subs = []
   }
   // 添加订阅者
-  addSub (sub) {
+  addSub(sub) {
     // 确保这是一个拥有 update 方法的订阅者对象
     if (sub && sub.update) {
       this.subs.push(sub)
     }
   }
   // 发布通知
-  notify () {
+  notify() {
     this.subs.forEach(sub => {
       sub.update()
     })
@@ -427,7 +429,7 @@ class Dep {
 class Wathcer {
   // 当事件发生时，由发布者调用update方法
   // update内部可以更新视图或做一些其他操作
-  update () {
+  update() {
     console.log('update')
   }
 }
@@ -445,7 +447,7 @@ dep.notify()
 
 ### 3. 发布/订阅模式 和 观察者模式 的区别
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/04.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/04.png)
 
 #### 3.1 观察者模式
 
@@ -494,7 +496,7 @@ dep.notify()
   <input type="text" v-model="count">
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdmirror.com/npm/vue/dist/vue.js"></script>
 <script>
   let vm = new Vue({
     el: '#app',
@@ -509,10 +511,12 @@ dep.notify()
 #### 1.1 回顾 Vue 的基本结构
 
 1. 首先调用了 Vue 的构造函数
-  - 该构造函数接收一个对象参数
-  - 对象中设置了 el 和 data
-    - el：设置了一个选择器
-    - data：使用的一些数据
+
+- 该构造函数接收一个对象参数
+- 对象中设置了 el 和 data
+  - el：设置了一个选择器
+  - data：使用的一些数据
+
 2. 然后在模板中，通过插值表达式、v-text、v-model 进行绑定数据
 
 #### 1.2 打印 Vue 实例观察
@@ -555,10 +559,10 @@ dep.notify()
 
 - `$options`可以简单认为把构造函数的参数记录到了这个属性中
 
-##### 1.2.4 _data
+##### 1.2.4 \_data
 
 - `_data`和`$data`指向的是同一个对象
-- 下划线_开头的是私有成员，$开头的是公共成员
+- 下划线\_开头的是私有成员，$开头的是公共成员
 - 这里只需要模拟`$data`即可
 
 ##### 1.2.5 $el
@@ -579,7 +583,7 @@ dep.notify()
 
 - 模拟的最小版本的 Vue 由下面5个类组成
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/05.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/05.png)
 
 - Vue
   - 创建一个 Vue 实例
@@ -607,7 +611,7 @@ dep.notify()
 
 #### 2.2 结构
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/06.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/06.png)
 
 - `_proxyData()`：私有成员
   - 把 data 中的属性转换成 getter/setter，注入到 Vue 实例
@@ -617,7 +621,7 @@ dep.notify()
 ```js
 // js/vue.js
 class Vue {
-  constructor (options) {
+  constructor(options) {
     // 1. 通过属性保存选项的数据
     this.$options = options || {}
     this.$data = options.data || {}
@@ -631,7 +635,7 @@ class Vue {
     // 4. 调用 compiler 对象，解析指令和插值表达式
   }
 
-  _proxyData (data) {
+  _proxyData(data) {
     // 遍历 data 中的所有属性
     // 注意遍历回调内部需要使用vue实例，所以这里使用箭头函数，使this指向vue实例
     Object.keys(data).forEach(key => {
@@ -639,10 +643,10 @@ class Vue {
       Object.defineProperty(this, key, {
         enumerable: true,
         configurable: true,
-        get () {
+        get() {
           return data[key]
         },
-        set (newValue) {
+        set(newValue) {
           if (data[key] === newValue) {
             return
           }
@@ -653,6 +657,7 @@ class Vue {
   }
 }
 ```
+
 ```html
 <!-- index.html -->
 <div id="app">
@@ -664,8 +669,8 @@ class Vue {
   <h2>v-text</h2>
   <div v-text="msg"></div>
   <h2>v-model</h2>
-  <input type="text" v-model="msg">
-  <input type="text" v-model="count">
+  <input type="text" v-model="msg" />
+  <input type="text" v-model="count" />
 </div>
 
 <script src="./js/vue.js"></script>
@@ -679,7 +684,6 @@ class Vue {
   })
 
   console.log(vm)
-
 </script>
 ```
 
@@ -693,7 +697,7 @@ class Vue {
 
 #### 3.2 结构
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/07.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/07.png)
 
 - Observer 类中有两个方法（方法名与 Vue 源码中一致）：
   - walk
@@ -705,11 +709,11 @@ class Vue {
 
 ```js
 class Observer {
-  constructor (data) {
+  constructor(data) {
     this.walk(data)
   }
 
-  walk (data) {
+  walk(data) {
     // 1. 判断data是否是空值或对象
     if (!data || typeof data !== 'object') {
       return
@@ -726,11 +730,11 @@ class Observer {
     Object.defineProperty(obj, key, {
       enumerable: true,
       configurable: true,
-      get () {
+      get() {
         // return obj[key] // 死递归
         return val
       },
-      set (newValue) {
+      set(newValue) {
         if (val === newValue) {
           return
         }
@@ -741,9 +745,10 @@ class Observer {
   }
 }
 ```
+
 ```js
 class Vue {
-  constructor (options) {
+  constructor(options) {
     // ...
 
     // 3. 调用 observer 对象，监听数据的变化
@@ -754,6 +759,7 @@ class Vue {
   // ...
 }
 ```
+
 ```html
 <script src="./js/observer.js"></script>
 <script src="./js/vue.js"></script>
@@ -774,7 +780,8 @@ class Vue {
 > [!warning]
 > 为什么向 defineReactive 传递一个 val 参数，并在 getter/setter 中使用它，而不是使用 obj[key]？<br>
 > 这是因为当访问 vm.msg 时：
-> 1. 会首先触发 Vue 类中 _proxyData 方法转化的 msg 属性的 getter 方法
+>
+> 1. 会首先触发 Vue 类中 \_proxyData 方法转化的 msg 属性的 getter 方法
 > 2. getter 方法最后 return 的 data[key]，其中 data 指向的 this.$data
 > 3. 此时就又会调用 Observer 类中，defineReactive 方法转化 this.$data 的属性时，定义的 getter 方法
 > 4. 而假如这个方法返回的是 obj[key]，此时 obj 同样指向的 this.$data，就又会触发这个 getter 方法
@@ -824,25 +831,26 @@ defineReactive(obj, key, val) {
   })
 }
 ```
+
 ```html
 <!-- index.html -->
 <script>
-let vm = new Vue({
-  el: '#app',
-  data: {
-    msg: 'Hello Vue',
-    count: 20,
-    person: {
-      name: 'Tom',
-      info: {
-        age: 18
+  let vm = new Vue({
+    el: '#app',
+    data: {
+      msg: 'Hello Vue',
+      count: 20,
+      person: {
+        name: 'Tom',
+        info: {
+          age: 18
+        }
       }
     }
-  }
-})
-console.log(vm.person)
-vm.msg = { test: 'Yeah' }
-console.log(vm)
+  })
+  console.log(vm.person)
+  vm.msg = { test: 'Yeah' }
+  console.log(vm)
 </script>
 ```
 
@@ -858,7 +866,7 @@ console.log(vm)
 
 - 当前模拟直接操作 DOM，没有使用虚拟 DOM
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/08.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/08.png)
 
 #### 4.3 属性
 
@@ -902,20 +910,20 @@ console.log(vm)
 
 ```js
 class Compiler {
-  constructor (vm) {
+  constructor(vm) {
     this.el = vm.$el
     this.vm = vm
     this.compiler(this.el)
   }
   // 编译模板，处理文本节点和元素节点
-  compiler (el) {
+  compiler(el) {
     let childNodes = el.childNodes
     // childNodes是一个伪数组，通过Array.from将其转化为数组
     Array.from(childNodes).forEach(node => {
       if (this.isElementNode(node)) {
         // 处理元素节点
         this.compileElement(node)
-      }else if (this.isTextNode(node)) {
+      } else if (this.isTextNode(node)) {
         // 处理文本节点
         this.compileText(node)
       }
@@ -926,7 +934,7 @@ class Compiler {
     })
   }
   // 编译元素节点，处理指令
-  compileElement (node) {
+  compileElement(node) {
     // 遍历所有的属性节点
     Array.from(node.attributes).forEach(attr => {
       // 判断是否是指令
@@ -939,22 +947,22 @@ class Compiler {
       }
     })
   }
-  update (node, key, attrName) {
+  update(node, key, attrName) {
     let updateFn = this[attrName + 'Updater']
     updateFn && updateFn(node, this.vm[key])
   }
   // 处理v-text指令
-  textUpdater (node, value) {
+  textUpdater(node, value) {
     // 更新节点文本
     node.textContent = value
   }
   // 处理v-model指令
-  modelUpdater (node, value) {
+  modelUpdater(node, value) {
     // 更新表单元素的值
     node.value = value
   }
   // 编译文本节点，处理指令
-  compileText (node) {
+  compileText(node) {
     // console.log(node)
     // console.dir会将内容以对象形式打印
     // console.dir(node)
@@ -968,19 +976,20 @@ class Compiler {
     }
   }
   // 判断元素属性是否是指令
-  isDirective (attrName) {
+  isDirective(attrName) {
     return attrName.startsWith('v-')
   }
   // 判断节点是否是元素节点
-  isElementNode (node) {
+  isElementNode(node) {
     return node.nodeType === 1
   }
   // 判断节点是否是文本节点
-  isTextNode (node) {
+  isTextNode(node) {
     return node.nodeType === 3
   }
 }
 ```
+
 ```js
 // js/vue.js
 constructor (options) {
@@ -993,7 +1002,7 @@ constructor (options) {
 
 ### 5. Dep(Dependency) 类
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/09.png)
 
 - Dep：目标 / 依赖 / 发布者
 
@@ -1008,7 +1017,7 @@ constructor (options) {
 
 #### 5.2 结构
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/10.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/10.png)
 
 - subs - 存储所有 Watcher 的数组
 - addSub - 添加观察者 Watcher
@@ -1018,24 +1027,25 @@ constructor (options) {
 
 ```js
 class Dep {
-  constructor () {
+  constructor() {
     // 存储所有的观察者
     this.subs = []
   }
   // 添加观察者
-  addSub (sub) {
+  addSub(sub) {
     if (sub && sub.update) {
       this.subs.push(sub)
     }
   }
   // 发送通知
-  notify () {
+  notify() {
     this.subs.forEach(sub => {
       sub.update()
     })
   }
 }
 ```
+
 ```js
 defineReactive(obj, key, val) {
   let that = this
@@ -1071,7 +1081,7 @@ defineReactive(obj, key, val) {
 
 ### 6. Watcher 类
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/11.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/11.png)
 
 - 在 Data 属性的 getter 方法中，通过 Dep 对象收集依赖，在 Data 属性的 setter 方法中，通过 Dep 对象触发依赖，所以 Data 中的每个属性都要创建一个对应的 Dep对象
 - 在收集依赖的时候，把依赖该数据的所有 Watcher（观察者对象）添加到 Dep 对象的 subs 数组中
@@ -1089,7 +1099,7 @@ defineReactive(obj, key, val) {
 
 #### 6.2 结构
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/12.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/12.png)
 
 - update - 更新视图
   - 不同的 Watcher 对象更新视图所作的事情是不一样的
@@ -1107,7 +1117,7 @@ defineReactive(obj, key, val) {
 
 ```js
 class Watcher {
-  constructor (vm, key, cb) {
+  constructor(vm, key, cb) {
     // vue实例
     this.vm = vm
     // data中的属性名称
@@ -1123,7 +1133,7 @@ class Watcher {
     Dep.target = null
   }
   // 当数据发生变化的时候，更新视图
-  update () {
+  update() {
     // 调用update时数据已经发生变化，直接获取就是最新的值
     let newValue = this.vm[this.key]
     if (newValue === this.oldValue) {
@@ -1193,8 +1203,9 @@ compileText (node) {
 
 1. 在3个方法先创建 watcher 对象，并传入 vue 实例、属性名、更新视图用的回调方法
 2. 调整处理元素节点的 Updater 方法
-  - 增加属性名参数 key
-  - 改变指向为当前 compiler 对象，用于 Updater 内部通过 this 获取 vue 实例
+
+- 增加属性名参数 key
+- 改变指向为当前 compiler 对象，用于 Updater 内部通过 this 获取 vue 实例
 
 ```html
 <!-- watcher中依赖dep，所以dep应该先于watcher引入 -->
@@ -1222,7 +1233,6 @@ compileText (node) {
   setTimeout(() => {
     vm.msg = '变更后的msg'
   }, 1000)
-
 </script>
 ```
 
@@ -1233,6 +1243,7 @@ compileText (node) {
 
 > [!warning]
 > 双向绑定机制包括两点
+>
 > 1. 数据发生变化，更新视图（数据响应式，已实现）
 > 2. 视图发生变化，更新数据
 
@@ -1300,7 +1311,7 @@ modelUpdater (node, value, key) {
 Vue.set(vm.someObject, 'b', 2)
 // or
 // 实例方法
-this.$set(this.someObject,'b',2)
+this.$set(this.someObject, 'b', 2)
 ```
 
 - 可以推测到，Vue.set 方法内部使用了 Object.defineProperty 将属性 b 转换成了 getter/setter
@@ -1309,23 +1320,24 @@ this.$set(this.someObject,'b',2)
 
 - 通过下图回顾整体流程
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/12.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/12.png)
 
 1. 创建 Vue 对象，构造函数中做的事情：
-  - 记录 options 传过来的选项
-  - 调用 proxyData 将 data 中的属性转化为 getter/setter，并注入到实例中
-  - 创建 Observer，作用：数据劫持
-    - 它将 data 中的属性转化为 getter/setter
-      - 当数据变化的时候（setter），调用 dep 对象的 notify 通知变化
-        - notify 内部发送通知：调用 watcher 的 update
-          - watcher 的 update 内部实现更新视图
-  - 创建 Compiler，作用：解析模板
-    - 页面首次加载时，调用 compiler 方法，在具体更新视图的方法中的工作
-      - 更新视图
-      - 创建 watcher
-        - 订阅数据变化
-          - watcher 实例化时会将自己添加到 dep 对象的 subs（依赖/订阅者）列表中
-        - 绑定更新函数 cb
-          - 在 update 方法中被调用
+
+- 记录 options 传过来的选项
+- 调用 proxyData 将 data 中的属性转化为 getter/setter，并注入到实例中
+- 创建 Observer，作用：数据劫持
+  - 它将 data 中的属性转化为 getter/setter
+    - 当数据变化的时候（setter），调用 dep 对象的 notify 通知变化
+      - notify 内部发送通知：调用 watcher 的 update
+        - watcher 的 update 内部实现更新视图
+- 创建 Compiler，作用：解析模板
+  - 页面首次加载时，调用 compiler 方法，在具体更新视图的方法中的工作
+    - 更新视图
+    - 创建 watcher
+      - 订阅数据变化
+        - watcher 实例化时会将自己添加到 dep 对象的 subs（依赖/订阅者）列表中
+      - 绑定更新函数 cb
+        - 在 update 方法中被调用
 - 当页面首次加载时，通过 compiler 更新视图
 - 当数据发生变化时，通过 watcher 更新视图

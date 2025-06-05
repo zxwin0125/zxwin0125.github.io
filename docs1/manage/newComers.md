@@ -86,7 +86,7 @@ order: 1
 - [ ] 提 h5 的 mr，视觉的改动，或者涉及到页面效果的，一定一定要尽可能配自测截图
   > 让 review 代码的人，即使不跑起来，能知道你做的是什么，有体感，也能知道项目跑起来不报错，不是盲改
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/01.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/01.png)
 
 #### 4. 自测留痕:
 
@@ -96,13 +96,13 @@ order: 1
 
 - [ ] 写代码 80% 的时间写异常逻辑，异常 case 及早 return 掉
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/02.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/02.png)
 
 #### 6.降级处理
 
 - [ ] 做好降级处理，降级楼层、降级某个接口，快速应急
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/03.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/03.png)
 
 #### 7. 做项目的大小群
 
@@ -111,44 +111,44 @@ order: 1
   - [ ] 开发小群: 会有很多琐碎的接口字段沟通、方案确认、提 mr、异常问题排查，联调提测后，测试同学拉进来，沟通测试问题，都在小群里
   - [ ] 群公告里: 放项目的 prd，系分地址，设计稿地址、发布计划等，页面 url 访问地址，二维码了
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/04.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/04.png =400x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/05.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/05.png =300x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/06.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/06.png =500x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/07.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/07.png =500x)
 
 #### 8. 沟通技巧: 钉钉消息一定要摘要.
 
 - [ ] 大群消息，要摘要、传达足够信息量，描述问题: 带「精简摘要」和「上下文背景」@ 具体的谁
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/08.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/08.png =500x)
 
 - [ ] 发链接一定要标注，这是啥，配中文说明
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/09.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/10.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/10.png =400x)
 
 - [ ] 二维码一定要带字，是什么环境-什么页面的url
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/11.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/11.webp)
 
 - [ ] 发mr 要配中文，让看的人，提前知道这是啥
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/12.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/12.png)
 
 - [ ] 发链接要配中文，方便日后，对方要搜索的时候，有关键字可以找到
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/13.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/13.png)
 
 - [ ] 钉钉找人审批，一定要说明白事情的上下文，有自测留痕的，尽量配图
   > 让审批人知道，你要发布的是啥、确认没问题、心里安稳
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/14.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/14.png =300x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/15.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/15.png =300x)
 
 #### 9. 找到能解决你问题、拍板的 关键人物
 
@@ -156,7 +156,7 @@ order: 1
   > 比如视觉问题: @ 交互视觉、运营，需要拍板的，酌情 @ pd、运营<br>
   > 比如下边这样，是不会有人回复的，谁来回复? 谁觉得「与我相关」?
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/16.png =200x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/16.png =200x)
 
 #### 10. 主动去找自己的上下游沟通
 
@@ -167,20 +167,20 @@ order: 1
 
 - [ ] 如果双方对方案有分歧，比如你坚持要 xx，对方坚持不要 xxx，让师兄/主管参考看看，给主意，必要时刻，拉对方 TL 出来，一起看看
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/17.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/17.png)
 
 #### 12. XY 问题
 
 - [ ] 你的源头问题是 X，结果尝试某个方法遇到 Y 问题，于是去问别人 Y 问题，大家埋头 Y 才发现，不应该这么做，所以 **<font color=red>要先抛你的原始 X 问题，再说 Y 问题</font>**
   > 学会自己排查问题，描述问题，解决问题<br>
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/18.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/18.png =300x)
 
 #### 13. 记录todo 每日、每周、每月的三件事
 
 - [ ] 最重要的3件事，和怕忘记的琐事，不管记录在哪里，一定要记录，然后一个个勾掉
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/19.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/19.png =400x)
 
 #### 14. 钉钉
 
@@ -190,7 +190,7 @@ order: 1
 - [ ] 一定一定要看 @ 自己的群消息
 - [ ] 怕忘记的群消息，需要进一步跟进的，右键「稍后处理」，日清，不要忘记，也不要让别人反复提醒
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/20.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/20.png =300x)
 
 #### 15. 趁手的工具
 
@@ -198,7 +198,7 @@ order: 1
   > 举个例子: tacos 连续按住 cmd + i 和 cmd + O 可以快速用模拟器打开剪切板的url地址<br>
   > 举个例子: paste app，可以快速查找剪切板的东西
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/21.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/21.png)
 
 #### 16. 安全生产
 
@@ -228,7 +228,7 @@ order: 1
 - 有人办事沉稳: 那就试试放手，去写一些工具库
 - 有人点子多: 那就尝试写写创新 demo，小工具能跑起来，丑一点没关系
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/22.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/22.png)
 
 #### 20.要主动同步进度
 
@@ -236,11 +236,11 @@ order: 1
 - 信息互通，要让群成员知道，这件事情的「摘要进度」，知道有人在操作跟进中，不要等人问起才说
 - 举例 1，2，3
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/23.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/23.png =400x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/24.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/24.png =400x)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/25.png =400x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/25.png =400x)
 
 #### 21.开会纪律
 
@@ -286,7 +286,7 @@ order: 1
   - 操作完成「<font color=red>**后**</font>」，监控截图自证，无报错异常，流量正常，群里同步 pd，运营，测试，后端
 - good case
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Manage/26.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/26.png)
 
 #### 25.要有好奇心-攒着多问问题-记录小本本
 

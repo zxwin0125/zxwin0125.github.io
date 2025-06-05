@@ -9,8 +9,8 @@ order: 14
 ### React Hooks 是用来做什么的
 
 > [!info]
-> React Hooks 是 React 16.8 版本新添加的特性，实际上是一堆钩子函数<br>
-> **<font color=red>主要是增强函数型组件的功能，让函数型组件可以实现类组件相同的功能</font>**，例如：
+> React Hooks 是 React 16.8 版本新添加的特性，实际上是一堆钩子函数<br> > **<font color=red>主要是增强函数型组件的功能，让函数型组件可以实现类组件相同的功能</font>**，例如：
+>
 > - 使用和存储 state（状态）
 > - 拥有处理副作用的能力
 
@@ -18,6 +18,7 @@ order: 14
 
 > [!info]
 > 关于副作用：**<font color=red>在一个组件中，只要不是把数据转换成视图的代码，就属于「副作用」</font>**，例如：
+>
 > - 获取 DOM 元素
 > - 为 DOM 元素添加事件
 > - 设置定时器
@@ -55,7 +56,7 @@ order: 14
 import React from 'react'
 class Demo extends React.Component {
   handleClick() {
-    console.log(this);
+    console.log(this)
     // 非严格模式 window
     // 严格模式 this
   }
@@ -77,7 +78,7 @@ export default Demo
 
 ```javascript
 handleClick = () => {
-  console.log(this);
+  console.log(this)
   // this 指向组件实例对象
 }
 ```
@@ -146,10 +147,12 @@ import { useState } from 'react'
 
 function App() {
   const [count, setCount] = useState(0)
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+    </div>
+  )
 }
 
 export default App
@@ -162,17 +165,21 @@ export default App
 2. useState 方法可以被调用多次，用于保存不同状态值
 
 ```jsx
-import { useState } from 'react';
+import { useState } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [person, setPerson] = useState({name: '张三', age: 17});
+  const [count, setCount] = useState(0)
+  const [person, setPerson] = useState({ name: '张三', age: 17 })
 
-  return <div>
-    <span>{count} {person.name} {person.age}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-    <button onClick={() => setPerson({...person, name: '李四'})}>setPerson</button>
-  </div>
+  return (
+    <div>
+      <span>
+        {count} {person.name} {person.age}
+      </span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+      <button onClick={() => setPerson({ ...person, name: '李四' })}>setPerson</button>
+    </div>
+  )
 }
 
 export default App
@@ -188,15 +195,17 @@ function App(props) {
   // 错误写法：每次渲染都会获取 props.count
   // const propCount = props.count
   // const [count, setCount] = useState(propCount || 0)
-  
+
   // 正确写法：只会在挂载时执行一次
   const [count, setCount] = useState(() => {
     return props.count || 0
   })
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+    </div>
+  )
 }
 
 export default App
@@ -230,11 +239,13 @@ function App(props) {
     // count 为 setCount 执行前的值
     document.title = count
   }
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-    <button onClick={() => handlePower(count)}>求平方</button>
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+      <button onClick={() => handlePower(count)}>求平方</button>
+    </div>
+  )
 }
 
 export default App
@@ -248,6 +259,7 @@ export default App
 
 > [!important]
 > useReducer 的方式类似 Redux
+>
 > - 组件的状态被保存在特定的地方，要想改变状态，需要通过 dispatch 方法触发一个 Action
 > - 这个 Action 会被 Reducer 函数接收，Reducer 内部要判断 Action 的类型来决定如何处理状态，最后通过返回值的方式去更新状态
 
@@ -273,13 +285,15 @@ function reducer(state, action) {
 }
 
 function App() {
-  const [count, dispatch ] = useReducer(reducer, 0)
+  const [count, dispatch] = useReducer(reducer, 0)
 
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => dispatch({type: 'increment'})}>+ 1</button>
-    <button onClick={() => dispatch({type: 'decrement'})}>- 1</button>
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => dispatch({ type: 'increment' })}>+ 1</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>- 1</button>
+    </div>
+  )
 }
 
 export default App
@@ -322,7 +336,7 @@ class Foo extends React.Component {
   static contextType = ThemeContext
 
   render() {
-    return <div>{ this.context }</div>
+    return <div>{this.context}</div>
   }
 }
 
@@ -345,11 +359,7 @@ function App() {
 }
 
 function Foo() {
-  return <ThemeContext.Consumer>
-    {
-      theme => <div>{ theme }</div>
-    }
-  </ThemeContext.Consumer>
+  return <ThemeContext.Consumer>{theme => <div>{theme}</div>}</ThemeContext.Consumer>
 }
 
 export default App
@@ -374,7 +384,7 @@ function App() {
 
 function Foo() {
   const theme = useContext(ThemeContext)
-  return <div>{ theme }</div>
+  return <div>{theme}</div>
 }
 
 export default App
@@ -404,15 +414,17 @@ export default App
 import { useState, useEffect } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
   // 组件挂载完成之后执行 组件数据更新完成之后执行
   useEffect(() => {
-    console.log('123');
+    console.log('123')
   })
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+    </div>
+  )
 }
 
 export default App
@@ -427,15 +439,17 @@ export default App
 import { useState, useEffect } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
   // 组件挂载完成之后执行一次
   useEffect(() => {
-    console.log('123');
-  }, []);
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-  </div>
+    console.log('123')
+  }, [])
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+    </div>
+  )
 }
 
 export default App
@@ -451,19 +465,21 @@ export default App
 import { useState, useEffect } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
   // 组件被卸载之前执行
   useEffect(() => {
     return () => {
       console.log('组件被卸载了')
     }
   })
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-    {/* ReactDom.unmountComponentAtNode(container) 用于卸载容器中渲染的组件 */}
-    <button onClick={() => ReactDom.unmountComponentAtNode(document.getElementById('root'))}>卸载组件</button>
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+      {/* ReactDom.unmountComponentAtNode(container) 用于卸载容器中渲染的组件 */}
+      <button onClick={() => ReactDom.unmountComponentAtNode(document.getElementById('root'))}>卸载组件</button>
+    </div>
+  )
 }
 
 export default App
@@ -500,7 +516,6 @@ function App() {
         document.title = count + 1
         return count + 1
       })
-
     }, 1000)
 
     return () => {
@@ -513,10 +528,10 @@ function App() {
       <span>{count}</span>
       <button onClick={() => ReactDom.unmountComponentAtNode(document.getElementById('root'))}>卸载组件</button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
 ### useEffect 解决的问题
@@ -531,7 +546,7 @@ export default App;
 
 - 例如避免在 componentDidMount 和 componentDidUpdate 中编写重复代码
 
-###  useEffect 的第二个参数
+### useEffect 的第二个参数
 
 - useEffect 的第二个参数是依赖项数组，作用是：只有指定数据发生变化时才会触发副作用（effect）
 - 当不传递依赖项数组的时候，会在组件数据（所有）发生变化的时候触发副作用函数
@@ -543,7 +558,7 @@ import { useState, useEffect } from 'react'
 
 function App() {
   const [count, setCount] = useState(0)
-  const [person, setPerson] = useState({name:'张三'})
+  const [person, setPerson] = useState({ name: '张三' })
 
   useEffect(() => {
     console.log('只有当 count 变化时才会执行回调函数')
@@ -554,14 +569,14 @@ function App() {
     <div>
       <span>{count}</span>
       <button onClick={() => setCount(count + 1)}>+ 1</button>
-      <br/>
+      <br />
       <span>{person.name}</span>
-      <button onClick={() => setPerson({name: '李四'})}>更名</button>
+      <button onClick={() => setPerson({ name: '李四' })}>更名</button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
 ### useEffect 异步操作
@@ -579,19 +594,17 @@ function App() {
     })
   }, [])
 
-  return (
-    <div>App</div>
-  );
+  return <div>App</div>
 }
 
 // 模拟的异步操作
 function getData() {
   return new Promise(resolve => {
-    resolve({msg: 'Hello Async'})
+    resolve({ msg: 'Hello Async' })
   })
 }
 
-export default App;
+export default App
 ```
 
 - 如果想使用await关键字，则需要添加 async 关键字：
@@ -615,6 +628,7 @@ It looks like you wrote useEffect(async () => ...) or returned a Promise. Instea
 # 副作用函数必须返回一个用于清理的普通函数。
 # 看起来你编写了 useEffect(async () => ...) 或返回了一个 Promise。相反，你可以在副作用函数中编写异步函数，并立即调用它：<推荐写法>
 ```
+
 ```jsx
 # 在 React 17 中会警告（Warning）
 Effect callbacks are synchronous to prevent race conditions. Put the async function inside：<推荐写法>
@@ -623,7 +637,7 @@ Effect callbacks are synchronous to prevent race conditions. Put the async funct
 
 - 错误原因如控制台提示的，副作用函数必须返回一个用做清理资源（组件销毁时调用）的普通函数
 - 如果使用 async 关键字声明函数，则会声明一个异步函数，异步函数会返回一个 Pormise，副作用函数返回 Promise，违反了使用规则
-> - React 17 这种写法虽然不会阻塞程序，但也不建议这样使用
+  > - React 17 这种写法虽然不会阻塞程序，但也不建议这样使用
 
 #### 推荐写法
 
@@ -643,7 +657,7 @@ useEffect(() => {
 
 ```jsx
 useEffect(() => {
-  (async () => {
+  ;(async () => {
     const result = await getData()
     console.log(result)
   })()
@@ -662,7 +676,7 @@ useEffect(() => {
 
 - useMemo 接收一个计算回调函数和依赖项数组
   - 计算回调函数：当监听的数据发生变化，执行这个回调函数，回调函数返回的值就是计算的新值
-  - 依赖项数组：需要监听的数据    
+  - 依赖项数组：需要监听的数据
     - 如果不传，则会在每次渲染时执行计算回调函数
     - 如果传一个空数组则仅会在初始加载时执行一次回调函数
 - useMemo 返回的值就是计算回调函数返回的值
@@ -671,7 +685,7 @@ useEffect(() => {
 import { useState, useMemo } from 'react'
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(0)
   const [bool, setBool] = useState(true)
 
   const result = useMemo(() => {
@@ -683,15 +697,15 @@ function App() {
     <div>
       <span>{result}</span>
       <span>{count}</span>
-      <button onClick={() => setCount(count+1)}>+1</button>
-      <br/>
+      <button onClick={() => setCount(count + 1)}>+1</button>
+      <br />
       <span>{bool ? '真' : '假'}</span>
       <button onClick={() => setBool(!bool)}>改变Bool</button>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
 ## React.memo 方法
@@ -714,10 +728,10 @@ function App() {
   return (
     <div>
       <span>{count}</span>
-      <button onClick={() => setCount(count+1)}>+1</button>
+      <button onClick={() => setCount(count + 1)}>+1</button>
       <Foo />
     </div>
-  );
+  )
 }
 
 /*
@@ -731,14 +745,12 @@ function Foo() {
 */
 
 // count 变化不会重新渲染 Foo 组件
-const Foo = memo(function() {
+const Foo = memo(function () {
   console.log('Foo 组件重新渲染了')
-  return (
-    <div>Foo 组件</div>
-  )
+  return <div>Foo 组件</div>
 })
 
-export default App;
+export default App
 ```
 
 ### memo 与类组件的 shouldComponentUpdata 和 PureComponent 的区别
@@ -784,14 +796,16 @@ function App() {
     setCount(0)
   }
 
-  return <div>
-    <span>{count}</span>
-    <button onClick={() => setCount(count+1)}>+ 1</button>
-    <Foo resetCount={resetCount} />
-  </div>
+  return (
+    <div>
+      <span>{count}</span>
+      <button onClick={() => setCount(count + 1)}>+ 1</button>
+      <Foo resetCount={resetCount} />
+    </div>
+  )
 }
 
-const Foo = memo(function(props) {
+const Foo = memo(function (props) {
   console.log('Foo 组件重新渲染了')
   return (
     <div>
@@ -847,9 +861,13 @@ import { useRef } from 'react'
 function App() {
   const box = useRef()
 
-  return <div>
-    <button ref={box} onClick={() => console.log(box)}>获取 DIV</button>
-  </div>
+  return (
+    <div>
+      <button ref={box} onClick={() => console.log(box)}>
+        获取 DIV
+      </button>
+    </div>
+  )
 }
 
 export default App
@@ -867,9 +885,11 @@ class App extends React.Component {
   }
 
   render() {
-    return <div ref={this.box}>
-      <button onClick={() => console.log(this.box)}>获取 DIV</button>
-    </div>
+    return (
+      <div ref={this.box}>
+        <button onClick={() => console.log(this.box)}>获取 DIV</button>
+      </div>
+    )
   }
 }
 
@@ -912,10 +932,12 @@ function App() {
     clearInterval(timerId)
   }
 
-  return <div>
-    {count}
-    <button onClick={stopCount}>停止</button>
-  </div>
+  return (
+    <div>
+      {count}
+      <button onClick={stopCount}>停止</button>
+    </div>
+  )
 }
 
 export default App
@@ -935,19 +957,23 @@ function App() {
   const [timerId, setTimerId] = useState(null)
 
   useEffect(() => {
-    setTimerId(setInterval(() => {
-      setCount(count => count + 1)
-    }, 1000))
+    setTimerId(
+      setInterval(() => {
+        setCount(count => count + 1)
+      }, 1000)
+    )
   }, [])
 
   const stopCount = () => {
     clearInterval(timerId)
   }
 
-  return <div>
-    {count}
-    <button onClick={stopCount}>停止</button>
-  </div>
+  return (
+    <div>
+      {count}
+      <button onClick={stopCount}>停止</button>
+    </div>
+  )
 }
 
 export default App
@@ -974,10 +1000,12 @@ function App() {
     clearInterval(timerId.current)
   }
 
-  return <div>
-    {count}
-    <button onClick={stopCount}>停止</button>
-  </div>
+  return (
+    <div>
+      {count}
+      <button onClick={stopCount}>停止</button>
+    </div>
+  )
 }
 
 export default App
@@ -1189,7 +1217,7 @@ export default App
 
 - 当进入某个路由组件的时候，这个组件的 props 对象会附加几个对象：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/105.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/105.png)
 
 - React 路由模块（react-router-dom）提供了4个钩子函数，用来获取相关的路由信息：
   - useHistory：获取 history 对象
@@ -1344,7 +1372,7 @@ function App() {
     <div>
       {count}
       <button onClick={() => setCount(count + 1)}>setCount</button>
-      <br/>
+      <br />
       {name}
       <button onClick={() => setName('李四')}>setName</button>
     </div>
@@ -1365,7 +1393,7 @@ let setters = [] // 存储设置状态值的方法
 let stateIndex = 0
 
 function createSetter(index) {
-  return function(newState) {
+  return function (newState) {
     if (typeof newState === 'function') {
       // 如果传入的是回调函数
       state[index] = newState(state[index])
@@ -1374,7 +1402,7 @@ function createSetter(index) {
     }
 
     // 在状态更改完成后，重新渲染视图
-    render() 
+    render()
   }
 }
 
@@ -1414,17 +1442,14 @@ function App() {
     <div>
       {count}
       <button onClick={() => setCount(count => count + 1)}>setCount</button>
-      <br/>
+      <br />
       {name}
       <button onClick={() => setName('李四')}>setName</button>
     </div>
   )
 }
 
-ReactDOM.render(
-  <App />,
-  document.getElementById('root')
-);
+ReactDOM.render(<App />, document.getElementById('root'))
 ```
 
 ### 模拟的不足
@@ -1433,6 +1458,7 @@ ReactDOM.render(
 
 > [!warning]
 > React 中的 useState 基于 useReducer 实现，返回的数组的第二个元素其实是 dispatch 方法<br>
+>
 > - useState 调用时会创建一个 hook 对象并挂载到节点 Fiber 对象中，其中包括：
 >   - state：缓存的上一次 state 和当前 state
 >   - queue：dispatch 触发队列，保证多个触发 dispatch 的任务
@@ -1450,7 +1476,8 @@ let prevDepsAry = []
 
 function useEffect(callback, depsAry) {
   // 判断 callback 是不是函数
-  if (Object.prototype.toString.call(callback) !== '[object Function]') throw new Error('useEffect 函数的第一个参数必须是函数')
+  if (Object.prototype.toString.call(callback) !== '[object Function]')
+    throw new Error('useEffect 函数的第一个参数必须是函数')
 
   // 判断 depsAry 有没有被传递
   if (typeof depsAry === 'undefined') {
@@ -1458,11 +1485,12 @@ function useEffect(callback, depsAry) {
     callback()
   } else {
     // 判断 depsAry 是不是数组
-    if (Object.prototype.toString.call(depsAry) !== '[object Array]') throw new Error('useEffect 函数的第二个参数必须是数组')
+    if (Object.prototype.toString.call(depsAry) !== '[object Array]')
+      throw new Error('useEffect 函数的第二个参数必须是数组')
 
     // 将当前的依赖值和上一次的依赖值作对比 如果有变化 调用 callback
     const hasChange = depsAry.every((dep, index) => dep !== prevDepsAry[index])
-    
+
     // 判断值是否有变化
     if (hasChange) {
       callback()
@@ -1485,7 +1513,7 @@ function App() {
     <div>
       {count}
       <button onClick={() => setCount(count => count + 1)}>setCount</button>
-      <br/>
+      <br />
       {name}
       <button onClick={() => setName('李四')}>setName</button>
     </div>
@@ -1514,7 +1542,8 @@ let effectIndex = 0
 
 function useEffect(callback, depsAry) {
   // 判断 callback 是不是函数
-  if (Object.prototype.toString.call(callback) !== '[object Function]') throw new Error('useEffect 函数的第一个参数必须是函数')
+  if (Object.prototype.toString.call(callback) !== '[object Function]')
+    throw new Error('useEffect 函数的第一个参数必须是函数')
 
   // 判断 depsAry 有没有被传递
   if (typeof depsAry === 'undefined') {
@@ -1522,7 +1551,8 @@ function useEffect(callback, depsAry) {
     callback()
   } else {
     // 判断 depsAry 是不是数组
-    if (Object.prototype.toString.call(depsAry) !== '[object Array]') throw new Error('useEffect 函数的第二个参数必须是数组')
+    if (Object.prototype.toString.call(depsAry) !== '[object Array]')
+      throw new Error('useEffect 函数的第二个参数必须是数组')
 
     // 获取上一次的依赖值
     const prevDeps = prevDepsAry[effectIndex]
@@ -1558,7 +1588,7 @@ function App() {
     <div>
       {count}
       <button onClick={() => setCount(count => count + 1)}>setCount</button>
-      <br/>
+      <br />
       {name}
       <button onClick={() => setName('李四')}>setName</button>
     </div>
@@ -1573,7 +1603,7 @@ export default App
 ```jsx
 import { useState } from 'react'
 
- function useReducer(reducer, initialState) {
+function useReducer(reducer, initialState) {
   const [state, setState] = useState(initialState)
 
   function dispatch(action) {
@@ -1600,8 +1630,8 @@ function App() {
   return (
     <div>
       {count}
-      <button onClick={() => dispatch({type: 'increment'})}>+1</button>
-      <button onClick={() => dispatch({type: 'decrement'})}>-1</button>
+      <button onClick={() => dispatch({ type: 'increment' })}>+1</button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>-1</button>
     </div>
   )
 }

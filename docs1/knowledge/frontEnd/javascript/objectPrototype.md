@@ -14,7 +14,7 @@ order: 6
 - 深入对象和原型，理解 JavaScript 在这个方向上的能力
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/24.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/24.png =700x)
 
 ## 实现 new 没有那么容易
 
@@ -53,7 +53,7 @@ function newFunc(...args) {
   const result = constructor.apply(obj, args)
 
   // 如果造函数执行后，返回结果是对象类型，就直接返回，否则返回 obj 对象
-  return (typeof result === 'object' && result != null) ? result : obj
+  return typeof result === 'object' && result != null ? result : obj
 }
 ```
 
@@ -67,7 +67,7 @@ function newFunc(...args) {
 ```javascript
 function Person(name) {
   this.name = name
-  return {1: 1}
+  return { 1: 1 }
 }
 
 const person = new Person(Person, 'zxwin')
@@ -98,7 +98,7 @@ Child.prototype = new Parent()
   - 构造函数实现继承的要点是：
 
 ```javascript
-function Child (args) {
+function Child(args) {
   // ...
   Parent.call(this, args)
 }
@@ -108,7 +108,7 @@ function Child (args) {
   - 组合继承的实现才基本可用，其要点是：
 
 ```javascript
-function Child (args1, args2) {
+function Child(args1, args2) {
   // ...
   this.args2 = args2
   Parent.call(this, args1)
@@ -125,7 +125,7 @@ Child.prototype.constrcutor = Child
 
 ```javascript
 function inherit(Child, Parent) {
-  // 继承原型上的属性 
+  // 继承原型上的属性
   Child.prototype = Object.create(Parent.prototype)
 
   // 修复 constructor
@@ -171,10 +171,9 @@ function DateConstructor() {
 
 inherit(DateConstructor, Date)
 
-DateConstructor.prototype.getMyTime = function() {
+DateConstructor.prototype.getMyTime = function () {
   return this.getTime()
-};
-
+}
 
 let date = new DateConstructor()
 
@@ -189,7 +188,7 @@ console.log(date.getMyTime())
 
 ```javascript
 function DateConstructor() {
-  var dateObj = new(Function.prototype.bind.apply(Date, [Date].concat(Array.prototype.slice.call(arguments))))()
+  var dateObj = new (Function.prototype.bind.apply(Date, [Date].concat(Array.prototype.slice.call(arguments))))()
 
   Object.setPrototypeOf(dateObj, DateConstructor.prototype)
 
@@ -249,7 +248,7 @@ var dateObj = new(Function.prototype.bind.apply(Date, [Date].concat(Array.protot
 class DateConstructor extends Date {
   constructor() {
     super()
-    this.foo ='bar'
+    this.foo = 'bar'
   }
   getMyTime() {
     return this.getTime()
@@ -279,7 +278,7 @@ date.getMyTime()
 
 ```javascript
 class Person {
-  constructor(){
+  constructor() {
     this.type = 'person'
   }
 }
@@ -290,7 +289,7 @@ class Person {
 
 ```javascript
 class Student extends Person {
-  constructor(){
+  constructor() {
     super()
   }
 }
@@ -318,7 +317,7 @@ student1.hasOwnProperty('type') // true
 
 ```javascript
 class Person {
-  constructor(){
+  constructor() {
     this.type = 'person'
   }
 }
@@ -328,16 +327,16 @@ class Person {
 
 ```javascript
 var Person = function Person() {
-  _classCallCheck(this, Person);
-  this.type = 'person';
-};
+  _classCallCheck(this, Person)
+  this.type = 'person'
+}
 ```
 
 - 看到其实还是构造函数那一套
 
 ```javascript
 class Student extends Person {
-  constructor(){
+  constructor() {
     super()
   }
 }
@@ -347,63 +346,63 @@ class Student extends Person {
 
 ```javascript
 // 实现定义 Student 构造函数，它是一个自执行函数，接受父类构造函数为参数
-var Student = (function(_Person) {
+var Student = (function (_Person) {
   // 实现对父类原型链属性的继承
-  _inherits(Student, _Person);
+  _inherits(Student, _Person)
 
   // 将会返回这个函数作为完整的 Student 构造函数
   function Student() {
     // 使用检测
-    _classCallCheck(this, Student);  
-    // _get 的返回值可以先理解为父类构造函数       
-    _get(Object.getPrototypeOf(Student.prototype), 'constructor', this).call(this);
+    _classCallCheck(this, Student)
+    // _get 的返回值可以先理解为父类构造函数
+    _get(Object.getPrototypeOf(Student.prototype), 'constructor', this).call(this)
   }
 
-  return Student;
-})(Person);
+  return Student
+})(Person)
 
 // _x为Student.prototype.__proto__
 // _x2为'constructor'
 // _x3为this
 var _get = function get(_x, _x2, _x3) {
-  var _again = true;
+  var _again = true
   _function: while (_again) {
     var object = _x,
       property = _x2,
-      receiver = _x3;
-    _again = false;
+      receiver = _x3
+    _again = false
     // Student.prototype.__proto__为null的处理
-    if (object === null) object = Function.prototype;
+    if (object === null) object = Function.prototype
     // 以下是为了完整复制父类原型链上的属性，包括属性特性的描述符
-    var desc = Object.getOwnPropertyDescriptor(object, property);
+    var desc = Object.getOwnPropertyDescriptor(object, property)
     if (desc === undefined) {
-      var parent = Object.getPrototypeOf(object);
+      var parent = Object.getPrototypeOf(object)
       if (parent === null) {
-        return undefined;
+        return undefined
       } else {
-        _x = parent;
-        _x2 = property;
-        _x3 = receiver;
-        _again = true;
-        desc = parent = undefined;
-        continue _function;
+        _x = parent
+        _x2 = property
+        _x3 = receiver
+        _again = true
+        desc = parent = undefined
+        continue _function
       }
     } else if ('value' in desc) {
-      return desc.value;
+      return desc.value
     } else {
-      var getter = desc.get;
+      var getter = desc.get
       if (getter === undefined) {
-        return undefined;
+        return undefined
       }
-      return getter.call(receiver);
+      return getter.call(receiver)
     }
   }
-};
+}
 
 function _inherits(subClass, superClass) {
   // superClass 需要为函数类型，否则会报错
   if (typeof superClass !== 'function' && superClass !== null) {
-    throw new TypeError('Super expression must either be null or a function, not ' - typeof superClass);
+    throw new TypeError('Super expression must either be null or a function, not ' - typeof superClass)
   }
   // Object.create 第二个参数是为了修复子类的 constructor
   subClass.prototype = Object.create(superClass && superClass.prototype, {
@@ -413,25 +412,26 @@ function _inherits(subClass, superClass) {
       writable: true,
       configurable: true
     }
-  });
+  })
   // Object.setPrototypeOf 是否存在做了一个判断，否则使用 __proto__
-  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+  if (superClass)
+    Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : (subClass.__proto__ = superClass)
 }
 ```
 
 - 进行拆解：
 
 ```javascript
-var Student = (function(_Person) {
-  _inherits(Student, _Person);
+var Student = (function (_Person) {
+  _inherits(Student, _Person)
 
   function Student() {
-    _classCallCheck(this, Student);            
-    _get(Object.getPrototypeOf(Student.prototype), 'constructor', this).call(this);
+    _classCallCheck(this, Student)
+    _get(Object.getPrototypeOf(Student.prototype), 'constructor', this).call(this)
   }
 
-  return Student;
-})(Person);
+  return Student
+})(Person)
 ```
 
 - 这是一个自执行函数，它接受一个参数 Person（就是它要继承的父类），返回一个构造函数 Student
@@ -439,7 +439,7 @@ var Student = (function(_Person) {
 - 它的实现原理可以归结为一句话：
 
 ```javascript
-Student.prototype = Object.create(Person.prototype);
+Student.prototype = Object.create(Person.prototype)
 Object.setPrototypeOf(Student, Person)
 ```
 
@@ -448,7 +448,7 @@ Object.setPrototypeOf(Student, Person)
 - 以上通过 `_inherits` 实现了对父类原型链上属性的继承，那么对于父类的实例属性（就是 constructor 定义的属性）的继承，也可以归结为一句话：
 
 ```javascript
-Person.call(this);
+Person.call(this)
 ```
 
 - 看到 Babel 将 class extends 编译成了 ES5 组合模式的继承，这才是 JavaScript 面向对象的实质
@@ -464,7 +464,7 @@ Person.call(this);
 ```javascript
 const pNodes = $('p')
 // 得到一个数组
-const divNodes= $('div')
+const divNodes = $('div')
 // 得到一个数组
 ```
 
@@ -493,9 +493,7 @@ $.ajax()
 
 ```javascript
 // 构造函数
-function $() {
-
-}
+function $() {}
 
 $.ajax = function () {
   // ...
@@ -505,12 +503,12 @@ $.ajax = function () {
 - 实际上，翻看 jQuery 源码架构会发现（具体内容有删减和改动）：
 
 ```javascript
-var jQuery = (function(){
+var jQuery = (function () {
   var $
 
   // ...
 
-  $ = function(selector, context) {
+  $ = function (selector, context) {
     return function (selector, context) {
       var dom = []
       dom.__proto__ = $.fn
@@ -522,13 +520,13 @@ var jQuery = (function(){
   }
 
   $.fn = {
-    addClass: function() {
+    addClass: function () {
       // ...
-    },
+    }
     // ...
   }
 
-  $.ajax = function() {
+  $.ajax = function () {
     // ...
   }
 
@@ -583,7 +581,7 @@ class $ {
 - 这些内容属于纯理论，多说无益
 - 但借用 Eric Elliott 的著名文章：[Difference between class prototypal inheritance](https://www.zcfy.cc/article/master-the-javascript-interview-what-%20s-the-difference-between-class-amp-prototypal-inheritance-2185.html)，展开一点：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/25.jpg =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/25.jpg =500x)
 
 - 从上图，看出一些问题（单一继承、紧耦合以及层级分类问题），对于类 8，只想继承五边形的属性，却得到了继承链上其他并不需要的属性，比如五角星，正方形属性
   - 这就是大猩猩/香蕉问题，“只想要一个香蕉，但是给了整个森林”
@@ -591,7 +589,7 @@ class $ {
   - 好吧，不去修改，那就需要给类 9 新建一个基类（必然重复性问题）
 - 那么基于原型的继承可以怎么解决上述问题呢？
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/26.gif =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/26.gif =500x)
 
 - 采用原型继承，其实本质是对象组合，可以避免复杂纵深的层级关系
   - 当类 1 需要四角星特性的时候，只需要组合新特性即可，不会影响到其他实例
@@ -601,8 +599,8 @@ class $ {
 - 最后，分析一个真实场景案例
 - 在产品当中，一个页面可能存在多处“收藏”组件：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/27.png =300x)
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/28.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/27.png =300x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/28.png =300x)
 
 - 点击按钮，对页面进行收藏，成功收藏之后，按钮的状态会变为“已收藏”，再点击不会有响应
 - 这样就出现页面中多处“收藏”组件之间通信问题，点击页面顶部收藏按钮成功收藏之后，页面底部的收藏按钮状态也需要变化，进行同步
@@ -623,10 +621,10 @@ class Widget extends UIBase {
 - 同时，UIBase 又继承 EventEmitter 这个 pub/sub 模式组件：
 
 ```javascript
-class UIBase extends EventEmitter{
+class UIBase extends EventEmitter {
   constructor() {
-    super();
-    this.guid = guid();
+    super()
+    this.guid = guid()
   }
 }
 ```
@@ -642,14 +640,14 @@ widget.emit('favorAction')
 - 同时，其他的收藏组件：
 
 ```javascript
-widget.on('favorAction', function() {
+widget.on('favorAction', function () {
   // toggle status
 })
 ```
 
 - 具体的实现结构如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/29.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/29.png =500x)
 
 - 这样的组件行为在一些先进的 MVVM、MVC 等框架中可以良好的实现，比如 React 框架中，可以借助 Redux 实现组件间的通信
 - Redux 实质就是一个事件发布订阅系统，而 connect 就是将组件的行为具备“发布和订阅”的能力

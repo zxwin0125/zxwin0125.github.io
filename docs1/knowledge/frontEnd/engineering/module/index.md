@@ -12,7 +12,7 @@ order: 1
   - 新的模块化 feature 又有哪些？dynamic import 现在停留在哪个阶段？
 - 知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/14.webp =600x320)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/14.webp =600x320)
 
 ## 模块化简单概念
 
@@ -41,10 +41,10 @@ order: 1
 
 ```javascript
 function f1() {
-	//...
+  //...
 }
 function f2() {
-	//...
+  //...
 }
 ```
 
@@ -69,14 +69,14 @@ const module2 = {
 - 这样模拟了简单的 module1、module2 命名空间，在函数主体中可以调用：
 
 ```javascript
-module1.f11();
-console.log(module2.data);
+module1.f11()
+console.log(module2.data)
 ```
 
 - 可是这样问题也很明显，module1 和 module2 中的数据并不安全，任何开发者都可以修改：
 
 ```javascript
-module2.data = 'modified data';
+module2.data = 'modified data'
 ```
 
 - 对象内部成员可以随意被改写，极易出现 bug，那么有什么手段能弥补这个不足呢？
@@ -86,48 +86,48 @@ module2.data = 'modified data';
 
 ```javascript
 const module = (function () {
-	var foo = 'bar';
-	var fn1 = function () {
-		// ...
-	};
-	var fn2 = function fn2() {
-		// ...
-	};
-	return {
-		fn1: fn1,
-		fn2: fn2,
-	};
-})();
+  var foo = 'bar'
+  var fn1 = function () {
+    // ...
+  }
+  var fn2 = function fn2() {
+    // ...
+  }
+  return {
+    fn1: fn1,
+    fn2: fn2
+  }
+})()
 ```
 
 - 在调用时：
 
 ```javascript
-module.fn1();
+module.fn1()
 ```
 
 - 如果想要访问变量 foo：
 
 ```javascript
-module.foo;
+module.foo
 // undefined
 ```
 
 - 是访问不到具体数据的，了解了这种模式，可以在此基础上「玩出另外一个花」来，该方式的变种：结合顶层 window 对象，再来看：
 
 ```javascript
-(function (window) {
-	var data = 'data';
+;(function (window) {
+  var data = 'data'
 
-	function foo() {
-		console.log(`foo executing, data is ${data}`);
-	}
-	function bar() {
-		data = 'modified data';
-		console.log(`bar executing, data is now ${data} `);
-	}
-	window.module1 = { foo, bar };
-})(window);
+  function foo() {
+    console.log(`foo executing, data is ${data}`)
+  }
+  function bar() {
+    data = 'modified data'
+    console.log(`bar executing, data is now ${data} `)
+  }
+  window.module1 = { foo, bar }
+})(window)
 ```
 
 - 这样的实现，数据 data 完全做到了私有，外界无法修改 data 值
@@ -136,14 +136,14 @@ module.foo;
 - 上述代码中，只需要调用模块 module1 暴露给外界（window）的函数即可:
 
 ```javascript
-module1.foo();
+module1.foo()
 // foo executing, data is data
 ```
 
 - 修改 data 值的途径，也只能由模块 module1 提供：
 
 ```javascript
-module1.bar();
+module1.bar()
 // bar executing, data is now modified data
 ```
 
@@ -151,19 +151,19 @@ module1.bar();
 - 再进一步思考，如果 module1 依赖外部模块 module2，该怎么办？请参考代码：
 
 ```javascript
-(function (window, $) {
-	var data = 'data';
+;(function (window, $) {
+  var data = 'data'
 
-	function foo() {
-		console.log(`foo executing, data is ${data}`);
-		console.log($);
-	}
-	function bar() {
-		data = 'modified data';
-		console.log(`bar executing, data is now ${data} `);
-	}
-	window.module1 = { foo, bar };
-})(window, jQuery);
+  function foo() {
+    console.log(`foo executing, data is ${data}`)
+    console.log($)
+  }
+  function bar() {
+    data = 'modified data'
+    console.log(`bar executing, data is now ${data} `)
+  }
+  window.module1 = { foo, bar }
+})(window, jQuery)
 ```
 
 - **<font color=red>事实上，这就是现代模块化方案的基石，到此为止，这是模块化的第一阶段：「假」模块化时代</font>**
@@ -176,6 +176,7 @@ module1.bar();
   - 关于 CommonJS 的规范，来看看它的 **<font color=red>几个容易被忽略的特点</font>**
 
 > [!important]
+>
 > - 文件即模块，文件内所有代码都运行在独立的作用域，因此不会污染全局空间
 > - 模块可以被多次引用、加载，在第一次被加载时，**<font color=red>会被缓存</font>**，之后都从缓存中直接读取结果
 > - 加载某个模块，就是引入该模块的 module.exports 属性
@@ -185,22 +186,23 @@ module1.bar();
 
 > [!warning]
 > CommonJS 规范用代码如何在浏览器端实现呢？
+>
 > - 其实就是实现 module.exports 和 require 方法
 > - 实现思路：根据 require 的文件路径，加载文件内容并执行，同时将对外接口进行缓存
 
 - 因此需要定义：
 
 ```javascript
-let module = {};
-module.exports = {};
+let module = {}
+module.exports = {}
 ```
 
 - 借助立即执行函数，将 module 和 module.exports 对象进行赋值：
 
 ```javascript
-(function (module, exports) {
-	// ...
-})(module, module.exports);
+;(function (module, exports) {
+  // ...
+})(module, module.exports)
 ```
 
 - 社区上对 CommonJS 实现的模拟很多，给大家推荐[浅谈前端模块化](https://juejin.cn/post/6844903741020192776)，以及 [browserify](https://github.com/browserify/browserify)
@@ -217,10 +219,10 @@ module.exports = {};
 - [require.js 源码](https://github.com/requirejs/requirejs)
 
 ```javascript
-var require, define;
-(function (global, setTimeout) {
-	// ...
-})(this, typeof setTimeout === 'undefined' ? undefined : setTimeout);
+var require, define
+;(function (global, setTimeout) {
+  // ...
+})(this, typeof setTimeout === 'undefined' ? undefined : setTimeout)
 ```
 
 - require.js 在全局定义了 require 和 define 两个方法，也是利用立即执行函数，将全局对象（this）和 setTimeout 传入函数体内
@@ -228,14 +230,14 @@ var require, define;
 
 ```javascript
 define = function (name, deps, callback) {
-	// ...
-	if (context) {
-		context.defQueue.push([name, deps, callback]);
-		context.defQueueMap[name] = true;
-	} else {
-		globalDefQueue.push([name, deps, callback]);
-	}
-};
+  // ...
+  if (context) {
+    context.defQueue.push([name, deps, callback])
+    context.defQueueMap[name] = true
+  } else {
+    globalDefQueue.push([name, deps, callback])
+  }
+}
 ```
 
 - 这里主要是将依赖注入到依赖队列
@@ -285,17 +287,17 @@ req.createNode = function (config, moduleName, url) {
 
 ```javascript
 function removeScript(name) {
-	if (isBrowser) {
-		each(scripts(), function (scriptNode) {
-			if (
-				scriptNode.getAttribute('data-requiremodule') === name &&
-				scriptNode.getAttribute('data-requirecontext') === context.contextName
-			) {
-				scriptNode.parentNode.removeChild(scriptNode);
-				return true;
-			}
-		});
-	}
+  if (isBrowser) {
+    each(scripts(), function (scriptNode) {
+      if (
+        scriptNode.getAttribute('data-requiremodule') === name &&
+        scriptNode.getAttribute('data-requirecontext') === context.contextName
+      ) {
+        scriptNode.parentNode.removeChild(scriptNode)
+        return true
+      }
+    })
+  }
 }
 ```
 
@@ -324,22 +326,22 @@ function (factory) {
 - 具体代码：
 
 ```javascript
-(function (root, factory) {
-	if (typeof define === 'function' && define.amd) {
-		// AMD 规范
-		define(['b'], factory);
-	} else if (typeof module === 'object' && module.exports) {
-		// 类 Node 环境，并不支持完全严格的 CommonJS 规范
-		// 但是属于 CommonJS-like 环境，支持 module.exports 用法
-		module.exports = factory(require('b'));
-	} else {
-		// 浏览器环境
-		root.returnExports = factory(root.b);
-	}
+;(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD 规范
+    define(['b'], factory)
+  } else if (typeof module === 'object' && module.exports) {
+    // 类 Node 环境，并不支持完全严格的 CommonJS 规范
+    // 但是属于 CommonJS-like 环境，支持 module.exports 用法
+    module.exports = factory(require('b'))
+  } else {
+    // 浏览器环境
+    root.returnExports = factory(root.b)
+  }
 })(this, function (b) {
-	// 返回值作为 export 内容
-	return {};
-});
+  // 返回值作为 export 内容
+  return {}
+})
 ```
 
 - 至此，介绍完了模块化的 Node.js 和社区解决方案
@@ -356,16 +358,16 @@ function (factory) {
 
 ```javascript
 // data.js
-export let data = 'data';
+export let data = 'data'
 export function modifyData() {
-	data = 'modified data';
+  data = 'modified data'
 }
 
 // index.js
-import { data, modifyData } from './lib';
-console.log(data); // data
-modifyData();
-console.log(data); // modified data
+import { data, modifyData } from './lib'
+console.log(data) // data
+modifyData()
+console.log(data) // modified data
 ```
 
 - 在 index.js 中调用了 modifyData 方法，之后查询 data 值，得到了最新的变化
@@ -373,22 +375,22 @@ console.log(data); // modified data
 
 ```javascript
 // data.js
-var data = 'data';
+var data = 'data'
 function modifyData() {
-	data = 'modified data';
+  data = 'modified data'
 }
 
 module.exports = {
-	data: data,
-	modifyData: modifyData,
-};
+  data: data,
+  modifyData: modifyData
+}
 
 // index.js
-var data = require('./data').data;
-var modifyData = require('./data').modifyData;
-console.log(data); // data
-modifyData();
-console.log(data); // data
+var data = require('./data').data
+var modifyData = require('./data').modifyData
+console.log(data) // data
+modifyData()
+console.log(data) // data
 ```
 
 - 因为 CommonJS 是输出了值的拷贝，而非引用，因此在调用 modifyData 之后，index.js 的 data 值并没有发生变化，其值为一个全新的拷贝
@@ -397,12 +399,13 @@ console.log(data); // data
 
 - 一个明显的优势是：通过静态分析，能够分析出导入的依赖，如果导入的模块没有被使用，便可以通过 tree shaking 等手段减少代码体积，进而提升运行性能，这就是 **<font color=red>基于 ESM 实现 tree shaking 的基础</font>**
 - 这么说可能过于笼统，从设计的角度分析这两种规范哲学的利弊
-> [!important]
-> - 静态性需要规范去强制保证，不像 CommonJS 那样灵活，ES 模块化的静态性带来了限制：
->   - 只能在文件顶部 import 依赖
->   - export 导出的变量类型严格限制
->   - 变量不允许被重新绑定，import 的模块名只能是字符串常量，即不可以动态确定依赖
-> - 这样的限制在语言层面带来的便利之一是：可以通过作用域分析，分析出代码里变量所属的作用域以及它们之间的引用关系，进而可以推导出变量和导入依赖变量的引用关系，在没有明显引用时，就可以进行去冗余
+  > [!important]
+  >
+  > - 静态性需要规范去强制保证，不像 CommonJS 那样灵活，ES 模块化的静态性带来了限制：
+  >   - 只能在文件顶部 import 依赖
+  >   - export 导出的变量类型严格限制
+  >   - 变量不允许被重新绑定，import 的模块名只能是字符串常量，即不可以动态确定依赖
+  > - 这样的限制在语言层面带来的便利之一是：可以通过作用域分析，分析出代码里变量所属的作用域以及它们之间的引用关系，进而可以推导出变量和导入依赖变量的引用关系，在没有明显引用时，就可以进行去冗余
 
 #### tree shaking
 
@@ -456,11 +459,11 @@ console.log(data); // data
 
 ```html
 <script type="module">
-	import module1 from './module1';
+  import module1 from './module1'
 </script>
 
 <script nomodule>
-	alert('你的浏览器不支持 ES 模块请先升级');
+  alert('你的浏览器不支持 ES 模块请先升级')
 </script>
 ```
 

@@ -7,10 +7,12 @@ order: 3
 ## webpack 插件机制
 
 > [!info]
+>
 > - loader 专注实现资源模块的加载，从而实现整体项目的打包
 > - plugin 解决项目中除了资源加载以外的自动化工作
 
 - 插件目的是为了增强 webpack 项目自动化能力，例如
+
   1. 在打包之前，自动清除 dist 目录
   2. 拷贝不需要参与打包的资源文件到输出目录
   3. 压缩打包结果输出的代码
@@ -39,10 +41,8 @@ order: 3
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-	// ...
-	plugins: [
-		new CleanWebpackPlugin()
-	]
+  // ...
+  plugins: [new CleanWebpackPlugin()]
 }
 ```
 
@@ -54,6 +54,7 @@ module.exports = {
 
 > [!important]
 > 解决办法，通过 webpack 输出 html 文件，也就是让 html 也参与到 webpack 的构建过程
+>
 > 1. webpack 知道生成了多少 bundle，它会自动将这些打包文件添加到 html 文件中
 > 2. webpack 还把 html 文件输出到 dist 目录，这样上线时直接发布 dist 目录即可
 > 3. bundle 文件是 webpack 动态的注入到 html 文件中，不需要手动的硬编码，它确保路径的引用是正常的
@@ -65,10 +66,8 @@ module.exports = {
 const HtmlWebpackPlugin = require('html-webpack-plugin') // 默认导出的就是一个插件类型，不需要解构内部成员
 
 module.exports = {
-	// ...
-	plugins: [
-		new HtmlWebpackPlugin()
-	]
+  // ...
+  plugins: [new HtmlWebpackPlugin()]
 }
 ```
 
@@ -80,15 +79,15 @@ module.exports = {
 
 ```js
 module.exports = {
-	// ...
-	plugins: [
-		new HtmlWebpackPlugin({
+  // ...
+  plugins: [
+    new HtmlWebpackPlugin({
       title: 'Webpack Plugin Sample',
       meta: {
         viewport: 'width=device-width'
       }
     })
-	]
+  ]
 }
 ```
 
@@ -98,16 +97,16 @@ module.exports = {
 
 ```js
 module.exports = {
-	// ...
-	plugins: [
-		new HtmlWebpackPlugin({
+  // ...
+  plugins: [
+    new HtmlWebpackPlugin({
       title: 'Webpack Plugin Sample',
       meta: {
         viewport: 'width=device-width'
       },
       template: './src/index.html'
     })
-	]
+  ]
 }
 ```
 
@@ -119,9 +118,9 @@ module.exports = {
 
 ```js
 module.exports = {
-	// ...
-	plugins: [
-		// 用于生成 index.html
+  // ...
+  plugins: [
+    // 用于生成 index.html
     new HtmlWebpackPlugin({
       title: 'Webpack Plugin Sample',
       meta: {
@@ -133,7 +132,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       filename: 'about.html'
     })
-	]
+  ]
 }
 ```
 
@@ -146,8 +145,8 @@ module.exports = {
 ```js
 // 拷贝文件 v5.x 用法
 // new CopyWebpackPlugin([
-	// 'public/**',
-  // 'public'
+// 'public/**',
+// 'public'
 // ])
 
 // 拷贝文件 v6.x 使用 patterns 配置
@@ -162,6 +161,7 @@ new CopyWebpackPlugin({
 ## 插件机制的工作原理
 
 > 相比于 loader，plugin 拥有更宽的能力范围
+>
 > - loader 只是在加载模块的环节工作
 > - plugin 的作用范围几乎可以触及 webpack 工作的每一个环节
 
@@ -169,13 +169,14 @@ new CopyWebpackPlugin({
 
 > [!warning]
 > 这样的插件机制是如何实现的呢？
+>
 > - webpack 插件机制就是软件开发中常见的钩子机制，有点类似于 web 中的事件
 
 - webpack 工作过程中有很多环节，为了便于插件的扩展，webpack 几乎给每一个环节都埋下一个钩子
 - 在开发插件的时候，可以通过这些不同的节点去挂载不同的任务，来扩展 webpack 的能力
 - 有哪些预先定义好的钩子，可以参考官网[Compiler Hooks](https://webpack.docschina.org/api/compiler-hooks/)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/18.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/18.png)
 
 ### 2. 如何往钩子上挂载任务
 
@@ -184,13 +185,14 @@ new CopyWebpackPlugin({
 > 官方：插件是由[具有 apply 方法的 prototype 对象]所实例化出来的
 
 > [!important]
+>
 > - 一般都会把一个插件定义为一个类(class)，然后在其中定义一个 apply 方法，使用插件时，通过这个 class 构建一个实例
 > - webpack 在启动时，会自动调用插件的 apply 方法，apply 方法接收一个 compiler 对象作为参数
 > - compiler 对象是 webpack 工作过程中最核心的对象，它包含当前构建的所有的配置信息，也是通过这个对象来注册钩子函数
 
 ```js
 class MyPlugin {
-  apply (compiler) {
+  apply(compiler) {
     console.log('MyPlugin 启动')
   }
 }
@@ -201,17 +203,20 @@ class MyPlugin {
 > 自定义一个用于清除 bundle.js 中`/******/`注释的插件
 
 1. 确认插件执行时机（即挂载到哪个钩子上）
-  - emit 钩子：确认 bundle.js 内容，在生成到 output 目录之前
+
+- emit 钩子：确认 bundle.js 内容，在生成到 output 目录之前
+
 2. 通过 compiler.hooks 访问到具体的钩子
 3. 通过 tap 方法注册一个钩子函数，它接收两个参数：
-  - 参数1：插件的名称
-  - 参数2：需要挂载到这个钩子上的函数，它接收一个 compilation 对象作为参数
-    - compilation 可以理解为此次打包过程的上下文，此次所有打包过程产生的结果都会放到 compilation 对象中
-    - compilation.assets 访问所有编译的资源文件，每个元素都是一个包含资源文件信息的对象
-      - key 是资源文件的名称
-      - value 包含一个 source 方法
-        - 调用它可以获取编译文件的内容
-        - 重定义这个方法返回的值，实现修改编译文件的内容
+
+- 参数1：插件的名称
+- 参数2：需要挂载到这个钩子上的函数，它接收一个 compilation 对象作为参数
+  - compilation 可以理解为此次打包过程的上下文，此次所有打包过程产生的结果都会放到 compilation 对象中
+  - compilation.assets 访问所有编译的资源文件，每个元素都是一个包含资源文件信息的对象
+    - key 是资源文件的名称
+    - value 包含一个 source 方法
+      - 调用它可以获取编译文件的内容
+      - 重定义这个方法返回的值，实现修改编译文件的内容
 
 > [!warning]
 > webpack 还要求必须返回一个 size 方法，用于返回编译文件的大小
@@ -225,7 +230,7 @@ class MyPlugin {
 
       // 打印资源文件的内容，通过资源文件的值的source方法获取
       // onsole.log(compilation.assets[name].source())
-      
+
       // 判断是否是js文件
         if (name.endsWith('.js')) {
           // 获取内容
@@ -255,4 +260,3 @@ class MyPlugin {
     - 当运行 webpack 开发环境中间件时，每检测到一个文件变化，就会创建一个新的 compilation，从而生成一组新的编译资源
     - 一个 compilation 对象表现了当前模块资源、编译生成资源、变化的文件、以及被跟踪依赖的状态信息
     - compilation 也提供了很多关键时机的回调，供插件做自定义处理时选择使用
-

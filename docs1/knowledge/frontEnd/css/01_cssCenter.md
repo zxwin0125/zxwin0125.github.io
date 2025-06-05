@@ -4,48 +4,48 @@
 
 ```html
 <style>
-	.wp {
-		border: 1px solid red;
-		width: 300px;
-		height: 300px;
-	}
+  .wp {
+    border: 1px solid red;
+    width: 300px;
+    height: 300px;
+  }
 
-	.box {
-		background: green;
-	}
+  .box {
+    background: green;
+  }
 
-	.box.fixed-size {
-		width: 100px;
-		height: 100px;
-	}
+  .box.fixed-size {
+    width: 100px;
+    height: 100px;
+  }
 </style>
 <body>
-	<div class="wp">
-		<div class="box fixed-size">text</div>
-	</div>
+  <div class="wp">
+    <div class="box fixed-size">text</div>
+  </div>
 </body>
 ```
 
 如图：如何让绿色的块水平垂直居中呢？
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/06.png){width=300 height=300}
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/CSS/06.png){width=300 height=300}
 
 ## 仅适用于居中元素定宽高
 
 ### absolute - 负 margin
-  
+
 绝对定位的百分比是相对于父元素的宽高，使得元素偏移后，在修正元素自身宽高的一半就行
 
 ```css
 .wp {
-	position: relative;
+  position: relative;
 }
 .box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-left: -50px;
-	margin-top: -50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
 }
 ```
 
@@ -55,15 +55,15 @@
 
 ```css
 .wp {
-	position: relative;
+  position: relative;
 }
 .box {
-	position: absolute;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
 }
 ```
 
@@ -73,12 +73,12 @@
 
 ```css
 .root {
-	position: relative;
+  position: relative;
 }
 .textBox {
-	position: absolute;
-	top: calc(50% - 50px);
-	left: calc(50% - 50px);
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
 }
 ```
 
@@ -111,13 +111,13 @@
 
 ```css
 .wp {
-	position: relative;
+  position: relative;
 }
 .box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 ```
 
@@ -129,16 +129,16 @@
 
 ```css
 .wp {
-	line-height: 300px;
-	text-align: center;
-	font-size: 0px;
+  line-height: 300px;
+  text-align: center;
+  font-size: 0px;
 }
 .box {
-	font-size: 16px;
-	display: inline-block;
-	vertical-align: middle;
-	line-height: initial;
-	text-align: left; /* 修正文字 */
+  font-size: 16px;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: initial;
+  text-align: left; /* 修正文字 */
 }
 ```
 
@@ -148,10 +148,10 @@
 
 ```css
 .wp {
-	text-align: center;
+  text-align: center;
 }
 .box {
-	display: inline-block;
+  display: inline-block;
 }
 ```
 
@@ -165,12 +165,12 @@
 
 ```css
 .wp {
-	display: table-cell;
-	text-align: center;
-	vertical-align: middle;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
 }
 .box {
-	display: inline-block;
+  display: inline-block;
 }
 ```
 
@@ -180,9 +180,9 @@
 
 ```css
 .wp {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 ```
 
@@ -192,16 +192,17 @@
 
 ```css
 .wp {
-	display: grid;
+  display: grid;
 }
 .box {
-	align-self: center;
-	justify-self: center;
+  align-self: center;
+  justify-self: center;
 }
 ```
 
 > [!important]
 > 总结一下
+>
 > - PC 端有兼容性要求，宽高固定，推荐 `absolute` - 负 `margin`
 > - PC 端有兼容要求，宽高不固定，推荐 `css-table`
 > - PC 端无兼容性要求，推荐 `flex`
@@ -209,4 +210,4 @@
 
 最后整理一个列表
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/07.png){width=600 height=600}
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/CSS/07.png){width=600 height=600}

@@ -5,6 +5,7 @@ order: 4
 
 > 了解 React 元素是如何被渲染到页面中的，也就是 React 元素初始渲染的过程
 > React 元素渲染到页面分为两个阶段
+>
 > - render 阶段
 > - commit 阶段
 
@@ -97,7 +98,6 @@ export function isValidContainer(node: mixed): boolean {
 > [!warning]
 > 如果 node 是注释节点，注释内容必须是 react-mount-point-unstable<br>
 > react 内部会找到注释节点的父级，通过调用父级元素的 insertBefore 方法, 将 element 插入到注释节点的前面
-
 
 ### legacyRenderSubtreeIntoContainer 初始化 Fiber 数据结构
 
@@ -205,35 +205,38 @@ function legacyRenderSubtreeIntoContainer(
 
 > [!warning]
 > 为什么在 legacyRenderSubtreeIntoContainer 里要去判断是否为服务器端渲染呢？
+>
 > - 如果是服务器端渲染，要复用 container 内部的 DOM 元素
 > - 如果不是服务器端渲染，就不需要复用 container 内部的 DOM 元素，要去删除 container 内部的内容
 
 - legacyRenderSubtreeIntoContainer 是 render 方法的核心内容，将子树渲染到容器中
 - **<font color=red>主要内容是初始化 Fiber 数据结构，创建 fiberRoot 及 rootFiber</font>**
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/35.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/35.png)
 
 ##### 1.1 检测 container 是否已经是初始化过的渲染容器
 
-- legacyRenderSubtreeIntoContainer 方法里可以看到它拿到 container 这个 DOM 对象，去这个 DOM 对象中获取 _reactRootContainer 这样一个和 React 相关的属性
+- legacyRenderSubtreeIntoContainer 方法里可以看到它拿到 container 这个 DOM 对象，去这个 DOM 对象中获取 \_reactRootContainer 这样一个和 React 相关的属性
 
 > [!warning]
 > 这个属性到底能不能获取到呢?
+>
 > - 肯定是不能获取到的
 > - 因为 container 就是一个普通的 DOM 对象，没有和 React 相关的属性
 > - 所以返回值 root 一定是一个 undefined
 
 > [!warning]
-> 为什么要去获取 _reactRootContainer 这样一个属性呢?
+> 为什么要去获取 \_reactRootContainer 这样一个属性呢?
+>
 > - 实际上就是检测 container 是否已经是初始化过的渲染容器
 
-- react 在初始渲染时会为最外层容器添加 _reactRootContainer 属性，并根据此属性是否存在进行不同的渲染方式
-  - root 不存在，即没有获取到 _reactRootContainer 属性，表示初始渲染
-  - root 存在，即已经获取到 _reactRootContainer 属性，表示处于更新阶段
+- react 在初始渲染时会为最外层容器添加 \_reactRootContainer 属性，并根据此属性是否存在进行不同的渲染方式
+  - root 不存在，即没有获取到 \_reactRootContainer 属性，表示初始渲染
+  - root 存在，即已经获取到 \_reactRootContainer 属性，表示处于更新阶段
 
 ##### 1.2 初始化 Fiber 数据结构
 
-- root 不存在，即初始渲染，就给 root 重新赋值，给 container 添加 _reactRootContainer 属性，属性值是 legacyCreateRootFromDOMContainer 方法的调用
+- root 不存在，即初始渲染，就给 root 重新赋值，给 container 添加 \_reactRootContainer 属性，属性值是 legacyCreateRootFromDOMContainer 方法的调用
 - 这些事情就是在创建 fiberRoot 以及 rootFiber
 
 ##### 1.3 legacyCreateRootFromDOMContainer 判断是否为服务器端渲染
@@ -243,20 +246,25 @@ function legacyRenderSubtreeIntoContainer(
 
 > [!warning]
 > 为什么要清除 container 中的元素?
+>
 > - 为提供首屏加载的用户体验, 有时需要在 container 中放置一些占位图或者 loading 图，就无可避免的要向 container 中加入 html 标记
 > - 在将 ReactElement 渲染到 container 之前, 必然要先清空 container，因为占位图和 ReactElement 不能同时显示
 
 > [!important]
 > 开发技巧启示
+>
 > - React 清空容器内容的方式是循环遍历容器的下级子元素，依次删除
 > - 所以在加入占位图代码时，最好只有一个父级元素，这样 React 在清空容器中的占位图代码的时候，只需要循环一次即可删除，减少内部代码的循环次数，提高性能
 
 ```html
 <!-- React 只会删除一次 div，而不会删除三次 p -->
 <div>
-	<p>placement<p>
-	<p>placement<p>
-	<p>placement<p>
+  <p>placement</p>
+  <p></p>
+  <p>placement</p>
+  <p></p>
+  <p>placement</p>
+  <p></p>
 </div>
 ```
 
@@ -322,6 +330,7 @@ function legacyCreateRootFromDOMContainer(
 
 > [!warning]
 > 什么是 LegacyRoot？
+>
 > - 通过 render 方法创建的 container 就是 LegacyRoot
 
 ###### 1.4.1 LegacyRoot 定义
@@ -361,7 +370,7 @@ export function createLegacyRoot(
 
 ##### 1.5 ReactDOMBlockingRoot 类
 
-- 通过 this 关键字向这个对象当中添加了 _internalRoot 属性，属性值是 createRootImpl 方法的调用，返回的也是一个对象
+- 通过 this 关键字向这个对象当中添加了 \_internalRoot 属性，属性值是 createRootImpl 方法的调用，返回的也是一个对象
 
 ###### 1.5.1 相关源码
 
@@ -434,14 +443,21 @@ export function createContainer(
 ##### 1.8 createFiberRoot
 
 1. 创建 fiberRoot
-  - const 关键字声明 root 常量，存储的实际上就是最终要得到的 fiberRoot 对象，值是 new FiberRootNode
+
+- const 关键字声明 root 常量，存储的实际上就是最终要得到的 fiberRoot 对象，值是 new FiberRootNode
+
 2. 创建 rootFiber
-  - 即 id 为 root 的那个 div 所对应的 fiber 对象
+
+- 即 id 为 root 的那个 div 所对应的 fiber 对象
+
 3. 关联 fiberRoot 和 rootFiber
-  - 为 fiberRoot 添加 current 属性 值为 rootFiber
-  - 为 rootFiber 添加 stateNode 属性 值为 fiberRoot
+
+- 为 fiberRoot 添加 current 属性 值为 rootFiber
+- 为 rootFiber 添加 stateNode 属性 值为 fiberRoot
+
 4. 给 rootFiber 添加任务队列属性
-  - 调用 initializeUpdateQueue 方法给 fiber 对象初始化 updateQueue，添加一系列默认值
+
+- 调用 initializeUpdateQueue 方法给 fiber 对象初始化 updateQueue，添加一系列默认值
 
 ###### 1.8.1 相关源码
 
@@ -482,32 +498,32 @@ export function createFiberRoot(
 
 ```js
 function FiberRootNode(containerInfo, tag, hydrate) {
-  this.tag = tag;
-  this.current = null;
-  this.containerInfo = containerInfo;
-  this.pendingChildren = null;
-  this.pingCache = null;
-  this.finishedExpirationTime = NoWork;
-  this.finishedWork = null;
-  this.timeoutHandle = noTimeout;
-  this.context = null;
-  this.pendingContext = null;
-  this.hydrate = hydrate;
-  this.callbackNode = null;
-  this.callbackPriority = NoPriority;
-  this.firstPendingTime = NoWork;
-  this.firstSuspendedTime = NoWork;
-  this.lastSuspendedTime = NoWork;
-  this.nextKnownPendingLevel = NoWork;
-  this.lastPingedTime = NoWork;
-  this.lastExpiredTime = NoWork;
+  this.tag = tag
+  this.current = null
+  this.containerInfo = containerInfo
+  this.pendingChildren = null
+  this.pingCache = null
+  this.finishedExpirationTime = NoWork
+  this.finishedWork = null
+  this.timeoutHandle = noTimeout
+  this.context = null
+  this.pendingContext = null
+  this.hydrate = hydrate
+  this.callbackNode = null
+  this.callbackPriority = NoPriority
+  this.firstPendingTime = NoWork
+  this.firstSuspendedTime = NoWork
+  this.lastSuspendedTime = NoWork
+  this.nextKnownPendingLevel = NoWork
+  this.lastPingedTime = NoWork
+  this.lastExpiredTime = NoWork
   if (enableSchedulerTracing) {
-    this.interactionThreadID = unstable_getThreadID();
-    this.memoizedInteractions = new Set();
-    this.pendingInteractionMap = new Map();
+    this.interactionThreadID = unstable_getThreadID()
+    this.memoizedInteractions = new Set()
+    this.pendingInteractionMap = new Map()
   }
   if (enableSuspenseCallback) {
-    this.hydrationCallbacks = null;
+    this.hydrationCallbacks = null
   }
 }
 ```
@@ -539,13 +555,18 @@ export function initializeUpdateQueue<State>(fiber: Fiber): void {
 
 > [!important]
 > legacyRenderSubtreeIntoContainer 在初始化 fiberRoot 的过程中主要做了以下事情
+>
 > 1. 清空 container 的内容
->   - 如果不是服务端渲染，则不需要复用 container 内部的 DOM，直接清空 container 的内容
+>
+> - 如果不是服务端渲染，则不需要复用 container 内部的 DOM，直接清空 container 的内容
+>
 > 2. 创建 fiberRoot 和 rootFiber
->   - legacyRenderSubtreeIntoContainer 方法中调用 legacyCreateRootFromDOMContainer
->   - 最终在 createFiberRoot 方法中创建了 fiberRoot 和 rootFiber，并进行了关联（current 和 stateNode）
->   - 还为 rootFiber 添加了一个属性 updateQueue，存储了初始化的任务队列
-> 3. 将包裹的 fiberRoot（属性名是 _internalRoot）的对象存储到 container 的 _reactRootContainer 属性上，作为判断是否是初始渲染的依据
+>
+> - legacyRenderSubtreeIntoContainer 方法中调用 legacyCreateRootFromDOMContainer
+> - 最终在 createFiberRoot 方法中创建了 fiberRoot 和 rootFiber，并进行了关联（current 和 stateNode）
+> - 还为 rootFiber 添加了一个属性 updateQueue，存储了初始化的任务队列
+>
+> 3. 将包裹的 fiberRoot（属性名是 \_internalRoot）的对象存储到 container 的 \_reactRootContainer 属性上，作为判断是否是初始渲染的依据
 
 ### legacyRenderSubtreeIntoContainer 更改 callback 函数内部的 this 指向
 
@@ -560,17 +581,17 @@ export function initializeUpdateQueue<State>(fiber: Fiber): void {
 // 如果 callback 参数是函数类型
 if (typeof callback === 'function') {
   // 使用 originalCallback 存储 callback 函数
-  const originalCallback = callback;
+  const originalCallback = callback
   // 为 callback 参数重新赋值
   callback = function () {
     // 获取 render 方法第一个参数的真实 DOM 对象
     // 实际上就是 id="root" 的 div 的子元素
     // rootFiber.child.stateNode
     // rootFiber 就是 id="root" 的 div
-    const instance = getPublicRootInstance(fiberRoot);
+    const instance = getPublicRootInstance(fiberRoot)
     // 调用原始 callback 函数并改变函数内部 this 指向
-    originalCallback.call(instance);
-  };
+    originalCallback.call(instance)
+  }
 }
 ```
 
@@ -581,6 +602,7 @@ if (typeof callback === 'function') {
 
 > [!warning]
 > 如何进行判断的
+>
 > 1. typeof 判断是否传递 callback
 > 2. 用 originalCallback 变量存储 callback
 > 3. 给 callback 重新赋值为一个新的函数，调用 getPublicRootInstance 方法获取 render 方法第一个参数所对应的实例对象
@@ -629,25 +651,27 @@ export function getPublicRootInstance(
 - 如果是函数组件，则为 null，因为函数组件没有实例对象
 
 ```js
-ReactDOM.render(<div>普通元素</div>, document.getElementById("root"), function () {
+ReactDOM.render(<div>普通元素</div>, document.getElementById('root'), function () {
   console.log(this) // DOM 对象
 })
 ```
+
 ```js
 class App extends React.Component {
-  render(){
+  render() {
     return <div>类组件</div>
   }
 }
-ReactDOM.render(<App />, document.getElementById("root"), function () {
+ReactDOM.render(<App />, document.getElementById('root'), function () {
   console.log(this) // App 的实例对象
 })
 ```
+
 ```js
 function App(props) {
   return <div>函数组件</div>
 }
-ReactDOM.render(<App />, document.getElementById("root"), function () {
+ReactDOM.render(<App />, document.getElementById('root'), function () {
   console.log(this) // null
 })
 ```
@@ -676,8 +700,8 @@ export function getPublicInstance(instance: Instance): * {
 // 因为批量更新是异步的是可以被打断的, 但是初始化渲染应该尽快完成不能被打断
 // 所以不执行批量更新
 unbatchedUpdates(() => {
-  updateContainer(children, fiberRoot, parentComponent, callback);
-});
+  updateContainer(children, fiberRoot, parentComponent, callback)
+})
 ```
 
 #### 2. 具体分析
@@ -697,21 +721,26 @@ unbatchedUpdates(() => {
 // 截取自 legacyRenderSubtreeIntoContainer 方法
 // 返回 render 方法第一个参数的真实 DOM 对象作为 render 方法的返回值
 // 就是说渲染谁 返回谁的真实 DOM 对象
-return getPublicRootInstance(fiberRoot);
+return getPublicRootInstance(fiberRoot)
 ```
 
 ### legacyRenderSubtreeIntoContainer 总结
 
 > [!important]
 > legacyRenderSubtreeIntoContainer 方法最核心的内容就是创建 fiberRoot 和 rootFiber
-> 1. 首先判断 container 下是否包含 _reactRootContainer 属性
->   - 如果没有，则表示是初始化渲染
->     - 调用方法创建 fiberRoot 对象，将包裹 fiberRoot 的对象存储到这个属性
->   - 如果有，则表示是更新操作
+>
+> 1. 首先判断 container 下是否包含 \_reactRootContainer 属性
+>
+> - 如果没有，则表示是初始化渲染
+>   - 调用方法创建 fiberRoot 对象，将包裹 fiberRoot 的对象存储到这个属性
+> - 如果有，则表示是更新操作
+>
 > 2. 接着将 render 方法的第三个参数（回调函数）的 this 指向 render 方法的第一个参数所对应的实例对象（stateNode）
->   - 如果是普通元素，则是 DOM 对象
->   - 如果是类组件，则是组件实例对象
->   - 如果是函数组件，则为 null
+>
+> - 如果是普通元素，则是 DOM 对象
+> - 如果是类组件，则是组件实例对象
+> - 如果是函数组件，则为 null
+>
 > 3. 接着使用非批量更新的方式，执行更新操作 undateContainer
 > 4. 最后返回 render 方法第一个参数对应的实例对象
 
@@ -745,7 +774,7 @@ export function updateContainer(
   parentComponent: ?React$Component<any, any>,
   // ReactElement 渲染完成执行的回调函数
   callback: ?Function,
-): ExpirationTime {  
+): ExpirationTime {
   // container 获取 rootFiber
   const current = container.current;
   // 获取当前距离 react 应用初始化的时间 1073741805
@@ -800,6 +829,7 @@ export function updateContainer(
 
 > [!info]
 > updateContainer 接收四个参数
+>
 > - 第一个参数 element，表示要渲染的 React 元素
 > - 第二个参数 container，表示 fiberRoot 对象
 > - 第三个参数 parentComponent，表示父组件，初始渲染为 null
@@ -818,24 +848,24 @@ export function updateContainer(
 
 ```js
 // 创建一个待执行任务
-const update = createUpdate(expirationTime, suspenseConfig);
+const update = createUpdate(expirationTime, suspenseConfig)
 // 将要更新的内容挂载到更新对象中的 payload 中
 // 将要更新的组件存储在 payload 对象中, 方便后期获取
-update.payload = {element};
+update.payload = { element }
 // 判断 callback 是否存在
-callback = callback === undefined ? null : callback;
+callback = callback === undefined ? null : callback
 // 如果 callback 存在
 if (callback !== null) {
   // 将 callback 挂载到 update 对象中
   // 其实就是一层层传递 方便 ReactElement 元素渲染完成调用
   // 回调函数执行完成后会被清除 可以在代码的后面加上 return 进行验证
-  update.callback = callback;
+  update.callback = callback
 }
 // 将 update 对象加入到当前 Fiber 的更新队列当中 (updateQueue)
 // 待执行的任务都会被存储在 fiber.updateQueue.shared.pending 中
-enqueueUpdate(current, update);
+enqueueUpdate(current, update)
 // 调度和更新 current 对象
-scheduleWork(current, expirationTime);
+scheduleWork(current, expirationTime)
 ```
 
 ###### 1.2.2 createUpdate 创建任务
@@ -879,6 +909,7 @@ export function createUpdate(
 
 - 任务队列中的 shared.pending 属性存储待执行任务，它是一个单向链表结构，它存储一个待执行任务对象，这个任务对象的 next 属性存储下一个任务，以此串联
 - 文件位置 packages/react-reconciler/src/ReactUpdateQueue.js
+
 ```js
 // 将任务(Update)存放于任务队列(updateQueue)中
 // 创建单向链表结构存放 update, next 用来串联 update
@@ -913,6 +944,7 @@ export function enqueueUpdate<State>(fiber: Fiber, update: Update<State>) {
 > 核心是判断当前任务是否是同步任务，如果是同步任务，就进入到同步任务执行的入口方法当中，代表任务正式开始执行
 
 - 文件位置 packages\react-reconciler\src\ReactFiberWorkLoop.js
+
 ```js
 /**
  * 判断任务是否为同步 调用同步任务入口
@@ -1018,15 +1050,15 @@ export const scheduleWork = scheduleUpdateOnFiber;
 function checkForNestedUpdates() {
   // NESTED_UPDATE_LIMIT => 50
   if (nestedUpdateCount > NESTED_UPDATE_LIMIT) {
-    nestedUpdateCount = 0;
-    rootWithNestedUpdates = null;
+    nestedUpdateCount = 0
+    rootWithNestedUpdates = null
     invariant(
       false,
       'Maximum update depth exceeded. This can happen when a component ' +
         'repeatedly calls setState inside componentWillUpdate or ' +
         'componentDidUpdate. React limits the number of nested updates to ' +
-        'prevent infinite loops.',
-    );
+        'prevent infinite loops.'
+    )
   }
 }
 ```
@@ -1068,13 +1100,17 @@ export function getCurrentPriorityLevel(): ReactPriorityLevel {
 
 > [!important]
 > 判断任务是否是同步任务
+>
 > 1. 判断过期时间是否和 Sync 相等，Sync 是一个常量数值，和同步任务的数值是相同的
 > 2. 任务执行前的检查
->   - 是否处于非批量更新模式，初始化渲染是非批量的，同步的，不可以被打断的
->   - 是否有正在处于进行渲染的任务，初始化渲染没有任务正在执行
+>
+> - 是否处于非批量更新模式，初始化渲染是非批量的，同步的，不可以被打断的
+> - 是否有正在处于进行渲染的任务，初始化渲染没有任务正在执行
+>
 > 3. 执行同步任务入口点，performSyncWorkOnRoot，任务开始执行
 
 **scheduleWork / scheduleUpdateOnFiber 总结**
+
 - 初始渲染时 scheduleUpdateOnFiber 的主要内容就是判断是否是同步任务
   1. 判断是否是无限循环，如果是则报错
   2. 使用过期时间判断是否是同步任务
@@ -1084,11 +1120,14 @@ export function getCurrentPriorityLevel(): ReactPriorityLevel {
 
 > [!important]
 > updateContainer 中主要内容：
+>
 > 1. 计算过期时间，初始化渲染是同步执行，所以是一个固定的时间
 > 2. 设置 fiberRoot 的 context 属性，初始化渲染时是一个空对象 {}
 > 3. 创建一个待执行任务
->   - 将要更新的内容挂载到这个任务对象的 payload属性上
->   - 将回调函数挂载到这个任务对象的 callback 属性上
+>
+> - 将要更新的内容挂载到这个任务对象的 payload属性上
+> - 将回调函数挂载到这个任务对象的 callback 属性上
+>
 > 4. 将任务加入任务队列 updataQueue.shared.pending
 > 5. 最后调度这个任务(scheduleWork)
 
@@ -1102,12 +1141,16 @@ export function getCurrentPriorityLevel(): ReactPriorityLevel {
 
 > [!important]
 > performSyncWorkOnRoot 方法中最核心的就是
+>
 > 1. 调用 prepareFreshStack 方法构建 workInProgress Fiber 树及 rootFiber
 > 2. 当构建完 rootFiber 就调用 workLoopSync 构建其它 React 元素对应的 Fiber 对象
->   - 该方法执行结束，就代表 workInProgress Fiber 树中的所有节点都构建完成
+>
+> - 该方法执行结束，就代表 workInProgress Fiber 树中的所有节点都构建完成
+>
 > 3. 当构建完所有节点，就调用 finishSyncRender
->   - 结束同步渲染阶段
->   - 进入 commit 阶段做真实的 DOM 操作
+>
+> - 结束同步渲染阶段
+> - 进入 commit 阶段做真实的 DOM 操作
 
 - 文件位置 packages\react-reconciler\src\ReactFiberWorkLoop.js
 
@@ -1214,6 +1257,7 @@ function performSyncWorkOnRoot(root) {
 
 > [!warning]
 > 主要关注向 fiberRoot 中添加的属性 finishedWork，它表示 render 阶段执行完成后构建的待提交的 fiber 对象
+>
 > - 也就是说在 commit 阶段，要处理的就是 root.finishedWork 中存储的 fiber 对象
 > - 它表示 render 阶段执行完成后的工作成果
 
@@ -1226,46 +1270,46 @@ function performSyncWorkOnRoot(root) {
 function prepareFreshStack(root, expirationTime) {
   // 为 FiberRoot 对象添加 finishedWork 属性
   // finishedWork 表示 render 阶段执行完成后构建的待提交的 Fiber 对象
-  root.finishedWork = null;
+  root.finishedWork = null
   // 初始化 finishedExpirationTime 值为 0
-  root.finishedExpirationTime = NoWork;
+  root.finishedExpirationTime = NoWork
 
-  const timeoutHandle = root.timeoutHandle;
+  const timeoutHandle = root.timeoutHandle
   // 初始化渲染不执行 timeoutHandle => -1 noTimeout => -1
   if (timeoutHandle !== noTimeout) {
     // The root previous suspended and scheduled a timeout to commit a fallback
     // state. Now that we have additional work, cancel the timeout.
-    root.timeoutHandle = noTimeout;
+    root.timeoutHandle = noTimeout
     // $FlowFixMe Complains noTimeout is not a TimeoutID, despite the check above
-    cancelTimeout(timeoutHandle);
+    cancelTimeout(timeoutHandle)
   }
 
   // 初始化渲染不执行 workInProgress 全局变量 初始化为 null
   // false
   if (workInProgress !== null) {
-    let interruptedWork = workInProgress.return;
+    let interruptedWork = workInProgress.return
     while (interruptedWork !== null) {
-      unwindInterruptedWork(interruptedWork);
-      interruptedWork = interruptedWork.return;
+      unwindInterruptedWork(interruptedWork)
+      interruptedWork = interruptedWork.return
     }
   }
   // 建构 workInProgress Fiber 树的 fiberRoot 对象
-  workInProgressRoot = root;
+  workInProgressRoot = root
   // 构建 workInProgress Fiber 树中的 rootFiber
   // workInProgress 就是每次为 React 元素构建的 fiber 对象
   // 初始渲染时就是 workInProgress Fiber 树中的 rootFiber
-  workInProgress = createWorkInProgress(root.current, null);
-  renderExpirationTime = expirationTime;
-  workInProgressRootExitStatus = RootIncomplete;
-  workInProgressRootFatalError = null;
-  workInProgressRootLatestProcessedExpirationTime = Sync;
-  workInProgressRootLatestSuspenseTimeout = Sync;
-  workInProgressRootCanSuspendUsingConfig = null;
-  workInProgressRootNextUnprocessedUpdateTime = NoWork;
-  workInProgressRootHasPendingPing = false;
+  workInProgress = createWorkInProgress(root.current, null)
+  renderExpirationTime = expirationTime
+  workInProgressRootExitStatus = RootIncomplete
+  workInProgressRootFatalError = null
+  workInProgressRootLatestProcessedExpirationTime = Sync
+  workInProgressRootLatestSuspenseTimeout = Sync
+  workInProgressRootCanSuspendUsingConfig = null
+  workInProgressRootNextUnprocessedUpdateTime = NoWork
+  workInProgressRootHasPendingPing = false
   // true
   if (enableSchedulerTracing) {
-    spawnedWorkDuringRender = null;
+    spawnedWorkDuringRender = null
   }
 }
 ```
@@ -1277,9 +1321,13 @@ function prepareFreshStack(root, expirationTime) {
 
 > [!info]
 > createWorkInProgress 方法主要内容
+>
 > 1. 判断 WorkInProgress Fiber 树中是否有对应的 fiber 对象
->   - 如果没有则调用 createFiber 创建一个 fiber 对象
+>
+> - 如果没有则调用 createFiber 创建一个 fiber 对象
+
     - createFiber 方法主要接收几个不可复用的属性
+
 > 2. 复用 Current Fiber 树中的信息设置 fiber 对象的属性，并且将两个 Fiber 树中的 fiber 对象进行关联（通过 alternate）
 > 3. 返回这个创建好的 workInProgress 的 fiber 对象
 
@@ -1376,16 +1424,16 @@ export function createWorkInProgress(current: Fiber, pendingProps: any): Fiber {
 - performSyncWorkOnRoot 方法
   1. 首先判断是否有过期的未执行的任务，初始渲染阶段没有
   2. 然后判断全局变量 workInProgressRoot 是否有值以此判断是否需要构建 workInProgress Fiber 树
-    - 它表示 workInProgress Fiber 树的 fiberRoot，初始渲染时为空
+  - 它表示 workInProgress Fiber 树的 fiberRoot，初始渲染时为空
   3. 接着调用 prepareFreshStack 构建 workInProgress Fiber 树
-    - 首先给为 Current Fiber 的 fiberRoot（下称 currentRoot） 添加了一个 finishedWork 属性
-      - 它存储 render 阶段的工作成果（待提交的 fiber 对象）
-    - 然后将 currentRoot 赋值给 workInProgressRoot
-    - 然后构建 workInProgress Fiber 树的 rootFiber（下称 workInProgressRootFiber），通过 createFiber 初始化一个 fiber 对象并设置一些属性的值
-      - 创建时指定一些属性
-      - 其它属性复用 current Fiber 树的 rootfiber 对象（下称 currentRootFiber）中的属性
-      - 然后将 currentRootFiber 和 workInProgressRootFiber 通过 alternate 属性进行关联
-      - 并最终返回这个创建好的对象，它会被存储到全局变量 workInProgress 中
+  - 首先给为 Current Fiber 的 fiberRoot（下称 currentRoot） 添加了一个 finishedWork 属性
+    - 它存储 render 阶段的工作成果（待提交的 fiber 对象）
+  - 然后将 currentRoot 赋值给 workInProgressRoot
+  - 然后构建 workInProgress Fiber 树的 rootFiber（下称 workInProgressRootFiber），通过 createFiber 初始化一个 fiber 对象并设置一些属性的值
+    - 创建时指定一些属性
+    - 其它属性复用 current Fiber 树的 rootfiber 对象（下称 currentRootFiber）中的属性
+    - 然后将 currentRootFiber 和 workInProgressRootFiber 通过 alternate 属性进行关联
+    - 并最终返回这个创建好的对象，它会被存储到全局变量 workInProgress 中
 
 ### render 阶段，workLoopSync 解析
 
@@ -1406,7 +1454,7 @@ function workLoopSync() {
   // 它的值不为 null 意味着该 fiber 对象上仍然有更新要执行
   // while 方法支撑 render 阶段 所有 fiber 节点的构建
   while (workInProgress !== null) {
-    workInProgress = performUnitOfWork(workInProgress);
+    workInProgress = performUnitOfWork(workInProgress)
   }
 }
 ```
@@ -1459,6 +1507,7 @@ function performUnitOfWork(unitOfWork: Fiber): Fiber | null {
 
 > [!warning]
 > 该方法中重点关注两个方法
+>
 > - beginWork：从父到子，构建子级节点 fiber 对象
 > - completeUnitOfWork：从子到父，构建其余节点的 fiber 对象
 
@@ -1467,18 +1516,21 @@ function performUnitOfWork(unitOfWork: Fiber): Fiber | null {
 
 > [!warning]
 > 如何模拟的呢
+>
 > - beginWork 就类似递归中的递阶段（向下走），completeUnitOfWork 就类似归阶段（往回走）
 
 ###### 1.1.1 beginWork
 
 > [!info]
 > beginWork 方法在初始渲染时主要看 switch(workInProgress.tag) 的内容：
+>
 > - 首次进入的时候 current 是 rootFiber，workInProgress.tag 的值为 3，代表 HostRoot
 > - 普通的 React 元素值为 5，代表 HostComponent
 > - class 组件值为 1，代表ClassComponent
 > - 函数组件在第一次渲染的时候为 2，代表 IndeterminateComponent，第二次渲染的时候（即下次更新时）才为 0，代表 FunctionComponent
 
 - 文件位置 packages\react-reconciler\src\ReactFiberBeginWork.js
+
 ```js
 // 从父到子, 构建 Fiber 节点对象
 function beginWork(
@@ -1627,7 +1679,7 @@ function beginWork(
       const unresolvedProps = workInProgress.pendingProps;
       // Resolve outer props first, then resolve inner props.
       let resolvedProps = resolveDefaultProps(type, unresolvedProps);
-      
+
       resolvedProps = resolveDefaultProps(type.type, resolvedProps);
       return updateMemoComponent(
         current,
@@ -1724,17 +1776,21 @@ function beginWork(
 
 1. 首先获取更新队列
 2. 然后获取组件的一些信息（由于是初始化渲染，所以这些都是 null）
-  - 新的 props 对象
-  - 组件上一次更新后的 state
-  - 上一次组件渲染的 children
+
+- 新的 props 对象
+- 组件上一次更新后的 state
+- 上一次组件渲染的 children
+
 3. 浅拷贝更新队列，防止引用属性互相影响
 4. 获取要更新的 element，即 workInProgress 的子级
-  - 之前 updateContainer 方法中把要更新的内容（element）存储到更新任务对象的 payload 上
-  - 这里调用的 processUpdateQueue 方法处理更新队列，主要做了：
-    1. 先通过 updateQueue.shared.pending 获取当前要执行的更新任务对象 update
-    2. 然后获取 update.payload ，它是要更新的元素 element，即 rootFiber 的子级，并最终赋值到 workInProgress.memoizedState
-  - 接着通过 workInProgress.memoizedState 获取 element
-  - 使用这个 element 构建它的 fiber 对象，初始渲染时，就是 render 方法的第一个参数表示的 React 元素对象
+
+- 之前 updateContainer 方法中把要更新的内容（element）存储到更新任务对象的 payload 上
+- 这里调用的 processUpdateQueue 方法处理更新队列，主要做了：
+  1. 先通过 updateQueue.shared.pending 获取当前要执行的更新任务对象 update
+  2. 然后获取 update.payload ，它是要更新的元素 element，即 rootFiber 的子级，并最终赋值到 workInProgress.memoizedState
+- 接着通过 workInProgress.memoizedState 获取 element
+- 使用这个 element 构建它的 fiber 对象，初始渲染时，就是 render 方法的第一个参数表示的 React 元素对象
+
 5. 在经过一系列条件判断后，调用 reconcileChildren 构建 element 对应的 fiber 对象
 6. 当构建完成后，会将这个 fiber 对象添加到 workInProgress.child 属性中，即 rootFiber 对象的子级
 7. 最后返回 workInProgress.child，使得下次循环去构建 workInProgress.child 的子级节点的 fiber 对象
@@ -1860,19 +1916,19 @@ export function reconcileChildren(
  * 对于初始渲染来说, 只有根组件需要添加, 其他元素不需要添加, 防止过多的 DOM 操作
  */
 // 用于更新
-export const reconcileChildFibers = ChildReconciler(true);
+export const reconcileChildFibers = ChildReconciler(true)
 // 用于初始渲染
-export const mountChildFibers = ChildReconciler(false);
+export const mountChildFibers = ChildReconciler(false)
 ```
 
 - ChildReconciler 接收一个参数 shouldTrackSideEffects，表示是否为每个 fiber 对象添加 effectTag
 - effectTag 标识当前的 fiber 对象对应的 DOM 对象要进行的操作
   1. 更新操作要为每个 fiber 对象添加 effectTag
-    - 每构建一个 fiber 对象，都进行一次 DOM 操作
+  - 每构建一个 fiber 对象，都进行一次 DOM 操作
   2. 初始渲染只需要为根组件添加effectTag 属性，其它元素不需要添加
-    - 这是为了防止过多的 DOM 操作
-    - 初始渲染只需要在内存中构建 DOM 树
-    - 构建完成后只需要把根组件插入到页面中，只有一次操作即可
+  - 这是为了防止过多的 DOM 操作
+  - 初始渲染只需要在内存中构建 DOM 树
+  - 构建完成后只需要把根组件插入到页面中，只有一次操作即可
 
 **ChildReconciler**
 
@@ -1882,8 +1938,10 @@ export const mountChildFibers = ChildReconciler(false);
 ```js
 function ChildReconciler(shouldTrackSideEffects) {
   /* 其它 function 的定义 */
-  function reconcileChildFibers(/*...*/) {/*...*/}
-  return reconcileChildFibers;
+  function reconcileChildFibers(/*...*/) {
+    /*...*/
+  }
+  return reconcileChildFibers
 }
 ```
 
@@ -2173,13 +2231,16 @@ function reconcileChildrenArray(
 
 > [!important]
 > 反向查看构建的子级 fiber 对象的走向
+>
 > 1. 首先在 reconcileChildren 中调用 mountChildFibers 方法，构建 workInProgress 的子级的 fiber 对象，然后存储到 workInProgress.child
 > 2. workInProgress 又是 updateHostRoot 中调用 reconcileChildren 传入的，updateHostRoot 最终又返回了构建的子级 fiber 对象workInProgress.child
 > 3. updateHostRoot 是 beginWork 中构建最外层元素的时候调用的，workInProgress 继续从这里传递
 > 4. beginWork 是 performUnitOfWork 方法中从父到子构建子级的时候调用的，并传递了 workInProgress，将构建的子级 fiber 对象存储到 next
->   - 如果 next 不为空，则返回这个子级 fiber 对象
->   - 如果 next 为空，则表示当前构建的节点没有子级，于是调用 completeUnitOfWork 从子到父，构建它的兄弟节点
->   - 并最终返回这个 next
+>
+> - 如果 next 不为空，则返回这个子级 fiber 对象
+> - 如果 next 为空，则表示当前构建的节点没有子级，于是调用 completeUnitOfWork 从子到父，构建它的兄弟节点
+> - 并最终返回这个 next
+>
 > 5. performUnitOfWork 是 workLoopSync的while 循环中调用的，每次都会将调用结果（即构建的子级 fiber 对象）更新到 workInProgress，进入下一次构建循环，再次调用 performUnitOfWork 构建子级的子级，如果workInProgress为空，则表示所有节点都构建完成
 
 ###### 1.1.3 completeUnitOfWork
@@ -2189,8 +2250,8 @@ function reconcileChildrenArray(
   1. 构建其余节点的 fiber 对象
   2. 为每个 fiber 节点对象构建对应的真实 DOM 对象，并添加到 stateNode 属性中
   3. 收集要执行 DOM 操作的 fiber 节点，组建 effect 链表结构
-    - 过程中，不断收集当前 fiber 对象要执行 DOM 操作的子 fiber
-    - 最后将所有要执行 DOM 操作的 fiber 节点对象都挂载到顶层 rootFiber 对象中
+  - 过程中，不断收集当前 fiber 对象要执行 DOM 操作的子 fiber
+  - 最后将所有要执行 DOM 操作的 fiber 节点对象都挂载到顶层 rootFiber 对象中
 
 **completeUnitOfWork**
 
@@ -2366,6 +2427,7 @@ function completeUnitOfWork(unitOfWork: Fiber): Fiber | null {
 
 > [!important]
 > 该方法整体就是一个 `do...while` 循环
+>
 > - 在循环中首先判断是否有子级
 >   - 如果有子级，就返回子级所对应的 fiber 对象，去构建子级的子级
 >   - 如果没有子级，就会判断是否有同级
@@ -2389,7 +2451,7 @@ function completeUnitOfWork(unitOfWork: Fiber): Fiber | null {
       return next;
     }
     /* if_else end*/
-    
+
     // 获取下一个同级 Fiber 对象
     const siblingFiber = workInProgress.sibling;
     // 如果下一个同级 Fiber 对象存在
@@ -2397,7 +2459,7 @@ function completeUnitOfWork(unitOfWork: Fiber): Fiber | null {
       // 返回下一个同级 Fiber 对象
       return siblingFiber;
     }
-    
+
     // 否则退回父级
     workInProgress = returnFiber;
   } while (workInProgress !== null);
@@ -2408,7 +2470,7 @@ function completeUnitOfWork(unitOfWork: Fiber): Fiber | null {
 
 ```js
 // 创建节点真实 DOM 对象并将其添加到 stateNode 属性中
-next = completeWork(current, workInProgress, renderExpirationTime);
+next = completeWork(current, workInProgress, renderExpirationTime)
 ```
 
 - completeWork 内部就是一个 switch，匹配当前节点的类型 tag
@@ -2420,6 +2482,7 @@ next = completeWork(current, workInProgress, renderExpirationTime);
 
 > [!warning]
 > 解析下普通 React 元素的处理：
+>
 > 1. 最终会调用 createInstance方法，创建当前节点的实例对象，即真实的 DOM 对象
 > 2. 然后调用 appendAllChildren 构建当前节点所有子级的真实 DOM 对象，追加到当前节点中
 > 3. 当构建完 DOM 对象后，将当前节点的 DOM 对象添加到 fiber 对象的 stateNode 属性中
@@ -2427,7 +2490,7 @@ next = completeWork(current, workInProgress, renderExpirationTime);
 - 文件位置 packages\react-reconciler\src\ReactFiberCompleteWork.js
 
 ```js
-// 
+//
 function completeWork(
   current: Fiber | null,
   workInProgress: Fiber,
@@ -2537,7 +2600,7 @@ function completeWork(
 - 文件位置 packages\react-reconciler\src\ReactFiberCompleteWork.js
 
 ```js
-// 
+//
 // 将所有子级追到到父级中
 appendAllChildren = function (
 parent: Instance,
@@ -2607,16 +2670,16 @@ parent: Instance,
 // 以下两个判断的作用是搜集子 Fiber的 effect 到父 Fiber
 if (returnFiber.firstEffect === null) {
   // first
-  returnFiber.firstEffect = workInProgress.firstEffect;
+  returnFiber.firstEffect = workInProgress.firstEffect
 }
 
 if (workInProgress.lastEffect !== null) {
   if (returnFiber.lastEffect !== null) {
     // next
-    returnFiber.lastEffect.nextEffect = workInProgress.firstEffect;
+    returnFiber.lastEffect.nextEffect = workInProgress.firstEffect
   }
   // last
-  returnFiber.lastEffect = workInProgress.lastEffect;
+  returnFiber.lastEffect = workInProgress.lastEffect
 }
 ```
 
@@ -2624,6 +2687,7 @@ if (workInProgress.lastEffect !== null) {
 
 > [!warning]
 > 什么时候从 render 阶段进入 commit 阶段
+>
 > - 重新回到 performSyncWorkOnRoot 方法中，该方法中通过调用 workLoopSync 方法，循环构建每一个 React 元素所对应的 fiber 对象，当构建完成就会进入 commit 阶段
 
 - 实际就是下面这段代码，文件位置 packages\react-reconciler\src\ReactFiberWorkLoop.js
@@ -2653,9 +2717,9 @@ finishSyncRender(root);
 function finishSyncRender(root) {
   // 销毁 workInProgress Fiber 树
   // 因为待提交 Fiber 对象已经被存储在了 root.finishedWork 中
-  workInProgressRoot = null;
+  workInProgressRoot = null
   // 进入 commit 阶段
-  commitRoot(root);
+  commitRoot(root)
 }
 ```
 
@@ -2667,20 +2731,17 @@ function finishSyncRender(root) {
 - 在 commit 阶段不允许被打断（无论是初始渲染还是更新），所以要将任务的优先级设置为最高级 99
   1. 首先获取任务的优先级 renderPriorityLevel
   2. 然后更改任务的优先级 runWithPriority
-    - 实际上使用最高优先级 ImmediatePriority 去执行 commit
-    - commit 实际执行的方法是 commitRootImpl
+  - 实际上使用最高优先级 ImmediatePriority 去执行 commit
+  - commit 实际执行的方法是 commitRootImpl
 
 ```js
 function commitRoot(root) {
   // 获取任务优先级 97 => 普通优先级
-  const renderPriorityLevel = getCurrentPriorityLevel();
+  const renderPriorityLevel = getCurrentPriorityLevel()
   // 使用最高优先级执行当前任务, 因为 commit 阶段不可以被打断
   // ImmediatePriority, 优先级为 99, 最高优先级
-  runWithPriority(
-    ImmediatePriority,
-    commitRootImpl.bind(null, root, renderPriorityLevel),
-  );
-  return null;
+  runWithPriority(ImmediatePriority, commitRootImpl.bind(null, root, renderPriorityLevel))
+  return null
 }
 ```
 
@@ -2690,14 +2751,20 @@ function commitRoot(root) {
 
 > [!important]
 > commit 阶段可以分为三个子阶段：
+>
 > 1. before mutation 阶段（执行 DOM 操作前）
->   - 执行方法 commitBeforeMutationEffects
->   - 调用类组件的生命周期函数
+>
+> - 执行方法 commitBeforeMutationEffects
+> - 调用类组件的生命周期函数
+>
 > 2. mutation 阶段（执行 DOM 操作）
->   - 执行方法 commitMutationEffects
+>
+> - 执行方法 commitMutationEffects
+>
 > 3. layout 阶段（执行 DOM 操作后）
->   - 执行方法commitLayoutEffects
->   - 调用类组件的生命周期函数和函数组件的钩子函数
+>
+> - 执行方法commitLayoutEffects
+> - 调用类组件的生命周期函数和函数组件的钩子函数
 
 ##### 2.1 commitRootImpl
 
@@ -2707,78 +2774,80 @@ function commitRoot(root) {
 function commitRootImpl(root, renderPriorityLevel) {
   /*...*/
   // 获取待提交 Fiber 对象 rootFiber
-  const finishedWork = root.finishedWork;
+  const finishedWork = root.finishedWork
   /*...*/
 
   // 如果没有任务要执行
   if (finishedWork === null) {
     // 阻止程序继续向下执行
-    return null;
+    return null
   }
   // 重置为默认值
-  root.finishedWork = null;
-  root.finishedExpirationTime = NoWork;
+  root.finishedWork = null
+  root.finishedExpirationTime = NoWork
   /*...*/
-  
+
   // true
   if (firstEffect !== null) {
     /*...*/
     // commit 第一个子阶段
-    nextEffect = firstEffect;
+    nextEffect = firstEffect
     // 处理类组件的 getSnapShotBeforeUpdate 生命周期函数
     do {
       if (__DEV__) {
         /*...*/
       } else {
         try {
-          commitBeforeMutationEffects();
+          commitBeforeMutationEffects()
         } catch (error) {
-          invariant(nextEffect !== null, 'Should be working on an effect.');
-          captureCommitPhaseError(nextEffect, error);
-          nextEffect = nextEffect.nextEffect;
+          invariant(nextEffect !== null, 'Should be working on an effect.')
+          captureCommitPhaseError(nextEffect, error)
+          nextEffect = nextEffect.nextEffect
         }
       }
-    } while (nextEffect !== null);
+    } while (nextEffect !== null)
     /*...*/
     // commit 第二个子阶段
-    nextEffect = firstEffect;
+    nextEffect = firstEffect
     do {
       if (__DEV__) {
         /*...*/
       } else {
         try {
-          commitMutationEffects(root, renderPriorityLevel);
+          commitMutationEffects(root, renderPriorityLevel)
         } catch (error) {
-          invariant(nextEffect !== null, 'Should be working on an effect.');
-          captureCommitPhaseError(nextEffect, error);
-          nextEffect = nextEffect.nextEffect;
+          invariant(nextEffect !== null, 'Should be working on an effect.')
+          captureCommitPhaseError(nextEffect, error)
+          nextEffect = nextEffect.nextEffect
         }
       }
-    } while (nextEffect !== null);
+    } while (nextEffect !== null)
     /*...*/
     // commit 第三个子阶段
-    nextEffect = firstEffect;
+    nextEffect = firstEffect
     do {
       if (__DEV__) {
         /*...*/
       } else {
         try {
-          commitLayoutEffects(root, expirationTime);
+          commitLayoutEffects(root, expirationTime)
         } catch (error) {
-          invariant(nextEffect !== null, 'Should be working on an effect.');
-          captureCommitPhaseError(nextEffect, error);
-          nextEffect = nextEffect.nextEffect;
+          invariant(nextEffect !== null, 'Should be working on an effect.')
+          captureCommitPhaseError(nextEffect, error)
+          nextEffect = nextEffect.nextEffect
         }
       }
-    } while (nextEffect !== null);
+    } while (nextEffect !== null)
     /*...*/
-    
+
     // 重置 nextEffect
-    nextEffect = null;
-    
+    nextEffect = null
+
     /*...*/
-  } else {/*...*/}
-  
+  } else {
+    /*...*/
+  }
+
   /*...*/
 }
 ```
@@ -2805,7 +2874,7 @@ function commitBeforeMutationEffects() {
 
     // 初始化渲染第一个 nextEffect 为 App 组件
     // effectTag => 3
-    const effectTag = nextEffect.effectTag;
+    const effectTag = nextEffect.effectTag
     // console.log(effectTag);
     // nextEffect = null;
     // return;
@@ -2814,16 +2883,16 @@ function commitBeforeMutationEffects() {
     // Snapshot 和更新有关系 初始化渲染 不执行
     if ((effectTag & Snapshot) !== NoEffect) {
       // 开发环境执行 忽略
-      setCurrentDebugFiberInDEV(nextEffect);
+      setCurrentDebugFiberInDEV(nextEffect)
       // 计 effect 的数 忽略
-      recordEffect();
+      recordEffect()
       // 获取当前 fiber 节点
-      const current = nextEffect.alternate;
+      const current = nextEffect.alternate
       // 当 nextEffect 上有 Snapshot 这个 effectTag 时
       // 执行以下方法, 主要是类组件调用 getSnapshotBeforeUpdate 生命周期函数
-      commitBeforeMutationEffectOnFiber(current, nextEffect);
+      commitBeforeMutationEffectOnFiber(current, nextEffect)
       // 开发环境执行 忽略
-      resetCurrentDebugFiberInDEV();
+      resetCurrentDebugFiberInDEV()
     }
     // 调度 useEffect
     // 初始化渲染 目前没有 不执行
@@ -2832,15 +2901,15 @@ function commitBeforeMutationEffects() {
       // If there are passive effects, schedule a callback to flush at
       // the earliest opportunity.
       if (!rootDoesHavePassiveEffects) {
-        rootDoesHavePassiveEffects = true;
+        rootDoesHavePassiveEffects = true
         scheduleCallback(NormalPriority, () => {
           // 触发useEffect
-          flushPassiveEffects();
-          return null;
-        });
+          flushPassiveEffects()
+          return null
+        })
       }
     }
-    nextEffect = nextEffect.nextEffect;
+    nextEffect = nextEffect.nextEffect
   }
 }
 ```
@@ -2850,7 +2919,7 @@ function commitBeforeMutationEffects() {
 - commitBeforeMutationLifeCycles 方法中只使用了 switch 匹配了类组件 tag = ClassComponent：
   - 获取旧的 props、旧的 state 以及组件实例对象
   - 然后调用实例对象的 getSnapshotBeforeUpdate 方法
-  - 接着将快照存储在实例对象的 __reactInternalSnapshotBeforeUpdate 属性上
+  - 接着将快照存储在实例对象的 \_\_reactInternalSnapshotBeforeUpdate 属性上
     - 用于在执行 componentDidUpdate 生命周期函数时作为第三个参数（快照）传入
 
 ```js
@@ -2916,11 +2985,13 @@ function commitBeforeMutationLifeCycles(
 
 1. 首先获取 fiber 节点对象的 effectTag
 2. 然后进行匹配
-  - Placement 插入节点操作
-  - PlacementAndUpdate 插入并更新 DOM
-  - Hydrating 服务器端渲染
-  - Update 更新 DOM
-  - Deletion 删除 DOM
+
+- Placement 插入节点操作
+- PlacementAndUpdate 插入并更新 DOM
+- Hydrating 服务器端渲染
+- Update 更新 DOM
+- Deletion 删除 DOM
+
 3. 插入操作执行完将 effectTag 重置为 1，即 PerformedWork 表示 DOM 操作已经执行完成
 
 - 当前是初始化渲染，会调用 commitPlacement
@@ -3017,13 +3088,19 @@ function commitMutationEffects(root: FiberRoot, renderPriorityLevel) {
 ###### 2.3.2 commitPlacement
 
 1. 首先获取非组件级的父级 fiber 对象
-  - 因为组件本身不能插入 DOM 节点
+
+- 因为组件本身不能插入 DOM 节点
+
 2. 根据父级节点的类型 parentFiber.tag获取父级真实 DOM 节点对象
-  - 不同类型获取的方式不同
+
+- 不同类型获取的方式不同
+
 3. 获取当前节点的兄弟节点
-  - 根据是否有兄弟节点决定插入 DOM 的方式
-    - 有兄弟节点：insertBefore
-    - 没有兄弟节点：appendChild
+
+- 根据是否有兄弟节点决定插入 DOM 的方式
+  - 有兄弟节点：insertBefore
+  - 没有兄弟节点：appendChild
+
 4. 判断是否是渲染容器，调用对应的方法追加节点
 
 - 文件位置 packages\react-reconciler\src\ReactFiberCommitWork.js
@@ -3294,9 +3371,10 @@ function commitLayoutEffects(
 - 类组件：
   - 获取组件实例对象
   - 判断如果是初始渲染阶段，调用 componentDidMount
-  - 如果是更新节点，调用 componentDidUpdate 并将快照 instance.__reactInternalSnapshotBeforeUpdate 传递进去
+  - 如果是更新节点，调用 componentDidUpdate 并将快照 instance.\_\_reactInternalSnapshotBeforeUpdate 传递进去
   - 然后获取任务队列，执行 render 方法的第三个参数，即渲染完成后要执行的回调函数
 - 文件位置 packages\react-reconciler\src\ReactFiberCommitWork.js
+
 ```js
 function commitLifeCycles(
   finishedRoot: FiberRoot,
@@ -3328,7 +3406,7 @@ function commitLifeCycles(
         // 初始渲染阶段
         if (current === null) {
           startPhaseTimer(finishedWork, 'componentDidMount');
-          
+
           // 调用 componentDidMount 生命周期函数
           instance.componentDidMount();
           stopPhaseTimer();
@@ -3342,7 +3420,7 @@ function commitLifeCycles(
           // 获取旧的 state
           const prevState = current.memoizedState;
           startPhaseTimer(finishedWork, 'componentDidUpdate');
-          
+
           // 调用 componentDidUpdate 生命周期函数
           // instance.__reactInternalSnapshotBeforeUpdate 快照
           // getSnapShotBeforeUpdate 方法的返回值
@@ -3436,6 +3514,7 @@ export function commitUpdateQueue<State>(
       - 在调用 create 的结果存储到 destroy
       - 在组件卸载的时候调用 destroy
 - 文件位置 packages\react-reconciler\src\ReactFiberCommitWork.js
+
 ```js
 /**
  * useEffect 回调函数调用

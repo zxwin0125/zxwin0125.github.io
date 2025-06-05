@@ -51,22 +51,22 @@ resolve: {
 ```javascript
 // 文件位置: react-test/config/env.js
 const stringified = {
-	'process.env': Object.keys(raw).reduce((env, key) => {
-		env[key] = JSON.stringify(raw[key]);
-		return env;
-	}, {}),
-	__DEV__: true,
-	SharedArrayBuffer: true,
-	spyOnDev: true,
-	spyOnDevAndProd: true,
-	spyOnProd: true,
-	__PROFILE__: true,
-	__UMD__: true,
-	__EXPERIMENTAL__: true,
-	__VARIANT__: true,
-	gate: true,
-	trustedTypes: true,
-};
+  'process.env': Object.keys(raw).reduce((env, key) => {
+    env[key] = JSON.stringify(raw[key])
+    return env
+  }, {}),
+  __DEV__: true,
+  SharedArrayBuffer: true,
+  spyOnDev: true,
+  spyOnDevAndProd: true,
+  spyOnProd: true,
+  __PROFILE__: true,
+  __UMD__: true,
+  __EXPERIMENTAL__: true,
+  __VARIANT__: true,
+  gate: true,
+  trustedTypes: true
+}
 ```
 
 ### 6. 忽略类型检查
@@ -79,16 +79,14 @@ npm install @babel/plugin-transform-flow-strip-types -D
 
 ```javascript
 // 文件位置: react-test/config/webpack.config.js [babel-loader]
-plugins: [
-  require.resolve("@babel/plugin-transform-flow-strip-types"),
-]
+plugins: [require.resolve('@babel/plugin-transform-flow-strip-types')]
 ```
 
 ### 7. 导出 HostConfig
 
 ```javascript
 // 文件位置: /react/packages/react-reconciler/src/ReactFiberHostConfig.js
-export * from './forks/ReactFiberHostConfig.dom';
+export * from './forks/ReactFiberHostConfig.dom'
 
 // 注释掉
 // invariant(false, 'This module must be shimmed by a specific renderer.');
@@ -101,9 +99,8 @@ export * from './forks/ReactFiberHostConfig.dom';
 // 注释掉
 // import * as React from 'react';
 // const ReactSharedInternals = React.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED;
-import ReactSharedInternals from '../react/src/ReactSharedInternals';
+import ReactSharedInternals from '../react/src/ReactSharedInternals'
 ```
-
 
 ### 9. 关闭 eslint 扩展
 
@@ -121,11 +118,10 @@ extends: [
 ```javascript
 // 文件位置: /react/packages/shared/invariant.js
 export default function invariant(condition, format, a, b, c, d, e, f) {
-  if (condition) return;
+  if (condition) return
   throw new Error(
-    'Internal React error: invariant() is meant to be replaced at compile ' +
-      'time. There is no runtime version.',
-  );
+    'Internal React error: invariant() is meant to be replaced at compile ' + 'time. There is no runtime version.'
+  )
 }
 ```
 
@@ -154,8 +150,8 @@ export default function invariant(condition, format, a, b, c, d, e, f) {
 ### 12. 修改 react react-dom 引入方式
 
 ```javascript
-import * as React from "react"
-import * as ReactDOM from "react-dom"
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 ```
 
 ### 13. 解决 vsCode 中 flow 报错
@@ -168,7 +164,7 @@ import * as ReactDOM from "react-dom"
 
 - 如果你的 vscode 编辑器安装了 prettier 插件并且在保存 react 源码文件时右下角出现如下错误，按照如下步骤解决
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/29.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/29.png)
 
 1. 全局安装 prettier
 
@@ -180,10 +176,8 @@ npm i prettier -g
 
 - Settings > Extensions > Prettier > Prettier path
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/30.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/30.png)
 
-### 15. __DEV__ 报错
+### 15. **DEV** 报错
 
 - 删除 node_modules 文件夹，执行 npm install
-
-

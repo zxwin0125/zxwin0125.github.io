@@ -11,13 +11,13 @@ order: 5
 - 那么如何实现一个简单的 Promise
 - 注意：**<font color=red>实现不是最终目的，在实现的过程中，以关键结论和关于 Promise 的考察题目来融会贯通</font>**
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/22.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/22.png =700x)
 
 ## 从 Promise 化一个 API 谈起
 
 - 熟悉微信小程序开发的应该知道，使用 wx.request() 在微信小程序环境中发送一个网络请求
 - 参考官方文档，具体用法如下：
- 
+
 ```javascript
 wx.request({
   url: 'test.php', // 仅为示例，并非真实的接口地址
@@ -57,7 +57,7 @@ wx.request({
 - 解决「回调地狱」问题的一个极佳方式就是 Promise，将微信小程序 wx.request() 方法进行 Promise 化：
 
 ```javascript
-const wxRequest = (url, data = {}, method = 'GET') => 
+const wxRequest = (url, data = {}, method = 'GET') =>
   new Promise((resolve, reject) => {
     wx.request({
       url,
@@ -75,8 +75,8 @@ const wxRequest = (url, data = {}, method = 'GET') =>
         resolve(res.data)
       },
       fail: function (res) {
-        reject({ error: 'request fail'})
-      },
+        reject({ error: 'request fail' })
+      }
     })
   })
 ```
@@ -84,12 +84,12 @@ const wxRequest = (url, data = {}, method = 'GET') =>
 - 这是一个典型的 Promise 化案例，不仅可以对 wx.request() API 进行 Promise 化，更应该做的通用，能够 Promise 化更多类似（通过 success 和 fail 表征状态）的接口：
 
 ```javascript
-const promisify = fn => args => 
+const promisify = fn => args =>
   new Promise((resolve, reject) => {
-    args.success = function(res) {
+    args.success = function (res) {
       return resolve(res)
     }
-    args.fail = function(res) {
+    args.fail = function (res) {
       return reject(res)
     }
   })
@@ -103,6 +103,7 @@ const wxRequest = promisify(wx.request)
 
 > [!important]
 > 通过上例知道：
+>
 > - Promise 其实就是一个构造函数，使用这个构造函数创建一个 Promise 实例
 > - 该构造函数很简单，它只有一个参数，按照 Promise/A- 规范的命名，把 Promise 构造函数的参数叫做 executor，executor 类型为函数
 > - 这个函数又「自动」具有 resolve、reject 两个方法作为参数
@@ -110,9 +111,7 @@ const wxRequest = promisify(wx.request)
 - 开始实现 Promise 的第一步：
 
 ```javascript
-function Promise(executor) {
-
-}
+function Promise(executor) {}
 ```
 
 - 给大家推荐阅读： [构造函数与 new 命令](http://javascript.ruanyifeng.com/oop/basic.html)
@@ -142,6 +141,7 @@ wxRequest('./userInfo')
 - 通过观察使用例子，来剖析 Promise 的实质：
 
 > [!important]
+>
 > - Promise 构造函数返回一个 promise 对象实例，这个返回的 promise 对象具有一个 then 方法
 > - then 方法中，调用者可以定义两个参数，分别是 onfulfilled 和 onrejected，它们都是函数类型
 > - 其中 onfulfilled 通过参数，可以获取 promise 对象 resolved 的值，onrejected 获得 promise 对象 rejected 的值
@@ -151,13 +151,9 @@ wxRequest('./userInfo')
 - 继续实现 Promise：
 
 ```javascript
-function Promise(executor) {
+function Promise(executor) {}
 
-}
-
-Promise.prototype.then = function(onfulfilled, onrejected) {
-
-}
+Promise.prototype.then = function (onfulfilled, onrejected) {}
 ```
 
 - 继续复习 Promise 的知识，看例子来理解：
@@ -175,14 +171,18 @@ let promise2 = new Promise((resolve, reject) => {
   reject('error')
 })
 
-promise2.then(data => {
-  console.log(data)
-}, error => {
-  console.log(error)
-})
+promise2.then(
+  data => {
+    console.log(data)
+  },
+  error => {
+    console.log(error)
+  }
+)
 ```
 
 > [!important]
+>
 > - 在使用 new 关键字调用 Promise 构造函数时，在合适的时机（往往是异步结束时），调用 executor 的参数 resolve 方法，并将 resolved 的值作为 resolve 函数参数执行，这个值便可以后续在 then 方法第一个函数参数（onfulfilled）中拿到
 > - 同理，在出现错误时，调用 executor 的参数 reject 方法，并将错误信息作为 reject 函数参数执行，这个错误信息可以在后续的 then 方法第二个函数参数（onrejected）中拿到
 > - 因此，在实现 Promise 时，应该有两个值，分别储存 resolved 的值，以及 rejected 的值（当然，因为 Promise 状态的唯一性，不可能同时出现 resolved 的值和 rejected 的值，因此也可以用一个变量来存储）
@@ -207,7 +207,7 @@ function Promise(executor) {
   executor(resolve, reject)
 }
 
-Promise.prototype.then = function(onfulfilled = Function.prototype, onrejected = Function.prototype) {
+Promise.prototype.then = function (onfulfilled = Function.prototype, onrejected = Function.prototype) {
   onfulfilled(this.value)
 
   onrejected(this.reason)
@@ -216,8 +216,7 @@ Promise.prototype.then = function(onfulfilled = Function.prototype, onrejected =
 
 - 为了保证 onfulfilled、onrejected 能够强健执行，为其设置了默认值，其默认值为一个函数元（Function.prototype）
 
-> [!warning]
-> **<font color=red>注意，因为 resolve 的最终调用是由开发者在不确定环境下（往往是在全局中）直接调用的 为了在 resolve 函数中能够拿到 promise 实例的值，需要对 this 进行保存，上述代码中用 self 变量记录 this，或者使用箭头函数：</font>**
+> [!warning] > **<font color=red>注意，因为 resolve 的最终调用是由开发者在不确定环境下（往往是在全局中）直接调用的 为了在 resolve 函数中能够拿到 promise 实例的值，需要对 this 进行保存，上述代码中用 self 变量记录 this，或者使用箭头函数：</font>**
 
 ```javascript
 function Promise(executor) {
@@ -236,7 +235,7 @@ function Promise(executor) {
   executor(resolve, reject)
 }
 
-Promise.prototype.then = function(onfulfilled = Function.prototype, onrejected = Function.prototype) {
+Promise.prototype.then = function (onfulfilled = Function.prototype, onrejected = Function.prototype) {
   onfulfilled(this.value)
 
   onrejected(this.reason)
@@ -257,11 +256,14 @@ let promise = new Promise((resolve, reject) => {
   reject('error')
 })
 
-promise.then(data => {
-  console.log(data)
-}, error => {
-  console.log(error)
-})
+promise.then(
+  data => {
+    console.log(data)
+  },
+  error => {
+    console.log(error)
+  }
+)
 ```
 
 - **<font color=red>只会输出：data</font>**，因为 promise 实例状态只能从 pending 改变为 fulfilled，或者从 pending 改变为 rejected
@@ -293,9 +295,14 @@ function Promise(executor) {
   executor(resolve, reject)
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => {throw error}
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
 
   if (this.status === 'fulfilled') {
     onfulfilled(this.value)
@@ -308,8 +315,7 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
 
 - 在 resolve 和 reject 方法中，加入判断，只允许 promise 实例状态从 pending 改变为 fulfilled，或者从 pending 改变为 rejected
 
-> [!warning]
-> **<font color=red>这里对 Promise.prototype.then 参数 onfulfilled 和 onrejected 进行了判断，当实参不是一个函数类型时，赋予默认函数值</font>**
+> [!warning] > **<font color=red>这里对 Promise.prototype.then 参数 onfulfilled 和 onrejected 进行了判断，当实参不是一个函数类型时，赋予默认函数值</font>**
 
 - 这时候的默认值不再是函数元 Function.prototype 了
 - 为什么要这么更改？
@@ -321,11 +327,14 @@ let promise = new Promise((resolve, reject) => {
   reject('error')
 })
 
-promise.then(data => {
-  console.log(data)
-}, error => {
-  console.log(error)
-})
+promise.then(
+  data => {
+    console.log(data)
+  },
+  error => {
+    console.log(error)
+  }
+)
 ```
 
 - 但是不要高兴得太早，promise 是解决异步问题的，代码全部都是同步执行的，似乎还差了更重要的逻辑
@@ -368,7 +377,6 @@ function Promise(executor) {
 
       this.onFulfilledFunc(this.value)
     }
-
   }
 
   const reject = reason => {
@@ -383,9 +391,14 @@ function Promise(executor) {
   executor(resolve, reject)
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => {throw error}
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
 
   if (this.status === 'fulfilled') {
     onfulfilled(this.value)
@@ -444,7 +457,6 @@ const reject = reason => {
   })
 }
 
-
 executor(resolve, reject)
 ```
 
@@ -488,9 +500,14 @@ function Promise(executor) {
   executor(resolve, reject)
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => {throw error}
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
 
   if (this.status === 'fulfilled') {
     onfulfilled(this.value)
@@ -603,9 +620,14 @@ function Promise(executor) {
   executor(resolve, reject)
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => {throw error}
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
 
   if (this.status === 'fulfilled') {
     onfulfilled(this.value)
@@ -625,7 +647,7 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
 ```javascript
 try {
   executor(resolve, reject)
-} catch(e) {
+} catch (e) {
   reject(e)
 }
 ```
@@ -639,11 +661,14 @@ let promise = new Promise((resolve, reject) => {
   }, 2000)
 })
 
-promise.then(data => {
-  console.log(data)
-}, error => {
-  console.log('got error from promise', error)
-})
+promise.then(
+  data => {
+    console.log(data)
+  },
+  error => {
+    console.log('got error from promise', error)
+  }
+)
 ```
 
 - 就可以对错误进行处理，捕获到：
@@ -673,10 +698,11 @@ const promise = new Promise((resolve, reject) => {
   }, 2000)
 })
 
-promise.then(data => {
-  console.log(data)
-  return `${data} next then`
-})
+promise
+  .then(data => {
+    console.log(data)
+    return `${data} next then`
+  })
   .then(data => {
     console.log(data)
   })
@@ -693,14 +719,15 @@ const promise = new Promise((resolve, reject) => {
   }, 2000)
 })
 
-promise.then(data => {
-  console.log(data)
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(`${data} next then`)
-    }, 4000)
+promise
+  .then(data => {
+    console.log(data)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(`${data} next then`)
+      }, 4000)
+    })
   })
-})
   .then(data => {
     console.log(data)
   })
@@ -724,10 +751,11 @@ const promise = new Promise((resolve, reject) => {
   }, 2000)
 })
 
-promise.then(data => {
-  console.log(data)
-  return `${data} next then`
-})
+promise
+  .then(data => {
+    console.log(data)
+    return `${data} next then`
+  })
   .then(data => {
     console.log(data)
   })
@@ -745,25 +773,28 @@ data => {
 - 在上一讲实现的 then 方法中，就可以创建一个新的 promise2 用以返回：
 
 ```javascript
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => { throw error }
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
   // promise2 将作为 then 方法的返回值
   let promse2
   if (this.status === 'fulfilled') {
-    return promse2 = new Promise((resolve, reject) => {
+    return (promse2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promse2 resolved 的值为 onfulfilled 的执行结果
           let result = onfulfilled(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
-
+    }))
   }
   if (this.status === 'rejected') {
     onrejected(this.reason)
@@ -778,45 +809,42 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
 - 当然别忘了 this.status === 'rejected' 状态和 this.status === 'pending' 状态也要加入相同的逻辑：
 
 ```javascript
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   // promise2 将作为 then 方法的返回值
   let promise2
   if (this.status === 'fulfilled') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 resolved 的值为 onfulfilled 的执行结果
           let result = onfulfilled(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'rejected') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 reject 的值为 onrejected 的执行结果
           let result = onrejected(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'pending') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       this.onFulfilledArray.push(() => {
         try {
           let result = onfulfilled(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
@@ -825,12 +853,11 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
         try {
           let result = onrejected(this.reason)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
-      })      
-    })
+      })
+    }))
   }
 }
 ```
@@ -850,13 +877,12 @@ this.onFulfilledArray.push(onfulfilled)
 - 改为：
 
 ```javascript
-() => {
+;() => {
   setTimeout(() => {
     try {
       let result = onfulfilled(this.value)
       resolve(result)
-    }
-    catch(e) {
+    } catch (e) {
       reject(e)
     }
   })
@@ -904,53 +930,49 @@ function Promise(executor) {
     })
   }
 
-
   try {
     executor(resolve, reject)
-  } catch(e) {
+  } catch (e) {
     reject(e)
   }
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   // promise2 将作为 then 方法的返回值
   let promise2
   if (this.status === 'fulfilled') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 resolved 的值为 onfulfilled 的执行结果
           let result = onfulfilled(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'rejected') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 reject 的值为 onrejected 的执行结果
           let result = onrejected(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'pending') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       this.onFulfilledArray.push(() => {
         try {
           let result = onfulfilled(this.value)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
@@ -959,12 +981,11 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
         try {
           let result = onrejected(this.reason)
           resolve(result)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
-      })      
-    })
+      })
+    }))
   }
 }
 ```
@@ -980,14 +1001,15 @@ const promise = new Promise((resolve, reject) => {
   }, 2000)
 })
 
-promise.then(data => {
-  console.log(data)
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(`${data} next then`)
-    }, 4000)
+promise
+  .then(data => {
+    console.log(data)
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(`${data} next then`)
+      }, 4000)
+    })
   })
-})
   .then(data => {
     console.log(data)
   })
@@ -998,49 +1020,44 @@ promise.then(data => {
 - 换句话说就是：变量 result 既可以是一个普通值，也可以是一个 Promise 实例，为此抽象出 resolvePromise 方法进行统一处理。改动已有实现为：
 
 ```javascript
-const resolvePromise = (promise2, result, resolve, reject) => {
+const resolvePromise = (promise2, result, resolve, reject) => {}
 
-}
-
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   // promise2 将作为 then 方法的返回值
   let promise2
   if (this.status === 'fulfilled') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           //这个新的 promise2 resolved 的值为 onfulfilled 的执行结果
           let result = onfulfilled(this.value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'rejected') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           //这个新的 promise2 reject 的值为 onrejected 的执行结果
           let result = onrejected(this.value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'pending') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       this.onFulfilledArray.push(value => {
         try {
           let result = onfulfilled(value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
@@ -1049,12 +1066,11 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
         try {
           let result = onrejected(reason)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
-      })      
-    })
+      })
+    }))
   }
 }
 ```
@@ -1079,7 +1095,7 @@ const resolvePromise = (promise2, result, resolve, reject) => {
 
   if (result instanceof Promise) {
     if (result.status === 'pending') {
-      result.then(function(data) {
+      result.then(function (data) {
         resolvePromise(promise2, data, resolve, reject)
       }, reject)
     } else {
@@ -1088,7 +1104,7 @@ const resolvePromise = (promise2, result, resolve, reject) => {
     return
   }
 
-  let isComplexResult = target => (typeof target === 'function' || typeof target === 'object') && (target !== null)
+  let isComplexResult = target => (typeof target === 'function' || typeof target === 'object') && target !== null
 
   // 如果返回的是疑似 Promise 类型
   if (isComplexResult(result)) {
@@ -1096,35 +1112,36 @@ const resolvePromise = (promise2, result, resolve, reject) => {
       thenable = result.then
       // 如果返回的是 Promise 类型，具有 then 方法
       if (typeof thenable === 'function') {
-        thenable.call(result, function(data) {
-          if (consumed) {
-            return
-          }
-          consumed = true
+        thenable.call(
+          result,
+          function (data) {
+            if (consumed) {
+              return
+            }
+            consumed = true
 
-          return resolvePromise(promise2, data, resolve, reject)
-        }, function(error) {
-          if (consumed) {
-            return
-          }
-          consumed = true
+            return resolvePromise(promise2, data, resolve, reject)
+          },
+          function (error) {
+            if (consumed) {
+              return
+            }
+            consumed = true
 
-          return reject(error)
-        })
-      }
-      else {
+            return reject(error)
+          }
+        )
+      } else {
         resolve(result)
       }
-
-    } catch(e) {
+    } catch (e) {
       if (consumed) {
         return
       }
       consumed = true
       return reject(e)
     }
-  }
-  else {
+  } else {
     resolve(result)
   }
 }
@@ -1133,24 +1150,27 @@ const resolvePromise = (promise2, result, resolve, reject) => {
 - 看 resolvePromise 方法第一步进行了以「死循环」的处理，并在发生死循环是，reject 掉，错误信息为 new TypeError('error due to circular reference')
 - 怎么理解这个处理呢，规范中指出：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/JavaScript/23.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/JavaScript/23.png =500x)
 
 - 其实出现「死循环」的情况如下：
 
 ```javascript
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
-      resolve('zxwin')
+    resolve('zxwin')
   }, 2000)
 })
 
-promise.then(onfulfilled = data => {
-  console.log(data)
-  return onfulfilled(data)
-})
-.then(data => {
-  console.log(data)
-})
+promise
+  .then(
+    (onfulfilled = data => {
+      console.log(data)
+      return onfulfilled(data)
+    })
+  )
+  .then(data => {
+    console.log(data)
+  })
 ```
 
 - 接着，对于 onfulfilled 函数返回的结果 result：
@@ -1162,28 +1182,28 @@ promise.then(onfulfilled = data => {
 ```javascript
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
-      resolve('zxwin')
+    resolve('zxwin')
   }, 2000)
 })
 
-promise.then(data => {
-  console.log(data)
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-        resolve(`${data} next then`)
-    }, 4000)
-  })
+promise
   .then(data => {
+    console.log(data)
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-          resolve(`${data} next then`)
+        resolve(`${data} next then`)
       }, 4000)
+    }).then(data => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve(`${data} next then`)
+        }, 4000)
+      })
     })
   })
-})
-.then(data => {
-  console.log(data)
-})
+  .then(data => {
+    console.log(data)
+  })
 ```
 
 - 该段代码将会在 2 秒是输出：zxwin，10 秒时输出：z x w i n next then next then
@@ -1226,12 +1246,11 @@ function Promise(executor) {
     })
   }
 
-
-    try {
-        executor(resolve, reject)
-    } catch(e) {
-        reject(e)
-    }
+  try {
+    executor(resolve, reject)
+  } catch (e) {
+    reject(e)
+  }
 }
 
 const resolvePromise = (promise2, result, resolve, reject) => {
@@ -1246,7 +1265,7 @@ const resolvePromise = (promise2, result, resolve, reject) => {
 
   if (result instanceof Promise) {
     if (result.status === 'pending') {
-      result.then(function(data) {
+      result.then(function (data) {
         resolvePromise(promise2, data, resolve, reject)
       }, reject)
     } else {
@@ -1255,7 +1274,7 @@ const resolvePromise = (promise2, result, resolve, reject) => {
     return
   }
 
-  let isComplexResult = target => (typeof target === 'function' || typeof target === 'object') && (target !== null)
+  let isComplexResult = target => (typeof target === 'function' || typeof target === 'object') && target !== null
 
   // 如果返回的是疑似 Promise 类型
   if (isComplexResult(result)) {
@@ -1263,82 +1282,85 @@ const resolvePromise = (promise2, result, resolve, reject) => {
       thenable = result.then
       // 如果返回的是 Promise 类型，具有 then 方法
       if (typeof thenable === 'function') {
-        thenable.call(result, function(data) {
-          if (consumed) {
-            return
-          }
-          consumed = true
+        thenable.call(
+          result,
+          function (data) {
+            if (consumed) {
+              return
+            }
+            consumed = true
 
-          return resolvePromise(promise2, data, resolve, reject)
-        }, function(error) {
-          if (consumed) {
-            return
-          }
-          consumed = true
+            return resolvePromise(promise2, data, resolve, reject)
+          },
+          function (error) {
+            if (consumed) {
+              return
+            }
+            consumed = true
 
-          return reject(error)
-        })
-      }
-      else {
+            return reject(error)
+          }
+        )
+      } else {
         resolve(result)
       }
-
-    } catch(e) {
+    } catch (e) {
       if (consumed) {
         return
       }
       consumed = true
       return reject(e)
     }
-  }
-  else {
+  } else {
     resolve(result)
   }
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => { throw error }
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
 
   // promise2 将作为 then 方法的返回值
   let promise2
 
   if (this.status === 'fulfilled') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 resolved 的值为 onfulfilled 的执行结果
           let result = onfulfilled(this.value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'rejected') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 reject 的值为 onrejected 的执行结果
-         let result = onrejected(this.reason)
-         resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+          let result = onrejected(this.reason)
+          resolvePromise(promise2, result, resolve, reject)
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'pending') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       this.onFulfilledArray.push(value => {
         try {
           let result = onfulfilled(value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
@@ -1347,12 +1369,11 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
         try {
           let result = onrejected(reason)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
-      })      
-    })
+      })
+    }))
   }
 }
 ```
@@ -1365,13 +1386,11 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
 ```javascript
 const promise = new Promise((resolve, reject) => {
   setTimeout(() => {
-      resolve('zxwin')
+    resolve('zxwin')
   }, 2000)
 })
 
-
-promise.then(null)
-.then(data => {
+promise.then(null).then(data => {
   console.log(data)
 })
 ```
@@ -1385,9 +1404,14 @@ promise.then(null)
   - 想想在 then() 方法的实现中：我们已经对 onfulfilled 和 onrejected 函数加上判断：
 
 ```javascript
-Promise.prototype.then = function(onfulfilled = Function.prototype, onrejected = Function.prototype) {
+Promise.prototype.then = function (onfulfilled = Function.prototype, onrejected = Function.prototype) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => { throw error }
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
   // ...
 }
 ```
@@ -1410,22 +1434,24 @@ Promise.prototype.then = function(onfulfilled = Function.prototype, onrejected =
 ```javascript
 const promise1 = new Promise((resolve, reject) => {
   setTimeout(() => {
-      reject('zxwin error')
+    reject('zxwin error')
   }, 2000)
 })
 
-promise1.then(data => {
-  console.log(data)
-}).catch(error => {
-  console.log(error)
-})
+promise1
+  .then(data => {
+    console.log(data)
+  })
+  .catch(error => {
+    console.log(error)
+  })
 ```
 
 - 会在 2 秒后输出：zxwin error
 - 其实在这种场景下，它就相当于：
 
 ```javascript
-Promise.prototype.catch = function(catchFunc) {
+Promise.prototype.catch = function (catchFunc) {
   return this.then(null, catchFunc)
 }
 ```
@@ -1449,7 +1475,7 @@ console.log(1)
 - 那么实现 Promise.resolve(value) 也很简单：
 
 ```javascript
-Promise.resolve = function(value) {
+Promise.resolve = function (value) {
   return new Promise((resolve, reject) => {
     resolve(value)
   })
@@ -1459,7 +1485,7 @@ Promise.resolve = function(value) {
 - 顺带实现一个 Promise.reject(value)：
 
 ```javascript
-Promise.reject = function(value) {
+Promise.reject = function (value) {
   return new Promise((resolve, reject) => {
     reject(value)
   })
@@ -1495,7 +1521,7 @@ Promise.all([promise1, promise2]).then(data => {
 - 实现思路也很简单：
 
 ```javascript
-Promise.all = function(promiseArray) {
+Promise.all = function (promiseArray) {
   if (!Array.isArray(promiseArray)) {
     throw new TypeError('The arguments should be an array!')
   }
@@ -1505,7 +1531,7 @@ Promise.all = function(promiseArray) {
 
       const length = promiseArray.length
 
-      for (let i = 0; i <length; i++) {
+      for (let i = 0; i < length; i++) {
         promiseArray[i].then(data => {
           resultArray.push(data)
 
@@ -1514,8 +1540,7 @@ Promise.all = function(promiseArray) {
           }
         }, reject)
       }
-    }
-    catch(e) {
+    } catch (e) {
       reject(e)
     }
   })
@@ -1552,18 +1577,17 @@ Promise.race([promise1, promise2]).then(data => {
 - 将会在 2 秒后输出：zxwin1，实现 Promise.race 为：
 
 ```javascript
-Promise.race = function(promiseArray) {
+Promise.race = function (promiseArray) {
   if (!Array.isArray(promiseArray)) {
     throw new TypeError('The arguments should be an array!')
   }
   return new Promise((resolve, reject) => {
     try {
-        const length = promiseArray.length
-      for (let i = 0; i <length; i++) {
+      const length = promiseArray.length
+      for (let i = 0; i < length; i++) {
         promiseArray[i].then(resolve, reject)
       }
-    }
-    catch(e) {
+    } catch (e) {
       reject(e)
     }
   })
@@ -1614,10 +1638,9 @@ function Promise(executor) {
     })
   }
 
-
   try {
     executor(resolve, reject)
-  } catch(e) {
+  } catch (e) {
     reject(e)
   }
 }
@@ -1634,7 +1657,7 @@ const resolvePromise = (promise2, result, resolve, reject) => {
 
   if (result instanceof Promise) {
     if (result.status === 'pending') {
-      result.then(function(data) {
+      result.then(function (data) {
         resolvePromise(promise2, data, resolve, reject)
       }, reject)
     } else {
@@ -1643,89 +1666,92 @@ const resolvePromise = (promise2, result, resolve, reject) => {
     return
   }
 
-  let isComplexResult = target => (typeof target === 'function' || typeof target === 'object') && (target !== null)
+  let isComplexResult = target => (typeof target === 'function' || typeof target === 'object') && target !== null
   // 如果返回的是疑似 Promise 类型
   if (isComplexResult(result)) {
     try {
       thenable = result.then
       // 如果返回的是 Promise 类型，具有 then 方法
       if (typeof thenable === 'function') {
-        thenable.call(result, function(data) {
-          if (consumed) {
-            return
-          }
-          consumed = true
+        thenable.call(
+          result,
+          function (data) {
+            if (consumed) {
+              return
+            }
+            consumed = true
 
-          return resolvePromise(promise2, data, resolve, reject)
-        }, function(error) {
-          if (consumed) {
-            return
-          }
-          consumed = true
+            return resolvePromise(promise2, data, resolve, reject)
+          },
+          function (error) {
+            if (consumed) {
+              return
+            }
+            consumed = true
 
-          return reject(error)
-        })
-      }
-      else {
+            return reject(error)
+          }
+        )
+      } else {
         return resolve(result)
       }
-
-    } catch(e) {
+    } catch (e) {
       if (consumed) {
         return
       }
       consumed = true
       return reject(e)
     }
-  }
-  else {
+  } else {
     return resolve(result)
   }
 }
 
-Promise.prototype.then = function(onfulfilled, onrejected) {
+Promise.prototype.then = function (onfulfilled, onrejected) {
   onfulfilled = typeof onfulfilled === 'function' ? onfulfilled : data => data
-  onrejected = typeof onrejected === 'function' ? onrejected : error => {throw error}
+  onrejected =
+    typeof onrejected === 'function' ? onrejected : (
+      error => {
+        throw error
+      }
+    )
 
   // promise2 将作为 then 方法的返回值
   let promise2
 
   if (this.status === 'fulfilled') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 resolved 的值为 onfulfilled 的执行结果
           let result = onfulfilled(this.value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'rejected') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       setTimeout(() => {
         try {
           // 这个新的 promise2 reject 的值为 onrejected 的执行结果
-         let result = onrejected(this.reason)
-         resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+          let result = onrejected(this.reason)
+          resolvePromise(promise2, result, resolve, reject)
+        } catch (e) {
           reject(e)
         }
       })
-    })
+    }))
   }
   if (this.status === 'pending') {
-    return promise2 = new Promise((resolve, reject) => {
+    return (promise2 = new Promise((resolve, reject) => {
       this.onFulfilledArray.push(value => {
         try {
           let result = onfulfilled(value)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           return reject(e)
         }
       })
@@ -1734,49 +1760,47 @@ Promise.prototype.then = function(onfulfilled, onrejected) {
         try {
           let result = onrejected(reason)
           resolvePromise(promise2, result, resolve, reject)
-        }
-        catch(e) {
+        } catch (e) {
           return reject(e)
         }
-      })      
-    })
+      })
+    }))
   }
 }
 
-Promise.prototype.catch = function(catchFunc) {
+Promise.prototype.catch = function (catchFunc) {
   return this.then(null, catchFunc)
 }
 
-Promise.resolve = function(value) {
+Promise.resolve = function (value) {
   return new Promise((resolve, reject) => {
     resolve(value)
   })
 }
 
-Promise.reject = function(value) {
+Promise.reject = function (value) {
   return new Promise((resolve, reject) => {
     reject(value)
   })
 }
 
-Promise.race = function(promiseArray) {
+Promise.race = function (promiseArray) {
   if (!Array.isArray(promiseArray)) {
     throw new TypeError('The arguments should be an array!')
   }
   return new Promise((resolve, reject) => {
     try {
       const length = promiseArray.length
-      for (let i = 0; i <length; i++) {
+      for (let i = 0; i < length; i++) {
         promiseArray[i].then(resolve, reject)
       }
-    }
-    catch(e) {
+    } catch (e) {
       reject(e)
     }
   })
 }
 
-Promise.all = function(promiseArray) {
+Promise.all = function (promiseArray) {
   if (!Array.isArray(promiseArray)) {
     throw new TypeError('The arguments should be an array!')
   }
@@ -1786,7 +1810,7 @@ Promise.all = function(promiseArray) {
 
       const length = promiseArray.length
 
-      for (let i = 0; i <length; i++) {
+      for (let i = 0; i < length; i++) {
         promiseArray[i].then(data => {
           resultArray.push(data)
 
@@ -1795,11 +1819,9 @@ Promise.all = function(promiseArray) {
           }
         }, reject)
       }
-    }
-    catch(e) {
+    } catch (e) {
       reject(e)
     }
   })
 }
 ```
-

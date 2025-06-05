@@ -36,6 +36,7 @@ new Vue({
 
 > [!info]
 > 单个组件内的状态管理
+>
 > - 每个组件内部都有自己的数据、模板、方法
 >   - 数据可以称之为状态，每个组件内部都可以管理自己的内部状态
 >   - 模板可以称之为视图，每个组件都有自己的视图
@@ -50,6 +51,7 @@ new Vue({
 ## 状态管理的组成
 
 > [!info]
+>
 > - state 状态
 >   - 驱动应用的数据源
 > - view 视图
@@ -57,7 +59,7 @@ new Vue({
 > - actions 行为
 >   - 用户和视图交互改变状态的方式
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/33.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/33.png)
 
 - 箭头是数据的流向，此处数据的流向是单向的
 - 数据绑定到视图展示给用户，当用户和视图交互通过 actions 更改数据后，再把更改后的数据重新绑定到视图
@@ -71,7 +73,7 @@ new Vue({
   - 父子组件传值
   - 不相关组件传值
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/Vue/34.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/Vue/34.png)
 
 ### 1. 父子组件传值
 
@@ -139,7 +141,7 @@ export default {
     fontSize: Number
   },
   methods: {
-    handler () {
+    handler() {
       // this 是当前子组件对象，也就是由子组件触发的自定义事件，当注册事件的时候也要给子组件来注册该事件
       this.$emit('enlargeText', 0.1) // 通过自定义事件把数据传递给父组件
     }
@@ -152,7 +154,7 @@ export default {
 <!-- parent -->
 <template>
   <div>
-    <h1 :style="{ fontSize: hFontSize + 'em'}">Event Up Parent</h1>
+    <h1 :style="{ fontSize: hFontSize + 'em' }">Event Up Parent</h1>
 
     这里的文字不需要变化
 
@@ -169,14 +171,14 @@ export default {
   components: {
     child
   },
-  data () {
+  data() {
     return {
       hFontSize: 1
     }
   },
   methods: {
     // 因为在触发事件的时候传递了一个参数，所以这里的事件处理函数接收了该参数，也就是子组件把值传递给了父组件
-    enlargeText (size) {
+    enlargeText(size) {
       this.hFontSize += size
     }
   }
@@ -186,6 +188,7 @@ export default {
 
 > [!important]
 > 子传父的核心是
+>
 > - 通过子组件触发事件的时候，携带参数
 > - 然后在父组件中注册子组件内部触发的事件，并接收传递的数据，完成子向父的传值
 
@@ -208,7 +211,7 @@ export default new Vue()
   <div>
     <h1>Event Bus Sibling01</h1>
     <div class="number" @click="sub">-</div>
-    <input type="text" style="width: 30px; text-align: center" :value="value">
+    <input type="text" style="width: 30px; text-align: center" :value="value" />
     <div class="number" @click="add">+</div>
   </div>
 </template>
@@ -220,22 +223,22 @@ export default {
   props: {
     num: Number
   },
-  created () {
+  created() {
     this.value = this.num
   },
-  data () {
+  data() {
     return {
       value: -1
     }
   },
   methods: {
-    sub () {
+    sub() {
       if (this.value > 1) {
         this.value--
         bus.$emit('numchange', this.value)
       }
     },
-    add () {
+    add() {
       this.value++
       bus.$emit('numchange', this.value)
     }
@@ -266,13 +269,13 @@ export default {
 <script>
 import bus from './eventbus'
 export default {
-  data () {
+  data() {
     return {
       msg: ''
     }
   },
-  created () {
-    bus.$on('numchange', (value) => {
+  created() {
+    bus.$on('numchange', value => {
       this.msg = `您选择了${value}件商品`
     })
   }
@@ -282,9 +285,6 @@ export default {
 
 - 创建一个公共的 Vue 实例作为事件总线或者事件中心
 - 核心还是使用自定义事件传递数据
-
-
-
 
 ### 3. 通过 ref 获取子组件
 
@@ -304,19 +304,19 @@ export default {
 <template>
   <div>
     <h1>ref Child</h1>
-    <input ref="input" type="text" v-model="value">
+    <input ref="input" type="text" v-model="value" />
   </div>
 </template>
 
 <script>
 export default {
-  data () {
+  data() {
     return {
       value: ''
     }
   },
   methods: {
-    focus () {
+    focus() {
       this.$refs.input.focus()
     }
   }
@@ -340,7 +340,7 @@ export default {
   components: {
     child
   },
-  mounted () {
+  mounted() {
     this.$refs.c.focus()
     this.$refs.c.value = 'hello input'
   }

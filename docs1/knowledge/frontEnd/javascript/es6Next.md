@@ -10,7 +10,7 @@ order: 7
 - 列举新特性没有价值，这些东西随处可见，更重要的是分析新特性的由来，剖析如何学习新特性，分析如何利用新特性
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/30.png =500x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/JavaScript/30.png =500x)
 
 ## 新特性添加的必要性
 
@@ -24,7 +24,7 @@ Array.prototype.includes(value : any): boolean
 - 它用起来就像这样：
 
 ```javascript
-[1, 2, 3].includes(3)
+;[1, 2, 3].includes(3)
 // true
 ```
 
@@ -33,13 +33,18 @@ Array.prototype.includes(value : any): boolean
 - 能列举出来很多：
 
 ```javascript
-[1, 2, 3].findIndex(i => i === 2) 
-// 1
+;[1, 2, 3]
+  .findIndex(i => i === 2)
+  [
+    // 1
 
-[1, 2, 3].find(i => i == 2) 
-// 2
+    (1, 2, 3)
+  ].find(i => i == 2)
+  [
+    // 2
 
-[1, 2, 3].indexOf(2) 
+    (1, 2, 3)
+  ].indexOf(2)
 // 1
 ```
 
@@ -47,12 +52,12 @@ Array.prototype.includes(value : any): boolean
 - 甚至完全可以实现一个「一模一样」 的 API：
 
 ```javascript
-const includes = (array, target) =>  !!~ array.indexOf(target)
+const includes = (array, target) => !!~array.indexOf(target)
 
-includes([1,2,3], 3)
+includes([1, 2, 3], 3)
 // true
 
-includes([1,2,3], 4)
+includes([1, 2, 3], 4)
 // false
 ```
 
@@ -62,25 +67,26 @@ includes([1,2,3], 4)
   - 当然还有更深层次的必要性和不可替代性
 - 认真审视 Array.prototype.includes 这个 API，它用来判断数组是否包含某一元素，那么「是否包含」必然有判断「是否相等」的逻辑
 - 那么这个「相等」，又是如何定义的呢？最简单的，是 == 还是 ===？
-    - **<font color=red>这里可以说明的是：Array.prototype.indexOf 采用的是 === 比较，而 Array.prototype.includes 不同，它采用了 SameValueZero() 比较</font>**
-    - SameValueZero() 是什么呢？
-        * 这个是引擎内置的比较方式，并没有对外接口，其实现采用了 Map 和 Set
-        * SameValueZero 比较规则
-            - 如果两个值类型不同，它们不相等
-            - 如果两个值都是 `undefined` 或都是 `null`，它们相等
-            - 如果两个值都是 `true` 或都是 `false`，它们相等
-            - 如果其中一个值是 `NaN`，则它们相等（这与严格相等 `===` 的行为不同，严格相等不会认为 `NaN` 等于自身）
-            - 如果两个值都是字符串，并且完全相同（包括长度和字符顺序），那么它们相等
-            - 如果两个值都是数字
-                - 如果它们都是正零 `+0` 或都是负零 `-0`，那么它们相等（这是与严格相等 `===` 的另一个不同点，严格相等会区分正零和负零）
-                - 如果它们都是非零并且数值相同，那么它们相等
-                - 如果其中一个是 `+Infinity`，另一个是 `-Infinity`，它们不相等
-            - 如果两个值都是对象，并且引用同一个对象，则它们相等
-    - 采用这种比较，最直接的收益就是可以判断 NaN：
+  - **<font color=red>这里可以说明的是：Array.prototype.indexOf 采用的是 === 比较，而 Array.prototype.includes 不同，它采用了 SameValueZero() 比较</font>**
+  - SameValueZero() 是什么呢？
+    - 这个是引擎内置的比较方式，并没有对外接口，其实现采用了 Map 和 Set
+    - SameValueZero 比较规则
+      - 如果两个值类型不同，它们不相等
+      - 如果两个值都是 `undefined` 或都是 `null`，它们相等
+      - 如果两个值都是 `true` 或都是 `false`，它们相等
+      - 如果其中一个值是 `NaN`，则它们相等（这与严格相等 `===` 的行为不同，严格相等不会认为 `NaN` 等于自身）
+      - 如果两个值都是字符串，并且完全相同（包括长度和字符顺序），那么它们相等
+      - 如果两个值都是数字
+        - 如果它们都是正零 `+0` 或都是负零 `-0`，那么它们相等（这是与严格相等 `===` 的另一个不同点，严格相等会区分正零和负零）
+        - 如果它们都是非零并且数值相同，那么它们相等
+        - 如果其中一个是 `+Infinity`，另一个是 `-Infinity`，它们不相等
+      - 如果两个值都是对象，并且引用同一个对象，则它们相等
+  - 采用这种比较，最直接的收益就是可以判断 NaN：
 
 ```javascript
-[NaN].includes(NaN) // true
-[NaN].indexOf(NaN) // -1
+;[NaN]
+  .includes(NaN) // true
+  [NaN].indexOf(NaN) // -1
 ```
 
 - 因为：
@@ -114,18 +120,18 @@ NaN === NaN
 - 采用 [object-assign-vs-object-spread](http://thecodebarbarian.com/object-assign-%20vs-object-spread.html) 提供的 benchmark：
 
 ```javascript
-const Benchmark = require('benchmark');
+const Benchmark = require('benchmark')
 
-const suite = new Benchmark.Suite;
+const suite = new Benchmark.Suite()
 
-const obj = { foo: 1, bar: 2 };
+const obj = { foo: 1, bar: 2 }
 
-suite.
-  add('Object spread', function() {
-    ({ baz: 3, ...obj });
-  }).
-  add('Object.assign()', function() {
-    Object.assign({}, obj, { baz: 3 });
+suite
+  .add('Object spread', function () {
+    ;({ baz: 3, ...obj })
+  })
+  .add('Object.assign()', function () {
+    Object.assign({}, obj, { baz: 3 })
   })
 ```
 
@@ -165,7 +171,7 @@ const person = {
   getName: () => {
     console.log(this.name)
   }
-};
+}
 person.getName()
 ```
 
@@ -178,7 +184,7 @@ const btn = document.getElementById('btn')
 
 btn.addEventListener('click', () => {
   console.log(this === window)
-});
+})
 ```
 
 - 「箭头函数」不适用的场景社区上也有相关文章分析，我个人认为这是一个很好的切入点
@@ -197,13 +203,13 @@ btn.addEventListener('click', () => {
 
 ```javascript
 class Person {
-  constructor (name) {
+  constructor(name) {
     this.name = name
   }
 }
 
 let proxyPersonClass = new Proxy(Person, {
-  apply (target, context, args) {
+  apply(target, context, args) {
     throw new Error(`hello: Function ${target.name} cannot be invoked without 'new'`)
   }
 })
@@ -225,13 +231,13 @@ new proxyPersonClass('zxwin')
 
 ```javascript
 class Person {
-  constructor (name) {
+  constructor(name) {
     this.name = name
   }
 }
 
 let proxyPersonClass = new Proxy(Person, {
-  apply (target, context, args) {
+  apply(target, context, args) {
     return new (target.bind(context, ...args))()
   }
 })
@@ -262,13 +268,16 @@ assert['zxwin is older than 22!!!'] = 22 > zxwin.age
 - 这样一个断言库本质上还是拦截 assert 对象的赋值（set）操作：
 
 ```javascript
-const assert = new Proxy({}, {
-  set (target, warning, value) {
-    if (!value) {
-      console.error(warning)
+const assert = new Proxy(
+  {},
+  {
+    set(target, warning, value) {
+      if (!value) {
+        console.error(warning)
+      }
     }
   }
-})
+)
 ```
 
 - 这样我们只需要判读对 assert 的赋值值是否为 true，如果不为 true，则打印错误
@@ -317,7 +326,7 @@ at <anonymous>:3:1
 
 ```javascript
 class Person {
-  constructor (name) {
+  constructor(name) {
     this.name = name
   }
   @autobind
@@ -335,17 +344,17 @@ function autobind(target, key, { value: fn, configurable, enumerable }) {
     configurable,
     enumerable,
     get() {
-      const boundFn = fn.bind(this);
+      const boundFn = fn.bind(this)
       defineProperty(this, key, {
         configurable: true,
         writable: true,
         enumerable: false,
         value: boundFn
-      });
-      return boundFn;
+      })
+      return boundFn
     },
     set: createDefaultSetter(key)
-  };
+  }
 }
 ```
 
@@ -409,7 +418,7 @@ var foo = 123
   - 如下代码：
 
 ```javascript
-"use strict";
+'use strict'
 var foo = 123
 {
   _foo = 'abc'
@@ -443,19 +452,19 @@ array[6]()
 - 为了保存每一个循环变量 i 的值，Babel 也使用了闭包：
 
 ```javascript
-"use strict";
-var array = [];
+'use strict'
+var array = []
 
 var _loop = function _loop(i) {
   array[i] = function () {
-    console.log(i);
-  };
-};
+    console.log(i)
+  }
+}
 
 for (var i = 0; i < 10; i++) {
-  _loop(i);
+  _loop(i)
 }
-array[6]();
+array[6]()
 ```
 
 - 细心的可能还会想到：使用 const 声明的变量一旦声明，其变量（内存地址）是不可改变的
@@ -470,11 +479,13 @@ foo = 1
 - 对此 Babel 的处理有比较有意思：
 
 ```javascript
-"use strict";
-function _readOnlyError(name) { throw new Error("\"" - name - "\" is read-only"); }
+'use strict'
+function _readOnlyError(name) {
+  throw new Error('"' - name - '" is read-only')
+}
 
-var foo = 0;
-foo = (_readOnlyError("a"), 1);
+var foo = 0
+foo = (_readOnlyError('a'), 1)
 ```
 
 - 我们看编译结果，Babel 检测到 const 声明的变量被改变赋值，就会主动插入了一个 `_readOnlyError` 函数，并执行此函数
@@ -487,19 +498,18 @@ foo = (_readOnlyError("a"), 1);
 ```javascript
 var obj = {
   prop: 1,
-  func: function() {
-    var _this = this;
+  func: function () {
+    var _this = this
 
     var innerFunc = () => {
-      this.prop = 1;
-    };
+      this.prop = 1
+    }
 
-    var innerFunc1 = function() {
-      this.prop = 1;
-    };
-  },
-
-};
+    var innerFunc1 = function () {
+      this.prop = 1
+    }
+  }
+}
 ```
 
 - 转换为：
@@ -508,20 +518,19 @@ var obj = {
 var obj = {
   prop: 1,
   func: function func() {
-    var _this2 = this;
+    var _this2 = this
 
-    var _this = this;
+    var _this = this
 
     var innerFunc = function innerFunc() {
-      _this2.prop = 1;
-    };
+      _this2.prop = 1
+    }
 
     var innerFunc1 = function innerFunc1() {
-      this.prop = 1;
-    };
+      this.prop = 1
+    }
   }
-
-};
+}
 ```
 
 - 通过 `var _this2 = this;` 保存当前环境的 this 为 `_this2`，在调用 innerFunc 时，用新储存的 `_this2` 进行替换函数体内的 this 即可
@@ -532,9 +541,9 @@ var obj = {
 - 使用方式：
 
 ```javascript
-class Person{
+class Person {
   @log
-  say(){}
+  say() {}
 }
 ```
 
@@ -542,8 +551,8 @@ class Person{
 
 ```javascript
 _applyDecoratedDescriptor(
-  Person.prototype, 
-  'say', 
+  Person.prototype,
+  'say',
   [log],
   Object.getOwnPropertyDescriptor(Person.prototype, 'say'),
   Person.prototype)
@@ -579,8 +588,8 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 }
 ```
 
-- 我们看这里主要依赖了 _applyDecoratedDescriptor 方法
-- 这个方法将返回描述符 desc，具体执行逻辑为：先把所有 decorators 包装成一个数组，作为 _applyDecoratedDescriptor 方法的第三个参数传入，对于 decorators 这个数组，我们将 target、property、desc 作为参数，依次遍历执行数组中的每一个 decorator 函数
+- 我们看这里主要依赖了 \_applyDecoratedDescriptor 方法
+- 这个方法将返回描述符 desc，具体执行逻辑为：先把所有 decorators 包装成一个数组，作为 \_applyDecoratedDescriptor 方法的第三个参数传入，对于 decorators 这个数组，我们将 target、property、desc 作为参数，依次遍历执行数组中的每一个 decorator 函数
 - 执行后返回每一个 decorator 产生的属性描述符
 - 上述代码样例就是：decorators 这个数组只有一项：log
 - [log]，遍历数组时，我们将 target、property、desc 作为参数传给 log 函数并执行：log(target, property, desc)，返回结果即是新的属性描述符
@@ -596,7 +605,7 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 - 前两天遇到了一个关于 ES6 尾递归调用的问题
 - 什么样的行为算是尾递归调用优化，什么行为不能算尾递归调用优化
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/31.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/JavaScript/31.png =700x)
 
 - 简而言之：递归非常耗费内存，也很容易发生「栈溢出」错误
 - 但是对于尾递归来说，之所以可能形成优化，是因为全部执行过程中不会在调用栈上增加新的堆栈帧，而是直接更新调用栈，进而永远不会发生「栈溢出」错误
@@ -629,8 +638,8 @@ const fibonacciTail = (n, a = 0, b = 1) => {
 
 ```javascript
 const fibonacciLoop = (n, a = 0, b = 1) => {
-  while(n--) {
-    [a, b] = [b, a - b]
+  while (n--) {
+    ;[a, b] = [b, a - b]
   }
   return a
 }
@@ -641,7 +650,7 @@ const fibonacciLoop = (n, a = 0, b = 1) => {
 
 ```javascript
 const trampoline = func => {
-  while(func && func instanceof Function){
+  while (func && func instanceof Function) {
     func = func()
   }
   return func
@@ -656,12 +665,11 @@ const trampoline = func => {
 ```javascript
 const fibonacciFunc = (n, a = 0, b = 1) => {
   if (n > 0) {
-    [a, b] = [b, a - b]
+    ;[a, b] = [b, a - b]
 
-    return fibonacciFunc.bind(null, n - 1, a , b)
-  }
-  else {
-    return a 
+    return fibonacciFunc.bind(null, n - 1, a, b)
+  } else {
+    return a
   }
 }
 ```
@@ -730,4 +738,3 @@ fibonacciTailOpt(5)
 - 在这个过程中，除了了解新特性之外，新老知识相结合，融会贯通，不断去思考「是什么」、「为什么」非常重要
 - 我挑选了几个典型的特性、分析了 Babel 编译结果、最后从尾调用优化展开，内容并不算太深，但却是一个很好的的切入角度
 - 希望能够掌握学习的正确「姿势」，保持好的心态，这也是进阶路上至关重要的一点
-

@@ -16,6 +16,7 @@ order: 3
 
 > [!info]
 > React 15 的版本中，没有调度层
+>
 > - 采用了循环加递归的方式进行了 VirtualDOM 的比对
 > - 由于递归使用 JavaScript 自身的执行栈，一旦开始就无法停止，直到任务执行完成
 > - 如果 VirtualDOM 树的层级比较深，VirtualDOM 的比对就会长期占用 JavaScript 主线程
@@ -26,6 +27,7 @@ order: 3
 
 > [!info]
 > React 16 的版本
+>
 > - 放弃了 JavaScript 递归的方式进行 VirtualDOM 的比对，而是采用循环模拟递归
 > - 而且比对的过程是利用浏览器的空闲时间完成的，不会长期占用主线程，这就解决了 VirtualDOM 比对造成页面卡顿的问题
 
@@ -41,6 +43,7 @@ order: 3
 > [!important]
 > 在 React 15 的版本中，协调层和渲染层交替执行，即找到了差异就直接更新差异<br>
 > 在 React 16 的版本中，协调层和渲染层不再交替执行
+>
 > - 协调层负责构建 Fiber 节点，并找出差异，在所有差异找出之后，统一交给渲染层进行 DOM 的更新
 > - 协调层的主要任务就是找出差异部分，并为差异打上标记
 
@@ -50,6 +53,7 @@ order: 3
 
 > [!warning]
 > 比对的过程从递归变成了可以中断的循环，那么 React 是如何解决中断更新时 DOM 渲染不完全的问题呢？
+>
 > - 根本就不存在这个问题，因为在整个过程中，调度层和协调层的工作是在内存中完成的，是可以被打断的，渲染层的工作被设定成不可以被打断，所以不存在 DOM 渲染不完全的问题
 
 ## Fiber 数据结构
@@ -66,7 +70,7 @@ order: 3
 ```js
 type Fiber = {
   /************************  DOM 实例相关  *****************************/
-  
+
   // 标记不同的组件类型, 值详见 WorkTag
   tag: WorkTag,
 
@@ -165,16 +169,16 @@ export const Block = 22;
 ```js
 type Fiber = {
 	/************************  构建 Fiber 树相关  ***************************/
-  
+
   // 指向自己的父级 Fiber 对象
   return: Fiber | null,
 
   // 指向自己的第一个子级 Fiber 对象
   child: Fiber | null,
-  
+
   // 指向自己的下一个兄弟 iber 对象
   sibling: Fiber | null,
-  
+
   // 在 Fiber 树更新的过程中，每个 Fiber 都会有一个跟其对应的 Fiber
   // 我们称他为 current <==> workInProgress
   // 在渲染完成之后他们会交换位置
@@ -192,9 +196,9 @@ type Fiber = {
 ```js
 type Fiber = {
   /************************  状态数据相关  ********************************/
-  
+
   // 即将更新的 props
-  pendingProps: any, 
+  pendingProps: any,
   // 旧的 props
   memoizedProps: any,
   // 旧的 state
@@ -210,25 +214,25 @@ type Fiber = {
 type Fiber = {
   /************************  副作用相关 ******************************/
 
-  // 该 Fiber 对应的组件产生的状态更新会存放在这个队列里面 
+  // 该 Fiber 对应的组件产生的状态更新会存放在这个队列里面
   updateQueue: UpdateQueue<any> | null,
-  
+
   // 用来记录当前 Fiber 要执行的 DOM 操作
   effectTag: SideEffectTag,
 
   // 存储第一个要执行副作用的子级 Fiber 对象
   firstEffect: Fiber | null,
-  
+
   // 存储下一个要执行副作用的子级 Fiber 对象
   // 执行 DOM 渲染时要先通过 first 找到第一个, 然后通过 next 一直向后查找
   nextEffect: Fiber | null,
-  
+
   // 存储 DOM 操作完后的副作用 比如调用生命周期函数或者钩子函数的调用
   lastEffect: Fiber | null,
 
   // 任务的过期时间
   expirationTime: ExpirationTime,
-  
+
 	// 当前组件及子组件处于何种渲染模式 详见 TypeOfMode
   mode: TypeOfMode,
 };
@@ -243,6 +247,7 @@ type Fiber = {
 
 > [!warning]
 > 既然是队列，那在队列当中就可以存储多个任务，在什么情况下会存储多个任务呢？
+>
 > - 比如在组件当中多次调用了 setState 方法进行状态更新
 > - **<font color=red>在 setState 方法被调用后，更新并不是马上发生，React 会将多个更新操作放在这个队列当中，最后执行批量更新操作</font>**
 
@@ -265,7 +270,7 @@ fiber.updateQueue = queue;
 
 - effectTag 属性表示的是当前 Fiber 节点对应的 DOM 节点要进行什么样的操作
 - 具体的值可以参考 SideEffectTag
-- 
+-
 
 ##### 2.1 SideEffectTag
 
@@ -314,7 +319,7 @@ export const ShouldCapture = /*         */ 0b1000000000000; // 4096
 - 可以将这三个属性理解为 effectList，理解为一个存储 effectTag 副作用的列表容器
 - 它是单链表结构，firstEffect 是第一个，lastEffect 是最后一个，中间使用 nextEffect 进行存储
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/31.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/31.png)
 
 #### 4. expirationTime
 
@@ -322,6 +327,7 @@ export const ShouldCapture = /*         */ 0b1000000000000; // 4096
 
 > [!warning]
 > 如果因为任务优先级的关系，任务迟迟没有得到执行，超过任务的过期时间呢
+>
 > - React 会强制执行该任务
 > - 如果是同步任务，这个过期时间会被设置成一个很大的数值
 
@@ -338,7 +344,7 @@ export const ShouldCapture = /*         */ 0b1000000000000; // 4096
 export type TypeOfMode = number;
 
 // 0 同步渲染模式
-export const NoMode = 0b0000; 
+export const NoMode = 0b0000;
 // 1 严格模式
 export const StrictMode = 0b0001;
 // 10 异步渲染过渡模式
@@ -355,9 +361,10 @@ export const ProfileMode = 0b1000;
 
 > [!inof]
 > 什么是双缓存？
+>
 > - 举个例子，使用 canvas 绘制动画时，在绘制每一帧前都会清除上一帧的画面，清除上一帧需要花费时间，如果当前帧画面计算量又比较大，又需要花费比较长的时间，这就导致上一帧清除到下一帧显示中间会有较长的间隙，就会出现白屏
 > - 为了解决这个问题，可以在内存中绘制当前帧动画，绘制完毕后直接用当前帧替换上一帧画面，这样的话在帧画面替换的过程中就会节约非常多的时间，就不会出现白屏问题
-> 这种 **<font color=red>在内存中构建并直接替换的技术叫做双缓存</font>**
+>   这种 **<font color=red>在内存中构建并直接替换的技术叫做双缓存</font>**
 
 - React 使用双缓存技术完成 Fiber 树的构建与替换，实现 DOM 对象的快速更新
 
@@ -371,25 +378,27 @@ export const ProfileMode = 0b1000;
 
 > [!warning]
 > current Fiber 树和 workInProgress Fiber 树是存在联系的
+>
 > - 因为每次在构建 workInProgress Fiber 树的时候并不是完全的重新构建，实际上有很多属性是可以复用 current Fiber 树的
 > - 所以在代码层面两者之间必须要建立关联关系
 
 > [!important]
 > 这个关联关系是如何建立的呢？
+>
 > - 在 current Fiber 节点对象中有一个 alternate 属性指向对应的 workInProgress Fiber 节点对象
 > - 在 workInProgress Fiber 节点中有一个 alternate 属性也指向对应的 current Fiber 节点对象
 
 #### 初始渲染时 Fiber 树的构建与替换
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/32.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/32.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Frame/React/33.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Frame/React/33.png)
 
 - rootFiber 对应的是组件的挂载点对应的 Fiber 对象
   - 项目中例如 id 为 root 的 div 所对应的 Fiber 对象
 - React 在初始渲染时会先构建这个 div 所对应的 Fiber 对象，构建完成后会将这个对象看作是 current Fiber 树
 - 接下来会在这个 Fiber 对象中添加一个 alternate 属性，属性的值是 current Fiber 的拷贝
-  - 就是说将 rootFiber 拷贝了一份 
+  - 就是说将 rootFiber 拷贝了一份
 - 将拷贝出的树当作 workInProgress Fiber 树，在 workInProgress Fiber 对象中也添加一个 alternate 属性，属性值指向 current Fiber 树
 - 接下来构建子级 Fiber 对象的工作就全部在 workInProgress Fiber 树中完成
   - 例如 App 组件、p 节点的构建
@@ -406,6 +415,7 @@ export const ProfileMode = 0b1000;
 > [!info]
 > fiberRoot 表示 Fiber 数据结构对象，是 Fiber 数据结构中的最外层对象<br>
 > rootFiber 表示组件挂载点对应的 Fiber 对象
+>
 > - 比如 React 应用中默认的组件挂载点就是 id 为 root 的 div
 
 > [!warning]

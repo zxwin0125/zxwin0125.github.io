@@ -9,7 +9,7 @@ order: 2
 - 良好的组件设计会是良好的应用开发基础，来谈一谈组件设计的奥秘
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/06.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/06.png)
 
 - 设计思想具有共性，不管是其他框架还是原生 Web component 都将适用
 
@@ -22,12 +22,14 @@ order: 2
 - 单一职责带来的最大好处就是在修改组件时，能够做到全在掌控下，不必担心对其他组件造成影响
 
 > 举个例子：组件需要通过网络请求获取数据并展示数据内容，这样一来潜在的功能集合改变就有：
+>
 > - 请求 API 地址发生变化
 > - 请求返回数据格式变化
 > - 开发者想更换网络请求第三方库，比如 jQuery.ajax 改成 axios
 > - 更改请求数据逻辑
 
 > 再看一个例子：需要一个 table 组件，渲染一个 list，那么潜在更改的可能有：
+>
 > - 限制一次性渲染的 item 个数（只渲染前 10 个，剩下的懒加载）
 > - 当数据列表为空时显示 「This list is empty」
 > - 任何渲染逻辑的更改
@@ -35,32 +37,32 @@ order: 2
 - 实际看一个场景：
 
 ```javascript
-import axios from 'axios';
+import axios from 'axios'
 
 class Weather extends Component {
   constructor(props) {
-    super(props);
-    this.state = { temperature: 'N/A', windSpeed: 'N/A' };
+    super(props)
+    this.state = { temperature: 'N/A', windSpeed: 'N/A' }
   }
 
   componentDidMount() {
-    axios.get('http://weather.com/api').then((response) => {
-      const { current } = response.data;
+    axios.get('http://weather.com/api').then(response => {
+      const { current } = response.data
       this.setState({
         temperature: current.temperature,
-        windSpeed: current.windSpeed,
-      });
-    });
+        windSpeed: current.windSpeed
+      })
+    })
   }
 
   render() {
-    const { temperature, windSpeed } = this.state;
+    const { temperature, windSpeed } = this.state
     return (
       <div classname="weather">
         <div>Temperature: {temperature} °C </div>
         <div>Wind: {windSpeed} km/h</div>
       </div>
-    );
+    )
   }
 }
 ```
@@ -71,27 +73,27 @@ class Weather extends Component {
 - 如果将这个组件拆分成：WeatherFetch 和 WeatherInfo 两个组件，这两个组件各自只做一件事情，保持单一职责：
 
 ```javascript
-import axios from 'axios';
+import axios from 'axios'
 import WeatherInfo from './WeatherInfo'
 class Weather extends Component {
   constructor(props) {
-    super(props);
-    this.state = { temperature: 'N/A', windSpeed: 'N/A' };
+    super(props)
+    this.state = { temperature: 'N/A', windSpeed: 'N/A' }
   }
 
   componentDidMount() {
-    axios.get('http://weather.com/api').then((response) => {
-      const { current } = response.data;
+    axios.get('http://weather.com/api').then(response => {
+      const { current } = response.data
       this.setState({
         temperature: current.temperature,
-        windSpeed: current.windSpeed,
-      });
-    });
+        windSpeed: current.windSpeed
+      })
+    })
   }
 
   render() {
-    const { temperature, windSpeed } = this.state;
-    return <WeatherInfo temperature={temperature} windspeed={windSpeed} />;
+    const { temperature, windSpeed } = this.state
+    return <WeatherInfo temperature={temperature} windspeed={windSpeed} />
   }
 }
 ```
@@ -105,14 +107,14 @@ const WeatherInfo = ({ temperature, windSpeed }) => {
       <div>Temperature: {temperature} °C</div>
       <div>Wind: {windSpeed} km/h</div>
     </div>
-  );
-};
+  )
+}
 ```
 
 - 如果想进行重构，使用 async/await 代替 Promise，只需要直接更改 WeatherFetch 组件：
 
 ```javascript
-class WeatherFetch extends Component {  
+class WeatherFetch extends Component {
  // ...
 
  async componentDidMount() {
@@ -135,14 +137,14 @@ class WeatherFetch extends Component {
 
 ```javascript
 const WeatherInfo = ({ temperature, windSpeed }) => {
-  const windInfo = windSpeed === 0 ? 'calm' : `${windSpeed} km/h`;
+  const windInfo = windSpeed === 0 ? 'calm' : `${windSpeed} km/h`
   return (
     <div className="weather">
       <div>Temperature: {temperature} °C</div>
       <div>Wind: {windInfo}</div>
     </div>
-  );
-};
+  )
+}
 ```
 
 - 这只是一个简单的例子，在真实项目中，保持组件的单一职责将会非常重要，甚至可以使用 HoC 强制组件的单一职责性
@@ -151,30 +153,30 @@ const WeatherInfo = ({ temperature, windSpeed }) => {
 ```tsx
 class PersistentForm extends Component {
   constructor(props) {
-    super(props);
-    this.state = { inputValue: localStorage.getItem('inputValue') };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    super(props)
+    this.state = { inputValue: localStorage.getItem('inputValue') }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleChange(event) {
     this.setState({
-      inputValue: event.target.value,
-    });
+      inputValue: event.target.value
+    })
   }
 
   handleClick() {
-    localStorage.setItem('inputValue', this.state.inputValue);
+    localStorage.setItem('inputValue', this.state.inputValue)
   }
 
   render() {
-    const { inputValue } = this.state;
+    const { inputValue } = this.state
     return (
       <div className="persistent-form">
         <input type="text" value={inputValue} onChange={this.handleChange} />
         <button onClick={this.handleClick}>Save to storage</button>
       </div>
-    );
+    )
   }
 }
 ```
@@ -186,30 +188,30 @@ class PersistentForm extends Component {
 ```tsx
 class PersistentForm extends Component {
   constructor(props) {
-    super(props);
-    this.state = { inputValue: props.initialValue };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    super(props)
+    this.state = { inputValue: props.initialValue }
+    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleChange(event) {
     this.setState({
-      inputValue: event.target.value,
-    });
+      inputValue: event.target.value
+    })
   }
 
   handleClick() {
-    this.props.saveValue(this.state.inputValue);
+    this.props.saveValue(this.state.inputValue)
   }
 
   render() {
-    const { inputValue } = this.state;
+    const { inputValue } = this.state
     return (
       <div className="persistent-form">
         <input type="text" value={inputValue} onChange={this.handleChange} />
         <button onClick={this.handleClick}>Save to storage</button>
       </div>
-    );
+    )
   }
 }
 ```
@@ -222,47 +224,38 @@ function withPersistence(storageKey, storage) {
   return function (WrappedComponent) {
     return class PersistentComponent extends Component {
       constructor(props) {
-        super(props);
-        this.state = { initialValue: storage.getItem(storageKey) };
+        super(props)
+        this.state = { initialValue: storage.getItem(storageKey) }
       }
 
       saveValue(value) {
-        storage.setItem(storageKey, value);
+        storage.setItem(storageKey, value)
       }
-      
+
       render() {
-        return (
-          <WrappedComponent
-            initialValue={this.state.initialValue}
-            saveValue={this.saveValue}
-            {...this.props}
-          />
-        );
+        return <WrappedComponent initialValue={this.state.initialValue} saveValue={this.saveValue} {...this.props} />
       }
-    };
-  };
+    }
+  }
 }
 ```
 
 - 使用方式：
 
 ```javascript
-const LocalStoragePersistentForm  
- = withPersistence('key', localStorage)(PersistentForm)
+const LocalStoragePersistentForm = withPersistence('key', localStorage)(PersistentForm)
 ```
 
 - 这种方式是组件单一职责和组件复用的结合体现，其他组件当然也可以使用这个 HoC:
 
 ```javascript
-const LocalStorageMyOtherForm  
- = withPersistence('key', localStorage)(MyOtherForm)
+const LocalStorageMyOtherForm = withPersistence('key', localStorage)(MyOtherForm)
 ```
 
 - 存储和渲染职责解耦，可以随时切换存储方式，比如切换为 sessionStorage 代替 localStorage：
 
 ```javascript
-const SessionStoragePersistentForm  
- = withPersistence('key', sessionStorage)(PersistentForm)
+const SessionStoragePersistentForm = withPersistence('key', sessionStorage)(PersistentForm)
 ```
 
 ## 组件通信和封装
@@ -279,8 +272,8 @@ const SessionStoragePersistentForm
 ```javascript
 class App extends Component {
   constructor(props) {
-    super(props);
-    this.state = { number: 0 };
+    super(props)
+    this.state = { number: 0 }
   }
 
   render() {
@@ -289,7 +282,7 @@ class App extends Component {
         <div className="number">{this.state.number}</div>
         <Controls parent={this} />
       </div>
-    );
+    )
   }
 }
 ```
@@ -297,9 +290,9 @@ class App extends Component {
 ```javascript
 class Controls extends Component {
   updateNumber(toAdd) {
-    this.props.parent.setState((prevState) => ({
-      number: prevState.number - toAdd,
-    }));
+    this.props.parent.setState(prevState => ({
+      number: prevState.number - toAdd
+    }))
   }
 
   render() {
@@ -308,7 +301,7 @@ class Controls extends Component {
         <button onClick={() => this.updateNumber(+1)}>Increase</button>
         <button onClick={() => this.updateNumber(-1)}>Decrease</button>
       </div>
-    );
+    )
   }
 }
 ```
@@ -322,26 +315,23 @@ class Controls extends Component {
 ```javascript
 class App extends Component {
   constructor(props) {
-    super(props);
-    this.state = { number: 0 };
+    super(props)
+    this.state = { number: 0 }
   }
 
   updateNumber(toAdd) {
-    this.setState((prevState) => ({
-      number: prevState.number - toAdd,
-    }));
+    this.setState(prevState => ({
+      number: prevState.number - toAdd
+    }))
   }
 
   render() {
     return (
       <div className="app">
         <span className="number">{this.state.number}</span>
-        <Controls
-          onIncrease={() => this.updateNumber(+1)}
-          onDecrease={() => this.updateNumber(-1)}
-        />
+        <Controls onIncrease={() => this.updateNumber(+1)} onDecrease={() => this.updateNumber(-1)} />
       </div>
-    );
+    )
   }
 }
 
@@ -351,8 +341,8 @@ const Controls = ({ onIncrease, onDecrease }) => {
       <button onClick={onIncrease}>Increase</button>
       <button onClick={onDecrease}>Decrease</button>
     </div>
-  );
-};
+  )
+}
 ```
 
 - 这样一来，Controls 组件就不需要再知道 App 组件的内部情况，实现了更好的复用性和可测试性，App 组件因此也具有了更好的封装性
@@ -362,7 +352,7 @@ const Controls = ({ onIncrease, onDecrease }) => {
 - 如果说组件单一职责确定了如何拆分组件，封装性明确了组件如何组织，那么组合性就完成了整个应用的拼接
 - React 具有天生的组合基因：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/05.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/05.png)
 
 - 对应声明式代码：
 
@@ -374,41 +364,31 @@ const app = (
     <article></article>
     <footer></footer>
   </application>
-);
+)
 ```
 
 - 如果两个组件 Composed1 和 Composed2 具有相同的逻辑，我们可以使用组合性进行拆分重组：
 
 ```tsx
-const instance1 = (
-  <composed1>
-    // Composed1 逻辑 
-    // 重复逻辑
-  </composed1>
-);
+const instance1 = <composed1>// Composed1 逻辑 // 重复逻辑</composed1>
 
-const instance2 = (
-  <composed2>
-    // 重复逻辑 
-    // Composed2 逻辑
-  </composed2>
-);
+const instance2 = <composed2>// 重复逻辑 // Composed2 逻辑</composed2>
 ```
 
 - 重复逻辑提取为 Common 组件：
 
 ```tsx
-const instance1 = (  
+const instance1 = (
   <composed1>
-    <logic1/>
-    <common/>
+    <logic1 />
+    <common />
   </composed1>
 )
 
-const instance2 = (  
+const instance2 = (
   <composed2>
     <common />
-    <logic2/>
+    <logic2 />
   </composed2>
 )
 ```
@@ -417,15 +397,15 @@ const instance2 = (
 
 ```javascript
 const ByDevice = ({ children: { mobile, other } }) => {
-  return Utils.isMobile() ? mobile : other;
-};
+  return Utils.isMobile() ? mobile : other
+}
 
-<ByDevice>
+;<ByDevice>
   {{
     mobile: 'Mobile detected!',
-    other: 'Not a mobile device',
+    other: 'Not a mobile device'
   }}
-</ByDevice>;
+</ByDevice>
 ```
 
 ## 副作用和（准）纯组件
@@ -441,18 +421,18 @@ const ByDevice = ({ children: { mobile, other } }) => {
 
 ```javascript
 const globalConfig = {
-  siteName: 'Animals in Zoo',
-};
+  siteName: 'Animals in Zoo'
+}
 
 const Header = ({ children }) => {
-  const heading = globalConfig.siteName ? globalConfig.siteName : null;
+  const heading = globalConfig.siteName ? globalConfig.siteName : null
   return (
     <div>
       {heading}
       {children}
     </div>
-  );
-};
+  )
+}
 ```
 
 - 这个组件是典型的非纯组件，因为它依赖全局变量 siteName，可能渲染出：
@@ -471,24 +451,24 @@ Some content
 - 在编写测试用例时，还需要考虑 globalConfig.siteName，使得逻辑更加复杂：
 
 ```javascript
-import assert from 'assert';
-import { shallow } from 'enzyme';
-import { globalConfig } from './config';
-import Header from './Header';
+import assert from 'assert'
+import { shallow } from 'enzyme'
+import { globalConfig } from './config'
+import Header from './Header'
 
 describe('<Header/>', function () {
   it('should render the heading', function () {
-    const wrapper = shallow(<Header>Some content</Header>);
-    assert(wrapper.contains(<h1>Animals in Zoo</h1>));
-  });
+    const wrapper = shallow(<Header>Some content</Header>)
+    assert(wrapper.contains(<h1>Animals in Zoo</h1>))
+  })
 
   it('should not render the heading', function () {
     // 改动全局变量
-    globalConfig.siteName = null;
-    const wrapper = shallow(<Header>Some content</Header>);
-    assert(wrapper.find('h1').length === 0);
-  });
-});
+    globalConfig.siteName = null
+    const wrapper = shallow(<Header>Some content</Header>)
+    assert(wrapper.find('h1').length === 0)
+  })
+})
 ```
 
 - 在测试 Header 组件时，多了一种 case 不说，还需要手动改写全局变量的值
@@ -496,18 +476,18 @@ describe('<Header/>', function () {
 
 ```javascript
 const Header = ({ children, siteName }) => {
-  const heading = siteName ? { siteName } : null;
+  const heading = siteName ? { siteName } : null
   return (
     <div>
       {heading}
       {children}
     </div>
-  );
-};
+  )
+}
 
 Header.defaultProps = {
-  siteName: globalConfig.siteName,
-};
+  siteName: globalConfig.siteName
+}
 ```
 
 - 另一个重构非纯组件的典型案例就是针对有网络请求的副作用情况，重放在组件单一职责中的代码：
@@ -515,23 +495,23 @@ Header.defaultProps = {
 ```javascript
 class WeatherFetch extends Component {
   constructor(props) {
-    super(props);
-    this.state = { temperature: 'N/A', windSpeed: 'N/A' };
+    super(props)
+    this.state = { temperature: 'N/A', windSpeed: 'N/A' }
   }
 
   componentDidMount() {
-    axios.get('http://weather.com/api').then((response) => {
-      const { current } = response.data;
+    axios.get('http://weather.com/api').then(response => {
+      const { current } = response.data
       this.setState({
         temperature: current.temperature,
-        windSpeed: current.windSpeed,
-      });
-    });
+        windSpeed: current.windSpeed
+      })
+    })
   }
 
   render() {
-    const { temperature, windSpeed } = this.state;
-    return <WeatherInfo temperature={temperature} windspeed={windSpeed} />;
+    const { temperature, windSpeed } = this.state
+    return <WeatherInfo temperature={temperature} windspeed={windSpeed} />
   }
 }
 ```
@@ -539,29 +519,28 @@ class WeatherFetch extends Component {
 - 从表面上看，WeatherFetch 组件不得不「非纯」，因为网络请求不可避免，但是可以将请求的主体逻辑分离出组件，而组件只负责调用请求，这样的操作称之为「（准）纯组件」：
 
 ```javascript
-import { connect } from 'react-redux';
-import { fetch } from './action';
+import { connect } from 'react-redux'
+import { fetch } from './action'
 
 export class WeatherFetch extends Component {
   componentDidMount() {
-    this.props.fetch();
+    this.props.fetch()
   }
 
   render() {
-    const { temperature, windSpeed } = this.props;
-    return <WeatherInfo temperature={temperature} windspeed={windSpeed} />;
+    const { temperature, windSpeed } = this.props
+    return <WeatherInfo temperature={temperature} windspeed={windSpeed} />
   }
-
 }
 
 function mapStateToProps(state) {
   return {
     temperature: state.temperate,
-    windSpeed: state.windSpeed,
-  };
+    windSpeed: state.windSpeed
+  }
 }
 
-export default connect(mapStateToProps, { fetch });
+export default connect(mapStateToProps, { fetch })
 ```
 
 - 使用 Redux 来完成，这样一来 WeatherFetch 组件至少可以保证「相同的 props，会渲染相同的结果」，测试也就变得可行
@@ -571,25 +550,19 @@ import assert from 'assert'
 import { shallow, mount } from 'enzyme'
 import { spy } from 'sinon'
 
-import { WeatherFetch } from './WeatherFetch';  
+import { WeatherFetch } from './WeatherFetch'
 import WeatherInfo from './WeatherInfo'
 
-describe('<WeatherFetch />', function() {  
-  it('should render the weather info', function() {
+describe('<WeatherFetch />', function () {
+  it('should render the weather info', function () {
     function noop() {}
-    const wrapper = shallow(
-      <WeatherFetch temperature="30" windSpeed="10" fetch={noop} />
-    )
-    assert(wrapper.contains(
-      <WeatherInfo temperature="30" windSpeed="10" />
-    ))
-  });
+    const wrapper = shallow(<WeatherFetch temperature="30" windSpeed="10" fetch={noop} />)
+    assert(wrapper.contains(<WeatherInfo temperature="30" windSpeed="10" />))
+  })
 
-  it('should fetch weather when mounted', function() {
+  it('should fetch weather when mounted', function () {
     const fetchSpy = spy()
-    const wrapper = mount(
-     <WeatherFetch temperature="30" windSpeed="10" fetch={fetchSpy}/>
-    )
+    const wrapper = mount(<WeatherFetch temperature="30" windSpeed="10" fetch={fetchSpy} />)
     assert(fetchSpy.calledOnce)
   })
 })
@@ -600,7 +573,7 @@ describe('<WeatherFetch />', function() {
 - 上面提到的 Controls 组件最初实现
 
 ```javascript
-class App extends Component {  
+class App extends Component {
   constructor(props) {
     super(props)
     this.state = { number: 0 }
@@ -608,7 +581,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app"> 
+      <div className="app">
         <span className="number">{this.state.number}</span>
         <Controls parent={this} />
       </div>
@@ -619,19 +592,15 @@ class App extends Component {
 class Controls extends Component {
   updateNumber(toAdd) {
     this.props.parent.setState(prevState => ({
-      number: prevState.number - toAdd       
+      number: prevState.number - toAdd
     }))
   }
 
   render() {
     return (
       <div className="controls">
-        <button onClick={() => this.updateNumber(+1)}>
-          Increase
-        </button> 
-        <button onClick={() => this.updateNumber(-1)}>
-          Decrease
-        </button>
+        <button onClick={() => this.updateNumber(+1)}>Increase</button>
+        <button onClick={() => this.updateNumber(-1)}>Decrease</button>
       </div>
     )
   }
@@ -641,7 +610,7 @@ class Controls extends Component {
 - 因为 Controls 组件的行为完全依赖其父组件，因此为了测试，需要临时构造一个父组件 Temp 来完成
 
 ```javascript
-class Temp extends Component {  
+class Temp extends Component {
   constructor(props) {
     super(props)
     this.state = { number: 0 }
@@ -651,9 +620,9 @@ class Temp extends Component {
   }
 }
 
-describe('<Controls />', function() {  
-  it('should update parent state', function() {
-    const parent = shallow(<Temp/>)
+describe('<Controls />', function () {
+  it('should update parent state', function () {
+    const parent = shallow(<Temp />)
     const wrapper = shallow(<Controls parent={parent} />)
 
     assert(parent.state('number') === 0)
@@ -663,14 +632,14 @@ describe('<Controls />', function() {
 
     wrapper.find('button').at(1).simulate('click')
     assert(parent.state('number') === 0)
-  });
-});
+  })
+})
 ```
 
 - 测试编写的非常痛苦，而经过重构之后，变的就非常简单了
 
 ```javascript
-class App extends Component {  
+class App extends Component {
   constructor(props) {
     super(props)
     this.state = { number: 0 }
@@ -678,40 +647,34 @@ class App extends Component {
 
   updateNumber(toAdd) {
     this.setState(prevState => ({
-      number: prevState.number - toAdd       
+      number: prevState.number - toAdd
     }))
   }
 
   render() {
     return (
-      <div className="app"> 
+      <div className="app">
         <span className="number">{this.state.number}</span>
-        <Controls 
-          onIncrease={() => this.updateNumber(+1)}
-          onDecrease={() => this.updateNumber(-1)} 
-        />
+        <Controls onIncrease={() => this.updateNumber(+1)} onDecrease={() => this.updateNumber(-1)} />
       </div>
     )
   }
 }
 
-
-const Controls = ({ onIncrease, onDecrease }) => {  
+const Controls = ({ onIncrease, onDecrease }) => {
   return (
     <div className="controls">
-      <button onClick={onIncrease}>Increase</button> 
+      <button onClick={onIncrease}>Increase</button>
       <button onClick={onDecrease}>Decrease</button>
     </div>
   )
 }
 
-describe('<Controls />', function() {  
-  it('should execute callback on buttons click', function() {
+describe('<Controls />', function () {
+  it('should execute callback on buttons click', function () {
     const increase = sinon.spy()
     const descrease = sinon.spy()
-    const wrapper = shallow(
-      <Controls onIncrease={increase} onDecrease={descrease} />
-    )
+    const wrapper = shallow(<Controls onIncrease={increase} onDecrease={descrease} />)
 
     wrapper.find('button').at(0).simulate('click')
     assert(increase.calledOnce)
@@ -732,41 +695,39 @@ describe('<Controls />', function() {
 // data 是一个数组，包含了所有 game 信息
 function Games({ data }) {
   // 选出前 10 条 games
-  const data1 = data.slice(0, 10);
+  const data1 = data.slice(0, 10)
   // list 是包含了 10 条 games 的 Game 组件集合
   const list = data1.map(function (v) {
     // v 代码当前 game
-    return <Game key={v.id} name={v.name} />;
-  });
-  return <ul>{list}</ul>;
+    return <Game key={v.id} name={v.name} />
+  })
+  return <ul>{list}</ul>
 }
 
-<Games
+;<Games
   data={[
     { id: 1, name: 'Mario' },
-    { id: 2, name: 'Doom' },
+    { id: 2, name: 'Doom' }
   ]}
-/>;
+/>
 ```
 
 - 第二段代码不需要一行注释：
 
 ```tsx
-const GAMES_LIMIT = 10;
+const GAMES_LIMIT = 10
 
 const GamesList = ({ items }) => {
-  const itemsSlice = items.slice(0, GAMES_LIMIT);
-  const games = itemsSlice.map((gameItem) => (
-    <Game key={gameItem.id} name={gameItem.name} />
-  ));
-  return <ul>{games}</ul>;
-};
-<GamesList
+  const itemsSlice = items.slice(0, GAMES_LIMIT)
+  const games = itemsSlice.map(gameItem => <Game key={gameItem.id} name={gameItem.name} />)
+  return <ul>{games}</ul>
+}
+;<GamesList
   items={[
     { id: 1, name: 'Mario' },
-    { id: 2, name: 'Doom' },
+    { id: 2, name: 'Doom' }
   ]}
-/>;
+/>
 ```
 
 - 组件设计功力，其实一个命名就能看出来；在做 code review 时，一个命名也能出卖你的深浅

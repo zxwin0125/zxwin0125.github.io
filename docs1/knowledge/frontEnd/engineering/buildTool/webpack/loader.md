@@ -10,7 +10,7 @@ order: 2
   - 也就是说它会把打包过程中所有遇到的文件当作 JavaScript 文件去解析
 - 可以为其他类型的文件添加不同的加载器(loader)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/04.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/04.png)
 
 ### loader
 
@@ -30,13 +30,19 @@ order: 2
 
 > [!info]
 > 一些插件介绍
+>
 > 1. css-loader
->   - 将 css 文件转换成一个 js 模块，具体实现是将 css 代码 push 到一个数组当中
->   - 但是整个过程中，并没有使用到这个数组，还需要一个 style-loader 去使用它
+>
+> - 将 css 文件转换成一个 js 模块，具体实现是将 css 代码 push 到一个数组当中
+> - 但是整个过程中，并没有使用到这个数组，还需要一个 style-loader 去使用它
+>
 > 2. style-loader
->   - 将 css-loader 转换后的结果，通过 style 标签的形式追加到页面上
+>
+> - 将 css-loader 转换后的结果，通过 style 标签的形式追加到页面上
+>
 > 3. html-loader
->   - 使 webpack 识别 .html 的模块
+>
+> - 使 webpack 识别 .html 的模块
 
 ```js
 // webpack.config.js
@@ -53,10 +59,7 @@ module.exports = {
     rules: [
       {
         test: /.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: ['style-loader', 'css-loader']
       }
     ]
   }
@@ -69,6 +72,7 @@ module.exports = {
 
 > [!warning]
 > 打包入口可以说是项目的运行入口，webpack 建议：
+>
 > 1. 编写代码过程中，根据代码的需要，动态导入资源
 > 2. 需要资源的不是应用，而是代码
 
@@ -86,6 +90,7 @@ const heading = createHeading()
 
 document.body.append(heading)
 ```
+
 ```js
 // webpack.config.js
 const path = require('path')
@@ -101,10 +106,7 @@ module.exports = {
     rules: [
       {
         test: /.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: ['style-loader', 'css-loader']
       }
     ]
   }
@@ -118,6 +120,7 @@ module.exports = {
 
 > [!info]
 > webpack 默认将输出目录作为网站的根目录，所以资源的路径默认以 dist 为根目录
+>
 > - 通过配置 publicPath，告诉 webpack 打包的文件在网站中的位置，默认为 '' 即网站根目录
 >   - 例如：publicPath: 'dist/'，即打包文件到 dist 文件夹下，注意 / 不能省略
 
@@ -127,7 +130,7 @@ module.exports = {
 > [!important]
 > webpack 在打包时遇到图片等文件，根据配置匹配对应的文件加载器，先将文件拷贝到输出目录，然后将输出的文件的路径，作为返回值返回，从而可以通过 import 拿到访问这个文件的路径
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/05.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/05.png)
 
 ```js
 // webpack.config.js
@@ -140,6 +143,7 @@ module: {
   ]
 }
 ```
+
 ```js
 // bundle.js
 /******/ 	// __webpack_public_path__
@@ -159,26 +163,27 @@ module.exports = __webpack_require__.p + "aaa0e8af948e470ee7dd81a36b503e18.png";
 ### Data URLs
 
 > [!info]
+>
 > - 传统的 URL 一般要求服务器有一个对应的文件，然后通过请求这个地址得到服务器上的这个文件
 > - Data URLs 是特殊的 URL 协议，它可以直接表示一个文件的内容，即 url 中的文本已经包含了文件的内容，所以使用 Data URLs 时就不会再发送 HTTP 请求
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/06.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/06.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/07.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/07.png)
 
 - 上图表示一个编码为 UTF-8，内容为`<h1>html content</h1>`的 html 内容，可以通过浏览器打开这个地址查看效果
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/08.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/08.png)
 
 - 而如果是图片或字体这种无法直接通过文本去表示的二进制类型的文件，可以通过将文件的内容进行 base64 编码，然后以编码后的字符串去表示文件的内容
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/09.png)
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/10.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/10.png)
 
 - 上图表示 base64 编码的 png 类型的文件，一般情况 base64 编码比较长，浏览器也能解析出来对应的文件
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/11.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/11.png)
 
 - 通过 Data URLs 可以以代码形式表示任意类型的文件
 
@@ -190,6 +195,7 @@ module.exports = __webpack_require__.p + "aaa0e8af948e470ee7dd81a36b503e18.png";
 ### 最佳实践
 
 > [!important]
+>
 > - 小文件使用 Data URLs，减少请求次数
 > - 大文件单独提取存放(传统方式)，提高加载速度(Data URLs 表示大文件内容过大)
 
@@ -217,6 +223,7 @@ module: {
   ]
 }
 ```
+
 ```js
 // bundle.js
 (function(module, exports) {
@@ -228,25 +235,29 @@ module.exports = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0
 ## 常用加载器分类
 
 1. 编译转换类
-  - 把加载到的模块，转换为 JavaScript 代码，例如 css-loader
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/12.png)
+- 把加载到的模块，转换为 JavaScript 代码，例如 css-loader
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/12.png)
 
 2. 文件操作类
-  - 把加载到的资源模块，拷贝到输出的目录，同时导出文件的访问路径，例如 file-loader
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/13.png)
+- 把加载到的资源模块，拷贝到输出的目录，同时导出文件的访问路径，例如 file-loader
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/13.png)
 
 3. 代码检查类
-  - 对代码加载的文件中的代码进行校验
-  - 目的：统一代码风格，从而提高代码质量，一般不会修改生产环境的代码，例如 eslint-loader
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/14.png)
+- 对代码加载的文件中的代码进行校验
+- 目的：统一代码风格，从而提高代码质量，一般不会修改生产环境的代码，例如 eslint-loader
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/14.png)
 
 ## webpack 处理 ES2015
 
 > [!warning]
 > webpack 默认就能处理代码当中的 import 和 export，但这不表示 webpack 会自动编译 ES6 的代码
+>
 > - 因为模块打包需要，所以 webpack 对代码中的 import 和 export 作了相应的转换
 > - webpack 并不能转换代码中其他的 ES6 特性
 
@@ -272,32 +283,33 @@ module: {
           presets: ['@babel/preset-env']
         }
       }
-    },
+    }
   ]
 }
 ```
+
 ```js
 // 处理前
-/* harmony default export */ __webpack_exports__["default"] = (() => {
-  const element = document.createElement('h2');
-  element.textContent = 'Hello world';
-  element.classList.add('heading');
+/* harmony default export */ __webpack_exports__['default'] = () => {
+  const element = document.createElement('h2')
+  element.textContent = 'Hello world'
+  element.classList.add('heading')
   element.addEventListener('click', () => {
-    alert('Hello webpack');
-  });
-  return element;
-});
+    alert('Hello webpack')
+  })
+  return element
+}
 
 // 处理后
-/* harmony default export */ __webpack_exports__["default"] = (function () {
-  var element = document.createElement('h2');
-  element.textContent = 'Hello world';
-  element.classList.add('heading');
+/* harmony default export */ __webpack_exports__['default'] = function () {
+  var element = document.createElement('h2')
+  element.textContent = 'Hello world'
+  element.classList.add('heading')
   element.addEventListener('click', function () {
-    alert('Hello webpack');
-  });
-  return element;
-});
+    alert('Hello webpack')
+  })
+  return element
+}
 ```
 
 ## webpack 模块加载方式
@@ -382,20 +394,19 @@ module: {
 > [!important]
 > 代码中所有引用到的资源（有引用资源可能性的地方）都会被 webpack 找到，然后根据配置交给对应的 loader 去处理，最后将处理的结果整体打包到输出目录，webpack 就是依据这样的特点，去实现整个项目的模块化
 
-
 ## webpack 核心工作原理
 
 1. 在项目中一般都会散落着各种各样的代码及资源文件(.js .html .css .png .json .scss…)，webpack 会根据配置找到其中的一个文件作为打包入口(entry)，一般是一个 JavasSript 文件
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/15.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/15.png)
 
 2. 顺着入口文件的代码，根据代码中出现的 import 或 require 之类的语句，解析推断出这个资源所依赖的模块，分别再解析每个模块对应的依赖，最后形成了，整个项目中所有用到的文件之间的依赖关系的依赖树
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/16.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/16.png)
 
 3. webpack 会递归这个依赖树，找到每个节点对应的资源文件，根据配置文件中的 rules 属性，找到模块对应的加载器去加载这个模块，最后会将加载到的结果，放到打包文件 bundle.js 中，从而实现整个项目的打包
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/Engineering/Webpack/17.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Engineering/Webpack/17.png)
 
 > [!important]
 > loader 机制是 webpack 的核心，如果没有 loader，webpack 就没有办法实现各种资源文件的加载，而只是打包合并 JavaScript 代码的工具
@@ -411,8 +422,10 @@ module: {
 
 1. 创建一个 loader 的 js 文件，编写内容
 2. 每个 loader 都需要导出一个函数，这个函数是 loader 对所加载到的资源的处理过程
-  - 输入：就是资源所加载到的内容，参数 source 接收
-  - 输出：return 处理后的结果
+
+- 输入：就是资源所加载到的内容，参数 source 接收
+- 输出：return 处理后的结果
+
 3. 在 webpack 配置文件中配置 rules，使用这个 loader
 
 ```js
@@ -424,14 +437,14 @@ module.exports = source => {
 
 // webpack.config.js
 module.exports = source => {
-	module: {
+  module: {
     rules: [
       {
         test: /.md$/,
-        use: './markdown-loader', // 同 require 一样可以指定相对路径
+        use: './markdown-loader' // 同 require 一样可以指定相对路径
       }
     ]
-    }
+  }
 }
 ```
 
@@ -442,7 +455,7 @@ module.exports = source => {
   - 而上面的 loader 返回的是`hello ~`，它不是 JavaScript 代码，所以才会出现这个错误提示
 - 解决办法
   1. 直接返回 JavaScript 代码
-    - 例如 `return 'exports default "hello ~"'`
+  - 例如 `return 'exports default "hello ~"'`
   2. 或者找一个合适的 loader 继续处理 markdown-loader 处理的结果
 
 ### 3. 使用合适的 loader 处理
@@ -476,10 +489,7 @@ module.exports = {
     rules: [
       {
         test: /.md$/,
-        use: [
-          'html-loader',
-          './markdown-loader'
-        ]
+        use: ['html-loader', './markdown-loader']
       }
     ]
   }

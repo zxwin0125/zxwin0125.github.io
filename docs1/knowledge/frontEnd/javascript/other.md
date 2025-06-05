@@ -9,35 +9,35 @@ order: 8
 - 我们将对这些「其他」内容进行梳理，主要关键字包括：类型（类型判断，类型转换，源码分析等），函数参数引用，相关面试题目分析等
 - 如图：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/JavaScript/32.png =700x)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/JavaScript/32.png =700x)
 
 ## JavaScript 类型及其判断
 
 - javaScript 具有七种内置数据类型，它们分别是：
-    - null
-    - undefined
-    - boolean
-    - number
-    - string
-    - object
-    - symbol
+  - null
+  - undefined
+  - boolean
+  - number
+  - string
+  - object
+  - symbol
 - 其中，前面五种为基本类型
 - 第六种 object 类型又具体包含了 function、array、date 等
 - 对于这些类型的判断，我们常用的方法有：
-    - typeof
-    - instanceof
-    - Object.prototype.toString
-    - constructor
+  - typeof
+  - instanceof
+  - Object.prototype.toString
+  - constructor
 
 ### 使用 typeof 判断类型
 
 - 基本类型可以使用 typeof 来判断：
 
 ```javascript
-typeof 5; // number
-typeof 'zxwin'; // string
-typeof undefined; // undefined
-typeof true;  // boolean
+typeof 5 // number
+typeof 'zxwin' // string
+typeof undefined // undefined
+typeof true // boolean
 ```
 
 - 但是也存在着一些特例，比如用 typeof 判断 null 时：
@@ -61,23 +61,23 @@ typeof foo // "object"
 const foo = new Date()
 typeof foo // "object"
 
-const foo = Symbol("foo")
+const foo = Symbol('foo')
 typeof foo // "symbol"
 ```
 
 - 因此，我们可以总结出：
-    - **使用 typeof 可以准确判断出除 null 以外的基本类型，以及 function 类型、symbol 类型**
-    - **null 会被 typeof 判断为 object**
+  - **使用 typeof 可以准确判断出除 null 以外的基本类型，以及 function 类型、symbol 类型**
+  - **null 会被 typeof 判断为 object**
 
 ### 使用 instanceof 判断类型
 
 - 再来看看 instanceof：
-    - **使用 a instanceof B 判断的是：a 是否为 B 的实例，即 a 的原型链上是否存在 B 构造函数**
-    - 因此如果我们使用：
+  - **使用 a instanceof B 判断的是：a 是否为 B 的实例，即 a 的原型链上是否存在 B 构造函数**
+  - 因此如果我们使用：
 
 ```javascript
 function Person(name) {
-   this.name = name
+  this.name = name
 }
 const p = new Person('zxwin')
 
@@ -115,19 +115,19 @@ new Number(5) instanceof Number // true
 
 ```javascript
 const instanceofMock = (L, R) => {
-   if (typeof L !== 'object') {
-       return false
-   }
-   while (true) {
-       if (L === null) {
-           // 已经遍历到了最顶端
-           return false
-       }
-       if (R.prototype === L.__proto__) {
-           return true
-       }
-       L = L.__proto__
-   }
+  if (typeof L !== 'object') {
+    return false
+  }
+  while (true) {
+    if (L === null) {
+      // 已经遍历到了最顶端
+      return false
+    }
+    if (R.prototype === L.__proto__) {
+      return true
+    }
+    L = L.__proto__
+  }
 }
 ```
 
@@ -137,7 +137,7 @@ const instanceofMock = (L, R) => {
 instanceofMock('', String) // false
 
 function Person(name) {
-   this.name = name
+  this.name = name
 }
 const p = new Person('zxwin')
 instanceofMock(p, Person) // true
@@ -166,7 +166,7 @@ console.log(Object.prototype.toString.call({}))
 console.log(Object.prototype.toString.call([]))
 // [object Array]
 
-console.log(Object.prototype.toString.call(function(){}))
+console.log(Object.prototype.toString.call(function () {}))
 // [object Function]
 
 console.log(Object.prototype.toString.call(null))
@@ -208,7 +208,7 @@ var foo = new Date()
 foo.constructor
 // ƒ Date() { [native code] }
 
-var foo = Symbol("foo")
+var foo = Symbol('foo')
 foo.constructor
 // ƒ Symbol() { [native code] }
 
@@ -233,15 +233,15 @@ foo.constructor
 - 先来看一个极端的例子：
 
 ```javascript
-(!(~+[])+{})[--[~+""][+[]]*[~+[]]+~~!+[]]+({}+[])[[~!+[]*~+[]]]
+;(!~+[] + {})[--[~+''][+[]] * [~+[]] + ~~!+[]] + ({} + [])[[~!+[] * ~+[]]]
 // "sb"
 ```
 
 - 这就是「隐式转换」的「成果」
 - 为什么会有这样的输出，这里不过多研究，先从基础入手来进行分析
 - MDN 这样介绍过 JavaScript 的特点：
-    - JavaScript 是一种弱类型或者说动态语言
-    - 这意味着你不用提前声明变量的类型，在程序运行过程中，类型会被自动确定
+  - JavaScript 是一种弱类型或者说动态语言
+  - 这意味着你不用提前声明变量的类型，在程序运行过程中，类型会被自动确定
 - 我们再来看一些基本例子，在使用加号进行运算时：
 
 ```javascript
@@ -262,8 +262,8 @@ console.log('zxwin' - true)
 ```
 
 - 我们发现：
-    - **当使用 - 运算符计算 string 和其他类型相加时，都会转换为 string 类型**
-    - **其他情况，都会转换为 number 类型，但是 undefined 会转换为 NaN，相加结果也是 NaN**
+  - **当使用 - 运算符计算 string 和其他类型相加时，都会转换为 string 类型**
+  - **其他情况，都会转换为 number 类型，但是 undefined 会转换为 NaN，相加结果也是 NaN**
 - 比如布尔值转换为 number 类型：true 为 1，false 为 0，因此：
 
 ```javascript
@@ -283,15 +283,15 @@ console.log({} - true)
 
 - 在 - 号两侧，如果存在复杂类型，比如对象，那么这到底是怎样的一套转换规则呢？
 - **结论**
-    - **当使用 - 运算符计算时，如果存在复杂类型，那么复杂类型将会转换为基本类型，再进行运算**
+  - **当使用 - 运算符计算时，如果存在复杂类型，那么复杂类型将会转换为基本类型，再进行运算**
 - 这就涉及到「对象类型转基本类型」这个过程
 - 具体规则：
-    - **对象在转换基本类型时，会调用该对象上 valueOf 或 toString 这两个方法，该方法的返回值是转换为基本类型的结果**
+  - **对象在转换基本类型时，会调用该对象上 valueOf 或 toString 这两个方法，该方法的返回值是转换为基本类型的结果**
 - 那具体调用 valueOf 还是 toString 呢？
-    - 这是 ES 规范所决定的，实际上这取决于内置的 toPrimitive 调用结果
+  - 这是 ES 规范所决定的，实际上这取决于内置的 toPrimitive 调用结果
 - 主观上说，这个对象倾向于转换成什么，就会优先调用哪个方法
-    - 如果倾向于转换为 Number 类型，就优先调用 valueOf
-    - 如果倾向于转换为 String 类型，就只调用 toString
+  - 如果倾向于转换为 Number 类型，就优先调用 valueOf
+  - 如果倾向于转换为 String 类型，就只调用 toString
 - 这里我建议大家了解一些常用的转换结果，对于其他特例情况会查找规范即可
 - 很多经典「教科书」中，比如《JavaScript 高级程序设计》以及《你不知道的 JavaScript》介绍到对象转为基本类型时，会先调用 valueof，再调用 toString，这里引入了「这个对象倾向于转换成什么，就会优先调用哪个方法」其实取自规范当中的「PreferredType」概念，这个概念在这些书目中并没有提到
 - 事实上，浏览器对 PreferredType 的理解比较一致，按照「对象转为基本类型时，会先调用 valueof，再调用 toString」也没有问题
@@ -300,12 +300,12 @@ console.log({} - true)
 
 ```javascript
 const foo = {
- toString () {
-   return 'zxwin'
- },
- valueOf () {
-   return 1
- }
+  toString() {
+    return 'zxwin'
+  },
+  valueOf() {
+    return 1
+  }
 }
 ```
 
@@ -325,14 +325,14 @@ console.log(1 - foo)
 
 - 输出：2，这时候的隐式转换「倾向于使用 foo 对象的 valueOf 方法，将 foo 转为基本类型」，得以进行相加
 - 我们再全面总结一下，对于加法操作，如果加号两边都是 Number 类型，其规则为：
-    - 如果 - 号两边存在 NaN，则结果为 NaN（typeof NaN 是 'number'）
-    - 如果是 Infinity - Infinity，结果是 Infinity
-    - 如果是 -Infinity - (-Infinity)，结果是 -Infinity
-    - 如果是 Infinity - (-Infinity)，结果是 NaN
+  - 如果 - 号两边存在 NaN，则结果为 NaN（typeof NaN 是 'number'）
+  - 如果是 Infinity - Infinity，结果是 Infinity
+  - 如果是 -Infinity - (-Infinity)，结果是 -Infinity
+  - 如果是 Infinity - (-Infinity)，结果是 NaN
 - 如果加号两边有至少一个是字符串，其规则为：
-    - 如果 - 号两边都是字符串，则执行字符串拼接
-    - 如果 - 号两边只有一个值是字符串，则将另外的值转换为字符串，再执行字符串拼接
-    - 如果 - 号两边有一个是对象，则调用 valueof() 或者 toStrinig() 方法取得值，转换为基本类型再进行字符串拼接
+  - 如果 - 号两边都是字符串，则执行字符串拼接
+  - 如果 - 号两边只有一个值是字符串，则将另外的值转换为字符串，再执行字符串拼接
+  - 如果 - 号两边有一个是对象，则调用 valueof() 或者 toStrinig() 方法取得值，转换为基本类型再进行字符串拼接
 - 对于其他操作符也是类似的
 - 当然也可以进行显式转换，我们往往使用类似 Number、Boolean、String、parseInt 等方法，进行显式类型转换，这里不再展开
 
@@ -345,8 +345,8 @@ console.log(1 - foo)
 ```javascript
 let foo = 1
 const bar = value => {
-   value = 2
-   console.log(value)
+  value = 2
+  console.log(value)
 }
 bar(foo) // 2
 console.log(foo) // 1
@@ -356,10 +356,10 @@ console.log(foo) // 1
 - 也就是说在 bar 函数中，参数为基本类型时，函数体内复制了一份参数值，而不会影响参数实际值
 
 ```javascript
-let foo = {bar: 1}
+let foo = { bar: 1 }
 const func = obj => {
-   obj.bar = 2
-   console.log(obj.bar)
+  obj.bar = 2
+  console.log(obj.bar)
 }
 func(foo)
 console.log(foo)
@@ -371,10 +371,10 @@ console.log(foo)
 - 但是如果在函数体内，直接修改了对参数的引用，则情况又不一样：
 
 ```javascript
-let foo = {bar: 1}
+let foo = { bar: 1 }
 const func = obj => {
-   obj = 2
-   console.log(obj)
+  obj = 2
+  console.log(obj)
 }
 func(foo)
 console.log(foo)
@@ -382,9 +382,9 @@ console.log(foo)
 
 - 两处输出分别为 `2`、`{ bar: 1 }`
 - 这样的情况理解起来较为晦涩，其实总结下来就是：
-    - 参数为基本类型时，函数体内复制了一份参数值，对于任何操作不会影响参数实际值
-    - 函数参数是一个引用类型时，当在函数体内修改这个值的某个属性值时，将会对参数进行修改
-    - 函数参数是一个引用类型时，如果我们直接修改了这个值的引用地址，则相当于函数体内新创建了一份引用，对于任何操作不会影响原参数实际值
+  - 参数为基本类型时，函数体内复制了一份参数值，对于任何操作不会影响参数实际值
+  - 函数参数是一个引用类型时，当在函数体内修改这个值的某个属性值时，将会对参数进行修改
+  - 函数参数是一个引用类型时，如果我们直接修改了这个值的引用地址，则相当于函数体内新创建了一份引用，对于任何操作不会影响原参数实际值
 
 ## cannot read property of undefined 问题解决方案
 
@@ -393,14 +393,14 @@ console.log(foo)
 
 ```javascript
 const obj = {
-   user: {
-       posts: [
-           { title: 'Foo', comments: [ 'Good one!', 'Interesting...' ] },
-           { title: 'Bar', comments: [ 'Ok' ] },
-           { title: 'Baz', comments: []}
-       ],
-       comments: []
-   }
+  user: {
+    posts: [
+      { title: 'Foo', comments: ['Good one!', 'Interesting...'] },
+      { title: 'Bar', comments: ['Ok'] },
+      { title: 'Baz', comments: [] }
+    ],
+    comments: []
+  }
 }
 ```
 
@@ -409,16 +409,13 @@ const obj = {
 - && 短路运算符进行可访问性嗅探
 
 ```javascript
-obj.user &&
-obj.user.posts &&
-obj.user.posts[0] &&
-obj.user.posts[0].comments
+obj.user && obj.user.posts && obj.user.posts[0] && obj.user.posts[0].comments
 ```
 
 - || 单元设置默认保底值
 
 ```javascript
-(((obj.user || {}).posts||{})[0]||{}).comments
+;(((obj.user || {}).posts || {})[0] || {}).comments
 ```
 
 - try...catch
@@ -426,10 +423,9 @@ obj.user.posts[0].comments
 ```javascript
 var result
 try {
-   result = obj.user.posts[0].comments
-}
-catch {
-   result = null
+  result = obj.user.posts[0].comments
+} catch {
+  result = null
 }
 ```
 
@@ -437,9 +433,9 @@ catch {
 - 当然，我们也可以自己编写代码：
 
 ```javascript
-const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o)
+const get = (p, o) => p.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), o)
 
-console.log(get(['user', 'posts', 0, 'comments'], obj)) 
+console.log(get(['user', 'posts', 0, 'comments'], obj))
 // [ 'Good one!', 'Interesting...' ]
 
 console.log(get(['user', 'post', 0, 'comments'], obj)) // null
@@ -450,16 +446,14 @@ console.log(get(['user', 'post', 0, 'comments'], obj)) // null
 - 同样，为了设计上的更加灵活和抽象，我们可以 curry 化方法：
 
 ```javascript
-const get = p => o =>
-   p.reduce((xs, x) =>
-       (xs && xs[x]) ? xs[x] : null, o)
+const get = p => o => p.reduce((xs, x) => (xs && xs[x] ? xs[x] : null), o)
 
 const getUserComments = get(['user', 'posts', 0, 'comments'])
 
 console.log(getUserComments(obj))
 // [ 'Good one!', 'Interesting...' ]
 
-console.log(getUserComments({user:{posts: []}}))
+console.log(getUserComments({ user: { posts: [] } }))
 // null
 ```
 
@@ -475,17 +469,17 @@ console.log(obj?.user?.posts[0]?.comments)
 ## 分析一道网红题目
 
 - 综合以上知识点，我们来看一道「网红」题目：
-    - Can (a == 1 && a == 2 && a == 3) ever evaluate to true?
+  - Can (a == 1 && a == 2 && a == 3) ever evaluate to true?
 - 即：
-    - a == 1 && a == 2 && a == 3 可能为 true 吗？
+  - a == 1 && a == 2 && a == 3 可能为 true 吗？
 - 直观上分析，如果变量 a 是一个基本 Number 类型，这是不可能为 true 的，因此解题思路也需要从变量 a 的类型及（对象）转换（基本类型）上来考虑
 
 ```javascript
 const a = {
-   value: 1,
-   toString: function () {
-       return a.value++
-   }
+  value: 1,
+  toString: function () {
+    return a.value++
+  }
 }
 console.log(a == 1 && a == 2 && a == 3) // true
 ```
@@ -497,9 +491,9 @@ console.log(a == 1 && a == 2 && a == 3) // true
 ```javascript
 let value = 0
 Object.defineProperty(window, 'a', {
-   get: function() {
-       return ++value
-   }
+  get: function () {
+    return ++value
+  }
 })
 
 console.log(a == 1 && a == 2 && a == 3) // true
@@ -513,77 +507,77 @@ console.log(a == 1 && a == 2 && a == 3) // true
 - [type.js](https://links.jianshu.com/go?to=https%3A%2F%2Fgithub.com%2Fjsmini%2Ftype) 是由颜海镜编写的用于判断数据类型的方法库，其兼容 IE6，灵活运用了多种判断类型方式：
 
 ```javascript
-const toString = Object.prototype.toString;
+const toString = Object.prototype.toString
 
 export function type(x, strict = false) {
-   strict = !!strict;
+  strict = !!strict
 
-   // fix typeof null = object
-   if(x === null){
-       return 'null';
-   }
+  // fix typeof null = object
+  if (x === null) {
+    return 'null'
+  }
 
-   const t = typeof x;
+  const t = typeof x
 
-   // number string boolean undefined symbol
-   if(t !== 'object'){
-       return t;
-   }
+  // number string boolean undefined symbol
+  if (t !== 'object') {
+    return t
+  }
 
-   let cls;
-   let clsLow;
-   try {
-       cls = toString.call(x).slice(8, -1);
-       clsLow = cls.toLowerCase();
-   } catch(e) {
-       // ie 下的 activex 对象
-       return 'object';
-   }
+  let cls
+  let clsLow
+  try {
+    cls = toString.call(x).slice(8, -1)
+    clsLow = cls.toLowerCase()
+  } catch (e) {
+    // ie 下的 activex 对象
+    return 'object'
+  }
 
-   if(clsLow !== 'object'){
-       // 区分 String() 和 new String()
-       if (strict && (clsLow === 'number' || clsLow === 'boolean' || clsLow === 'string')) {
-           return cls;
-       }
-       return clsLow;
-   }
+  if (clsLow !== 'object') {
+    // 区分 String() 和 new String()
+    if (strict && (clsLow === 'number' || clsLow === 'boolean' || clsLow === 'string')) {
+      return cls
+    }
+    return clsLow
+  }
 
-   if(x.constructor == Object){
-       return clsLow;
-   }
+  if (x.constructor == Object) {
+    return clsLow
+  }
 
-   // Object.create(null)
-   try {
-       // __proto__ 部分早期 firefox 浏览器
-       if (Object.getPrototypeOf(x) === null || x.__proto__ === null) {
-           return 'object';
-       }
-   } catch(e) {
-       // ie 下无 Object.getPrototypeOf 会报错
-   }
+  // Object.create(null)
+  try {
+    // __proto__ 部分早期 firefox 浏览器
+    if (Object.getPrototypeOf(x) === null || x.__proto__ === null) {
+      return 'object'
+    }
+  } catch (e) {
+    // ie 下无 Object.getPrototypeOf 会报错
+  }
 
-   // function A() {}; new A
-   try {
-       const cname = x.constructor.name;
+  // function A() {}; new A
+  try {
+    const cname = x.constructor.name
 
-       if (typeof cname === 'string') {
-           return cname;
-       }
-   } catch(e) {
-       // 无 constructor
-   }
+    if (typeof cname === 'string') {
+      return cname
+    }
+  } catch (e) {
+    // 无 constructor
+  }
 
-   // function A() {}; A.prototype.constructor = null; new A
-   return 'unknown';
+  // function A() {}; A.prototype.constructor = null; new A
+  return 'unknown'
 }
 ```
 
 - 其中关键点提炼出来有：
-    - 通过 x === null 来判断 null 类型
-    - 对于 typeof x 不为 object 的情况，直接返回 typeof x 结果，这时候可以判断出 number，string，boolean，undefined，symbol 类型
-    - 其他情况，对于 IE6 以上版本，使用 Object.prototype.toString 方法并进行返回
-    - 兼容性处理，比如对于不支持 Object.prototype.toString 方法的情况，返回 object
-    - 其他兼容性处理
+  - 通过 x === null 来判断 null 类型
+  - 对于 typeof x 不为 object 的情况，直接返回 typeof x 结果，这时候可以判断出 number，string，boolean，undefined，symbol 类型
+  - 其他情况，对于 IE6 以上版本，使用 Object.prototype.toString 方法并进行返回
+  - 兼容性处理，比如对于不支持 Object.prototype.toString 方法的情况，返回 object
+  - 其他兼容性处理
 - 兼容性处理部分因为历史原因，我们不再追究
 - 这里重点关注一下 Object.prototype.toString 方法，该方法确实可以称得上「终极方案」
 - 对返回结果使用 .slice(8, -1)，更加方便拿到结果：
@@ -600,4 +594,3 @@ Object.prototype.toString.call(true).slice(8, -1)
 - 我们「零散」介绍了很多细节，细心的会发现，这些细节本质上都围绕着「类型」这个概念
 - 关于类型，以及相关的类型转换，涉及到 JavaScript 语言特点，涉及到语言规范内容
 - 对此，对于这些规则，需要「熟记」，如果在自己认知之外的，能够做到查阅规范，找到解释即可
-

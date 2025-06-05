@@ -1,6 +1,7 @@
 # CSS Modules 理论和实战
 
 面试官除了对 CSS 的考察除了基础布局和经验以外，还非常喜欢问 CSS 工程相关的题目，比如：
+
 - **<font color=red>如何维护大型项目的 `z-index`</font>**
 - **<font color=red>如何维护 CSS 选择器和样式之间的冲突</font>**
 
@@ -16,9 +17,7 @@
 这么说可能比较抽象，来看一个例子：
 
 ```html
-<div class="test">
-  This is a test
-</div>
+<div class="test">This is a test</div>
 ```
 
 对应的样式表为：
@@ -32,9 +31,7 @@
 再经过编译构建之后，对应的 HTML 和 CSS 分别为：
 
 ```html
-<div class="_style_test_309571057">
-  This is a test
-</div>
+<div class="_style_test_309571057">This is a test</div>
 ```
 
 ```css
@@ -47,6 +44,7 @@
 
 > [!warning]
 > 这样的解决方案似乎有一个问题
+>
 > - 如何实现样式复用？因为生成了全局唯一的 class 名，那么如何像传统方式那样实现样式复用呢？
 
 从原理上想，**<font color=red>全局唯一的 class 是在构建过程中，如果能给在构建过程进行标识，表示该 class 将被复用</font>**，就可以解决问题了，这样的方式，就依靠 composes 关键字实现，来看案例
@@ -69,17 +67,13 @@
 ```html
 import style from "./style.css";
 
-<div class="${style.test}">
-  this is a test
-</div>
+<div class="${style.test}">this is a test</div>
 ```
 
 进行编译构建后
 
 ```html
-<div class="_style__test_0980340 _style__common_404840">
-  this is a test
-</div>
+<div class="_style__test_0980340 _style__common_404840">this is a test</div>
 ```
 
 看 `div` 的 `class` 被加进了 `_style__common_404840`，这样就实现了复用样式
@@ -121,15 +115,15 @@ touch index.html
 在 `./src` 文件夹中，创建：index.js
 
 ```javascript
-import bluestyle from './style.css';
-import greenstyle from './app.css';
+import bluestyle from './style.css'
+import greenstyle from './app.css'
 
 let html = `
   <h2 class="${bluestyle.my_css_selector}">I should be displayed in blue.</h2>
   <br/>
   <h2 class="${greenstyle.my_css_selector}">I should be displayed in green.</h2> 
-`;
-document.write(html);
+`
+document.write(html)
 ```
 
 以及 style.css
@@ -210,7 +204,7 @@ touch webpack.config.js
 ```
 
 ```javascript
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
   entry: './src',
@@ -233,13 +227,13 @@ module.exports = {
         // modules: 开启 CSS 模块，这意味着 CSS 类名将被局部作用域化，防止类名冲突，在使用模块时，每个 CSS 类都会有一个独特的、基于该文件和样式名称的哈希值
         // importLoaders=1: 这个选项指定在处理 CSS 文件时需要加载多少个其他的 loader，在这个例子中，强调 CSS 文件中的 @import 语句需要经过一遍 css-loader
         // localIdentName=[name][local][hash:base64:5]: 这个选项用来定义生成的类名的格式，[name] 是文件名，[local] 是类名，[hash:base64:5] 是生成的哈希值，确保类名在全局范围内是唯一的
-        loader: ExtractTextPlugin.extract("css-loader?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]")
+        loader: ExtractTextPlugin.extract(
+          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]__[hash:base64:5]'
+        )
       }
     ]
   },
-  plugins: [
-    new ExtractTextPlugin("styles.css")
-  ]
+  plugins: [new ExtractTextPlugin('styles.css')]
 }
 ```
 
@@ -282,4 +276,4 @@ module.exports = {
 
 运行 `npm start`，得到产出，打开页面会发现如图，已经在编译过程中完成了 css module 处理
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/img/CSS/10.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/CSS/10.png)

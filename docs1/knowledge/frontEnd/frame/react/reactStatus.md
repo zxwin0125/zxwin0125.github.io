@@ -10,7 +10,7 @@ order: 3
 - 来谈谈数据状态管理，了解 Redux 的真谛，并分析其利弊和上层解决方案
 - 相关知识点如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/07.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/07.png)
 
 ## 数据状态管理之痛
 
@@ -19,11 +19,11 @@ order: 3
 - 这其实是框架、组件化带来的概念
 - 简单的案例：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/08.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/08.png)
 
 - 点击页面中一处「收藏」之后，页面里其他「收藏」按钮也需要切换为「已收藏」状态：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/09.png)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/09.png)
 
 - 如果没有数据状态，也许我们需要：
 
@@ -59,6 +59,7 @@ hasMarked: false / true
 
 > [!warning]
 > 数据一旦庞大起来，如何和组件形成良好的交互就是一门学问了
+>
 > - 比如要思考：
 >   - 一个组件需要和另一个组件共享状态
 >   - 一个组件需要改变另一个组件的状态
@@ -72,6 +73,7 @@ hasMarked: false / true
 > 以 React state 和 Redux 为例，继续分析上面抛出的「数据谁来维护？」问题：
 
 > [!info]
+>
 > - React 中 state 维护数据在组件内部，这样当某项 state 需要与其他组件共享时，可以通过 props 来完成组件间通讯
 > - 实践上来看，这就需要相对顶层的组件维护共享的 state 并提供修改此项 state 的方法，state 本身和修改方法都需要通过 props 传递给子孙组件
 > - 使用 Redux 的时候，state 维护在 Redux store 当中
@@ -85,11 +87,13 @@ hasMarked: false / true
 > 不同状态数据在持久度上大体可以分为三类：快速变更型、中等持续型、长远稳定型
 
 - **快速变更型**
+
   - 这类数据在应用中代表了某些原子级别的信息，且显著特点是变更频率最快
   - 比如一个文本输入框数据值，可能随着用户输入在短时间内持续发生变化
   - 这类数据显然更适合维护在 React 组件之内
 
 - **中等持续型数据**
+
   - 在用户浏览或使用应用时，这类数据往往会在页面刷新前保持稳定
   - 比如从异步请求接口通过 Ajax 方式得来的数据
   - 又或者用户在个人中心页，编辑信息提交的数据
@@ -125,7 +129,7 @@ hasMarked: false / true
 
 - 某电商网站，应用页面骨架如下：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/10.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/10.webp)
 
 - 其中，ProductsContainer 组件负责渲染每一个商品条目：
 
@@ -134,26 +138,18 @@ import Product from './Product'
 
 export default class ProductsContainer extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      products: [
-        '商品1',
-        '商品2',
-        '商品3'
-      ]
+      products: ['商品1', '商品2', '商品3']
     }
   }
   renderProducts() {
-    return this.state.products.map((product) => {
+    return this.state.products.map(product => {
       return <Product name={product} />
     })
   }
   render() {
-    return (
-      <div className='products-container'>
-        {this.renderProducts()}
-      </div>
-    )
+    return <div className="products-container">{this.renderProducts()}</div>
   }
 }
 ```
@@ -165,11 +161,7 @@ import React, { Component } from 'react'
 
 export default class Product extends Component {
   render() {
-    return (
-      <div className='product'>
-        {this.props.name}
-      </div>
-    )
+    return <div className="product">{this.props.name}</div>
   }
 }
 ```
@@ -188,12 +180,12 @@ export default class Product extends Component {
 - 在使用 Redux 时，搭配 React-redux 来对组件和数据进行联通（connect），一个常陷入的误区就是滥用 connect，而没有进行更合理的设计分析，也可能只在顶层进行了 connect 设计，然后再一层层进行数据传递
 - 比如在一个页面中存在 Profile、Feeds（信息流）、Images（图片）区域，如图所示
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/11.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/11.webp)
 
 - 这些区域构成了页面的主体，它们分别对应于 Profile、Feeds、Images 组件，共同作为 Page 组件的子组件而存在
 - 如果只对 Page 这个顶层组件进行 connect 设计，其他组件的数据依靠 Page 组件进行分发，则设计如图所示：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/12.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/12.webp)
 
 - 这样做存在的问题如下：
   - 当改动 Profile 组件中的用户头像时，由于数据变动整个 Page 组件都会重新渲染
@@ -201,7 +193,7 @@ export default class Product extends Component {
   - 当在 Images 组件中添加一张图片时，整个 Page 组件同样都会重新渲染
 - 因此，更好的做法是对 Profile、Feeds、Images 这三个组件分别进行 connect 设计，在 connect 方法中使用 mapStateToProps 筛选出不同组件关心的 state 部分，如图所示：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/13.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/13.webp)
 
 - 这样做的好处很明显：
   - 当改动 Profile 组件中的用户头像时，只有 Profile 组件重新渲染
@@ -229,12 +221,11 @@ export default class Product extends Component {
 - 不难想象这是一个文章列表加文章评论互动的场景，其对应于三个组件：Article、Comment 和 Author
 - 这样的页面设计比比皆是，如图所示：
 
-![](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo/image/Frame/React/14.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/image/Frame/React/14.webp)
 
 - 相关 reducer 的处理很棘手，如果 articles[2].comments[4].authors1 发生了变化，想要返回更新后的状态，并保证不可变性，操作起来不是那么简单的，需要对深层对象结构进行拷贝或递归
 - 因此，更好的数据结构设计一定是扁平化的，对 articles、comments、authors 进行扁平化处理
 - 例如 comments 数组不再存储 authors 数据，而是记录 userId，需要时在 users 数组中进行提取即可：
-
 
 ```tsx
 {
@@ -260,6 +251,7 @@ export default class Product extends Component {
 
 > [!important]
 > Redux 的限制主要体现在：
+>
 > - Redux 带来了函数式编程、不可变性思想等，为了配合这些理念，开发者必须要写很多「模式代码（boilerplate）」，繁琐以及重复是开发者不愿意容忍的，当然也有很多 hack 旨在减少 boilerplate，但目前阶段，可以说 Redux 天生就附着繁琐
 > - 使用 Redux，那么你的应用就要用 objects 或者 arrays 描述状态
 > - 使用 Redux，那么你的应用就要使用 plain objects 即 actions 来描述变化
@@ -281,19 +273,19 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from './reducers'
 
-
 const initialState = {
-    // ...
+  // ...
 }
 
-const store = initialState => createStore(
+const store = initialState =>
+  createStore(
     rootReducer,
     initialState,
     compose(
-        applyMiddleware(thunk),
-        // ...
+      applyMiddleware(thunk)
+      // ...
     )
-)
+  )
 ```
 
 - 这其中只应用了一个中间件，还没有涉及到 devtool 的配置，而不论是 Dva 还是其他方案，都采用面向对象式的配置化初始
@@ -304,8 +296,8 @@ const store = initialState => createStore(
 
 ```tsx
 const reducer = {
-    ACTIONTYPE1: (state, action) => newState,
-    ACTIONTYPE2: (state, action) => newState,
+  ACTIONTYPE1: (state, action) => newState,
+  ACTIONTYPE2: (state, action) => newState
 }
 ```
 
@@ -327,14 +319,14 @@ const reducer = {
 
 ```tsx
 const store = {
-    state: {
-        count: 0,
-        state1: {}
-    },
-    reduers: {
-        action1: (state, action) => newState,
-        action2: (state, action) => newState,
-    }
+  state: {
+    count: 0,
+    state1: {}
+  },
+  reduers: {
+    action1: (state, action) => newState,
+    action2: (state, action) => newState
+  }
 }
 ```
 
@@ -357,12 +349,12 @@ const store = {
 
 ```tsx
 const foo = observable({
-    a: 1,
-    b: 2
+  a: 1,
+  b: 2
 })
 
 autoRun(() => {
-    console.log(foo.a)
+  console.log(foo.a)
 })
 
 foo.b = 3 // 没有任何输出
@@ -373,11 +365,11 @@ foo.a = 2 // 输出：2
 
 ```tsx
 const state = observable({
-    state1: {}
+  state1: {}
 })
 
 autoRun(() => {
-    return (<Component state1={state1} />)
+  return <Component state1={state1} />
 })
 
 state.state1 = {}
@@ -387,6 +379,7 @@ state.state1 = {}
 
 > [!tips]
 > 不管是 Redux 还是 Mobx，它们都做到了：组件可以读取 state，修改 state，有新 state 时更新
+>
 > - 这个 state 是单一数据源，只不过修改 state 方式不同
 > - 更近一步地说，Mobx 通过包装对象和数组为可观察对象，隐藏了大部分的样板代码，比 Redux 更加简洁，也更加「魔幻」，更像是「双向绑定」
 
@@ -406,5 +399,3 @@ state.state1 = {}
 ## 总结
 
 - 其实数据状态管理没有永恒的「最佳实践」，随着应用业务的发展，数据的复杂程度是不断扩张的，数据和组件是绑定在一起的概念，如何梳理好数据，如何对于特定的行为修改特定的数据，给予特定组件特定的数据，是一个非常有趣的话题，也是进阶路上的「必修课」
-
-
