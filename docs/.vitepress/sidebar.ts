@@ -140,7 +140,7 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           items: [
             {
               text: 'monorepo 架构',
-              // base: createLink(architecture, 'monorepo/'),
+              base: createLink(architecture, 'monorepo/'),
               collapsed: true,
               items: [
                 {
@@ -187,7 +187,7 @@ function books(): DefaultTheme.SidebarItem[] {
   const refactoringBase = createLink(BooksBasePath, 'refactoring')
   return [
     {
-      text: '《重构，改善既有代码的设计》',
+      text: '重构，改善既有代码的设计',
       base: `${refactoringBase}/`,
       collapsed: false,
       items: [

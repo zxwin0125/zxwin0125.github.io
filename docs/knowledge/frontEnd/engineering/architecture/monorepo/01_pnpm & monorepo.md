@@ -321,7 +321,7 @@ pnpm dev
 
 #### turbo 的任务管理
 
-turbo 是一个高效的任务运行器，适合 monorepo 场景下的任务编排
+> turbo 是一个高效的任务运行器，适合 monorepo 场景下的任务编排
 
 **配置步骤**
 
@@ -347,9 +347,9 @@ turbo run build
 
 3️⃣ turbo 支持跳过未改动的子包任务，极大提升构建效率
 
-### 并行与依赖任务
+#### 并行与依赖任务
 
-- 配置任务的依赖关系，例如先构建组件库再启动业务系统：
+配置任务的依赖关系，例如先构建组件库再启动业务系统
 
 ```json
 {
@@ -361,31 +361,19 @@ turbo run build
 }
 ```
 
-### 工程化规范与代码质量保证【了解】
+### 工程化规范与代码质量保证
 
 #### 统一代码规范
 
-- **ESLint**：统一代码风格和语法检查。
+- ESLint：统一代码风格和语法检查
 
-```bash
-pnpm add eslint -D
-```
-
-- **Prettier**：格式化代码，提高可读性。
-
-```bash
-pnpm add prettier -D
-```
+- Prettier：格式化代码，提高可读性
 
 #### 提交规范
 
-- **Commitlint**：规范提交信息。
+- Commitlint：规范提交信息
 
-```bash
-pnpm add @commitlint/config-conventional @commitlint/cli -D
-```
-
-- **配置`commitlint.config.js`**：
+- 配置`commitlint.config.js`
 
 ```javascript
 module.exports = { extends: ['@commitlint/config-conventional'] }
@@ -393,103 +381,106 @@ module.exports = { extends: ['@commitlint/config-conventional'] }
 
 #### 自动化检查
 
-- **Husky**：在 Git 钩子中集成自动检查。
+- Husky：在 Git 钩子中集成自动检查
 
-```bash
-pnpm add husky -D
-```
-
-- **初始化 Husky**：
-
-```bash
-npx husky install
-```
-
-- **配置预提交检查脚本**：
+- 配置预提交检查脚本
 
 ```bash
 npx husky add .husky/pre-commit "pnpm lint"
 ```
 
-## 【专家级】有没有了解过字节、阿里等中大厂前端基于 monorepo 工程架构最佳实践，举例说明
+## 前端基于 monorepo 工程架构最佳实践
 
-同学们可以多阅读大厂开源项目，提升自己工程化架构设计思维，例如：
-| 公司 | 项目/模块 | 地址 | 简要说明 |
-| ---- | ---- | ---- | ---- |
-| 阿里 | Ant Design | ant-design | 企业级 UI 设计语言与 React 组件库。 |
-| 阿里 | ahooks | ahook | 高质量的 React Hooks 库。 |
-| 阿里 | BizCharts | bizCharts | 基于 G2 的 React 数据可视化库。 |
-| 阿里 | Umi | umi | 企业级 React 应用框架，支持插件化扩展。 |
-| 阿里 | Qiankun | qiankun | 微前端框架，基于 single - spa 改进。 |
-| 字节 | Arco Design | arco-design | 企业级设计体系与组件库，支持 React 和 Vue。 |
-| 字节 | Semi Design | semi-design | 灵活且扩展性强的设计系统。 |
-| 字节 | IconPark | icon-park | 可自定义多风格图标库。 |
-| 字节 | VTable | VTable | 面向大数据展示的可视化表格库。 |
-| 字节 | Garfish | garfish | 微前端框架，支持模块化加载与隔离。 |
-| 字节 | rsbuild | rsbuild | 高性能构建工具，类似 Vite 和 Esbuild。 |
+> 可以多阅读大厂开源项目，提升工程化架构设计思维
 
-#### 阿里
+| 公司 | 项目/模块   | 地址                                                      | 简要说明                                  |
+| ---- | ----------- | --------------------------------------------------------- | ----------------------------------------- |
+| 阿里 | Ant Design  | [Ant Design](https://github.com/ant-design/ant-design)    | 企业级 UI 设计语言与 React 组件库         |
+| 阿里 | ahooks      | [ahook](https://github.com/alibaba/hooks)                 | 高质量的 React Hooks 库                   |
+| 阿里 | BizCharts   | [bizCharts](https://github.com/alibaba/BizCharts)         | 基于 G2 的 React 数据可视化库             |
+| 阿里 | Umi         | [umi](https://github.com/umijs/umi)                       | 企业级 React 应用框架，支持插件化扩展     |
+| 阿里 | Qiankun     | [qiankun](https://github.com/umijs/qiankun)               | 微前端框架，基于 single-spa 改进          |
+| 字节 | Arco Design | [arco-design](https://github.com/arco-design/arco-design) | 企业级设计体系与组件库，支持 React 和 Vue |
+| 字节 | Semi Design | [semi-design](https://github.com/DouyinFE/semi-design)    | 灵活且扩展性强的设计系统                  |
+| 字节 | IconPark    | [icon-park](https://github.com/bytedance/iconpark)        | 可自定义多风格图标库                      |
+| 字节 | VTable      | [VTable](https://github.com/VisActor/VTable)              | 面向大数据展示的可视化表格库              |
+| 字节 | Garfish     | [garfish](https://github.com/web-infra-dev/garfish)       | 微前端框架，支持模块化加载与隔离          |
+| 字节 | rsbuild     | [rsbuild](https://github.com/web-infra-dev/rsbuild)       | 高性能构建工具，类似 Vite 和 Esbuild      |
 
-阿里作为国内技术领先的大厂，其开源项目在设计和实现上体现了丰富的实践经验和高度的工程化思维。在 monorepo 架构下，阿里多个项目展现了模块化和高效协作的特点。
+### Ant Design
 
-**Ant Design**
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/001.jpg)
 
-- 使用`pnpm`管理多包依赖，统一版本，提升包的发布和构建效率。
-- 将核心组件库（`@ant-design/components`）、文档站点、工具包（如构建脚本、代码风格插件）等分离为多个包。
-- 通过严格的依赖关系定义和共享配置（如 ESLint、TSConfig），确保多包之间协作的可靠性。
-- 利用`lerna`或`changesets`实现变更记录自动生成，管理多个模块的版本发布。
+- 使用`pnpm`管理多包依赖，统一版本，提升包的发布和构建效率
+- 将核心组件库（`@ant-design/components`）、文档站点、工具包（如构建脚本、代码风格插件）等分离为多个包
+- 通过严格的依赖关系定义和共享配置（如 ESLint、TSConfig），确保多包之间协作的可靠性
+- 利用`lerna`或`changesets`实现变更记录自动生成，管理多个模块的版本发布
 
-**ahooks**
+### ahooks
 
-- Hooks 被拆分为多个功能模块（如`useRequest`、`useDrag`），用户可以按需安装。
-- 使用`pnpm + rollup`实现轻量化构建，避免重复依赖。
-- 文档和测试代码与核心代码模块化管理，方便开发和维护。
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/002.jpg)
 
-**Umi**
+- Hooks 被拆分为多个功能模块（如`useRequest`、`useDrag`），用户可以按需安装
+- 使用`pnpm + rollup`实现轻量化构建，避免重复依赖
+- 文档和测试代码与核心代码模块化管理，方便开发和维护
 
-- 核心框架、插件系统、测试工具（如`umi-test`）分模块管理，保证功能解耦。
-- 通过`shared-utils`统一核心工具函数，降低重复实现。
-- 提供完善的脚手架工具，自动生成多模块依赖的开发环境。
+### Umi
 
-**Qiankun**
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/003.jpg)
 
-- 核心库（`qiankun`）、测试工具、示例项目（examples）统一管理。
-- 使用`pnpm`的软链接功能，将本地开发包无缝集成到示例项目中，提升开发效率。
-- 通过持续集成工具（如 GitHub Actions）自动化测试所有子包，确保框架稳定性。
+- 核心框架、插件系统、测试工具（如`umi-test`）分模块管理，保证功能解耦
+- 通过`shared-utils`统一核心工具函数，降低重复实现
+- 提供完善的脚手架工具，自动生成多模块依赖的开发环境
 
-#### 字节
+### Qiankun
 
-字节跳动近年来在前端领域的开源项目也展现了强大的技术实力，尤其在架构设计和工具开发上体现了对 monorepo 的深入理解。
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/004.jpg)
 
-**Arco Design**
+- 核心库（`qiankun`）、测试工具、示例项目（examples）统一管理
+- 使用`pnpm`的软链接功能，将本地开发包无缝集成到示例项目中，提升开发效率
+- 通过持续集成工具（如 GitHub Actions）自动化测试所有子包，确保框架稳定性
 
-- 核心组件（React/Vue）、主题工具、图标库等分为多个子包，灵活组合。
-- 提供`@arco-dev/cli`，帮助开发者快速生成符合 monorepo 的项目结构。
-- 集成多种工具（如 Jest、Storybook），统一测试和文档开发流程。
+### Arco Design
 
-**Semi Design**
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/005.jpg)
 
-- 使用 Rush 或`pnpm`管理模块依赖，避免团队协作中出现版本不一致的问题。
-- 将基础组件、业务组件、脚手架工具解耦，支持用户按需引用和定制。
-- 多包发布使用`changesets`自动生成变更日志，降低维护成本。
+- 核心组件（React/Vue）、主题工具、图标库等分为多个子包，灵活组合
+- 提供`@arco-dev/cli`，帮助开发者快速生成符合 monorepo 的项目结构
+- 集成多种工具（如 Jest、Storybook），统一测试和文档开发流程
 
-**IconPark**
+### Semi Design
 
-- 图标库分为 SVG 核心包、React 包、Vue 包等多个模块，适配不同前端框架。
-- 使用`pnpm`的 workspace 特性，保持模块之间的依赖同步。
-- 提供一键脚手架工具，生成新的图标模块，方便社区贡献。
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/006.jpg)
 
-**VTable**
+- 使用 Rush 或`pnpm`管理模块依赖，避免团队协作中出现版本不一致的问题
+- 将基础组件、业务组件、脚手架工具解耦，支持用户按需引用和定制
+- 多包发布使用`changesets`自动生成变更日志，降低维护成本
 
-- 表格渲染核心与业务逻辑解耦，核心功能支持按需加载。
-- 使用`pnpm`和`eslint-config`等统一代码规范。
+### IconPark
 
-**Garfish**
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/007.jpg)
 
-- 核心库与插件模块化拆分，方便扩展。
-- 集成 Lerna 和 pnpm，提升依赖管理和构建速度。
+- 图标库分为 SVG 核心包、React 包、Vue 包等多个模块，适配不同前端框架
+- 使用`pnpm`的 workspace 特性，保持模块之间的依赖同步
+- 提供一键脚手架工具，生成新的图标模块，方便社区贡献
 
-**rsbuild**
+### VTable
 
-- 子模块拆分为核心构建引擎、适配器、工具包，保持灵活性。
-- 利用 monorepo 管理开发环境依赖，统一使用 Rush 提升构建效率。
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/008.jpg)
+
+- 表格渲染核心与业务逻辑解耦，核心功能支持按需加载
+- 使用`pnpm`和`eslint-config`等统一代码规范
+
+### Garfish
+
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/009.jpg)
+
+- 核心库与插件模块化拆分，方便扩展
+- 集成 Lerna 和 pnpm，提升依赖管理和构建速度
+
+### rsbuild
+
+[](https://cdn.jsdelivr.net/gh/zxwin0125/image-repo@main/img/knowledge/frontEnd/engineering/architecture/monorepo/010.jpg)
+
+- 子模块拆分为核心构建引擎、适配器、工具包，保持灵活性
+- 利用 monorepo 管理开发环境依赖，统一使用 Rush 提升构建效率
