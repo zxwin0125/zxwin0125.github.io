@@ -32,7 +32,7 @@ export default function nav(): DefaultTheme.NavItem[] {
       items: [
         {
           text: '经典书籍',
-          link: '/read/books/refactoring/00_preface.md'
+          link: '/read/books/deepUnderstandJS.md'
         },
         {
           text: '周刊',

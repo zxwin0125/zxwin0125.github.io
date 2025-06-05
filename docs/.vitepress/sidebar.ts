@@ -184,18 +184,18 @@ function manage(): DefaultTheme.SidebarItem[] {
 }
 
 function books(): DefaultTheme.SidebarItem[] {
-  const refactoringBase = createLink(BooksBasePath, 'refactoring')
   return [
     {
-      text: '重构，改善既有代码的设计',
-      base: `${refactoringBase}/`,
+      text: '深入理解现代 JavaScript',
+      base: `${BooksBasePath}/`,
       collapsed: false,
-      items: [
-        {
-          text: '序言',
-          link: '00_preface.md'
-        }
-      ]
+      link: 'deepUnderstandJS.md'
+    },
+    {
+      text: '重构，改善既有代码的设计',
+      base: `${BooksBasePath}/`,
+      collapsed: false,
+      link: 'refactorExistCode.md'
     }
   ]
 }
