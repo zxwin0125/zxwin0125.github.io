@@ -5,9 +5,10 @@ import { sidebar } from './sidebar.ts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: 'Blog of zxwin',
-  description: 'Blog of zxwin',
+  title: '三金砚语',
+  description: "三金的学习沉淀，包含前端基础知识、工作技能、团队管理经验、书籍周刊等",
   head: [
+    ['link', { rel: 'icon', href: '/favicon.png' }],
     [
       'script',
       {
@@ -15,11 +16,11 @@ export default defineConfig({
         src: '/stats/script.js',
         'data-website-id': '4c0f1225-4719-4a92-9163-6c1109f06c5a'
       }
-    ]
+    ],
   ],
   themeConfig: {
-    logo: '',
-    siteTitle: 'Blog of zxwin',
+    logo: '/logo.png',
+    siteTitle: "三金砚语",
     // 导航栏
     nav: nav(),
     // 侧边栏
