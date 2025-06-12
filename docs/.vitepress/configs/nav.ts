@@ -10,32 +10,32 @@ export const nav: DefaultTheme.Config['nav'] = [
     items: [
       {
         text: '前端',
-        link: '/knowledge/frontEnd/html/01_H5Tag'
+        link: '/articles/knowledge/frontEnd/html/01_H5Tag'
       },
       {
         text: '解决方案',
-        link: '/knowledge/solution/01_cursor'
+        link: '/articles/knowledge/solution/01_cursor'
       }
     ]
   },
   {
     text: '工作技能',
-    link: '/work/01_bitOne'
+    link: '/articles/work/01_bitOne'
   },
   {
     text: '学会管理',
-    link: '/manage/01_needTodo'
+    link: '/articles/manage/01_needTodo'
   },
   {
     text: '读书角',
     items: [
       {
         text: '经典书籍',
-        link: '/read/books/deepUnderstandJS.md'
+        link: '/articles/read/books/deepUnderstandJS.md'
       },
       {
         text: '周刊',
-        link: '/read/weeks/202506/01_week.md'
+        link: '/articles/read/weeks/202506/01_week.md'
       }
     ]
   }

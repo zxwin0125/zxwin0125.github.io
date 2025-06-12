@@ -1,9 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { head, nav, sidebar } from './configs'
 
-// import nav from './nav.ts'
-// import { sidebar } from './sidebar.ts'
-
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   title: '三金砚语',
@@ -15,7 +12,7 @@ export default defineConfig({
     // 导航栏
     nav,
     // 侧边栏
-    sidebar: sidebar,
+    sidebar,
     // 大纲容器位置
     aside: true,
     // 大纲容器配置

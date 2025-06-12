@@ -361,7 +361,6 @@ foo.call(3)
 ```javascript
 Boolean(new Boolean(false))
 Boolean(document.all)
-
 ;[] == ''
 ;[3] == 3
 ;[] == false
