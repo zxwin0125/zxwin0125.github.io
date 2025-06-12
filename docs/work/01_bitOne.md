@@ -1,3 +1,9 @@
+---
+title: 如何做好项目 1 号位
+description: 作为业务 1 号位，需要做哪些？
+keywords: 前端业务开发
+---
+
 # 如何做好项目 1 号位
 
 > [!important]

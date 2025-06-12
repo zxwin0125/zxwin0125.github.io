@@ -1,3 +1,9 @@
+---
+title: 新晋主管需要做什么
+description: 作为新晋主管，该做些什么？
+keywords: 前端 Leader, 前端团队管理
+---
+
 # 新晋主管需要做什么
 
 ## 熟悉团队
@@ -35,7 +41,7 @@
 >
 > 如果有机会，可以和前主管也聊一次，这样可以获得更全面的信息
 
-聊一圈下来，你应该对团队整体有了第一印象!
+聊一圈下来，你应该对团队整体有了第一印象！
 
 ![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/Manage/001.png){width=600}
 
@@ -182,7 +188,7 @@
 
 **定量和定性结合**
 
-- 现在一般都推荐用 OKR 的形式进行目标描述，少数适合定量描述的 KPI，也可以去找一个合适的[北极星指标](http://www.woshipm.com/data-analysis/1036136.html)
+- 现在一般都推荐用 OKR 的形式进行目标描述，少数适合定量描述的 KPI，也可以去找一个合适的 [北极星指标](http://www.woshipm.com/data-analysis/1036136.html)
 
 **和关键人员达成一致**
 

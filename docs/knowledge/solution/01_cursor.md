@@ -1,4 +1,10 @@
-# Cursor通用解决方案
+---
+title: Cursor 通用解决方案
+description: 如何处理 Cursor 使用上限问题
+keywords: Cursor
+---
+
+# Cursor 通用解决方案
 
 ## 准备 3-5 个知名品牌邮箱
 
