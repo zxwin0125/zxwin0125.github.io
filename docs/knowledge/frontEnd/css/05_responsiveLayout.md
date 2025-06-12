@@ -1,3 +1,9 @@
+---
+title: CSS 响应式布局和 Bootstrap 的实现分析
+description: 如何实现 CSS 响应式布局
+keywords: CSS, Bootstrap, 响应式布局
+---
+
 # 响应式布局和 Bootstrap 的实现分析
 
 响应式这个概念曾经非常流行，但从发展来看，似乎「响应式」布局不再是一个必不可少的话题

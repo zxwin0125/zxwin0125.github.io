@@ -1,3 +1,9 @@
+---
+title: CSS 最佳实践
+description: 如何选择合适的 CSS 样式体系方案
+keywords: CSS, Sass, Less, Stylus, CSS-in-JS, CSS Modules, Tailwind CSS, PostCSS
+---
+
 # CSS 最佳实践
 
 ## 除了常规 CSS，还有哪些样式体系方案
@@ -114,7 +120,7 @@ Tailwind CSS、Bootstrap Utilities
 #### 核心概念
 
 - 基于类名的命名约定，分为 Block（模块）、Element（模块内部元素）、Modifier（模块的变体）
-- 示例：button__icon-large
+- 示例：button\_\_icon-large
 
 #### 优点
 
@@ -204,13 +210,14 @@ Vue scoped、Shadow DOM
 
 #### 代表
 
-- Salesforce Lightning Design System 
+- Salesforce Lightning Design System
 
 ## CSS、CSS-in-JS、Tailwind CSS 的使用技巧与方案价值体现
 
 ### CSS 使用技巧与价值体现
 
 CSS 值得关注的技巧
+
 - **变量复用**：通过`:root`定义全局变量，提升可维护性
 - **BEM 命名规范**：使代码更清晰
 - **Flex 布局**：快速实现响应式设计
@@ -222,16 +229,16 @@ CSS 值得关注的技巧
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <link rel="stylesheet" href="styles.css">
+  <head>
+    <link rel="stylesheet" href="styles.css" />
     <title>CSS 示例</title>
-</head>
-<body>
+  </head>
+  <body>
     <div class="button-container">
-        <button class="button button--primary">Primary Button</button>
-        <button class="button button--secondary">Secondary Button</button>
+      <button class="button button--primary">Primary Button</button>
+      <button class="button button--secondary">Secondary Button</button>
     </div>
-</body>
+  </body>
 </html>
 ```
 
@@ -240,44 +247,44 @@ CSS 值得关注的技巧
 ```css
 /* 定义全局变量 */
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2ecc71;
-    --button-padding: 10px 20px;
-    --button-radius: 5px;
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --button-padding: 10px 20px;
+  --button-radius: 5px;
 }
 
 /* BEM 命名 */
 .button {
-    padding: var(--button-padding);
-    border-radius: var(--button-radius);
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: var(--button-padding);
+  border-radius: var(--button-radius);
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .button--primary {
-    background-color: var(--primary-color);
+  background-color: var(--primary-color);
 }
 
 .button--primary:hover {
-    background-color: darken(var(--primary-color), 10%);
+  background-color: darken(var(--primary-color), 10%);
 }
 
 .button--secondary {
-    background-color: var(--secondary-color);
+  background-color: var(--secondary-color);
 }
 
 .button--secondary:hover {
-    background-color: darken(var(--secondary-color), 10%);
+  background-color: darken(var(--secondary-color), 10%);
 }
 
 /* 响应式技巧 */
 @media (max-width: 600px) {
-   .button {
-        font-size: 14px;
-    }
+  .button {
+    font-size: 14px;
+  }
 }
 ```
 
@@ -289,6 +296,7 @@ CSS 值得关注的技巧
 ### CSS-in-JS 使用技巧与价值体现
 
 CSS-in-JS 亮点
+
 - **动态样式**：支持根据状态生成样式
 - **样式隔离**：避免全局污染
 - **嵌套规则**：便于层级关系定义
@@ -304,36 +312,36 @@ npm install styled-components
 **React 代码**
 
 ```jsx
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState } from 'react'
+import styled from 'styled-components'
 
 // 动态样式
 const Button = styled.button`
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: ${(props) => (props.primary? "#3498db" : "#2ecc71")};
-    &:hover {
-        background-color: ${(props) => (props.primary? "#2980b9" : "#27ae60")};
-    }
-`;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: ${props => (props.primary ? '#3498db' : '#2ecc71')};
+  &:hover {
+    background-color: ${props => (props.primary ? '#2980b9' : '#27ae60')};
+  }
+`
 
 const App = () => {
-    const [primary, setPrimary] = useState(true);
+  const [primary, setPrimary] = useState(true)
 
-    return (
-        <div>
-            <Button primary={primary} onClick={() => setPrimary(!primary)}>
-                {primary? "Primary Button" : "Secondary Button"}
-            </Button>
-        </div>
-    );
-};
+  return (
+    <div>
+      <Button primary={primary} onClick={() => setPrimary(!primary)}>
+        {primary ? 'Primary Button' : 'Secondary Button'}
+      </Button>
+    </div>
+  )
+}
 
-export default App;
+export default App
 ```
 
 #### 方案价值体现
@@ -344,6 +352,7 @@ export default App;
 ### Tailwind CSS 使用技巧与价值体现
 
 TailwindCSS 优势
+
 - **原子化设计**：快速实现复杂布局
 - **样式集中管理**：通过配置文件定制主题
 - **快速迭代**：减少自定义 CSS 编写时间
@@ -362,20 +371,21 @@ npx tailwindcss init
 ```javascript
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["**/*.{html,js}"],
-    theme: {
-        extend: {
-            colors: {
-                primary: "#3498db",
-                secondary: "#2ecc71"
-            }
-        }
-    },
-    plugins: []
-};
+  content: ['**/*.{html,js}'],
+  theme: {
+    extend: {
+      colors: {
+        primary: '#3498db',
+        secondary: '#2ecc71'
+      }
+    }
+  },
+  plugins: []
+}
 ```
 
 **入口 css 样式**
+
 ```css
 @tailwind base;
 @tailwind components;
@@ -383,25 +393,26 @@ module.exports = {
 ```
 
 **编译输出**
+
 ```bash
 npx tailwind -i style.css -o output.css --watch
-``` 
+```
 
 **HTML 文件**
 
 ```html
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link href="./output.css" rel="stylesheet">
-</head>
-<body>
+    <link href="./output.css" rel="stylesheet" />
+  </head>
+  <body>
     <h1 class="text-3xl font-bold underline text-primary">Hello world!</h1>
     <h2 class="text-2xl text-secondary">hello world</h2>
-</body>
+  </body>
 </html>
 ```
 
@@ -412,12 +423,12 @@ npx tailwind -i style.css -o output.css --watch
 
 ### 总结
 
-| 特性 | CSS | CSS-in-JS | TailwindCSS |
-| --- | --- | --- | --- |
-| 学习曲线 | 低 | 中 | 高 |
-| 动态样式支持 | 弱 | 强 | 强 |
-| 可维护性 | 高（配合 BEM 等） | 高（模块化、隔离） | 中（HTML 中类名较多） |
-| 适合场景 | 静态页面、小型项目 | React 等现代框架 | 快速开发、设计系统 |
+| 特性         | CSS                | CSS-in-JS          | TailwindCSS           |
+| ------------ | ------------------ | ------------------ | --------------------- |
+| 学习曲线     | 低                 | 中                 | 高                    |
+| 动态样式支持 | 弱                 | 强                 | 强                    |
+| 可维护性     | 高（配合 BEM 等）  | 高（模块化、隔离） | 中（HTML 中类名较多） |
+| 适合场景     | 静态页面、小型项目 | React 等现代框架   | 快速开发、设计系统    |
 
 ## 在项目架构初期，如何考虑选择合适的样式体系方案
 
@@ -425,6 +436,7 @@ npx tailwind -i style.css -o output.css --watch
 
 > [!important]
 > 在项目架构初期，选择样式体系时需要综合考虑以下因素
+>
 > - **项目特点**：团队规模、交付周期、性能要求
 > - **技术适配性**：是否适合现有的技术栈和工具链
 > - **团队能力**：成员对样式工具的熟悉程度
@@ -437,22 +449,26 @@ npx tailwind -i style.css -o output.css --watch
 **核心概念**
 
 1. 选择器与优先级计算规则
+
    - 理解层叠规则，避免优先级混乱
 
 2. 常用布局方案
+
    - Flexbox：一维布局，适用于弹性盒子模型
    - Grid：二维布局，适合复杂页面设计
-  
+
 3. 动画与过渡
    - 利用`transition`和`@keyframes`实现交互效果
 
 **高级技巧**
 
 1. 使用变量与计算属性
+
    - CSS 变量（`--color-primary`）实现主题统一
    - 动态计算属性提升样式复用性
 
 2. 高效媒体查询与响应式设计
+
    - 使用`@media`定义断点，适配不同屏幕
 
 3. 命名规范对比
@@ -462,6 +478,7 @@ npx tailwind -i style.css -o output.css --watch
 **性能优化**
 
 1. 避免重排与重绘
+
    - 减少`position: absolute`或`float`引发的复杂计算
 
 2. 优化工具
@@ -473,6 +490,7 @@ npx tailwind -i style.css -o output.css --watch
 **背景与发展**
 
 1. 为什么需要 CSS-in-JS
+
    - 随着组件化的普及，CSS-in-JS 提供了动态、模块化的样式管理
 
 2. 主流框架对比
@@ -483,9 +501,11 @@ npx tailwind -i style.css -o output.css --watch
 **核心特性**
 
 1. 动态样式
+
    - 基于`props`或状态动态生成样式
 
 2. 嵌套与继承
+
    - 模仿传统 CSS 的嵌套规则，简化代码结构
 
 3. Scoped 样式
@@ -494,9 +514,11 @@ npx tailwind -i style.css -o output.css --watch
 **最佳实践**
 
 1. 性能控制
+
    - 避免频繁注入动态样式
 
 2. 类型安全
+
    - 结合 TypeScript 定义样式属性
 
 3. 主题系统
@@ -517,6 +539,7 @@ npx tailwind -i style.css -o output.css --watch
 **基础使用**
 
 1. 配置文件自定义
+
    - `tailwind.config.js`定义主题颜色、断点等
 
 2. 常用类
@@ -527,9 +550,11 @@ npx tailwind -i style.css -o output.css --watch
 **高级用法**
 
 1. 动态样式构建
+
    - 使用`@apply`提取复用的样式逻辑
 
 2. 复杂交互
+
    - 配置`variants`支持如`hover`、`focus`等状态样式
 
 3. 性能优化
@@ -538,6 +563,7 @@ npx tailwind -i style.css -o output.css --watch
 **在团队中的实践**
 
 1. 结合设计系统
+
    - Tailwind 的类名可与组件库风格统一
 
 2. 代码风格
@@ -554,9 +580,11 @@ npx tailwind -i style.css -o output.css --watch
 #### 评审标准
 
 1. 规范性
+
    - 是否符合团队样式规范？
 
 2. 复用性与扩展性
+
    - 样式是否可适应不同场景？
 
 3. 性能优化
@@ -565,9 +593,11 @@ npx tailwind -i style.css -o output.css --watch
 #### 流程细节
 
 1. 自查
+
    - 使用 Stylelint 等工具辅助检查
 
 2. 代码 Review
+
    - 团队协作评审，及时反馈
 
 3. 回归测试
@@ -578,6 +608,7 @@ npx tailwind -i style.css -o output.css --watch
 **样式体系设计**
 
 1. 分层架构
+
    - Base Styles：全局样式基础
    - Components：组件样式
    - Utilities：工具类样式
@@ -588,16 +619,19 @@ npx tailwind -i style.css -o output.css --watch
 **工具链与自动化**
 
 1. 样式检查
+
    - 使用 Linter 确保规范
 
 2. 性能优化
    - CSS 压缩与 Tree-shaking 减少文件大小
 
 **跨端样式管理**
+
 - 通过工具实现 PC、H5、小程序的样式复用
 - 响应式布局通用解决方案（如 flex 和媒体查询）
 
 **案例分享**
+
 1. 字节内部的分层架构实践
 2. Tailwind CSS 的高效应用场景
 
@@ -606,6 +640,7 @@ npx tailwind -i style.css -o output.css --watch
 #### 问题分析
 
 1. 项目特点
+
    - 小型项目适合原子化样式
    - 大型项目需要更多模块化和动态样式支持
 
@@ -627,6 +662,7 @@ npx tailwind -i style.css -o output.css --watch
 #### 验证与迭代
 
 1. 试点运行
+
    - 在小范围内测试新方案
 
 2. 反馈优化

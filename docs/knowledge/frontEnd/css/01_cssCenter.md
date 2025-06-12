@@ -1,3 +1,9 @@
+---
+title: 多种方式实现居中
+description: CSS 有多少方法能居中
+keywords: CSS, CSS 居中
+---
+
 # 多种方式实现居中
 
 「实现居中」也是一道必考题，看下代码

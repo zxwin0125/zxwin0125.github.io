@@ -1,3 +1,9 @@
+---
+title: BFC 背后的布局问题
+description: 怎么理解 CSS 里的 BFC
+keywords: CSS, CSS BFC
+---
+
 # BFC 背后的布局问题
 
 BFC 是前端面试中的一个超级热点，今日头条某部门曾经就问过

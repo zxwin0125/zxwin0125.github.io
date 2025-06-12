@@ -1,3 +1,9 @@
+---
+title: CSS 变量和主题切换优雅实现
+description: 如何实现 CSS 主题切换
+keywords: CSS Variable
+---
+
 # CSS 变量和主题切换优雅实现
 
 CSS 变量或者 CSS 自定义属性一直以来是一个值得关注的方向，CSS 变量时代确实已经到来
