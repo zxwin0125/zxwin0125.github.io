@@ -1,8 +1,14 @@
+---
+title: 移动端 H5 注意事项总结
+description: 移动端 H5 需要注意哪些问题
+keywords: HTML5, 移动端 H5
+---
+
 # 移动端 H5 注意事项总结
 
 > [!tip]
 > 因为 HTML5 强大的能力，所以很快就开启了一场开发的变革，在国内，体现最明显的就是各种 H5 移动页面
-> 
+>
 > 但是由于移动端的碎片化现象，以及技术落地的成熟度不高，造成了不少的问题，那么移动端开发 H5 有哪些坑以及小技巧呢？
 
 ## 打电话发短信写邮件的小技巧
@@ -120,13 +126,7 @@ document.addEventListener(
 为了使视频全屏播放，一般设置
 
 ```html
-<video
-	x-webkit-airplay="true"
-	webkit-playsinline="true"
-	preload="auto"
-	autoplay
-	src=""
-></video>
+<video x-webkit-airplay="true" webkit-playsinline="true" preload="auto" autoplay src=""></video>
 ```
 
 > [!warning]

@@ -1,10 +1,16 @@
+---
+title: 不可忽视的 Web Components
+description: 了解一下 Web Components
+keywords: Web Components, CSS scope
+---
+
 # 不可忽视的 Web Components
 
 > [!tip]
 > 作为「更高阶」的前端工程师，要时刻保持技术视野和信息广度
-> 
+>
 > 事实上，Web Components 的概念在几年前也已经提出，但是貌似一直没有发展很火
-> 
+>
 > 在框架带来的「组件化」、「生命周期化」这些统治级别的概念下，对比并结合 Web Components，这是可以深入研究的一个方向
 
 总结一下 Web Components 的特殊点或者优点

@@ -1,3 +1,9 @@
+---
+title: 进击的 HTML5
+description: HTML5 新增了哪些好用的功能
+keywords: HTML5, <ruby>, <details>, <progress>
+---
+
 # 进击的 HTML5 {#markdown-extensions}
 
 ## HTML5 提供了哪些便利呢？
@@ -23,7 +29,7 @@
 </ruby>
 ```
 
-![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/HTML/01.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/HTML/01.webp)
 
 ### 展开收起组件
 
@@ -36,11 +42,11 @@
 </details>
 ```
 
-![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/HTML/02.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/HTML/02.webp)
 
 ### 原生进度条和度量，progress 标签显示进度
 
-![An image](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/HTML/03.webp)
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/HTML/03.webp)
 
 > [!warning]
 > 值得一提的是：`progress` 不适合用来表示度量衡，如果想表示度量衡，应该使用 `meter` 标签代替

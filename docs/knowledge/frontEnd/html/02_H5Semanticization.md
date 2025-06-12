@@ -1,3 +1,9 @@
+---
+title: 如何理解 HTML5 语义化
+description: 如何理解 HTML5 语义化
+keywords: HTML5, Microformats, vCard, HTML5 语义化
+---
+
 # 如何理解 HTML5 语义化
 
 这个概念其实诞生了挺长时间，在企业招聘中经常会出现「了解 HTML5 语义化」、「对 HTML5 语义化有深刻认知」这样的的要求
@@ -41,22 +47,22 @@
 关于选取标准，简单总结了一下，抽象成代码表达为：
 
 ```JavaScript
-if (导航) {
+if （导航） {
   return <nav />
 }
-else if (文稿内容、博客内容、评论内容...包含标题元素的内容) {
+else if （文稿内容、博客内容、评论内容。.. 包含标题元素的内容） {
   return <article />
 }
-else if (目录抽象、边栏、广告、批注) {
+else if （目录抽象、边栏、广告、批注） {
   return <aside />
 }
-else if (含有附录、图片、代码、图形) {
+else if （含有附录、图片、代码、图形） {
   return <figure />
 }
-else if (含有多个标题或内容的区块) {
+else if （含有多个标题或内容的区块） {
   return <section />
 }
-else if (含有段落、语法意义) {
+else if （含有段落、语法意义） {
   return <p /> || <address /> || <blockquote /> || <pre /> || ...
 }
 else {
