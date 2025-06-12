@@ -8,17 +8,7 @@ import { head, nav, sidebar } from './configs'
 export default defineConfig({
   title: '三金砚语',
   description: "三金的学习沉淀，包含前端基础知识、工作技能、团队管理经验、书籍周刊等",
-  head: [
-    ['link', { rel: 'icon', href: '/favicon.png' }],
-    [
-      'script',
-      {
-        defer: 'true',
-        src: '/stats/script.js',
-        'data-website-id': '4c0f1225-4719-4a92-9163-6c1109f06c5a'
-      }
-    ],
-  ],
+  head,
   themeConfig: {
     logo: '/logo.png',
     siteTitle: "三金砚语",
