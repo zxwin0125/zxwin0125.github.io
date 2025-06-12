@@ -1,7 +1,8 @@
 import { defineConfig } from 'vitepress'
+import { head, nav, sidebar } from './configs'
 
-import nav from './nav.ts'
-import { sidebar } from './sidebar.ts'
+// import nav from './nav.ts'
+// import { sidebar } from './sidebar.ts'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
@@ -22,7 +23,7 @@ export default defineConfig({
     logo: '/logo.png',
     siteTitle: "三金砚语",
     // 导航栏
-    nav: nav(),
+    nav,
     // 侧边栏
     sidebar: sidebar,
     // 大纲容器位置
