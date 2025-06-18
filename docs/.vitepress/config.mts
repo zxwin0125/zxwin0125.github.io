@@ -10,6 +10,7 @@ export default defineConfig({
   title: '三金砚语',
   description: '三金的学习沉淀，包含前端基础知识、工作技能、团队管理经验、书籍周刊等',
   head,
+  lastUpdated: true,
   cleanUrls: true,
   ignoreDeadLinks: 'localhostLinks',
 
@@ -40,13 +41,6 @@ export default defineConfig({
     footer: {
       message: 'Released under the CC BY-NC-ND 4.0 License.',
       copyright: 'Copyright © 2024-present zxwin_0125@163.com'
-    },
-    lastUpdated: {
-      text: '最后更新于',
-      formatOptions: {
-        dateStyle: 'short',
-        timeStyle: 'medium'
-      }
     },
     docFooter: {
       prev: '上一篇',
