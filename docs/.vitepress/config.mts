@@ -1,14 +1,31 @@
 import { defineConfig } from 'vitepress'
+import { basename } from 'node:path'
 import { head, nav, sidebar } from './configs'
 
-// https://vitepress.dev/reference/site-config
+const APP_BASE_PATH = basename(process.env.APP_BASE_PATH || '')
+
 export default defineConfig({
+  outDir: '../dist',
+  base: APP_BASE_PATH ? `/${APP_BASE_PATH}/` : '/',
+  lang: 'zh-CN',
   title: '三金砚语',
-  description: "三金的学习沉淀，包含前端基础知识、工作技能、团队管理经验、书籍周刊等",
+  description: '三金的学习沉淀，包含前端基础知识、工作技能、团队管理经验、书籍周刊等',
   head,
+  lastUpdated: true,
+  cleanUrls: true,
+  ignoreDeadLinks: 'localhostLinks',
+
+  /* markdown 配置 */
+  markdown: {
+    image: {
+      lazyLoading: true
+    }
+  },
+
   themeConfig: {
+    i18nRouting: false,
     logo: '/logo.png',
-    siteTitle: "三金砚语",
+    siteTitle: '三金砚语',
     // 导航栏
     nav,
     // 侧边栏
@@ -29,15 +46,13 @@ export default defineConfig({
     lastUpdated: {
       text: '最后更新于',
       formatOptions: {
-        dateStyle: 'full',
+        dateStyle: 'short',
         timeStyle: 'medium'
       }
     },
-    // algolia
-    // carbonAds
     docFooter: {
-      prev: '上一页',
-      next: '下一页'
+      prev: '上一篇',
+      next: '下一篇'
     }
   }
 })
