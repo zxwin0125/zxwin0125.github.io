@@ -7,8 +7,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install dependencies
+        run: pnpm install
       - name: Install Vercel CLI
-        run: npm install -g vercel@latest
+        run: pnpm install -g vercel@latest
       - name: Deploy
         run: vercel --prod --yes --token ${{ secrets.ZXWIN_BLOG_VERCEL_TOKEN }}
         env:

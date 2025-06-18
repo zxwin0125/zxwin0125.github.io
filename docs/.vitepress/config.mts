@@ -42,6 +42,13 @@ export default defineConfig({
       message: 'Released under the CC BY-NC-ND 4.0 License.',
       copyright: 'Copyright © 2024-present zxwin_0125@163.com'
     },
+    lastUpdated: {
+      text: '最后更新于',
+      formatOptions: {
+        dateStyle: 'short',
+        timeStyle: 'medium'
+      }
+    },
     docFooter: {
       prev: '上一篇',
       next: '下一篇'
