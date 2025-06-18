@@ -5,7 +5,7 @@ import { head, nav, sidebar } from './configs'
 const APP_BASE_PATH = basename(process.env.APP_BASE_PATH || '')
 
 export default defineConfig({
-  outDir: '../dist',
+  outDir: '../../dist',
   base: APP_BASE_PATH ? `/${APP_BASE_PATH}/` : '/',
   lang: 'zh-CN',
   title: '三金砚语',

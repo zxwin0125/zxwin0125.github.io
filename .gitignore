@@ -1,14 +1,5 @@
-# Node modules
-**/node_modules/**
-
-# Cache
-**/.vuepress/.cache/**
-**/.vitepress/cache/**
-
-# Temp
-**/.vuepress/.temp/**
-**/.vitepress/temp/**
-
-# Output
-**/.vuepress/dist/**
-**/.vitepress/dist/**
+.DS_Store
+node_modules
+dist
+.temp
+cache
