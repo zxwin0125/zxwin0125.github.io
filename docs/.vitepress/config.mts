@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { basename } from 'node:path'
-import { head, nav, sidebar } from './configs'
+import { head, nav, sidebar, algolia } from './configs'
 
 const APP_BASE_PATH = basename(process.env.APP_BASE_PATH || '')
 
@@ -49,9 +49,15 @@ export default defineConfig({
         timeStyle: 'medium'
       }
     },
+    algolia,
     docFooter: {
       prev: '上一篇',
       next: '下一篇'
-    }
+    },
+    returnToTopLabel: '回到顶部',
+    sidebarMenuLabel: '菜单',
+    darkModeSwitchLabel: '主题',
+    lightModeSwitchTitle: '切换到浅色模式',
+    darkModeSwitchTitle: '切换到深色模式'
   }
 })
