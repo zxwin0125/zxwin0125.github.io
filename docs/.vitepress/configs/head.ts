@@ -1,6 +1,7 @@
 import type { HeadConfig } from 'vitepress'
 
 export const head: HeadConfig[] = [
+  ['meta', { name: 'algolia-site-verification', content: '8DA7E00850D0F56D' }],
   ['link', { rel: 'icon', href: '/favicon.png' }],
   [
     'script',
