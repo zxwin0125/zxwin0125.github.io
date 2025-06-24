@@ -49,7 +49,15 @@ export default defineConfig({
       }
     },
 
-    algolia,
+    // algolia,
+    search: {
+      provider: 'algolia',
+      options: {
+        appId: '9318IE7NOZ',
+        apiKey: 'b5196f259616e6ab3277a30500dcbbe2',
+        indexName: 'zxwin0125'
+      }
+    },
     
     docFooter: {
       prev: '上一篇',
