@@ -14,7 +14,6 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: 'localhostLinks',
 
-  /* markdown 配置 */
   markdown: {
     image: {
       lazyLoading: true
@@ -49,15 +48,9 @@ export default defineConfig({
         timeStyle: 'medium'
       }
     },
-    // algolia,
-    search: {
-      provider: 'algolia',
-      options: {
-        appId: '7WOOH6FGBL',
-        apiKey: '21160a36d2b45e1d294e7a45d8be483d',
-        indexName: 'zxwin_blog'
-      }
-    },
+
+    algolia,
+    
     docFooter: {
       prev: '上一篇',
       next: '下一篇'
