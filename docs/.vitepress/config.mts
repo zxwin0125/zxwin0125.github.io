@@ -1,6 +1,6 @@
 import { defineConfig } from 'vitepress'
 import { basename } from 'node:path'
-import { head, nav, sidebar } from './configs'
+import { head, nav, sidebar, algolia } from './configs'
 
 const APP_BASE_PATH = basename(process.env.APP_BASE_PATH || '')
 
@@ -51,18 +51,7 @@ export default defineConfig({
 
     search: {
       provider: 'algolia',
-      options: {
-        appId: '9318IE7NOZ',
-        apiKey: 'b5196f259616e6ab3277a30500dcbbe2',
-        indexName: 'zxwin0125',
-        placeholder: '搜索',
-        translations: {
-          button: {
-            buttonText: '搜索',
-            buttonAriaLabel: '搜索'
-          }
-        }
-      }
+      options: algolia
     },
     
     docFooter: {
