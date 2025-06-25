@@ -14,10 +14,6 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: 'localhostLinks',
 
-  // 添加这些配置来解决部署问题
-  outDir: '../dist',
-  cacheDir: '../.vitepress/cache',
-
   markdown: {
     image: {
       lazyLoading: true
