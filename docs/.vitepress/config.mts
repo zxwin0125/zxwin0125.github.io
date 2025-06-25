@@ -14,6 +14,23 @@ export default defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: 'localhostLinks',
 
+  // 添加这些配置来解决部署问题
+  outDir: '../dist',
+  cacheDir: '../.vitepress/cache',
+  
+  // 优化构建配置
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'vendor': ['vue', 'vue-router']
+          }
+        }
+      }
+    }
+  },
+
   markdown: {
     image: {
       lazyLoading: true
