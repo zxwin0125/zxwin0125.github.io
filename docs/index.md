@@ -5,9 +5,6 @@ hero:
   name: '三金砚语'
   text: '一场围绕前端的研习'
   tagline: 所谓真正的宝物，是可以赌上人生，忘我投入的东西
-  # image:
-  #   src: /bg.jpg
-  #   alt: zxwin0125 blog background
   actions:
     - theme: brand
       text: 日常笔记
