@@ -62,6 +62,17 @@ export default defineConfig({
     sidebarMenuLabel: '菜单',
     darkModeSwitchLabel: '主题',
     lightModeSwitchTitle: '切换到浅色模式',
-    darkModeSwitchTitle: '切换到深色模式'
-  }
+    darkModeSwitchTitle: '切换到深色模式',
+
+    comment: {
+      repo: 'zxwin0125/zxwin0125.github.io',
+      repoId: 'R_kgDONRCdfA=',
+      category: 'Announcements',
+      categoryId: 'DIC_kwDONRCdfM4Cr-ru',
+    },
+  },
+
+  sitemap: {
+    hostname: 'https://www.zxwin0125.top/',
+  },
 })
