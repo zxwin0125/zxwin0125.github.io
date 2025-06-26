@@ -66,7 +66,7 @@ export default defineConfig({
 
     comment: {
       repo: 'zxwin0125/zxwin0125.github.io',
-      repoId: 'R_kgDONRCdfA=',
+      repoId: 'R_kgDONRCdfA',
       category: 'Announcements',
       categoryId: 'DIC_kwDONRCdfM4Cr-ru',
     },
