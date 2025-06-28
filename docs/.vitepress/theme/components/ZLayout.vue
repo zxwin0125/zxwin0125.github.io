@@ -1,5 +1,9 @@
 <template>
   <Layout v-bind="$attrs">
+    <template #nav-bar-title-after>
+      <ZNavVisitor />
+    </template>
+
     <template v-if="comment && frontmatter.comment !== false" #doc-footer-before>
       <div class="doc-comments">
         <Giscus
@@ -27,6 +31,7 @@
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Giscus from '@giscus/vue'
+import ZNavVisitor from './ZNavVisitor.vue'
 import ZDocFooter from './ZDocFooter.vue'
 
 import { usePageId } from '../composables'
