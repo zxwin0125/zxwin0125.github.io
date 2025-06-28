@@ -64,6 +64,10 @@ export default defineConfig({
     lightModeSwitchTitle: '切换到浅色模式',
     darkModeSwitchTitle: '切换到深色模式',
 
+    visitor: {
+      badgeId: 'zxwin0125.notes',
+    },
+
     comment: {
       repo: 'zxwin0125/zxwin0125.github.io',
       repoId: 'R_kgDONRCdfA',

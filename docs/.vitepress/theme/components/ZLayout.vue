@@ -17,12 +17,18 @@
         />
       </div>
     </template>
+
+    <template #doc-after>
+      <ZDocFooter />
+    </template>
   </Layout>
 </template>
 <script setup lang="ts">
 import { useData } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Giscus from '@giscus/vue'
+import ZDocFooter from './ZDocFooter.vue'
+
 import { usePageId } from '../composables'
 const { Layout } = DefaultTheme
 const { theme, frontmatter, isDark } = useData()
