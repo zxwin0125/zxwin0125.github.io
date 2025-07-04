@@ -6,14 +6,12 @@ keywords: HTML5, 移动端 H5
 
 # 移动端 H5 注意事项总结
 
-> [!tip]
-> 因为 HTML5 强大的能力，所以很快就开启了一场开发的变革，在国内，体现最明显的就是各种 H5 移动页面
->
-> 但是由于移动端的碎片化现象，以及技术落地的成熟度不高，造成了不少的问题，那么移动端开发 H5 有哪些坑以及小技巧呢？
+因为 HTML5 强大的能力，所以很快就开启了一场开发的变革，在国内，体现最明显的就是各种 H5 移动页面
+
+但是由于移动端的碎片化现象，以及技术落地的成熟度不高，造成了不少的问题，那么移动端开发 H5 有哪些坑以及小技巧呢？
 
 ## 打电话发短信写邮件的小技巧
 
-> [!tip]
 > 这些技巧都和 `a` 标签相关
 
 打电话
@@ -28,7 +26,7 @@ keywords: HTML5, 移动端 H5
 <a href="sms: 110">发短信给警察局</a>
 ```
 
-写邮件依赖「**mailto**」
+写邮件依赖 `mailto`
 
 ```html
 <a href="mailto: 110@govn.com">发邮件给警察局</a>
@@ -58,7 +56,7 @@ keywords: HTML5, 移动端 H5
 <a href="mailto: 110@govn.com?subject=SOS">发邮件给警察局，并添加救命主题</a>
 ```
 
-包含内容用 body 体现
+包含内容用 `body` 体现
 
 ```html
 <a href="mailto: 110@govn.com?subject=SOS&body=快来救我">发邮件给警察局，并添加救命主题和内容</a>
@@ -66,7 +64,6 @@ keywords: HTML5, 移动端 H5
 
 ## 移动端 300 毫秒点击延迟以及点击穿透现象
 
-> [!warning]
 > 这是由于历史原因造成的，一般解决手段为禁止混用 `touch` 和 `click`，或者增加一层「透明」蒙层，也可以通过延迟上层元素消失来实现
 
 点击元素禁止产生背景或边框，一般可以使用 `tap-highlight-color` 属性进行禁用
@@ -96,7 +93,6 @@ user-select: none;
 
 ## 语音和视频自动播放
 
-> [!warning]
 > 不同浏览器内核支持自动播放的情况不一样，甚至 `webkit` 内核对于自动播放的策略也一直在调整当中
 
 自动播放有时候也带着条件：比如设置静音等
@@ -129,8 +125,7 @@ document.addEventListener(
 <video x-webkit-airplay="true" webkit-playsinline="true" preload="auto" autoplay src=""></video>
 ```
 
-> [!warning]
-> 但是最终情况还是要受到浏览器引擎实现的影响
+但是最终情况还是要受到浏览器引擎实现的影响
 
 ## 开启硬件加速
 
