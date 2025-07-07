@@ -38,7 +38,7 @@ keywords: CSS, CSS 居中
 
 ## 仅适用于居中元素定宽高
 
-### absolute - 负 margin
+### absolute + 负 margin
 
 绝对定位的百分比是相对于父元素的宽高，使得元素偏移后，在修正元素自身宽高的一半就行
 
@@ -55,7 +55,7 @@ keywords: CSS, CSS 居中
 }
 ```
 
-### absolute - margin auto
+### absolute + margin auto
 
 这种方式将设置各个方向的距离都是 0，此时配合 `margin` 为 `auto`，就可以在各个方向上居中了
 
@@ -73,7 +73,7 @@ keywords: CSS, CSS 居中
 }
 ```
 
-### absolute - calc
+### absolute + calc
 
 此种方法和第一种类似，不再展开
 
@@ -109,9 +109,9 @@ keywords: CSS, CSS 居中
 </div>
 ```
 
-### absolute - transform
+### absolute + transform
 
-不定宽高时，利用 CSS3 新增的 `transform`，`transform `的 `translate` 属性也可以设置百分比，这个百分比是相对于自身的宽和高，因此可以将 `translate` 设置为 ﹣50%
+不定宽高时，利用 CSS3 新增的 `transform`，`transform` 的 `translate` 属性也可以设置百分比，这个百分比是相对于自身的宽和高，因此可以将 `translate` 设置为 -50%
 
 原理和第一种方法也类似
 
@@ -206,13 +206,12 @@ keywords: CSS, CSS 居中
 }
 ```
 
-> [!important]
-> 总结一下
+> [!important] 总结一下
 >
-> - PC 端有兼容性要求，宽高固定，推荐 `absolute` - 负 `margin`
-> - PC 端有兼容要求，宽高不固定，推荐 `css-table`
-> - PC 端无兼容性要求，推荐 `flex`
-> - 移动端推荐使用 `flex`
+> - PC 端有兼容性要求，宽高固定，推荐 absolute + 负 margin
+> - PC 端有兼容要求，宽高不固定，推荐 css-table
+> - PC 端无兼容性要求，推荐 flex
+> - 移动端推荐使用 flex
 
 最后整理一个列表
 

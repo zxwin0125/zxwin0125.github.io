@@ -8,19 +8,18 @@ keywords: CSS Modules, CSS 模块化
 
 面试官除了对 CSS 的考察除了基础布局和经验以外，还非常喜欢问 CSS 工程相关的题目，比如：
 
-- **<font color=red>如何维护大型项目的 `z-index`</font>**
-- **<font color=red>如何维护 CSS 选择器和样式之间的冲突</font>**
+- 如何维护大型项目的 `z-index`
+- 如何维护 CSS 选择器和样式之间的冲突
 
 ## 什么是 CSS Modules
 
-> [!tip]
-> CSS Modules 是指：**<font color=red>项目中所有 class 名称默认都是局部起作用的</font>**
+> CSS Modules 是指项目中所有 class 名称默认都是局部起作用的
 
-其实，CSS Modules 并不是一个官方规范，更不是浏览器的机制，它依赖项目的构建过程
+其实，CSS Modules 并不是一个官方规范，更不是浏览器的机制
 
-因此实现往往需要借助 Webpack 或者其他构建工具的帮助，可以将 class 的名字唯一化，从而实现局部作用
+它依赖项目的构建过程，因此实现往往需要借助 Webpack 或者其他构建工具的帮助，可以将 class 的名字唯一化，从而实现局部作用
 
-这么说可能比较抽象，来看一个例子：
+来看一个例子：
 
 ```html
 <div class="test">This is a test</div>
@@ -46,14 +45,12 @@ keywords: CSS Modules, CSS 模块化
 }
 ```
 
-**<font color=red>其中 class 名是动态生成的，全项目唯一的，因此通过命名规范的唯一性，达到了避免样式冲突的目的</font>**
+其中 class 名是动态生成的，全项目唯一的，因此通过命名规范的唯一性，达到了避免样式冲突的目的
 
-> [!warning]
-> 这样的解决方案似乎有一个问题
->
-> - 如何实现样式复用？因为生成了全局唯一的 class 名，那么如何像传统方式那样实现样式复用呢？
+> [!warning] 有点疑问 🤔
+> 生成了全局唯一的 class 名，那么如何像传统方式那样实现样式复用呢？
 
-从原理上想，**<font color=red>全局唯一的 class 是在构建过程中，如果能给在构建过程进行标识，表示该 class 将被复用</font>**，就可以解决问题了，这样的方式，就依靠 composes 关键字实现，来看案例
+从原理上想，<font color=red>全局唯一的 class 是在构建过程中，如果能给在构建过程进行标识，表示该 class 将被复用</font>，就可以解决问题了，这样的方式，就依靠 `composes` 关键字实现，来看案例
 
 样式表 style.css 文件中
 
@@ -84,8 +81,6 @@ import style from "./style.css";
 
 看 `div` 的 `class` 被加进了 `_style__common_404840`，这样就实现了复用样式
 
-那该如何应用 CSS Modules 呢？
-
 ## CSS Modules 实战
 
 ### Step 1：创建项目
@@ -93,8 +88,6 @@ import style from "./style.css";
 ```bash
 npm init --y
 ```
-
-此时生成 `package.json` 如下
 
 ```json
 {
@@ -118,8 +111,6 @@ mkdir src
 touch index.html
 ```
 
-在 `./src` 文件夹中，创建：index.js
-
 ```javascript
 import bluestyle from './style.css'
 import greenstyle from './app.css'
@@ -132,17 +123,15 @@ let html = `
 document.write(html)
 ```
 
-以及 style.css
-
 ```css
+/* style.css */
 .my_css_selector {
   color: blue;
 }
 ```
 
-和 app.css
-
 ```css
+/* app.css */
 .my_css_selector {
   color: green;
 }
@@ -152,9 +141,9 @@ document.write(html)
 
 ### Step 3：安装依赖
 
-接下来按照 `webpack`、`webpack-cli`、`babel` 全家桶（`babel-core`、`babel-loader`、`abel-preset-env`）和相应的 loaders：`css-loader`、`style-loader` 以及 `extract-text-webpack-plugin` 插件
+接下来按照 webpack、webpack-cli、babel 全家桶（babel-core、babel-loader、babel-preset-env）和相应的 loaders：css-loader、style-loader 以及 extract-text-webpack-plugin 插件
 
-建议安装版本遵循，否则会出现类似 `webpack` 版本和 `extract-text-webpack-plugin` 不兼容等依赖版本问题
+建议安装版本遵循，否则会出现类似 webpack 版本和 extract-text-webpack-plugin 不兼容等依赖版本问题
 
 ```json
 "babel-core": "^6.26.3",
@@ -167,7 +156,7 @@ document.write(html)
 "webpack-cli": "^3.1.1"
 ```
 
-正常流程下来，`package.json` 如下：
+正常流程下来，package.json 如下：
 
 ```json
 {
@@ -196,14 +185,14 @@ document.write(html)
 
 ### Step 4：编写 webpack 配置
 
-创建 `webpack` 配置文件，并编写
+创建 webpack 配置文件，并编写
 
-使用了 `extract-text-webpack-plugin` 插件，并定义入口为 `./src` 目录，产出为 `__dirname - '/build'` 目录
+使用了 extract-text-webpack-plugin 插件，并定义入口为 src 目录，产出为 build 目录
 
-对后缀名为 css 的文件使用 `css-loader` 解析，产出为 styles.css 文件并在 index.html 中使用
+对后缀名为 css 的文件使用 css-loader 解析，产出为 styles.css 文件并在 index.html 中使用
 
-> [!warning]
-> 注意看，对于 css-loader，设置了 modules 参数，进行了 css modules 处理
+> [!warning] 注意看
+> 对于 css-loader，设置了 modules 参数，进行了 css modules 处理
 
 ```bash
 touch webpack.config.js
@@ -215,7 +204,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports = {
   entry: './src',
   output: {
-    path: __dirname - '/build',
+    path: __dirname + '/build',
     filename: 'bundle.js'
   },
   module: {
@@ -223,7 +212,7 @@ module.exports = {
       {
         test: /\.js/,
         loader: 'babel-loader',
-        include: __dirname - '/src'
+        include: __dirname + '/src'
       },
       {
         test: /\.css/,
@@ -245,7 +234,7 @@ module.exports = {
 
 ### Step 5：编写 npm script 并运行
 
-还差一步，将 `package.json` 中的 `script` 命令改为
+将 package.json 中的 `script` 命令改为
 
 ```json
 "scripts": {
@@ -253,7 +242,7 @@ module.exports = {
 },
 ```
 
-运行 `webpack`，此时 `package.json` 内容为
+运行 webpack，此时 package.json 内容为
 
 ```json
 {

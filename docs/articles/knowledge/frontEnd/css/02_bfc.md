@@ -6,17 +6,14 @@ keywords: CSS, CSS BFC
 
 # BFC 背后的布局问题
 
-BFC 是前端面试中的一个超级热点，今日头条某部门曾经就问过
+> BFC 是前端面试中的一个超级热点，今日头条某部门曾经就问过
 
-- 请解释一下 **<font color=red>BFC 是什么？</font>** 回答这个问题并不困难，但是可以继续追问
-  - **<font color=red>BFC 会引起哪些布局现象？</font>**
+请解释一下 **<font color=red>BFC 是什么？</font>** 回答这个问题并不困难，但是可以继续追问 **<font color=red>BFC 会引起哪些布局现象？</font>**
 
 ## BFC 是什么
 
-简单来说，BFC 就是
-
-> [!tip]
-> BFC 是 Block Formatting Context 的简写，可以直接翻译成「**<font color=red>块级格式化上下文</font>**」
+> [!tip] 简单来说，BFC 就是
+> Block Formatting Context 的简写，可以直接翻译成「**<font color=red>块级格式化上下文</font>**」
 >
 > **<font color=red>它会创建一个特殊的区域，在这个区域中，只有 `block box` 参与布局</font>**
 >
@@ -27,18 +24,15 @@ BFC 是前端面试中的一个超级热点，今日头条某部门曾经就问�
 > - 区域内元素的相互关系和相互作用
 > - 并且这个特殊的区域不受外界影响
 
-上面提到了 `block box` 的概念，**<font color=red>`block box` 是指 `display` 属性为 `block`、`list-item`、`table` 的元素</font>**
+上面提到了 `block box` 的概念，`block box` 是指 `display` 属性为 `block`、`list-item`、`table` 的元素
 
-> [!warning]
-> 还有其他哪些 `box` 类型呢？
->
-> - 相应地，**<font color=red>有 `inline box`，它是指 `display` 属性为 `inline`、`inline-block`、`inline-table` 的元素</font>**
+相应地，还有 `inline box`，它是指 `display` 属性为 `inline`、`inline-block`、`inline-table` 的元素
 
 ## 如何形成 BFC
 
-那么 **<font color=red>什么样的情况会创建一个 BFC 呢？</font>** MDN 总结如下
+那么 **<font color=red>什么样的情况会创建一个 BFC 呢？</font>**
 
-> [!important]
+> [!important] MDN 总结如下
 >
 > - 根元素或其他包含它的元素
 > - 浮动元素（元素的 `float` 不是 `none`）
@@ -54,7 +48,7 @@ BFC 是前端面试中的一个超级热点，今日头条某部门曾经就问�
 
 上面谈到了 BFC 的一套规则，那么这些 **<font color=red>规则都有哪些呢？</font>**
 
-> [!important]
+> [!important] 总结如下
 >
 > - 内部的 `box` 将会独占宽度，且在垂直方向，一个接一个排列
 > - `box` 垂直方向的间距由 `margin` 属性决定，但是同一个 BFC 的两个相邻 `box` 的 `margin` 会出现边距折叠现象
