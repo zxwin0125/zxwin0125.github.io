@@ -8,7 +8,7 @@ const Configuration = {
       'always',
       ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']
     ],
-    'subject-empty': [0, 'never'],
+    'subject-empty': [2, 'never'],
     'body-empty': [0, 'never']
   },
   prompt: {

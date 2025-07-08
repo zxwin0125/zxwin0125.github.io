@@ -135,14 +135,7 @@ function weeks(): DefaultTheme.SidebarItem[] {
       items: [
         {
           text: '第一周',
-          base: sidebarRouter.Weeks + '202507/01_week/',
-          collapsed: true,
-          items: [
-            {
-              text: '如何设计一个前端插件系统',
-              link: '01_pluginSystem.md'
-            }
-          ]
+          link: '01_week.md'
         }
       ]
     }

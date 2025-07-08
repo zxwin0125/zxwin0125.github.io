@@ -35,7 +35,7 @@ export const nav: DefaultTheme.Config['nav'] = [
       },
       {
         text: '周刊',
-        link: '/articles/read/weeks/202507/01_week/01_pluginSystem.md'
+        link: '/articles/read/weeks/202507/01_week.md'
       }
     ]
   }
