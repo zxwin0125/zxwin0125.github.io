@@ -129,13 +129,20 @@ function books(): DefaultTheme.SidebarItem[] {
 function weeks(): DefaultTheme.SidebarItem[] {
   return [
     {
-      text: '25年6月',
-      base: sidebarRouter.Weeks,
+      text: '25年7月',
+      base: sidebarRouter.Weeks + '202507/',
       collapsed: true,
       items: [
         {
           text: '第一周',
-          link: '01_week.md'
+          base: sidebarRouter.Weeks + '202507/01_week/',
+          collapsed: true,
+          items: [
+            {
+              text: '如何设计一个前端插件系统',
+              link: '01_pluginSystem.md'
+            }
+          ]
         }
       ]
     }
