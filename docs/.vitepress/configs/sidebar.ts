@@ -67,6 +67,17 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: '05_responsiveLayout.md'
         }
       ]
+    },
+    {
+      text: 'JavaScript 基础',
+      base: sidebarRouter.JavaScript,
+      collapsed: true,
+      items: [
+        {
+          text: 'this 到底指向谁',
+          link: '01_this.md'
+        }
+      ]
     }
   ]
 }
