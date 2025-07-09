@@ -41,6 +41,6 @@ features:
   - icon: 👀
     title: 开阔视野
     details: 看看有哪些新鲜事儿
-    link: /articles/read/weeks/202506/01_week.md
+    link: /articles/read/weeks/202507/01_week.md
     linkText: 睁眼看世界
 ---
