@@ -13,6 +13,10 @@ export const nav: DefaultTheme.Config['nav'] = [
         link: '/articles/knowledge/frontEnd/html/01_H5Tag'
       },
       {
+        text: '网络',
+        link: '/articles/knowledge/network/01_jsonp'
+      },
+      {
         text: '解决方案',
         link: '/articles/knowledge/solution/01_cursor'
       }

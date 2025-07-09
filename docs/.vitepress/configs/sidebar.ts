@@ -3,6 +3,7 @@ import * as sidebarRouter from '../../utils/sidebarRouter'
 
 export const sidebar: DefaultTheme.Config['sidebar'] = {
   [sidebarRouter.FrontEnd]: { base: sidebarRouter.FrontEnd, items: frontEnd() },
+  [sidebarRouter.Network]: { base: sidebarRouter.Network, items: network() },
   [sidebarRouter.Solution]: { base: sidebarRouter.Solution, items: solution() },
   [sidebarRouter.Work]: { base: sidebarRouter.Work, items: work() },
   [sidebarRouter.Manage]: { base: sidebarRouter.Manage, items: manage() },
@@ -89,6 +90,19 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: '01_pluginSystem.md'
         }
       ]
+    }
+  ]
+}
+
+function network(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: 'JSONP 原理和实现',
+      link: '01_jsonp.md'
+    },
+    {
+      text: '你的站点加载速度应该多快？',
+      link: '02_loadSpeed.md'
     }
   ]
 }
