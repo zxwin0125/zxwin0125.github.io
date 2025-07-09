@@ -31,6 +31,10 @@ export const nav: DefaultTheme.Config['nav'] = [
     link: '/articles/manage/01_needTodo'
   },
   {
+    text: '方法论',
+    link: '/articles/methodology/01_attention'
+  },
+  {
     text: '读书角',
     items: [
       {

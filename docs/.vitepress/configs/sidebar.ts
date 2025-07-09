@@ -7,6 +7,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   [sidebarRouter.Solution]: { base: sidebarRouter.Solution, items: solution() },
   [sidebarRouter.Work]: { base: sidebarRouter.Work, items: work() },
   [sidebarRouter.Manage]: { base: sidebarRouter.Manage, items: manage() },
+  [sidebarRouter.Methodology]: { base: sidebarRouter.Methodology, items: methodology() },
   [sidebarRouter.Books]: { base: sidebarRouter.Books, items: books() },
   [sidebarRouter.Weeks]: { base: sidebarRouter.Weeks, items: weeks() }
 }
@@ -130,6 +131,15 @@ function manage(): DefaultTheme.SidebarItem[] {
     {
       text: '新晋主管需要做什么',
       link: '01_needTodo.md'
+    }
+  ]
+}
+
+function methodology(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '注意力是你最稀缺的资源',
+      link: '01_attention.md'
     }
   ]
 }
