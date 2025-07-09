@@ -78,6 +78,17 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: '01_this.md'
         }
       ]
+    },
+    {
+      text: 'JavaScript 进阶',
+      base: sidebarRouter.JavaScriptAdvanced,
+      collapsed: true,
+      items: [
+        {
+          text: '如何设计一个前端插件系统',
+          link: '01_pluginSystem.md'
+        }
+      ]
     }
   ]
 }
