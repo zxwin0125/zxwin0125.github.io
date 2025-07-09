@@ -1,15 +1,14 @@
 ---
-article: false
 title: 如何实现 jsonp 及其原理
-category:
-	- 网络
-tag:
-	- 跨域
+description: 如何实现 jsonp 及其原理
+keywords: 网络，跨域，jsonp
 ---
 
-### 一个正常的请求：JSON
+# 如何实现 jsonp 及其原理
 
-- 正常发请求时，curl 示例:
+## 一个正常的请求：JSON
+
+正常发请求时，curl 示例：
 
 ```sh
 $ curl https://zxwin.tech/api/user?id=100
@@ -22,7 +21,7 @@ $ curl https://zxwin.tech/api/user?id=100
 }
 ```
 
-- 使用 fetch 发送请求，示例:
+使用 fetch 发送请求，示例：
 
 ```javascript
 const data = await fetch('https://zxwin.tech/api/user?id=100', {
@@ -33,23 +32,26 @@ const data = await fetch('https://zxwin.tech/api/user?id=100', {
 }).then(res => res.json())
 ```
 
-- 请求数据后，使用一个函数来处理数据
+请求数据后，使用一个函数来处理数据
 
 ```javascript
 handleData(data)
 ```
 
-### 一个 JSONP 请求
+## 一个 JSONP 请求
 
-> [!info]
+> [!tip] 什么是 JSONP
 > JSONP，全称 JSON with Padding，为了解决跨域的问题而出现<br>
 > 虽然它只能处理 GET 跨域，虽然现在基本上都使用 CORS 跨域，但仍然要知道它，毕竟面试会问
 
-- JSONP 基于两个原理:
-  - 动态创建 script，使用 script.src 加载请求跨过跨域
-  - script.src 加载的脚本内容为 JSONP: 即 PADDING(JSON) 格式
-- 从上可知，使用 JSONP 跨域同样需要服务端的支持
-- curl 示例
+JSONP 基于两个原理：
+
+- 动态创建 script，使用 script.src 加载请求跨过跨域
+- script.src 加载的脚本内容为 JSONP: 即 PADDING(JSON) 格式
+
+从上可知，使用 JSONP 跨域同样需要服务端的支持
+
+curl 示例
 
 ```sh
 $ curl https://zxwin.tech/api/user?id=100&callback=padding
@@ -62,14 +64,16 @@ padding({
 })
 ```
 
-- 对比正常的请求有何不同一目了然: 多了一个 callback=padding, 并且响应数据被 padding 包围，这就是 JSONP
-- 那请求数据后，如何处理数据呢？此时的 padding 就是处理数据的函数，只需要在前端实现定义好 padding 函数即可
+对比正常的请求有何不同一目了然：多了一个 callback=padding, 并且响应数据被 padding 包围，这就是 JSONP
+
+> [!warning] 那请求数据后，如何处理数据呢？
+> 此时的 padding 就是处理数据的函数，只需要在前端实现定义好 padding 函数即可
 
 ```javascript
 window.padding = handleData
 ```
 
-- 基于以上两个原理，这里实现一个简单 jsonp 函数：
+基于以上两个原理，这里实现一个简单 jsonp 函数：
 
 ```javascript
 function jsonp_simple({ url, onData, params }) {
@@ -95,8 +99,9 @@ jsonp_simple({
 })
 ```
 
-- 此时会有一个问题: **<font color=red>window.padding 函数会污染全局变量，如果有多个 JSONP 请求发送如何处理？</font>**
-- 使 jsonp 的回调函数名作为一个随机变量，避免冲突，代码如下
+此时会有一个问题：<font color=red>window.padding 函数会污染全局变量，如果有多个 JSONP 请求发送如何处理？</font>
+
+使 jsonp 的回调函数名作为一个随机变量，避免冲突，代码如下
 
 ```javascript
 function jsonp({ url, onData, params }) {
@@ -124,9 +129,9 @@ jsonp({
 })
 ```
 
-### 服务器端代码
+## 服务器端代码
 
-- JSONP 需要服务端进行配合，返回 JSON With Padding 数据，代码如下:
+JSONP 需要服务端进行配合，返回 JSON With Padding 数据，代码如下：
 
 ```javascript
 const http = require('http')
@@ -151,9 +156,9 @@ const server = http.createServer((req, res) => {
 server.listen(10010, () => console.log('Done'))
 ```
 
-### 完整代码
+## 完整代码
 
-- JSONP 实现完整代码:
+JSONP 实现完整代码：
 
 ```javascript
 function stringify(data) {
@@ -184,7 +189,7 @@ function jsonp({ url, onData, params }) {
 }
 ```
 
-- JSONP 服务端适配相关代码:
+JSONP 服务端适配相关代码：
 
 ```javascript
 const http = require('http')
@@ -208,7 +213,7 @@ const server = http.createServer((req, res) => {
 server.listen(10010, () => console.log('Done'))
 ```
 
-- JSONP 页面调用相关代码
+JSONP 页面调用相关代码
 
 ```html
 <!DOCTYPE html>
@@ -232,13 +237,15 @@ server.listen(10010, () => console.log('Done'))
 </html>
 ```
 
-### 文件结构
+## 文件结构
 
-- index.js: jsonp 的简单与复杂实现
-- server.js: 服务器接口形式
-- demo.html: 前端如何调用 JSONP
+index.js: jsonp 的简单与复杂实现
 
-### 快速演示
+server.js: 服务器接口形式
+
+demo.html: 前端如何调用 JSONP
+
+## 快速演示
 
 ```javascript
 // 开启服务端
