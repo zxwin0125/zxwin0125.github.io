@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DefaultTheme } from 'vitepress/theme'
 import { computed } from 'vue'
-import { useSidebarControl } from 'vitepress/dist/client/theme-default/composables/sidebar'
+import { useSidebarControl } from '../composables/useSidebarControl'
 import VPLink from 'vitepress/dist/client/theme-default/components/VPLink.vue'
 
 const props = defineProps<{
@@ -51,8 +51,6 @@ const getRealLink = (link: string) => {
   const match = link.match(/https?:\/\/.+/)
   return match ? match[0] : link
 }
-
-console.log('sidebar item link:', props.item.link)
 </script>
 
 <template>

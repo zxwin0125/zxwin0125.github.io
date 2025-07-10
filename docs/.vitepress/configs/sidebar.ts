@@ -130,7 +130,7 @@ function network(): DefaultTheme.SidebarItem[] {
       items: [
         {
           text: '浏览器是如何调度进程和线程的？',
-          link: 'https://mp.weixin.qq.com/s/bkSmKYGHk0V5eZIfuSTNyQ'
+          link: 'https://mp.weixin.qq.com/s?__biz=Mzk0MDMwMzQyOA==&mid=2247490542&idx=1&sn=d2c25370f8d942b16749d9052872d7ea&source=41#wechat_redirect'
         },
         {
           text: '浏览器是如何工作的？',
