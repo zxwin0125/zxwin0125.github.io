@@ -34,6 +34,7 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: 'Web Components',
           base: sidebarRouter.WebComponents,
+          collapsed: true,
           items: [
             {
               text: '不可忽视的 Web Components',
@@ -91,6 +92,24 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: '01_pluginSystem.md'
         }
       ]
+    },
+    {
+      text: '前端工程化',
+      base: sidebarRouter.Engineering,
+      collapsed: true,
+      items: [
+        {
+          text: 'Git',
+          base: sidebarRouter.Git,
+          collapsed: true,
+          items: [
+            {
+              text: '改变世界的一次代码提交',
+              link: 'https://hutusi.com/articles/the-greatest-git-commit'
+            }
+          ]
+        }
+      ]
     }
   ]
 }
@@ -104,6 +123,20 @@ function network(): DefaultTheme.SidebarItem[] {
     {
       text: '你的站点加载速度应该多快？',
       link: '02_loadSpeed.md'
+    },
+    {
+      text: '浏览器',
+      collapsed: true,
+      items: [
+        {
+          text: '浏览器是如何调度进程和线程的？',
+          link: 'https://mp.weixin.qq.com/s/bkSmKYGHk0V5eZIfuSTNyQ'
+        },
+        {
+          text: '浏览器是如何工作的？',
+          link: 'https://king-hcj.github.io/2020/10/05/google-v8/'
+        }
+      ]
     }
   ]
 }
@@ -113,6 +146,10 @@ function solution(): DefaultTheme.SidebarItem[] {
     {
       text: 'Cursor 通用解决方案',
       link: '01_cursor.md'
+    },
+    {
+      text: '一文了解文件上传全过程',
+      link: 'https://segmentfault.com/a/1190000037411957'
     }
   ]
 }
