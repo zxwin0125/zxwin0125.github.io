@@ -3,6 +3,7 @@ import { useData, EnhanceAppContext } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 
 import ZLayout from './components/ZLayout.vue'
+import ZSidebarItem from './components/ZSidebarItem.vue'
 
 import './styles/index.scss'
 
@@ -32,6 +33,8 @@ export default {
         { immediate: true }
       )
     }
+
+    app.component('VPSidebarItem', ZSidebarItem)
   }
 }
 
