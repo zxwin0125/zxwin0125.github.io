@@ -68,6 +68,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: '响应式布局和 Bootstrap 的实现分析',
           link: '05_responsiveLayout.md'
+        },
+        {
+          text: '你不应该错过的 CSS 新特性',
+          link: 'https://juejin.im/post/6886258269137043464'
         }
       ]
     },
@@ -79,6 +83,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: 'this 到底指向谁',
           link: '01_this.md'
+        },
+        {
+          text: 'ECMAScript 2020 新增特性',
+          link: 'https://juejin.im/post/6883306672064987149'
         }
       ]
     },
@@ -90,6 +98,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: '如何设计一个前端插件系统',
           link: '01_pluginSystem.md'
+        },
+        {
+          text: '解释 JavaScript 的内存管理',
+          link: 'https://felixgerschau.com/javascript-memory-management'
         }
       ]
     },
@@ -108,6 +120,21 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
               link: 'https://hutusi.com/articles/the-greatest-git-commit'
             }
           ]
+        },
+        {
+          text: '聊聊 ESM、Bundle 、Bundleless 、Vite 、Snowpack',
+          link: 'https://segmentfault.com/a/1190000025137845'
+        }
+      ]
+    },
+    {
+      text: '前端数据可视化',
+      base: sidebarRouter.DataVisualization,
+      collapsed: true,
+      items: [
+        {
+          text: '企业级数据可视化应用有哪些机遇与挑战？',
+          link: 'https://mp.weixin.qq.com/s/vvKPJZCZNs8VfM8A07x5SA'
         }
       ]
     }
@@ -123,6 +150,14 @@ function network(): DefaultTheme.SidebarItem[] {
     {
       text: '你的站点加载速度应该多快？',
       link: '02_loadSpeed.md'
+    },
+    {
+      text: '计算机网络基础知识总结',
+      link: 'https://juejin.im/post/6885468617580904455'
+    },
+    {
+      text: '为什么 IPv6 难以取代 IPv4',
+      link: 'https://draveness.me/whys-the-design-ipv6-replacing-ipv4/'
     },
     {
       text: '浏览器',
@@ -150,6 +185,10 @@ function solution(): DefaultTheme.SidebarItem[] {
     {
       text: '一文了解文件上传全过程',
       link: 'https://segmentfault.com/a/1190000037411957'
+    },
+    {
+      text: '聊一聊二维码扫描登录原理',
+      link: 'https://juejin.im/post/6844904111398191117'
     }
   ]
 }
@@ -159,6 +198,10 @@ function work(): DefaultTheme.SidebarItem[] {
     {
       text: '如何做好项目 1 号位',
       link: '01_bitOne.md'
+    },
+    {
+      text: '如何有效地进行代码 Review？',
+      link: 'https://mp.weixin.qq.com/s/uFivYfX53s5zAe6hacznlg'
     }
   ]
 }
@@ -208,6 +251,10 @@ function weeks(): DefaultTheme.SidebarItem[] {
         {
           text: '第一周',
           link: '01_week.md'
+        },
+        {
+          text: '第二周',
+          link: '02_week.md'
         }
       ]
     }
