@@ -14,6 +14,12 @@
 
 > Plausible Analytics 是一个简单、轻量且隐私友好的 Google Analytics 替代品，不使用 cookie，自托管或者云上部署都可以
 
+## 关于跨端
+
+[阿里跨端技术 - 缘起与未来](https://mp.weixin.qq.com/s/UOqFmTRKvUtnyAenov4MDw)
+
+> 本文来自飞猪用户技术团队圣司，来和大家一起聊聊阿里跨端技术的缘起与未来，值得深读
+
 ## 设计 & 灵感
 
 [产品经理如何做产品架构设计](http://www.woshipm.com/pd/4231285.html)
