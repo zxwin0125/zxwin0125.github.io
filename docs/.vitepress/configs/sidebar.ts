@@ -135,8 +135,19 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           ]
         },
         {
-          text: '聊聊 ESM、Bundle 、Bundleless 、Vite 、Snowpack',
-          link: 'https://segmentfault.com/a/1190000025137845'
+          text: '构建工具',
+          base: sidebarRouter.BuildTools,
+          collapsed: true,
+          items: [
+            {
+              text: '聊聊 ESM、Bundle 、Bundleless 、Vite 、Snowpack',
+              link: 'https://segmentfault.com/a/1190000025137845'
+            },
+            {
+              text: 'vite——纵享丝滑开发体验',
+              link: 'https://juejin.cn/post/6906674140792094727'
+            }
+          ]
         }
       ]
     },
@@ -187,12 +198,20 @@ function network(): DefaultTheme.SidebarItem[] {
       link: '02_loadSpeed.md'
     },
     {
+      text: 'HTTP/3 原理实战',
+      link: 'https://mp.weixin.qq.com/s/MHYMOYHqhrAbQ0xtTkV2ig'
+    },
+    {
       text: '计算机网络基础知识总结',
       link: 'https://juejin.im/post/6885468617580904455'
     },
     {
       text: '为什么 IPv6 难以取代 IPv4',
       link: 'https://draveness.me/whys-the-design-ipv6-replacing-ipv4/'
+    },
+    {
+      text: '计算机教育中缺失的一课',
+      link: 'https://missing-semester-cn.github.io/'
     },
     {
       text: '浏览器',
@@ -253,6 +272,14 @@ function work(): DefaultTheme.SidebarItem[] {
     {
       text: '怎么让你的 Code Reviewer 喜欢上你',
       link: 'https://mtlynch.io/code-review-love/'
+    },
+    {
+      text: '万字详文告诉你如何做 Code Review',
+      link: 'https://mp.weixin.qq.com/s?__biz=MjM5ODYwMjI2MA==&mid=2649747120&idx=1&sn=b57e81735c6f6d5bdca31160792df547&scene=21#wechat_redirect'
+    },
+    {
+      text: '万字详文阐释程序员修炼之道',
+      link: 'https://mp.weixin.qq.com/s/XIwfj_AdZqX_vHM4VIq9EA'
     }
   ]
 }

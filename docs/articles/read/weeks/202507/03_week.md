@@ -10,6 +10,10 @@
 
 > 用了比较久的一个窗口工具，通过快捷键的方式将你的 Mac 应用窗口放置到上/下/左/右/居中/最大，以及窗口移动到显示器，很是不错
 
+[ImageOptim：更好用的图片压缩工具](https://github.com/ImageOptim/ImageOptim)
+
+> 有时候 tinypng 压缩得太狠导致不清晰，可以试试这个工具，习惯了以后可能就用它了
+
 ## 关于跨端
 
 [Flutter 与前端结合点的思考](https://juejin.cn/post/6908357007749693454)
