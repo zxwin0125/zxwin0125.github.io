@@ -6,6 +6,14 @@
 
 > 通过骨架动画的方式代替常规的 Loading，可以给用户更好的体验，这个工具支持多个框架，推荐在业务开发中试试
 
+[一个轻松帮你自动管理 issues 的 GitHub Action](https://github.com/actions-cool/issues-helper)
+
+> 还挺适合开源项目 issue 很多的时候使用，借助一定规则自动化的帮你管理 Issue
+
+[Codelf - 变量命名神器](https://unbug.github.io/codelf/)
+
+> 适合命名纠结的程序员
+
 ## 关于跨端
 
 [深入浅出主流的几款小程序跨端框架原理](https://juejin.im/post/6881597846307635214)

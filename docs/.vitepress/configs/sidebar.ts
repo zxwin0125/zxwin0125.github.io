@@ -75,8 +75,8 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: 'https://juejin.im/post/6886258269137043464'
         },
         {
-          text: '2024 年 CSS 现状报告',
-          link: 'https://2024.stateofcss.com/en-US/usage/'
+          text: 'Facebook 重构：抛弃 Sass / Less ，迎接原子化 CSS 时代',
+          link: 'https://juejin.cn/post/6917073600474415117'
         }
       ]
     },
@@ -111,6 +111,32 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: 'Introduction to Event Loop Utilization in Node.js',
           link: 'https://nodesource.com/blog/event-loop-utilization-nodejs'
+        },
+        {
+          text: 'JavaScript 元编程',
+          link: 'https://mp.weixin.qq.com/s/1E8d5jYb0sFGPRk3pMLaHA'
+        }
+      ]
+    },
+    {
+      text: 'TypeScript 基础',
+      base: sidebarRouter.TypeScript,
+      collapsed: true,
+      items: [
+        {
+          text: 'TypeScript 中提升幸福感的 10 个高级技巧',
+          link: 'https://juejin.cn/post/6919478002925453320'
+        }
+      ]
+    },
+    {
+      text: 'Node',
+      base: sidebarRouter.Node,
+      collapsed: true,
+      items: [
+        {
+          text: 'node_modules 困境',
+          link: 'https://juejin.cn/post/6914508615969669127'
         }
       ]
     },
