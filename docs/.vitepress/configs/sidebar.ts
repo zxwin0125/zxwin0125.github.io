@@ -3,6 +3,7 @@ import * as sidebarRouter from '../../utils/sidebarRouter'
 
 export const sidebar: DefaultTheme.Config['sidebar'] = {
   [sidebarRouter.FrontEnd]: { base: sidebarRouter.FrontEnd, items: frontEnd() },
+  [sidebarRouter.Server]: { base: sidebarRouter.Server, items: server() },
   [sidebarRouter.Network]: { base: sidebarRouter.Network, items: network() },
   [sidebarRouter.System]: { base: sidebarRouter.System, items: system() },
   [sidebarRouter.Solution]: { base: sidebarRouter.Solution, items: solution() },
@@ -115,6 +116,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: 'JavaScript 元编程',
           link: 'https://mp.weixin.qq.com/s/1E8d5jYb0sFGPRk3pMLaHA'
+        },
+        {
+          text: '像玩 jQuery 一样玩 AST',
+          link: 'https://juejin.cn/post/6923936548027105293'
         }
       ]
     },
@@ -213,6 +218,21 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
   ]
 }
 
+function server(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '容器',
+      base: sidebarRouter.Container,
+      collapsed: true,
+      items: [
+        {
+          text: '你该如何为 Kubernetes 定制特性',
+          link: 'https://draveness.me//cloud-native-kubernetes-extension'
+        }
+      ]
+    }
+  ]
+}
 function network(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -222,6 +242,10 @@ function network(): DefaultTheme.SidebarItem[] {
     {
       text: '你的站点加载速度应该多快？',
       link: '02_loadSpeed.md'
+    },
+    {
+      text: 'HTTPS 温故知新',
+      link: 'https://mp.weixin.qq.com/s/i8qVR-b1MLQ_UI3NG7aPXw'
     },
     {
       text: 'HTTP/3 原理实战',
@@ -240,6 +264,10 @@ function network(): DefaultTheme.SidebarItem[] {
       link: 'https://missing-semester-cn.github.io/'
     },
     {
+      text: '内存管理设计精要',
+      link: 'https://draveness.me//system-design-memory-management'
+    },
+    {
       text: '浏览器',
       collapsed: true,
       items: [
@@ -250,6 +278,14 @@ function network(): DefaultTheme.SidebarItem[] {
         {
           text: '浏览器是如何工作的？',
           link: 'https://king-hcj.github.io/2020/10/05/google-v8/'
+        },
+        {
+          text: 'Useful DevTools Tips And Shortcuts(Chrome, Firefox, Edge)',
+          link: 'https://www.smashingmagazine.com/2021/02/useful-chrome-firefox-devtools-tips-shortcuts/#top'
+        },
+        {
+          text: '浏览器是如何校验证书的',
+          link: 'https://cjting.me/2021/03/02/how-to-validate-tls-certificate/'
         }
       ]
     }

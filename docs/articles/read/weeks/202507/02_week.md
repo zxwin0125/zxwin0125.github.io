@@ -14,11 +14,15 @@
 
 > Plausible Analytics 是一个简单、轻量且隐私友好的 Google Analytics 替代品，不使用 cookie，自托管或者云上部署都可以
 
+[1s 使用“vscode”阅读 Github 的源码](https://github.com/conwnet/github1s)
+
+> 在原有的 github 仓库地址中，对应的 github 后面加上 1s，就可以使用，如 https://github1s.com/microsoft/vscode
+
+[SwitchHosts：快速切换 Hosts 的软件](https://github.com/oldj/SwitchHosts)
+
+![](https://cdn.jsdmirror.com/gh/zxwin0125/image-repo/img/read/weeks/003.png)
+
 ## 关于跨端
-
-[阿里跨端技术 - 缘起与未来](https://mp.weixin.qq.com/s/UOqFmTRKvUtnyAenov4MDw)
-
-> 本文来自飞猪用户技术团队圣司，来和大家一起聊聊阿里跨端技术的缘起与未来，值得深读
 
 ## 设计 & 灵感
 
@@ -30,12 +34,12 @@
 
 > 这个工具不错，可以自定义插图的每一部分来创建自己的构图，同时种类也很多，对于前端同学写一些图文搭配 PPT 蛮适合
 
-[视觉设计中发现的 11 种视错觉](https://mp.weixin.qq.com/s/zGdXBq4RDLaPYduEHJiHFg)
-
-> 日常中大家都可能会碰到一些神奇的场景，让人产生视觉错觉，本文来告诉你原因所在
-
 ## 自我提升
 
 [我的前端成长之路：内观自在，外观世音，追寻内心平静](https://juejin.im/post/6889239308201361416)
 
 > 来自飞猪前端圣司的一篇关于自我成长的总结文章，校招毕业 4 年时间从 P5 到 P8，内观自在，外观世音，推荐前端同学一读
+
+[构建个人知识体系](https://mp.weixin.qq.com/s/aUj1yHHgvDtseDkyHnrKSg)
+
+> 作者一看就是那种自制力超强的人，时间管理高手，值得学习同时挑几条适合的去落地
