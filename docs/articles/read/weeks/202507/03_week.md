@@ -14,6 +14,10 @@
 
 > 有时候 tinypng 压缩得太狠导致不清晰，可以试试这个工具，习惯了以后可能就用它了
 
+[slidev：用 Markdown 来快速写 PPT](https://github.com/slidevjs/slidev)
+
+> 写 ppt 很容易浪费太多事情，更好的内部表达方式应该是语雀，假如需要对外分享，但不想麻烦，可以试试 Anthony Fu 的新作品
+
 ## 关于跨端
 
 [Flutter 与前端结合点的思考](https://juejin.cn/post/6908357007749693454)

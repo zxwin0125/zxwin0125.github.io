@@ -93,6 +93,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: 'ECMAScript 2020 新增特性',
           link: 'https://juejin.im/post/6883306672064987149'
+        },
+        {
+          text: 'JavaScript ES2021 Features You Need to Know',
+          link: 'https://towardsdev.com/javascript-es2021-features-d864eccad081'
         }
       ]
     },
@@ -102,12 +106,24 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
       collapsed: true,
       items: [
         {
+          text: 'JavaScript Debugger 原理揭秘',
+          link: 'https://juejin.cn/post/6961790494514872333'
+        },
+        {
           text: '如何设计一个前端插件系统',
           link: '01_pluginSystem.md'
         },
         {
+          text: 'JavaScript 中如何实现大文件并行下载？',
+          link: 'https://juejin.cn/post/6954868879034155022'
+        },
+        {
           text: '解释 JavaScript 的内存管理',
           link: 'https://felixgerschau.com/javascript-memory-management'
+        },
+        {
+          text: '一文带你了解如何排查内存泄漏导致的页面卡顿现象',
+          link: 'https://juejin.cn/post/6947841638118998029'
         },
         {
           text: 'Introduction to Event Loop Utilization in Node.js',
@@ -131,6 +147,28 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: 'TypeScript 中提升幸福感的 10 个高级技巧',
           link: 'https://juejin.cn/post/6919478002925453320'
+        }
+      ]
+    },
+    {
+      text: '框架',
+      base: sidebarRouter.FrameWork,
+      collapsed: true,
+      items: [
+        {
+          text: 'React',
+          base: sidebarRouter.React,
+          collapsed: true,
+          items: [
+            {
+              text: '从中断机制看 React Fiber 技术',
+              link: 'https://juejin.cn/post/6943558431018057764'
+            },
+            {
+              text: '一文吃透 react-hooks 原理',
+              link: 'https://juejin.cn/post/6944863057000529933'
+            }
+          ]
         }
       ]
     },
@@ -177,6 +215,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
             {
               text: 'vite——纵享丝滑开发体验',
               link: 'https://juejin.cn/post/6906674140792094727'
+            },
+            {
+              text: '前端领域的转译打包工具链',
+              link: 'https://juejin.cn/post/6956602138201948196'
             }
           ]
         }
@@ -228,6 +270,10 @@ function server(): DefaultTheme.SidebarItem[] {
         {
           text: '你该如何为 Kubernetes 定制特性',
           link: 'https://draveness.me//cloud-native-kubernetes-extension'
+        },
+        {
+          text: '谈谈 Kubernetes 的问题和局限性',
+          link: 'https://draveness.me//kuberentes-limitations'
         }
       ]
     }
@@ -246,6 +292,10 @@ function network(): DefaultTheme.SidebarItem[] {
     {
       text: 'HTTPS 温故知新',
       link: 'https://mp.weixin.qq.com/s/i8qVR-b1MLQ_UI3NG7aPXw'
+    },
+    {
+      text: '深入理解 web 协议：http 包体传输',
+      link: 'https://mp.weixin.qq.com/s/q5Jr-FS-8XC1ojM1J50TWg'
     },
     {
       text: 'HTTP/3 原理实战',
@@ -271,6 +321,10 @@ function network(): DefaultTheme.SidebarItem[] {
       text: '浏览器',
       collapsed: true,
       items: [
+        {
+          text: '前端浏览器缓存知识梳理',
+          link: 'https://juejin.cn/post/6947936223126093861'
+        },
         {
           text: '浏览器是如何调度进程和线程的？',
           link: 'https://mp.weixin.qq.com/s?__biz=Mzk0MDMwMzQyOA==&mid=2247490542&idx=1&sn=d2c25370f8d942b16749d9052872d7ea&source=41#wechat_redirect'
@@ -317,6 +371,19 @@ function solution(): DefaultTheme.SidebarItem[] {
     {
       text: '如何搭建一套 “无痕埋点” 体系？',
       link: 'https://mp.weixin.qq.com/s/nJZk-0WtEW6C8mTeJCSUzQ'
+    },
+    {
+      text: '前端水印实现方案',
+      link: 'https://juejin.cn/post/6964357725652254734'
+    },
+
+    {
+      text: '前端录制回放系统初体验',
+      link: 'https://mp.weixin.qq.com/s/hmMnvwyLMzxkg0dqNNdI0Q'
+    },
+    {
+      text: '软件工程的最大难题',
+      link: 'http://www.ruanyifeng.com/blog/2021/05/scaling-problem.html'
     }
   ]
 }
