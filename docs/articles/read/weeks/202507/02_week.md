@@ -36,10 +36,10 @@
 
 ## 自我提升
 
-[我的前端成长之路：内观自在，外观世音，追寻内心平静](https://juejin.im/post/6889239308201361416)
-
-> 来自飞猪前端圣司的一篇关于自我成长的总结文章，校招毕业 4 年时间从 P5 到 P8，内观自在，外观世音，推荐前端同学一读
-
 [构建个人知识体系](https://mp.weixin.qq.com/s/aUj1yHHgvDtseDkyHnrKSg)
 
 > 作者一看就是那种自制力超强的人，时间管理高手，值得学习同时挑几条适合的去落地
+
+[高级工程师除了敲代码还需要掌握的技能](https://skamille.medium.com/an-incomplete-list-of-skills-senior-engineers-need-beyond-coding-8ed4a521b29f)
+
+> 比较接地气的建议，值得一读

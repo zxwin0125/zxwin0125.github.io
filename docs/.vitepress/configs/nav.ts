@@ -27,6 +27,10 @@ export const nav: DefaultTheme.Config['nav'] = [
     ]
   },
   {
+    text: '项目总结',
+    link: '/articles/project/01_project'
+  },
+  {
     text: '工作技能',
     link: '/articles/work/01_bitOne'
   },

@@ -18,6 +18,8 @@
 
 > 写 ppt 很容易浪费太多事情，更好的内部表达方式应该是语雀，假如需要对外分享，但不想麻烦，可以试试 Anthony Fu 的新作品
 
+[Captin：Mac 上用于显示大小写切换工具](https://captin.mystrikingly.com/)
+
 ## 关于跨端
 
 [Flutter 与前端结合点的思考](https://juejin.cn/post/6908357007749693454)

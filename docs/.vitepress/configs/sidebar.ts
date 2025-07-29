@@ -7,6 +7,7 @@ export const sidebar: DefaultTheme.Config['sidebar'] = {
   [sidebarRouter.Network]: { base: sidebarRouter.Network, items: network() },
   [sidebarRouter.System]: { base: sidebarRouter.System, items: system() },
   [sidebarRouter.Solution]: { base: sidebarRouter.Solution, items: solution() },
+  [sidebarRouter.Project]: { base: sidebarRouter.Project, items: project() },
   [sidebarRouter.Work]: { base: sidebarRouter.Work, items: work() },
   [sidebarRouter.Manage]: { base: sidebarRouter.Manage, items: manage() },
   [sidebarRouter.Methodology]: { base: sidebarRouter.Methodology, items: methodology() },
@@ -76,6 +77,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: 'https://juejin.im/post/6886258269137043464'
         },
         {
+          text: 'CSS ::marker 让文字序号更有意思',
+          link: 'https://segmentfault.com/a/1190000040175019'
+        },
+        {
           text: 'Facebook 重构：抛弃 Sass / Less ，迎接原子化 CSS 时代',
           link: 'https://juejin.cn/post/6917073600474415117'
         }
@@ -136,6 +141,14 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: '像玩 jQuery 一样玩 AST',
           link: 'https://juejin.cn/post/6923936548027105293'
+        },
+        {
+          text: '你怎么还在说 webassembly？',
+          link: 'https://mp.weixin.qq.com/s/GvknRowW4_n-dtmAr3_OAQ'
+        },
+        {
+          text: '一文了解 AsyncHooks',
+          link: 'https://mp.weixin.qq.com/s/08AVmJLMdMNm4yNWQwk-DA'
         }
       ]
     },
@@ -204,6 +217,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           ]
         },
         {
+          text: '比 npm link 更好的调试方式',
+          link: 'https://mp.weixin.qq.com/s/I4hhrgI3-Y18HD8zw_9g9w'
+        },
+        {
           text: '构建工具',
           base: sidebarRouter.BuildTools,
           collapsed: true,
@@ -256,12 +273,35 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
           link: 'https://mp.weixin.qq.com/s/IJMgMO1IeYw2Io8MN7WZWQ'
         }
       ]
+    },
+    {
+      text: 'Serverless',
+      base: sidebarRouter.Serverless,
+      collapsed: true,
+      items: [
+        {
+          text: '字节跳动基于 Serverless 的前端研发模式升级',
+          link: 'https://mp.weixin.qq.com/s/J2fHm_mR7UE65q1vSQ9xpA'
+        }
+      ]
     }
   ]
 }
 
 function server(): DefaultTheme.SidebarItem[] {
   return [
+    {
+      text: '为什么要使用 Go 语言？Go 语言的优势在哪里？',
+      link: 'https://www.zhihu.com/question/21409296'
+    },
+    {
+      text: '掌握 Shell 编程，一篇就够了',
+      link: 'https://zhuanlan.zhihu.com/p/102176365'
+    },
+    {
+      text: '高频Linux命令大总结，可以记住',
+      link: 'https://segmentfault.com/a/1190000040222932'
+    },
     {
       text: '容器',
       base: sidebarRouter.Container,
@@ -279,6 +319,7 @@ function server(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
+
 function network(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -318,6 +359,10 @@ function network(): DefaultTheme.SidebarItem[] {
       link: 'https://draveness.me//system-design-memory-management'
     },
     {
+      text: 'WebSocket 是什么原理？为什么可以实现持久连接？',
+      link: 'https://www.zhihu.com/question/20215561'
+    },
+    {
       text: '浏览器',
       collapsed: true,
       items: [
@@ -340,6 +385,18 @@ function network(): DefaultTheme.SidebarItem[] {
         {
           text: '浏览器是如何校验证书的',
           link: 'https://cjting.me/2021/03/02/how-to-validate-tls-certificate/'
+        },
+        {
+          text: '深入了解现代浏览器',
+          link: 'https://mp.weixin.qq.com/s/XN9wUM-FdWbE1m66jkEgIg'
+        },
+        {
+          text: 'WKWebView 加载生命周期与代理方法剖析',
+          link: 'https://mp.weixin.qq.com/s/ZFui9IiMTWyLXGKZlbnzwQ'
+        },
+        {
+          text: '走进 chrome 内心，了解 V8 引擎是如何工作的',
+          link: 'https://segmentfault.com/a/1190000040331440'
         }
       ]
     }
@@ -354,6 +411,7 @@ function system(): DefaultTheme.SidebarItem[] {
     }
   ]
 }
+
 function solution(): DefaultTheme.SidebarItem[] {
   return [
     {
@@ -384,6 +442,19 @@ function solution(): DefaultTheme.SidebarItem[] {
     {
       text: '软件工程的最大难题',
       link: 'http://www.ruanyifeng.com/blog/2021/05/scaling-problem.html'
+    }
+  ]
+}
+
+function project(): DefaultTheme.SidebarItem[] {
+  return [
+    {
+      text: '组件库按需加载原理分析',
+      link: 'https://mp.weixin.qq.com/s/ty4IUtLlTgxdc8-7_UGyiQ'
+    },
+    {
+      text: '手把手教你搭建一个无框架埋点体系',
+      link: 'https://mp.weixin.qq.com/s/TcaOUBMBBEGQoQPAjYXb_Q'
     }
   ]
 }
@@ -444,6 +515,10 @@ function books(): DefaultTheme.SidebarItem[] {
       base: sidebarRouter.Books,
       collapsed: false,
       link: 'refactorExistCode.md'
+    },
+    {
+      text: '程序员可能必读书单推荐',
+      link: 'https://draveness.me//books-1'
     }
   ]
 }
@@ -466,6 +541,10 @@ function weeks(): DefaultTheme.SidebarItem[] {
         {
           text: '第三周',
           link: '03_week.md'
+        },
+        {
+          text: '第四周',
+          link: '04_week.md'
         }
       ]
     }
