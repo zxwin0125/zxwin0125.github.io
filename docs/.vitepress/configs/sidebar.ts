@@ -149,6 +149,14 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: '一文了解 AsyncHooks',
           link: 'https://mp.weixin.qq.com/s/08AVmJLMdMNm4yNWQwk-DA'
+        },
+        {
+          text: '前端装逼技巧 108 式',
+          link: 'https://segmentfault.com/a/1190000038251777'
+        },
+        {
+          text: '精读《捕获所有异步 error》',
+          link: 'https://segmentfault.com/a/1190000040634549'
         }
       ]
     },
@@ -308,6 +316,10 @@ function server(): DefaultTheme.SidebarItem[] {
       collapsed: true,
       items: [
         {
+          text: 'Docker 常用命令',
+          link: 'https://juejin.cn/post/6996126578048499743'
+        },
+        {
           text: '你该如何为 Kubernetes 定制特性',
           link: 'https://draveness.me//cloud-native-kubernetes-extension'
         },
@@ -397,6 +409,22 @@ function network(): DefaultTheme.SidebarItem[] {
         {
           text: '走进 chrome 内心，了解 V8 引擎是如何工作的',
           link: 'https://segmentfault.com/a/1190000040331440'
+        },
+        {
+          text: '实用 Chrome DevTool Tips',
+          link: 'https://juejin.cn/post/6987752907579850765'
+        },
+        {
+          text: 'Chrome 扩展如何影响浏览器性能的？',
+          link: 'https://www.debugbear.com/blog/chrome-extension-performance-2021'
+        },
+        {
+          text: '从前端视角看浏览器隐身模式下你是如何被追踪的',
+          link: 'https://segmentfault.com/a/1190000040475726'
+        },
+        {
+          text: '浏览器中的音视频知识总结',
+          link: 'https://juejin.cn/post/7002288264413446157'
         }
       ]
     }
@@ -442,6 +470,14 @@ function solution(): DefaultTheme.SidebarItem[] {
     {
       text: '软件工程的最大难题',
       link: 'http://www.ruanyifeng.com/blog/2021/05/scaling-problem.html'
+    },
+    {
+      text: '你不可能知道的骨架屏玩法',
+      link: 'https://juejin.cn/post/6994678354200756238'
+    },
+    {
+      text: '关于鉴权，看懂这篇就够了',
+      link: 'https://mp.weixin.qq.com/s/-Yf6a58H7WDB1luOORhDJw'
     }
   ]
 }
@@ -455,6 +491,10 @@ function project(): DefaultTheme.SidebarItem[] {
     {
       text: '手把手教你搭建一个无框架埋点体系',
       link: 'https://mp.weixin.qq.com/s/TcaOUBMBBEGQoQPAjYXb_Q'
+    },
+    {
+      text: '一篇讲透自研的前端错误监控',
+      link: 'https://juejin.cn/post/6987681953424080926'
     }
   ]
 }
