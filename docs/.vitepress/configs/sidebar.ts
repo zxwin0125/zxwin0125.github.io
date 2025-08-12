@@ -157,6 +157,18 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: '精读《捕获所有异步 error》',
           link: 'https://segmentfault.com/a/1190000040634549'
+        },
+        {
+          text: '一文打尽前端 Base64 编码知识',
+          link: 'https://mp.weixin.qq.com/s/Xc4v21d5qcbpMcSZF-N6AQ'
+        },
+        {
+          text: '实现无感刷新 token 我是这样做的',
+          link: 'https://juejin.cn/post/6983582201690456071'
+        },
+        {
+          text: '浏览器中的 ESM',
+          link: 'https://mp.weixin.qq.com/s/6CpzQXkZd1AcX51A3CNWgA'
         }
       ]
     },
@@ -188,6 +200,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
             {
               text: '一文吃透 react-hooks 原理',
               link: 'https://juejin.cn/post/6944863057000529933'
+            },
+            {
+              text: '各流派 React 状态管理对比和原理实现',
+              link: 'https://mp.weixin.qq.com/s/h8uRkY8wzzP-ajmEIHkzwQ'
             }
           ]
         }
@@ -246,6 +262,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
               link: 'https://juejin.cn/post/6956602138201948196'
             }
           ]
+        },
+        {
+          text: '当我们聊前端部署时，我们在聊什么',
+          link: 'https://juejin.cn/post/7017710911443959839'
         }
       ]
     },
@@ -279,6 +299,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
         {
           text: '谈谈微前端领域的js沙箱实现机制',
           link: 'https://mp.weixin.qq.com/s/IJMgMO1IeYw2Io8MN7WZWQ'
+        },
+        {
+          text: '字节跳动是如何落地微前端的',
+          link: 'https://juejin.cn/post/7016911648656982024'
         }
       ]
     },
