@@ -297,6 +297,10 @@ function frontEnd(): DefaultTheme.SidebarItem[] {
       collapsed: true,
       items: [
         {
+          text: '浅析 JavaScript 沙箱',
+          link: 'https://mp.weixin.qq.com/s/euHJpS6rcRRqVBIPAnbUHA'
+        },
+        {
           text: '谈谈微前端领域的js沙箱实现机制',
           link: 'https://mp.weixin.qq.com/s/IJMgMO1IeYw2Io8MN7WZWQ'
         },
@@ -425,6 +429,10 @@ function network(): DefaultTheme.SidebarItem[] {
         {
           text: '深入了解现代浏览器',
           link: 'https://mp.weixin.qq.com/s/XN9wUM-FdWbE1m66jkEgIg'
+        },
+        {
+          text: '干货：探秘 WKWebView',
+          link: 'https://mp.weixin.qq.com/s/l9D4V0ON3uJ0HfsJ7bpJiQ'
         },
         {
           text: 'WKWebView 加载生命周期与代理方法剖析',

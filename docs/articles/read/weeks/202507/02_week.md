@@ -28,6 +28,10 @@
 
 > 钉钉客户端同学这边的一个对外文章，对这一块讲的比较全，推荐了解
 
+[macOS 上 Flutter Desktop 与 Electron 的性能对比](https://mp.weixin.qq.com/s/uTHi8SfCvXJfbie1A1YNVA)
+
+> 一起来看看桌面端偏前端技术的性能对比
+
 ## 设计 & 灵感
 
 [产品经理如何做产品架构设计](http://www.woshipm.com/pd/4231285.html)
